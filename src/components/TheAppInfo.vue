@@ -22,13 +22,13 @@
         </BListGroupItem>
 
         <BListGroupItem>
-          <BLink href="https://gitlab.com/bpptkg/bpptkg-backend">
+          <BLink href="https://github.com/bpptkg/display-device">
             Developer resources
           </BLink>
         </BListGroupItem>
 
         <BListGroupItem>
-          <BLink href="https://gitlab.com/bpptkg/bpptkg-backend/-/issues">
+          <BLink href="https://github.com/bpptkg/display-device/issues">
             Report an issue
           </BLink>
         </BListGroupItem>
