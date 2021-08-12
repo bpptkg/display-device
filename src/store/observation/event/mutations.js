@@ -1,0 +1,5 @@
+export const APPEND_REPORT = 'appendReport'
+export const INCREMENT_DATE = 'incrementDate'
+export const DECREMENT_DATE = 'decrementDate'
+export const RESET_DATE = 'resetDate'
+export const TRUNCATE_REPORT = 'truncateReport'

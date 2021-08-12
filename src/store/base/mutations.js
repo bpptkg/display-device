@@ -1,0 +1,8 @@
+export const SET_ANNOTATION_OPTIONS = 'setAnnotationOptions'
+export const SET_ANNOTATIONS = 'setAnnotations'
+export const SET_DATA = 'setData'
+export const SET_END_TIME = 'setEndTime'
+export const SET_ERROR = 'setError'
+export const SET_LAST_UPDATED = 'setLastUpdated'
+export const SET_PERIOD = 'setPeriod'
+export const SET_START_TIME = 'setStartTime'

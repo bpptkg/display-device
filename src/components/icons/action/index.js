@@ -1,0 +1,27 @@
+import AnnotationIcon from './AnnotationIcon'
+import DescriptionIcon from './DescriptionIcon'
+import HomeIcon from './HomeIcon'
+import InfoIcon from './InfoIcon'
+import RecordVoiceOverIcon from './RecordVoiceOverIcon'
+import RoomIcon from './RoomIcon'
+import SearchIcon from './SearchIcon'
+import SettingIcon from './SettingIcon'
+import SplitIcon from './SplitIcon'
+import TimelineIcon from './TimelineIcon'
+import ZoomInIcon from './ZoomInIcon'
+import ZoomOutIcon from './ZoomOutIcon'
+
+export {
+  AnnotationIcon,
+  DescriptionIcon,
+  HomeIcon,
+  InfoIcon,
+  RecordVoiceOverIcon,
+  RoomIcon,
+  SearchIcon,
+  SettingIcon,
+  SplitIcon,
+  TimelineIcon,
+  ZoomInIcon,
+  ZoomOutIcon,
+}

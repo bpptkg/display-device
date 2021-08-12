@@ -1,0 +1,24 @@
+<template>
+  <svg
+    :width="iconSize"
+    :height="iconSize"
+    :viewBox="viewBox"
+    :fill="color"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M10.5 2.75C10.5 1.92001 11.17 1.25 12 1.25C12.83 1.25 13.5 1.92001 13.5 2.75V3.92001C16.64 4.60001 19 7.39999 19 10.75V16.75L21 18.75V19.75H3V18.75L5 16.75V10.75C5 7.39999 7.35999 4.60001 10.5 3.92001V2.75ZM12 5.75C14.76 5.75 17 7.98999 17 10.75V17.75H7V10.75C7 7.98999 9.23999 5.75 12 5.75ZM10.01 20.76C10.01 21.86 10.9 22.75 12 22.75C13.1 22.75 13.99 21.86 13.99 20.76H10.01ZM13 7.75V11.75H11V7.75H13ZM13 15.75V13.75H11V15.75H13Z"
+    />
+  </svg>
+</template>
+
+<script>
+import iconMixin from '../mixin'
+
+export default {
+  name: 'NotificationImportantIcon',
+  mixins: [iconMixin],
+}
+</script>

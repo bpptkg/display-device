@@ -1,0 +1,20 @@
+import {
+  initState,
+  mutations,
+  getters,
+  actions,
+} from '../../seismic/seismicity'
+
+const period = {
+  count: 1,
+  type: 'month',
+  text: '1 month',
+}
+
+export default {
+  namespaced: true,
+  state: initState(period),
+  getters,
+  mutations,
+  actions,
+}

@@ -1,0 +1,6 @@
+export const SET_DATA = 'setData'
+export const SET_PAGE_SIZE = 'setPageSize'
+export const SET_ORDERING = 'setOrdering'
+export const SET_STATION = 'setStation'
+export const SET_ERROR = 'setError'
+export const SET_CURRENT_PAGE = 'setCurrentPage'

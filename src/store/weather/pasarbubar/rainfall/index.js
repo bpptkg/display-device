@@ -1,0 +1,99 @@
+import moment from 'moment'
+import { get } from 'lodash'
+
+import client from '@/utils/client'
+import { calculatePeriod } from '@/utils/datetime'
+import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
+import annotations from '@/components/event-annotation/annotations'
+
+import {
+  SET_DATA,
+  SET_END_TIME,
+  SET_ERROR,
+  SET_LAST_UPDATED,
+  SET_START_TIME,
+} from '../../../base/mutations'
+import { baseState, baseMutations, baseActions } from '../../../base'
+import { FETCH_METEOROLOGY, UPDATE_METEOROLOGY } from './actions'
+import rangeSelector from './range-selector'
+
+export const NAMESPACE = 'weather/pasarbubar/rainfall'
+
+export const initialState = {
+  ...baseState,
+  annotationOptions: annotations,
+  data: {},
+}
+
+export const initState = (period) => {
+  const { startTime, endTime } = calculatePeriod(period)
+
+  return {
+    ...initialState,
+    period,
+    startTime,
+    endTime,
+  }
+}
+
+export const getters = {
+  rainfallEvents(state) {
+    return get(state.data, 'events.data', [])
+  },
+  rainfallEventsCount(state) {
+    return get(state.data, 'events.count', 0)
+  },
+  rainfallData(state) {
+    return get(state.data, 'data', [])
+  },
+}
+
+export const mutations = {
+  ...baseMutations,
+}
+
+export const actions = {
+  ...baseActions,
+  async [FETCH_METEOROLOGY]({ commit, state }) {
+    if (state.error) {
+      commit(SET_ERROR, null)
+    }
+
+    const data = await client
+      .get('/meteorology/rainfall/', {
+        params: {
+          timestamp__gte: state.startTime.format(DATETIME_FORMAT),
+          timestamp__lt: state.endTime.format(DATETIME_FORMAT),
+          nolimit: true,
+        },
+      })
+      .then((response) => response.data)
+      .catch((error) => {
+        commit(SET_ERROR, error)
+        return []
+      })
+
+    commit(SET_DATA, data)
+    commit(SET_LAST_UPDATED, moment())
+  },
+  async [UPDATE_METEOROLOGY]({ dispatch, commit, state }) {
+    if (state.period.type === DateRangeTypes.CUSTOM) {
+      return dispatch(FETCH_METEOROLOGY)
+    } else {
+      const { startTime, endTime } = calculatePeriod(state.period)
+      commit(SET_START_TIME, startTime)
+      commit(SET_END_TIME, endTime)
+      return dispatch(FETCH_METEOROLOGY)
+    }
+  },
+}
+
+const defaultPeriod = rangeSelector[0]
+
+export default {
+  namespaced: true,
+  state: initState(defaultPeriod),
+  getters,
+  mutations,
+  actions,
+}

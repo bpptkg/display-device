@@ -1,0 +1,7 @@
+export const RESET_RMS_FILTER = 'resetRMSFilter'
+export const SET_EVENT_FILTER = 'setEventFilter'
+export const SET_ONLY_PLOTTABLE = 'setOnlyPlottable'
+export const SET_RMS_FILTER = 'setRMSFilter'
+export const SET_SETTINGS = 'setSettings'
+export const SET_TOPO = 'setTopo'
+export const USE_HYPO_MODE = 'useHypoMode'

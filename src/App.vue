@@ -1,28 +1,48 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <ProgressBar />
+    <TheTopNavbar />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ProgressBar from './components/progressbar/ProgressBar'
+import TheTopNavbar from './components/TheTopNavbar'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    TheTopNavbar,
+    ProgressBar,
+  },
+  mounted() {
+    this.$Progress.finish()
+  },
+  created() {
+    this.$Progress.start()
+    this.$router.beforeEach((to, from, next) => {
+      if (to.meta.progress !== undefined) {
+        const meta = to.meta.progress
+        this.$Progress.parseMeta(meta)
+      }
+      this.$Progress.start()
+      next()
+    })
+    this.$router.afterEach((to, from) => {
+      this.$Progress.finish()
+    })
+  },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+@import '@/scss/base';
+
+.custom-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 </style>
