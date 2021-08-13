@@ -36,6 +36,7 @@ export default {
   height: 24px;
   vertical-align: middle;
   width: 24px;
+  color: rgb(95, 99, 104);
 }
 
 .menu-link {
