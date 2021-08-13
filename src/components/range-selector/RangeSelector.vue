@@ -2,7 +2,7 @@
   <div>
     <BDropdown class="rs-btn" v-bind="$attrs" v-on="$listeners">
       <template #button-content>
-        <i class="data-menu-label">Period:</i>
+        <i class="data-menu-label">Period: </i>
         <span class="data-menu-button">{{
           selectedItem.text ? selectedItem.text : ''
         }}</span>
