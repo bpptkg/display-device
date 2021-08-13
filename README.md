@@ -42,18 +42,18 @@ Install all package dependencies:
 
     npm install
 
-Compiles and hot-reloads for development
+Compiles and hot-reloads for development:
 
     npm run serve
 
-Compiles and minifies for production
+Compiles and minifies for production:
 
     npm run build
 
 On the production environment, we deploy the app using `/display-device/` public
-path.
+path. You can change this setting in `vue.config.js` file.
 
-Lints and fixes files
+Lints and fixes files:
 
     npm run lint
 
