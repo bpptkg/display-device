@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <BNav tabs class="nav-wrapper mb-3">
+    <BNav tabs class="mb-3">
       <BNavItem
         v-for="type in types"
         :key="type.value"
