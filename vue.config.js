@@ -1,6 +1,8 @@
 const path = require('path')
 const webpack = require('webpack')
 
+const appVersion = require('./package.json').version
+
 const commitHash = require('child_process')
   .execSync('git rev-parse --short HEAD')
   .toString()
@@ -23,7 +25,7 @@ module.exports = {
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          DD_APP_VERSION: require('./package.json').version,
+          DD_APP_VERSION: JSON.stringify(appVersion),
           DD_COMMIT_HASH: JSON.stringify(commitHash),
           DD_BUILD_DATE: JSON.stringify(buildDate.toISOString()),
         },
