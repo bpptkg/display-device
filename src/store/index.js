@@ -7,6 +7,7 @@ import gps from './gps'
 import home from './home'
 import lavaDome from './lava-domes'
 import observation from './observation'
+import pageLoader from './loader'
 import realtime from './realtime'
 import rfapDistance from './rfap-distance'
 import rfapDirection from './rfap-direction'
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     home,
     lavaDome,
     observation,
+    pageLoader,
     realtime,
     rfapDistance,
     rfapDirection,

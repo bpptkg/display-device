@@ -231,7 +231,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  base: '/display-device',
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes,
 })
 

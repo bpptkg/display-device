@@ -5,20 +5,47 @@ import DisplayDevicePlugins from './plugins'
 import ProgressBar from './components/progressbar'
 import router from './router'
 import store from './store'
-import { UPDATE_USER } from './store/user/actions'
+
+import { NAMESPACE as PAGE_LOADER_NAMESPACE } from './store/loader'
+import { SHOW_PAGE_LOADER, HIDE_PAGE_LOADER } from './store/loader/actions'
+
+import { NAMESPACE as USER_NAMESPACE } from './store/user'
+import { GET_CSRF_TOKEN, UPDATE_USER_DATA } from './store/user/actions'
+
+Vue.config.productionTip = false
 
 Vue.use(DisplayDevicePlugins)
 Vue.use(ProgressBar)
 Vue.use(ToastPlugin)
 
-// // Get authenticated user.
-// const USER_NAMESPACE = 'user'
-// ;(async () => {
-//   store.dispatch(USER_NAMESPACE + '/' + UPDATE_USER)
-// })()
+const initApp = () => {
+  new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+  }).$mount('#app')
+}
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app')
+// Show initial page loader and fetch user data.
+;(async () => {
+  store.dispatch(PAGE_LOADER_NAMESPACE + '/' + SHOW_PAGE_LOADER)
+
+  // Get authenticated user.
+  store
+    .dispatch(USER_NAMESPACE + '/' + UPDATE_USER_DATA)
+    .then((user) => {
+      initApp()
+      store.dispatch(USER_NAMESPACE + '/' + GET_CSRF_TOKEN)
+    })
+    .catch((err) => {
+      if (process.env.NODE_ENV === 'production') {
+        return (window.location.href = process.env.VUE_APP_CENDANA_URL)
+      } else {
+        // Skip authentication on local development.
+        initApp()
+      }
+    })
+    .finally(() => {
+      store.dispatch(PAGE_LOADER_NAMESPACE + '/' + HIDE_PAGE_LOADER)
+    })
+})()

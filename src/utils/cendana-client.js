@@ -1,17 +1,10 @@
 import Axios from 'axios'
 
-const token = document.head.querySelector('meta[name="csrf-token"]')
-
-if (!token) {
-  console.error(
-    'CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token'
-  )
-}
-
 const client = Axios.create({
+  baseURL: process.env.VUE_APP_CENDANA_URL,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
-    'X-CSRF-TOKEN': '',
+    'X-CSRF-TOKEN': '', // TODO(indra): Implement CSRF token fetching.
   },
 })
 
