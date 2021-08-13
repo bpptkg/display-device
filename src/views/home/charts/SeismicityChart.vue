@@ -29,6 +29,7 @@ import { BCard, BLink } from 'bootstrap-vue'
 
 import { SamplingTypes } from '@/constants/seismicity'
 import { toUnixMiliSeconds } from '@/utils/series'
+import { createRowGrid } from '@/utils/echarts/grid'
 import DChart from '@/components/echarts/chart/DChart'
 import ErrorMessage from '@/components/error-message'
 import {
@@ -42,6 +43,19 @@ import eventTypes from '@/components/echarts/chart-options/seismic/seismicity/ev
 import { UPDATE_SEISMICITY } from '@/store/seismic/seismicity/actions'
 
 const NAMESPACE = 'home/charts/seismicity'
+
+const customMediaQuery = [
+  {
+    ...mediaQuery[0],
+    option: {
+      ...mediaQuery[0].option,
+      grid: createRowGrid(eventTypes.length, {
+        top: 5,
+        bottom: 10,
+      }),
+    },
+  },
+]
 
 export default {
   name: 'SeismicityChart',
@@ -87,7 +101,7 @@ export default {
             toUnixMiliSeconds(this.endTime)
           ),
         },
-        media: mediaQuery,
+        media: customMediaQuery,
       }
       return options
     },

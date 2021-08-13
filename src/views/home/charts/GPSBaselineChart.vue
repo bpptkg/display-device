@@ -88,7 +88,7 @@ export default {
             option: {
               grid: createRowGrid(this.references.length, {
                 left: 22,
-                top: 10,
+                top: 5,
                 bottom: 8,
               }),
               title: {
