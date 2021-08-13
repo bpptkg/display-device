@@ -38,7 +38,10 @@ const initApp = () => {
       store.dispatch(USER_NAMESPACE + '/' + GET_CSRF_TOKEN)
     })
     .catch((_error) => {
-      if (process.env.NODE_ENV === 'production') {
+      if (
+        process.env.NODE_ENV === 'production' ||
+        process.env.NODE_ENV === 'staging'
+      ) {
         return (window.location.href = process.env.VUE_APP_CENDANA_URL)
       } else {
         // Skip authentication on local development.
