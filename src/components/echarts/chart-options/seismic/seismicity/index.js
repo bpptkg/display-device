@@ -144,13 +144,13 @@ export const mediaQuery = [
     },
     option: {
       grid: createRowGrid(eventTypes.length, {
-        top: 10,
+        top: 12,
         bottom: 10,
       }),
       title: {
-        top: 25,
+        top: 10,
         textStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
       },
       yAxis: createYAxisMobile(eventTypes.map((v) => v.type)),
@@ -158,28 +158,34 @@ export const mediaQuery = [
   },
 ]
 
-export const baseChartOptions = {
-  backgroundColor: '#fff',
-  dataZoom: [
-    {
-      type: 'slider',
-      xAxisIndex: makeIndex(eventTypes.length),
-      realtime: false,
+export const baseChartOptions = ({ title = {} } = {}) => {
+  return {
+    backgroundColor: '#fff',
+    dataZoom: [
+      {
+        type: 'slider',
+        xAxisIndex: makeIndex(eventTypes.length),
+        realtime: false,
+      },
+    ],
+    grid: createRowGrid(eventTypes.length, { top: 7, bottom: 10 }),
+    title: {
+      text: 'Seismicity',
+      left: 'center',
+      align: 'right',
+      textStyle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      subtextStyle: {
+        color: '#363636',
+      },
+      ...title,
     },
-  ],
-  grid: createRowGrid(eventTypes.length, { bottom: 10 }),
-  title: {
-    text: 'Seismicity',
-    left: 'center',
-    align: 'right',
-    textStyle: {
-      fontSize: 14,
-      fontWeight: 'normal',
-    },
-  },
-  xAxis: createXAxis(eventTypes.length),
-  yAxis: createYAxis(eventTypes.map((v) => v.type)),
-  toolbox: defaultToolbox,
+    xAxis: createXAxis(eventTypes.length),
+    yAxis: createYAxis(eventTypes.map((v) => v.type)),
+    toolbox: defaultToolbox,
+  }
 }
 
 export const tooltipFormatter = (sampling) => {

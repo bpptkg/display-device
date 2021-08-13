@@ -62,7 +62,7 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions,
+          ...baseChartOptions(),
           series: createSeries(this.data),
           title: {
             align: 'right',

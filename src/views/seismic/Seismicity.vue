@@ -92,6 +92,7 @@ import { DATE_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/seismicity'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { createCSVContent } from '@/utils/bulletin'
+import { createPeriodText } from '@/utils/datetime'
 
 import {
   SidepanelTab,
@@ -210,7 +211,9 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions,
+          ...baseChartOptions({
+            title: { subtext: createPeriodText(this.startTime, this.endTime) },
+          }),
           series: createSeries(this.data, {
             annotations: this.annotations,
           }),

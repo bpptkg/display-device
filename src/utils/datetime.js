@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { isString, isNumber } from 'lodash'
-import { DateRangeTypes } from '../constants/date'
+import { DateRangeTypes, DATETIME_FORMAT } from '../constants/date'
 import '@/lib/moment-duration-format'
 
 export function calculatePeriod({ type, count, start, end }) {
@@ -47,6 +47,29 @@ export function calculatePeriod({ type, count, start, end }) {
       endTime,
     }
   }
+}
+
+export const createPeriodText = (startTime, endTime) => {
+  let start = ''
+  let end = ''
+
+  if (typeof startTime === 'object') {
+    start = startTime.format(DATETIME_FORMAT)
+  } else if (typeof startTime === 'string') {
+    start = startTime
+  } else {
+    start = startTime.toString()
+  }
+
+  if (typeof endTime === 'object') {
+    end = endTime.format(DATETIME_FORMAT)
+  } else if (typeof endTime === 'string') {
+    end = endTime
+  } else {
+    end = endTime.toString()
+  }
+
+  return `${start} - ${end}`
 }
 
 /**
