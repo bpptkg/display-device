@@ -2,7 +2,7 @@ import moment from 'moment'
 import { capitalize } from '@/utils/common'
 
 export default {
-  install(Vue, options) {
+  install(Vue, _options) {
     Vue.filter('dateFormat', (value, format) => {
       if (!value) return ''
       return moment(value).format(format)

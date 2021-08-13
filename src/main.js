@@ -33,11 +33,11 @@ const initApp = () => {
   // Get authenticated user.
   store
     .dispatch(USER_NAMESPACE + '/' + UPDATE_USER_DATA)
-    .then((user) => {
+    .then((_user) => {
       initApp()
       store.dispatch(USER_NAMESPACE + '/' + GET_CSRF_TOKEN)
     })
-    .catch((err) => {
+    .catch((_error) => {
       if (process.env.NODE_ENV === 'production') {
         return (window.location.href = process.env.VUE_APP_CENDANA_URL)
       } else {
