@@ -233,10 +233,9 @@ export const mediaQuery = (type) => {
                 right: '20%',
               },
         title: {
-          top: 28,
+          top: 5,
           textStyle: {
-            fontSize: 12,
-            fontWeight: 'normal',
+            fontSize: 13,
           },
         },
       },

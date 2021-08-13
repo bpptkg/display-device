@@ -150,7 +150,7 @@ export const mediaQuery = [
       title: {
         top: 10,
         textStyle: {
-          fontSize: 14,
+          fontSize: 13,
         },
       },
       yAxis: createYAxisMobile(eventTypes.map((v) => v.type)),
@@ -174,7 +174,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       left: 'center',
       align: 'right',
       textStyle: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: 'bold',
       },
       subtextStyle: {

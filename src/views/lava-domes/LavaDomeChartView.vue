@@ -74,6 +74,7 @@ import { BCard, BDropdownItem, BLink } from 'bootstrap-vue'
 import { saveAs } from '@/lib/file-saver'
 import { LavaDome } from '@/constants/lava-domes'
 import { toUnixMiliSeconds } from '@/utils/series'
+import { createPeriodText } from '@/utils/datetime'
 
 import {
   SidepanelListDivider,
@@ -205,9 +206,11 @@ export default {
             left: 'center',
             align: 'right',
             textStyle: {
-              fontSize: 14,
-              fontWeight: 'normal',
+              fontSize: 16,
+              fontWeight: 'bold',
             },
+            subtext: createPeriodText(this.startTime, this.endTime),
+            subtextStyle: { color: '#363636' },
           },
         },
         media: mediaQuery(),

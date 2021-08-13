@@ -145,6 +145,7 @@ import {
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 import { SET_CHART_VIEW } from '@/store/edm/mutations'
+import { createPeriodText } from '@/utils/datetime'
 
 export default {
   name: 'EDMBenchmarkChart',
@@ -244,7 +245,7 @@ export default {
             calculateAdaptiveHeight(reflectorLength),
             {
               margin: 20,
-              top: 50,
+              top: 55,
               right: this.chartView === CHART_VIEWS.slope_distance ? 20 : 65,
               bottom: 80,
               left: 65,
@@ -255,8 +256,12 @@ export default {
             left: 'center',
             align: 'right',
             textStyle: {
-              fontSize: 14,
-              fontWeight: 'normal',
+              fontSize: 16,
+              fontWeight: 'bold',
+            },
+            subtext: createPeriodText(this.startTime, this.endTime),
+            subtextStyle: {
+              color: '#363636',
             },
           },
           tooltip: {
@@ -290,13 +295,17 @@ export default {
                 calculateAdaptiveHeight(reflectorLength),
                 {
                   margin: 20,
-                  top: 50,
+                  top: 95,
                   right:
                     this.chartView === CHART_VIEWS.slope_distance ? 20 : 55,
                   bottom: 80,
                   left: 60,
                 }
               ),
+              title: {
+                fontSize: 13,
+                top: 25,
+              },
             },
           },
         ],
@@ -446,8 +455,12 @@ export default {
             left: 'center',
             align: 'right',
             textStyle: {
-              fontSize: 14,
-              fontWeight: 'normal',
+              fontSize: 16,
+              fontWeight: 'bold',
+            },
+            subtext: createPeriodText(this.startTime, this.endTime),
+            subtextStyle: {
+              color: '#363636',
             },
           },
           series: coordCreateSeries(getSeriesByIndex(this.data, refIndex), {
@@ -458,7 +471,7 @@ export default {
             toUnixMiliSeconds(this.endTime)
           ),
         },
-        mediaQuery: coordMediaQuery,
+        media: coordMediaQuery,
       }
       return options
     },

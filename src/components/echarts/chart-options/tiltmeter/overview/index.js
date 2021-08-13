@@ -125,9 +125,8 @@ export const mediaQuery = [
         right: 15,
       }),
       title: {
-        top: 25,
         textStyle: {
-          fontSize: 12,
+          fontSize: 13,
         },
       },
     },
@@ -144,7 +143,7 @@ export const baseChartOptions = () => {
         realtime: false,
       },
     ],
-    grid: createRowGrid(tiltOptions.length, { bottom: 5, top: 5 }),
+    grid: createRowGrid(tiltOptions.length, { bottom: 5, top: 6 }),
     yAxis: createYAxis(),
     toolbox: defaultToolbox,
   }

@@ -152,15 +152,15 @@ export const mediaQuery = [
     option: {
       grid: createRowGrid(3, {
         margin: 4,
-        top: 15,
+        top: 20,
         right: 5,
         bottom: 12,
         left: 26,
       }),
       title: {
-        top: 25,
+        top: 22,
         textStyle: {
-          fontSize: 12,
+          fontSize: 13,
         },
       },
     },
@@ -170,7 +170,13 @@ export const mediaQuery = [
 export const baseChartOptions = {
   backgroundColor: '#fff',
   dataZoom: [{ type: 'slider', xAxisIndex: [0, 1, 2], realtime: false }],
-  grid: createRowGrid(3, { margin: 4, top: 7, right: 5, bottom: 12, left: 12 }),
+  grid: createRowGrid(3, {
+    margin: 4,
+    top: 15,
+    right: 5,
+    bottom: 12,
+    left: 12,
+  }),
   toolbox: defaultToolbox,
   tooltip: {
     trigger: 'item',

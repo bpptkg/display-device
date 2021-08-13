@@ -72,6 +72,7 @@ import DChart from '@/components/echarts/chart/DChart'
 import DNote from '@/components/base/note/DNote'
 
 import { DateRangeTypes } from '@/constants/date'
+import { createPeriodText } from '@/utils/datetime'
 
 import {
   SET_PERIOD,
@@ -127,7 +128,9 @@ export default {
     chartOptions() {
       return {
         baseOption: {
-          ...baseChartOptions(),
+          ...baseChartOptions({
+            title: { subtext: createPeriodText(this.startTime, this.endTime) },
+          }),
           series: createSeries(this.rfapDirectionGroup),
         },
         media: mediaQuery(),
@@ -137,7 +140,10 @@ export default {
     chartOptionsBar() {
       return {
         baseOption: {
-          ...baseChartOptionsBar(this.data, { axis: this.axis }),
+          ...baseChartOptionsBar(this.data, {
+            axis: this.axis,
+            title: { subtext: createPeriodText(this.startTime, this.endTime) },
+          }),
         },
         media: [
           {

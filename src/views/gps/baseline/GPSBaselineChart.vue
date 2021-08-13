@@ -37,6 +37,7 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 import { toUnixMiliSeconds } from '@/utils/series'
 import { createRowGrid } from '@/utils/echarts/grid'
+import { createPeriodText } from '@/utils/datetime'
 
 import chartMixins from '@/components/mixins/charts'
 import ErrorMessage from '@/components/error-message'
@@ -124,14 +125,18 @@ export default {
         baseOption: {
           ...baseChartOptions,
           dataZoom: createDataZoom(this.references.length),
-          grid: createRowGrid(this.references.length, { bottom: 8 }),
+          grid: createRowGrid(this.references.length, { bottom: 8, top: 8 }),
           title: {
             text: this.chartTitle,
             left: 'center',
             align: 'right',
             textStyle: {
-              fontSize: 14,
-              fontWeight: 'normal',
+              fontSize: 16,
+              fontWeight: 'bold',
+            },
+            subtext: createPeriodText(this.startTime, this.endTime),
+            subtextStyle: {
+              color: '#363636',
             },
           },
           series: createSeries(this.data, this.references, {
@@ -152,13 +157,13 @@ export default {
             option: {
               grid: createRowGrid(this.references.length, {
                 left: 22,
-                top: 10,
+                top: 12,
                 bottom: 8,
               }),
               title: {
                 top: 25,
                 textStyle: {
-                  fontSize: 12,
+                  fontSize: 13,
                 },
               },
             },

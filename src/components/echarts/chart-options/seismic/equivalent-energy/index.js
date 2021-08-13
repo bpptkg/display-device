@@ -135,7 +135,7 @@ export const mediaQuery = () => {
   ]
 }
 
-export const baseChartOptions = () => {
+export const baseChartOptions = ({ title = {} } = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: { type: 'slider', realtime: false, bottom: 30 },
@@ -173,13 +173,18 @@ export const baseChartOptions = () => {
       },
     },
     title: {
-      text: 'RF-AP equivalent energy',
+      text: 'RF-AP Equivalent Energy',
       left: 'center',
       align: 'right',
+      subtext: '',
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 16,
+        fontWeight: 'bold',
       },
+      subtextStyle: {
+        color: '#363636',
+      },
+      ...title,
     },
     yAxis: createYAxis(),
   }

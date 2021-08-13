@@ -94,7 +94,11 @@ export const mediaQuery = () => {
         maxWidth: 575.98,
       },
       option: {
-        grid: { left: 60, right: 60 },
+        grid: { left: 60, right: 60, top: 80 },
+        title: {
+          top: 30,
+          fontSize: 13,
+        },
       },
     },
   ]

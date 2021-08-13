@@ -73,7 +73,7 @@ export const createYAxis = () => {
   })
 }
 
-export const baseChartOptions = () => {
+export const baseChartOptions = ({ title = {} } = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -89,15 +89,19 @@ export const baseChartOptions = () => {
       left: 'center',
       align: 'right',
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 16,
+        fontWeight: 'bold',
       },
+      subtext: '',
+      subtextStyle: {
+        color: '#363636',
+      },
+      ...title,
     },
     toolbox: defaultToolbox,
     tooltip: {
-      trigger: 'item',
+      trigger: 'axis',
       axisPointer: {
-        type: 'cross',
         lineStyle: {
           type: 'dashed',
         },
@@ -117,7 +121,7 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(edmOptions.length, { left: 20, bottom: 5 }),
+      grid: createRowGrid(edmOptions.length, { left: 20, bottom: 5, top: 7 }),
     },
   },
 ]

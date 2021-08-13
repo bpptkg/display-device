@@ -12,7 +12,7 @@ const f = numberFormatterFactory(0)
 
 export const baseChartOptions = (
   data,
-  { axis = SupportedXAxisType.COUNT } = {}
+  { axis = SupportedXAxisType.COUNT, title = {} } = {}
 ) => {
   let seriesData = []
   if (axis === SupportedXAxisType.COUNT) {
@@ -79,9 +79,12 @@ export const baseChartOptions = (
       show: true,
       text: 'RF-AP Direction',
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 16,
+        fontWeight: 'bold',
       },
+      subtext: '',
+      subtextStyle: { color: '#363636' },
+      ...title,
     },
     toolbox: {
       feature: {

@@ -36,7 +36,7 @@
           </MoreMenu>
         </div>
       </div>
-      <BNav tabs class="mt-2 mb-2 nav-wrapper">
+      <BNav tabs class="mt-2 mb-2">
         <BNavItem
           v-for="(item, index) in tabNav"
           :key="index"

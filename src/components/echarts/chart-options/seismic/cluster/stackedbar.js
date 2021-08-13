@@ -37,7 +37,7 @@ export const createXAxis = (min, max) => {
   }
 }
 
-export const baseChartOptions = () => {
+export const baseChartOptions = ({ title = {} } = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -55,9 +55,13 @@ export const baseChartOptions = () => {
       left: 'center',
       align: 'right',
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 15,
+        fontWeight: 'bold',
       },
+      subtextStyle: {
+        color: '#363636',
+      },
+      ...title,
     },
     yAxis: {
       name: 'Count',
@@ -92,6 +96,9 @@ export const mediaQuery = () => {
         yAxis: {
           nameLocation: 'end',
           nameGap: 20,
+        },
+        grid: {
+          top: 75,
         },
       },
     },

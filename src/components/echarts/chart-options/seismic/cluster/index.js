@@ -23,7 +23,7 @@ export const createSeries = (clusterGroup, { annotations = [] } = {}) => {
   })
 }
 
-export const baseChartOptions = (clusterGroup) => {
+export const baseChartOptions = (clusterGroup, { title = {} } = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -43,9 +43,10 @@ export const baseChartOptions = (clusterGroup) => {
       left: 'center',
       align: 'right',
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 15,
+        fontWeight: 'bold',
       },
+      ...title,
     },
     yAxis: createYAxis(clusterGroup.map((v) => v.cluster) || [1]),
     toolbox: defaultToolbox,
@@ -94,9 +95,9 @@ export const mediaQuery = (clusterGroup) => {
           { margin: 20, top: 50, right: 20, bottom: 60, left: 40 }
         ),
         title: {
-          top: 25,
+          top: 5,
           textStyle: {
-            fontSize: 12,
+            fontSize: 13,
           },
         },
         yAxis: createYAxisMobile(clusterGroup.map((v) => v.cluster) || [1]),

@@ -134,13 +134,17 @@ export const mediaQuery = () => {
         maxWidth: 575.98,
       },
       option: {
-        grid: { left: 60, right: 60 },
+        grid: { left: 60, right: 60, top: 70 },
+        title: {
+          top: 20,
+          fontSize: 13,
+        },
       },
     },
   ]
 }
 
-export const baseChartOptions = (sampling) => {
+export const baseChartOptions = (sampling, { title = {} } = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: { type: 'slider', realtime: false, bottom: 30 },
@@ -151,9 +155,12 @@ export const baseChartOptions = (sampling) => {
       left: 'center',
       align: 'right',
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 16,
+        fontWeight: 'bold',
       },
+      subtext: '',
+      subtextStyle: { color: '#363636' },
+      ...title,
     },
     toolbox: defaultToolbox,
     tooltip: {

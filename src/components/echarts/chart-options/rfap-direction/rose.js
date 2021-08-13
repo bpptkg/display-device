@@ -28,7 +28,7 @@ export const DATA_SHORT = [
   'NW [BL]',
 ]
 
-export const baseChartOptions = () => {
+export const baseChartOptions = ({ title = {} } = {}) => {
   return {
     angleAxis: {
       type: 'category',
@@ -55,9 +55,12 @@ export const baseChartOptions = () => {
       show: true,
       text: 'RF-AP Direction Group',
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 16,
+        fontWeight: 'bold',
       },
+      subtext: '',
+      subtextStyle: { color: '#363636' },
+      ...title,
     },
     toolbox: {
       feature: {

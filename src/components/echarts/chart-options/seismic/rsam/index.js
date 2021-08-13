@@ -147,7 +147,35 @@ export const createYAxis = (bands) => {
     .flat(1)
 }
 
-export const baseChartOptions = ({ bands = BANDS, title = 'RSAM' } = {}) => {
+export const mediaQuery = ({ bands = BANDS } = {}) => {
+  return [
+    {
+      query: {
+        maxWidth: 575.98,
+      },
+      option: {
+        grid: createRowGrid(bands.length, {
+          bottom: 8,
+          margin: 1.3,
+          top: 8,
+          left: 12,
+        }),
+        title: {
+          left: 0,
+          textStyle: {
+            fontSize: 13,
+          },
+        },
+      },
+    },
+  ]
+}
+
+export const baseChartOptions = ({
+  bands = BANDS,
+  title = 'RSAM',
+  subtext = '',
+} = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -162,9 +190,13 @@ export const baseChartOptions = ({ bands = BANDS, title = 'RSAM' } = {}) => {
       text: title,
       left: 'center',
       align: 'right',
+      subtext: subtext,
       textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal',
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      subtextStyle: {
+        color: '#363636',
       },
     },
     xAxis: createXAxis(bands.length),

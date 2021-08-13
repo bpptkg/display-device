@@ -189,40 +189,47 @@ export const createSeries = (data, { annotations = [] } = {}) => {
   ]
 }
 
-export const baseChartOptions = {
-  backgroundColor: '#fff',
-  dataZoom: [
-    { type: 'slider', xAxisIndex: [0, 1], realtime: false, bottom: 28 },
-  ],
-  grid: createSubplotGrid(2, CHART_HEIGHT, {
-    top: 40,
-    right: 125,
-    bottom: 90,
-    left: 60,
-  }),
-  legend: { type: 'scroll', bottom: 0 },
-  title: {
-    text: 'Vogamos',
-    left: 'center',
-    align: 'right',
-    textStyle: {
-      fontSize: 14,
-      fontWeight: 'normal',
-    },
-  },
-  toolbox: defaultToolbox,
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'line',
-      lineStyle: {
-        type: 'dashed',
-      },
-    },
-    formatter: defaultTooltipFormatter({
-      format: 'YYYY-MM-DD HH:mm:ss',
-      valueDecimals: 2,
-      seriesProps: SeriesProps,
+export const baseChartOptions = ({ title = {} } = {}) => {
+  return {
+    backgroundColor: '#fff',
+    dataZoom: [
+      { type: 'slider', xAxisIndex: [0, 1], realtime: false, bottom: 28 },
+    ],
+    grid: createSubplotGrid(2, CHART_HEIGHT, {
+      top: 45,
+      right: 125,
+      bottom: 90,
+      left: 60,
     }),
-  },
+    legend: { type: 'scroll', bottom: 0 },
+    title: {
+      text: 'Vogamos',
+      left: 'center',
+      align: 'right',
+      textStyle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      subtext: '',
+      subtextStyle: {
+        color: '#363636',
+      },
+      ...title,
+    },
+    toolbox: defaultToolbox,
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'line',
+        lineStyle: {
+          type: 'dashed',
+        },
+      },
+      formatter: defaultTooltipFormatter({
+        format: 'YYYY-MM-DD HH:mm:ss',
+        valueDecimals: 2,
+        seriesProps: SeriesProps,
+      }),
+    },
+  }
 }

@@ -53,6 +53,7 @@ import { BLink, BDropdownItem } from 'bootstrap-vue'
 import { saveAs } from '@/lib/file-saver'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
+import { createPeriodText } from '@/utils/datetime'
 
 import EventAnnotation from '@/components/event-annotation'
 import rangeSelectorMixin from '@/components/mixins/range-selector'
@@ -114,7 +115,9 @@ export default {
     chartOptions() {
       return {
         baseOption: {
-          ...baseChartOptions(),
+          ...baseChartOptions({
+            title: { subtext: createPeriodText(this.startTime, this.endTime) },
+          }),
           series: createSeries(this.data),
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),
