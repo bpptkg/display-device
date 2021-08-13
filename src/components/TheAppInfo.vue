@@ -22,13 +22,19 @@
         </BListGroupItem>
 
         <BListGroupItem>
-          <BLink href="https://github.com/bpptkg/display-device">
+          <BLink
+            href="https://github.com/bpptkg/display-device"
+            target="_blank"
+          >
             Developer resources
           </BLink>
         </BListGroupItem>
 
         <BListGroupItem>
-          <BLink href="https://github.com/bpptkg/display-device/issues">
+          <BLink
+            href="https://github.com/bpptkg/display-device/issues"
+            target="_blank"
+          >
             Report an issue
           </BLink>
         </BListGroupItem>
