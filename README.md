@@ -1,24 +1,62 @@
-# display-device
+# Display Device
 
-## Project setup
-```
-npm install
-```
+Display Device (DD) is a full front-end app built using
+[Vue.js](https://vuejs.org/), [Bootstrap](https://getbootstrap.com/),
+[ECharts](https://echarts.apache.org/), and many awesome open source libraries.
+It provides various charts and analytics information about BPPTKG monitoring
+data.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+For current version, DD only supports Vue.js version 2, Bootstrap version 4, and
+ECharts version 4.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Environment Variables Settings
 
-### Lints and fixes files
-```
-npm run lint
-```
+There are several required environment variables that need to be set in `.env`
+file:
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- VUE_APP_BMA_URL
+
+  BMA web services URL, e.g. `https://bma.cendana15.com` to fetch various
+  monitoring data. The app will automatically prefix any web request with
+  `/api/v1/` because all monitoring data use v1 endpoints. See client module in
+  the `src/utils/client.js`.
+
+- VUE_APP_BMA_API_KEY
+
+  BMA API key credentials to grant access to the APIs. You can contact BMA
+  administrator to get the key.
+
+- VUE_APP_CENDANA_URL
+
+  Cendana15 web services URL, e.g. `https://cendana15.com`. This is used to get
+  user account info and grant permissions to access the resources provided by
+  Cendana15 web services.
+
+  On production environment, if user is not authenticated, they will be
+  redirected to the login page. On local development, user authentication may be
+  skipped.
+
+## Project Setup
+
+Install all package dependencies:
+
+    npm install
+
+Compiles and hot-reloads for development
+
+    npm run serve
+
+Compiles and minifies for production
+
+    npm run build
+
+On the production environment, we deploy the app using `/display-device/` public
+path.
+
+Lints and fixes files
+
+    npm run lint
+
+## License
+
+[MIT](https://github.com/bpptkg/display-device/blob/master/LICENSE)
