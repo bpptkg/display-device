@@ -74,6 +74,7 @@ import { createPeriodText } from '@/utils/datetime'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import { TimelineIcon } from '@/components/icons/content'
 import MoreMenu from '@/components/more-menu'
+import ErrorMessage from '@/components/error-message'
 import {
   SidepanelListDivider,
   SidepanelTab,
@@ -114,6 +115,7 @@ export default {
     BDropdownItem,
     BLink,
     DChart,
+    ErrorMessage,
     EventAnnotation,
     MoreMenu,
     RangeSelector,
