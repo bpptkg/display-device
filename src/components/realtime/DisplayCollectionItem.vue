@@ -9,11 +9,11 @@
       :img-right="isImagePositionTo(ImagePosition.RIGHT)"
       :class="itemClassNames"
     >
-      <BCardText>
+      <template #header>
         <component :is="titleTag" :class="titleClassNames">
           {{ title }}
         </component>
-      </BCardText>
+      </template>
     </BCard>
   </BLink>
 </template>

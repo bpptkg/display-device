@@ -91,7 +91,7 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions,
+          ...baseChartOptions(),
           dataZoom: [],
           grid: createRowGrid(eventTypes.length, { top: 10, bottom: 10 }),
           series: createSeries(this.data),
