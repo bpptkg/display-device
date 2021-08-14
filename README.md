@@ -57,8 +57,8 @@ Compiles and minifies for production:
 ## Deployment
 
 On production environment, we deploy the app using `/display-device/` public
-path. You can change this setting in `vue.config.js` file. You have to also add
-the following to the Nginx configuration:
+path. You can change this setting by adding `VUE_APP_PUBLIC_PATH` in your env
+file. You have to also add the following to the Nginx configuration:
 
     location /display-device {
         alias /path/to/display-device/dist/;
@@ -66,8 +66,13 @@ the following to the Nginx configuration:
     }
 
 On staging environment, we deploy the app using `/display-device-dev/` public
-path. To build for staging, create `.env.staging.local` file, add
-`NODE_ENV=staging` and then run:
+path. To build for staging, create `.env.staging.local` file and add the
+following:
+
+    NODE_ENV=production
+    VUE_APP_PUBLIC_PATH=/display-device-dev/
+
+Then, run:
 
     npm run build -- --mode staging
 
