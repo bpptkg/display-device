@@ -77,7 +77,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BDropdownItem, VBTooltip } from 'bootstrap-vue'
+import { BCard, BDropdownItem, VBTooltip, BLink } from 'bootstrap-vue'
 import { saveAs } from '@/lib/file-saver'
 
 import { createPeriodText } from '@/utils/datetime'
@@ -125,6 +125,7 @@ export default {
   components: {
     BCard,
     BDropdownItem,
+    BLink,
     DChart,
     ErrorMessage,
     MoreMenu,
