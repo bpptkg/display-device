@@ -17,6 +17,7 @@ const KA_POSITION_NAMES = [
 
 const ME_POSITION_NAMES = [...KA_POSITION_NAMES, 'staf-seksi-merapi']
 const PL_POSITION_NAMES = [...KA_POSITION_NAMES, 'staf-seksi-pl']
+const baseUrl = process.env.BASE_URL
 
 export default {
   name: 'TheAppLauncher',
@@ -28,55 +29,55 @@ export default {
     items() {
       return [
         {
-          src: `/icon/launcher/file.svg`,
+          src: `${baseUrl}icon/launcher/file.svg`,
           href: '/file-manager',
           text: 'File Manager',
           visible: true,
         },
         {
-          src: `/icon/launcher/report.svg`,
+          src: `${baseUrl}icon/launcher/report.svg`,
           href: '/data-entry',
           text: 'Data Entry',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `/icon/launcher/task.svg`,
+          src: `${baseUrl}icon/launcher/task.svg`,
           href: '/assignment/',
           text: 'Assignment',
           visible: true,
         },
         {
-          src: `/icon/launcher/analytic.svg`,
+          src: `${baseUrl}icon/launcher/analytic.svg`,
           href: '/data-analysis',
           text: 'Data Analysis',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `/icon/launcher/display.svg`,
+          src: `${baseUrl}icon/launcher/display.svg`,
           href: '/display-device',
           text: 'Display Device',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `/icon/launcher/maintenance.svg`,
+          src: `${baseUrl}icon/launcher/maintenance.svg`,
           href: '/maintenance',
           text: 'Maintenance',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `/icon/launcher/beaker.png`,
+          src: `${baseUrl}icon/launcher/beaker.png`,
           href: '/lims',
           text: 'LIMS',
           visible: PL_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `/icon/launcher/broadcast.jpg`,
+          src: `${baseUrl}icon/launcher/broadcast.jpg`,
           href: '/broadcasting',
           text: 'Broadcast',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `/icon/launcher/gallery.jpg`,
+          src: `${baseUrl}icon/launcher/gallery.jpg`,
           href: '/gallery',
           text: 'Gallery',
           visible: true,
