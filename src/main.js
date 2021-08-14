@@ -13,6 +13,7 @@ import { NAMESPACE as USER_NAMESPACE } from './store/user'
 import { GET_CSRF_TOKEN, UPDATE_USER_DATA } from './store/user/actions'
 
 Vue.config.productionTip = false
+Vue.prototype.$baseUrl = process.env.BASE_URL
 
 Vue.use(DisplayDevicePlugins)
 Vue.use(ProgressBar)

@@ -25,7 +25,7 @@ export default {
         {
           to: '/realtime/seismic',
           title: 'Seismic',
-          imgSrc: '/images/display-device/seismic.png',
+          imgSrc: `${this.$baseUrl}img/realtime/seismic.png`,
         },
       ],
     }
