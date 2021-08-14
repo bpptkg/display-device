@@ -12,9 +12,7 @@ const buildDate = new Date()
 module.exports = {
   publicPath:
     process.env.NODE_ENV === 'production'
-      ? '/display-device/'
-      : process.env.NODE_ENV === 'staging'
-      ? '/display-device-dev/'
+      ? process.env.VUE_APP_PUBLIC_PATH || '/display-device/'
       : '/',
   configureWebpack: {
     resolve: {
