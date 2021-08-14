@@ -46,16 +46,33 @@ Compiles and hot-reloads for development:
 
     npm run serve
 
+Lints and fixes files:
+
+    npm run lint
+
 Compiles and minifies for production:
 
     npm run build
 
-On the production environment, we deploy the app using `/display-device/` public
-path. You can change this setting in `vue.config.js` file.
+## Deployment
 
-Lints and fixes files:
+On production environment, we deploy the app using `/display-device/` public
+path. You can change this setting in `vue.config.js` file. You have to also add
+the following to the Nginx configuration:
 
-    npm run lint
+    location /display-device {
+        alias /path/to/display-device/dist/;
+        try_files $uri $uri/ = 404;
+    }
+
+On staging environment, we deploy the app using `/display-device-dev/` public
+path. To build for staging, create `.env.staging.local` file, add
+`NODE_ENV=staging` and then run:
+
+    npm run build -- --mode staging
+
+Do not forget to adjust your Nginx site location configuration if you deploy for
+staging.
 
 ## License
 
