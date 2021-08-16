@@ -86,6 +86,6 @@ export default {
 
 <style lang="scss" scoped>
 .chart {
-  min-height: 800px;
+  min-height: 800px !important;
 }
 </style>
