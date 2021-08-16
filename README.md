@@ -62,7 +62,7 @@ file. You have to also add the following to the Nginx configuration:
 
     location /display-device {
         alias /path/to/display-device/dist/;
-        try_files $uri $uri/ = 404;
+        try_files $uri $uri/ /index.html = 404;
     }
 
 On staging environment, we deploy the app using `/display-device-dev/` public
