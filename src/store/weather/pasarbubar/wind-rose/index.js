@@ -13,7 +13,7 @@ import {
 } from '../../../base/mutations'
 import { baseState, baseMutations } from '../../../base'
 import { FETCH_WIND_ROSE, UPDATE_WIND_ROSE } from './actions'
-import rangeSelector from './range-selector'
+import rangeSelector from '../rainfall/range-selector'
 
 export const NAMESPACE = 'weather/pasarbubar/windRose'
 
