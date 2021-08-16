@@ -38,32 +38,45 @@ file:
 
 ## Project Setup
 
+Clone the project from GitHub repository:
+
+    git clone https://github.com/bpptkg/display-device.git
+
 Install all package dependencies:
 
     npm install
 
-Compiles and hot-reloads for development:
+Compile and hot-reload for development:
 
     npm run serve
 
-Lints and fixes files:
+Lint and fix files if you made a change to the script:
 
     npm run lint
 
-Compiles and minifies for production:
+## Deployment
+
+After you've cloned the project, install all package dependencies:
+
+    npm ci
+
+Set required environment variables settings in `.env` file. Then, compile and
+minify for production:
 
     npm run build
 
-## Deployment
-
 On production environment, we deploy the app using `/display-device/` public
-path. You can change this setting by adding `VUE_APP_PUBLIC_PATH` in your env
+path. You can change this setting by adding `VUE_APP_PUBLIC_PATH` in your `.env`
 file. You have to also add the following to the Nginx configuration:
 
     location /display-device {
         alias /path/to/display-device/dist/;
         try_files $uri $uri/ /index.html = 404;
     }
+
+In order to build the project, DD needs to read Git commit to mark build
+revision. It may not work if you compile the source code without including Git
+history, i.e. downloading the source code instead of cloning.
 
 On staging environment, we deploy the app using `/display-device-dev/` public
 path. To build for staging, create `.env.staging.local` file and add the
