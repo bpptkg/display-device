@@ -326,7 +326,7 @@ export default {
 @import '@/scss/layout-monkey';
 
 .chart {
-  min-height: 700px;
+  min-height: 700px !important;
 }
 
 .sampling-label {
