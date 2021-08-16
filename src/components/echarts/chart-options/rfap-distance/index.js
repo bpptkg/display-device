@@ -172,7 +172,7 @@ export const baseChartOptions = (sampling, { title = {} } = {}) => {
       },
       formatter: defaultTooltipFormatter({
         format: sampling === Sampling.DAY ? DATE_FORMAT : DATETIME_FORMAT,
-        valueDecimals: 0,
+        valueDecimals: 2,
         noData: '-',
         seriesProps,
       }),
