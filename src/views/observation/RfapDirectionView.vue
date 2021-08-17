@@ -46,7 +46,7 @@
           <div>
             <BLink @click="toggleXAxisType">
               <small>
-                Toggle
+                Switch
                 {{ axis === SupportedXAxisType.COUNT ? 'distance' : 'count' }}
                 axis
               </small>

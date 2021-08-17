@@ -1,38 +1,46 @@
 import { getFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
-export const baseChartOptions = {
-  backgroundColor: '#fff',
-  title: {
-    align: 'right',
-    left: 'center',
-    show: false,
-    text: 'Air Pressure',
-    textStyle: { fontSize: 14, fontWeight: 'normal' },
-  },
-  toolbox: defaultToolbox,
-  tooltip: {
-    trigger: 'item',
-    formatter: (params) => {
-      const { value } = params
-      return `Temperature: ${value[0]}\u00B0C<br />
-        Pressure: ${value[1]} hPa`
+export const baseChartOptions = ({ title = {} } = {}) => {
+  return {
+    backgroundColor: '#fff',
+    title: {
+      align: 'right',
+      left: 'center',
+      show: true,
+      text: 'Air Pressure',
+      textStyle: { fontSize: 16, fontWeight: 'bold' },
+      subtext: '',
+      subtextStyle: { color: '#363636' },
+      ...title,
     },
-  },
-  xAxis: {
-    type: 'value',
-    scale: true,
-    name: 'Temperature (\u00B0C)',
-    nameLocation: 'center',
-    nameGap: 30,
-  },
-  yAxis: {
-    type: 'value',
-    scale: true,
-    name: 'Pressure (hPa)',
-    nameLocation: 'center',
-    nameGap: 40,
-  },
+    grid: {
+      left: 80,
+    },
+    toolbox: defaultToolbox,
+    tooltip: {
+      trigger: 'item',
+      formatter: (params) => {
+        const { value } = params
+        return `Temperature: ${value[0]}\u00B0C<br />
+        Pressure: ${value[1]} hPa`
+      },
+    },
+    xAxis: {
+      type: 'value',
+      scale: true,
+      name: 'Temperature (\u00B0C)',
+      nameLocation: 'center',
+      nameGap: 30,
+    },
+    yAxis: {
+      type: 'value',
+      scale: true,
+      name: 'Pressure (hPa)',
+      nameLocation: 'center',
+      nameGap: 55,
+    },
+  }
 }
 
 export const createSeries = (data) => {
@@ -56,16 +64,18 @@ export const mediaQuery = [
     },
     option: {
       grid: {
-        left: '15%',
-        right: '5%',
+        left: 75,
+        right: 15,
+        top: 90,
       },
       yAxis: {
-        nameLocation: 'end',
-        nameGap: 15,
+        nameLocation: 'center',
+        nameGap: 55,
         nameTextStyle: {
           align: 'center',
         },
       },
+      title: { top: 25, textStyle: { fontSize: 13 } },
     },
   },
 ]

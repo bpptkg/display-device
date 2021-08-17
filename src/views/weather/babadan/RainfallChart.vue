@@ -10,7 +10,7 @@
       </ErrorMessage>
     </BCard>
 
-    <BCard v-show="!error" title="Rainfall" title-tag="h5">
+    <BCard v-show="!error" title-tag="h5">
       <DChart ref="chart" :options="chartOptions" class="chart" />
     </BCard>
   </div>

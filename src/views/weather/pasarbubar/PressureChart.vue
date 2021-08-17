@@ -10,7 +10,7 @@
       </ErrorMessage>
     </BCard>
 
-    <BCard v-show="!error" title="Air Pressure" title-tag="h5">
+    <BCard v-show="!error" title-tag="h5">
       <DChart ref="chart" :options="chartOptions" />
     </BCard>
   </div>
@@ -21,6 +21,7 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import { BCard, BLink } from 'bootstrap-vue'
 import ErrorMessage from '@/components/error-message'
 import DChart from '@/components/echarts/chart/DChart'
+import { createPeriodText } from '@/utils/datetime'
 import {
   baseChartOptions,
   createSeries,
@@ -40,12 +41,18 @@ export default {
   computed: {
     ...mapState(NAMESPACE, {
       error: (state) => state.error,
+      startTime: (state) => state.startTime,
+      endTime: (state) => state.endTime,
     }),
     ...mapGetters(NAMESPACE, ['rainfallData']),
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions,
+          ...baseChartOptions({
+            title: {
+              subtext: createPeriodText(this.startTime, this.endTime),
+            },
+          }),
           series: createSeries(this.rainfallData),
         },
         media: mediaQuery,

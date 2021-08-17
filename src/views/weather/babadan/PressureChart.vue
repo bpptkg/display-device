@@ -10,7 +10,7 @@
       </ErrorMessage>
     </BCard>
 
-    <BCard v-show="!error" title="Air Pressure" title-tag="h5">
+    <BCard v-show="!error" title-tag="h5">
       <DChart ref="chart" :options="chartOptions" />
     </BCard>
   </div>
@@ -28,6 +28,7 @@ import {
 } from '@/components/echarts/chart-options/weather-babadan/pressure'
 import { NAMESPACE } from '@/store/weather/babadan/rainfall'
 import { UPDATE_METEOROLOGY } from '@/store/weather/babadan/rainfall/actions'
+import { createPeriodText } from '@/utils/datetime'
 
 export default {
   name: 'PressureChart',
@@ -41,11 +42,15 @@ export default {
     ...mapState(NAMESPACE, {
       data: (state) => state.data,
       error: (state) => state.error,
+      startTime: (state) => state.startTime,
+      endTime: (state) => state.endTime,
     }),
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions,
+          ...baseChartOptions({
+            title: { subtext: createPeriodText(this.startTime, this.endTime) },
+          }),
           series: createSeries(this.data),
         },
         media: mediaQuery,

@@ -77,7 +77,6 @@ import { BCard, BLink, BDropdownItem } from 'bootstrap-vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { saveAs } from '@/lib/file-saver'
 import { toUnixMiliSeconds } from '@/utils/series'
-import { createPeriodText } from '@/utils/datetime'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import { TimelineIcon } from '@/components/icons/content'
 import MoreMenu from '@/components/more-menu'
@@ -155,11 +154,7 @@ export default {
     }),
     chartOptions() {
       const options = {
-        ...baseChartOptions({
-          title: {
-            subtext: createPeriodText(this.startTime, this.endTime),
-          },
-        }),
+        ...baseChartOptions(),
         series: createSeries(this.data, {
           annotations: this.annotations,
         }),

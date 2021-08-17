@@ -10,7 +10,7 @@
       </ErrorMessage>
     </BCard>
 
-    <BCard v-show="!error" title="Rainfall" title-tag="h5">
+    <BCard v-show="!error" title-tag="h5">
       <DChart ref="chart" :options="chartOptions" class="chart" />
     </BCard>
   </div>
@@ -46,7 +46,7 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions,
+          ...baseChartOptions(),
           series: createSeries(this.rainfallData, this.rainfallEvents),
           tooltip: createTooltip(this.rainfallEvents),
         },

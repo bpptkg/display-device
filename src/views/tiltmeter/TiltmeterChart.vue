@@ -51,7 +51,6 @@ import { BCard, BFormSelect, BLink } from 'bootstrap-vue'
 import { DATE_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/tiltmeter'
 import { toUnixMiliSeconds } from '@/utils/series'
-import { createPeriodText } from '@/utils/datetime'
 
 import chartMixin from '@/components/mixins/charts'
 import DChart from '@/components/echarts/chart/DChart'
@@ -171,7 +170,6 @@ export default {
               fontSize: 16,
               fontWeight: 'bold',
             },
-            subtext: createPeriodText(this.startTime, this.endTime),
             subtextStyle: {
               color: '#363636',
             },
@@ -245,6 +243,13 @@ export default {
 <style lang="scss" scoped>
 .chart {
   min-height: 450px;
+}
+
+.sampling-label {
+  color: #24292e;
+  font-size: 0.875rem;
+  font-style: normal;
+  opacity: 0.75;
 }
 
 @media (max-width: 575.98px) {

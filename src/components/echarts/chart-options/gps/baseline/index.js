@@ -81,9 +81,8 @@ export const baseChartOptions = {
   backgroundColor: '#fff',
   toolbox: defaultToolbox,
   tooltip: {
-    trigger: 'item',
+    trigger: 'axis',
     axisPointer: {
-      type: 'cross',
       lineStyle: {
         type: 'dashed',
       },

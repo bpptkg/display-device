@@ -3,73 +3,80 @@ import { saveAsImageToolbox } from '../common/toolbox'
 const sector = 16
 const startAngle = 360 / sector / 2 + 90
 
-export const baseChartOptions = {
-  angleAxis: {
-    type: 'category',
-    startAngle: startAngle,
-    axisLine: {
+export const baseChartOptions = ({ title = {} } = {}) => {
+  return {
+    angleAxis: {
+      type: 'category',
+      startAngle: startAngle,
+      axisLine: {
+        show: true,
+      },
+      axisTick: {
+        alignWithLabel: true,
+      },
+      data: [
+        'N',
+        'NNE',
+        'NE',
+        'ENE',
+        'E',
+        'ESE',
+        'SE',
+        'SSE',
+        'S',
+        'SSW',
+        'SW',
+        'WSW',
+        'W',
+        'WNW',
+        'NW',
+        'NNW',
+      ],
+    },
+    backgroundColor: '#fff',
+    polar: {
+      radius: '66%',
+    },
+    radiusAxis: {
+      axisLine: {
+        show: false,
+      },
+      axisLabel: {
+        show: false,
+      },
+      minorTick: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+    },
+    title: {
+      align: 'right',
+      left: 'center',
       show: true,
+      text: 'Wind Rose',
+      textStyle: { fontSize: 16, fontWeight: 'bold' },
+      subtext: '',
+      subtextStyle: { color: '#363636' },
+      ...title,
     },
-    axisTick: {
-      alignWithLabel: true,
+    toolbox: {
+      feature: {
+        saveAsImage: saveAsImageToolbox,
+      },
     },
-    data: [
-      'N',
-      'NNE',
-      'NE',
-      'ENE',
-      'E',
-      'ESE',
-      'SE',
-      'SSE',
-      'S',
-      'SSW',
-      'SW',
-      'WSW',
-      'W',
-      'WNW',
-      'NW',
-      'NNW',
-    ],
-  },
-  backgroundColor: '#fff',
-  polar: {},
-  radiusAxis: {
-    axisLine: {
-      show: false,
-    },
-    axisLabel: {
-      show: false,
-    },
-    minorTick: {
-      show: false,
-    },
-    axisTick: {
-      show: false,
-    },
-  },
-  title: {
-    align: 'right',
-    left: 'center',
-    show: false,
-    text: 'Wind Rose',
-    textStyle: { fontSize: 14, fontWeight: 'normal' },
-  },
-  toolbox: {
-    feature: {
-      saveAsImage: saveAsImageToolbox,
-    },
-  },
-  tooltip: {
-    show: true,
-    formatter: function (params) {
-      return `${params.seriesName} km/h<br />
+    tooltip: {
+      show: true,
+      formatter: function (params) {
+        return `${params.seriesName} km/h<br />
       <span style="background-color:${
         params.color
       };width:12px;height:12px;border-radius:50%;display:inline-block;">
       </span> ${params.name}: ${params.value.toFixed(2)}%`
+      },
     },
-  },
+  }
 }
 
 export const createSeries = (data, wsBins) => {
@@ -88,7 +95,7 @@ export const createSeries = (data, wsBins) => {
   return series
 }
 
-export const createLegend = (wsBins) => {
+export const createLegend = (wsBins, { isMobile = false } = {}) => {
   if (wsBins.length === 0) return []
 
   const data = []
@@ -97,5 +104,29 @@ export const createLegend = (wsBins) => {
       name: `${wsBins[i].toFixed(1)}-${wsBins[i + 1].toFixed(1)}`,
     })
   }
-  return data
+  if (isMobile === true) {
+    return {
+      bottom: 0,
+      data: data,
+      show: true,
+      orient: 'horizontal',
+      right: 'center',
+      type: 'scroll',
+      formatter: (name) => {
+        return `${name} km/h`
+      },
+    }
+  } else {
+    return {
+      right: 30,
+      data: data,
+      show: true,
+      orient: 'vertical',
+      bottom: 'center',
+      type: 'scroll',
+      formatter: (name) => {
+        return `${name} km/h`
+      },
+    }
+  }
 }

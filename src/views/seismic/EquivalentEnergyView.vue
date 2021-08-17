@@ -80,7 +80,6 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import { BCard, BDropdownItem, VBTooltip, BLink } from 'bootstrap-vue'
 import { saveAs } from '@/lib/file-saver'
 
-import { createPeriodText } from '@/utils/datetime'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import MoreMenu from '@/components/more-menu'
 
@@ -159,9 +158,7 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions({
-            title: { subtext: createPeriodText(this.startTime, this.endTime) },
-          }),
+          ...baseChartOptions(),
           series: createSeries(this.data),
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),

@@ -291,27 +291,33 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(FIELDS.length, { left: 15, bottom: 8 }),
+      grid: createRowGrid(FIELDS.length, { left: 15, bottom: 8, top: 10 }),
+      title: { top: 25, textStyle: { fontSize: 13 } },
     },
   },
 ]
 
-export const baseChartOptions = {
-  backgroundColor: '#fff',
-  dataZoom: [
-    { type: 'slider', xAxisIndex: makeIndex(FIELDS.length), realtime: false },
-  ],
-  grid: createRowGrid(FIELDS.length, { bottom: 8 }),
-  xAxis: createXAxis(FIELDS.length),
-  yAxis: createYAxis(FIELDS),
-  title: {
-    align: 'right',
-    left: 'center',
-    show: false,
-    text: 'Weather Pasarbubar',
-    textStyle: { fontSize: 14, fontWeight: 'normal' },
-  },
-  toolbox: defaultToolbox,
+export const baseChartOptions = ({ title = {} } = {}) => {
+  return {
+    backgroundColor: '#fff',
+    dataZoom: [
+      { type: 'slider', xAxisIndex: makeIndex(FIELDS.length), realtime: false },
+    ],
+    grid: createRowGrid(FIELDS.length, { bottom: 8 }),
+    xAxis: createXAxis(FIELDS.length),
+    yAxis: createYAxis(FIELDS),
+    title: {
+      align: 'right',
+      left: 'center',
+      show: true,
+      text: 'Rainfall Pasarbubar',
+      textStyle: { fontSize: 16, fontWeight: 'bold' },
+      subtext: '',
+      subtextStyle: { color: '#363636' },
+      ...title,
+    },
+    toolbox: defaultToolbox,
+  }
 }
 
 /**

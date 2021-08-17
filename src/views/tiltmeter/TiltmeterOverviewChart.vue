@@ -56,7 +56,6 @@ import { BCard, BFormSelect, BLink } from 'bootstrap-vue'
 import { DATE_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/tiltmeter'
 import { toUnixMiliSeconds } from '@/utils/series'
-import { createPeriodText } from '@/utils/datetime'
 
 import chartMixin from '@/components/mixins/charts'
 import DChart from '@/components/echarts/chart/DChart'
@@ -101,7 +100,6 @@ export default {
   mixins: [chartMixin],
   data() {
     return {
-      sampling: SamplingTypes.DAY,
       samplingOptions: [
         { value: SamplingTypes.DAY, text: 'Day' },
         { value: SamplingTypes.MINUTE, text: 'Minute' },
@@ -118,9 +116,18 @@ export default {
       annotationOptions: (state) => state.tiltmeter.overview.annotationOptions,
       annotations: (state) => state.tiltmeter.overview.annotations,
       tiltOptions: (state) => state.tiltmeter.overview.tiltOptions,
+      datasampling: (state) => state.tiltmeter.overview.sampling,
     }),
     namespace() {
       return `tiltmeter/overview`
+    },
+    sampling: {
+      get() {
+        return this.datasampling
+      },
+      set(value) {
+        this.setSampling(value)
+      },
     },
     rangeSelector() {
       return this.sampling === SamplingTypes.DAY
@@ -145,7 +152,6 @@ export default {
               fontSize: 16,
               fontWeight: 'bold',
             },
-            subtext: createPeriodText(this.startTime, this.endTime),
             subtextStyle: {
               color: '#363636',
             },
@@ -222,6 +228,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.sampling-label {
+  color: #24292e;
+  font-size: 0.875rem;
+  font-style: normal;
+  opacity: 0.75;
+}
+
 @media (max-width: 575.98px) {
   .sampling-label {
     display: none;

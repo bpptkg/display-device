@@ -254,7 +254,8 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(FIELDS.length, { left: 15, bottom: 8 }),
+      grid: createRowGrid(FIELDS.length, { left: 15, bottom: 8, top: 10 }),
+      title: { top: 25, textStyle: { fontSize: 13 } },
     },
   },
 ]
@@ -320,7 +321,7 @@ export function createTooltipFormatter() {
   }
 }
 
-export const baseChartOptions = () => {
+export const baseChartOptions = ({ title = {} } = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -332,9 +333,12 @@ export const baseChartOptions = () => {
     title: {
       align: 'right',
       left: 'center',
-      show: false,
-      text: 'Weather Babadan',
-      textStyle: { fontSize: 14, fontWeight: 'normal' },
+      show: true,
+      text: 'Rainfall Babadan',
+      textStyle: { fontSize: 16, fontWeight: 'bold' },
+      subtext: '',
+      subtextStyle: { color: '#363636' },
+      ...title,
     },
     toolbox: defaultToolbox,
     tooltip: {

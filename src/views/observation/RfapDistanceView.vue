@@ -94,7 +94,6 @@ import { BCard, BDropdownItem, BFormSelect, BLink } from 'bootstrap-vue'
 
 import { saveAs } from '@/lib/file-saver'
 import { toUnixMiliSeconds } from '@/utils/series'
-import { createPeriodText } from '@/utils/datetime'
 
 import {
   SidepanelListDivider,
@@ -201,11 +200,7 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions(this.sampling, {
-            title: {
-              subtext: createPeriodText(this.startTime, this.endTime),
-            },
-          }),
+          ...baseChartOptions(this.sampling),
           series: createSeries(this.data),
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),
@@ -285,6 +280,13 @@ export default {
   .stats-panel {
     display: none;
   }
+}
+
+.sampling-label {
+  color: #24292e;
+  font-size: 0.875rem;
+  font-style: normal;
+  opacity: 0.75;
 }
 
 @media (max-width: 575.98px) {

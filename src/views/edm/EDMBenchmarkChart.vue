@@ -145,7 +145,6 @@ import {
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 import { SET_CHART_VIEW } from '@/store/edm/mutations'
-import { createPeriodText } from '@/utils/datetime'
 
 export default {
   name: 'EDMBenchmarkChart',
@@ -259,7 +258,6 @@ export default {
               fontSize: 16,
               fontWeight: 'bold',
             },
-            subtext: createPeriodText(this.startTime, this.endTime),
             subtextStyle: {
               color: '#363636',
             },
@@ -458,7 +456,6 @@ export default {
               fontSize: 16,
               fontWeight: 'bold',
             },
-            subtext: createPeriodText(this.startTime, this.endTime),
             subtextStyle: {
               color: '#363636',
             },

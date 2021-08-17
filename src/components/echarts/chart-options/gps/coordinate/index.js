@@ -180,12 +180,6 @@ export const baseChartOptions = {
   toolbox: defaultToolbox,
   tooltip: {
     trigger: 'item',
-    axisPointer: {
-      type: 'cross',
-      lineStyle: {
-        type: 'dashed',
-      },
-    },
     formatter: defaultTooltipFormatter({
       format: 'YYYY-MM-DD HH:mm:ss',
       valueDecimals: 3,

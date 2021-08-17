@@ -115,7 +115,6 @@ import {
 } from 'bootstrap-vue'
 import JSZip from 'jszip'
 import { saveAs } from '@/lib/file-saver'
-import { createPeriodText } from '@/utils/datetime'
 
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import MoreMenu from '@/components/more-menu'
@@ -219,7 +218,6 @@ export default {
           ...baseChartOptions({
             bands: BANDS,
             title: this.chartTitle,
-            subtext: createPeriodText(this.startTime, this.endTime),
           }),
           series: createSeries(this.rsamBands, {
             annotations: this.annotations,

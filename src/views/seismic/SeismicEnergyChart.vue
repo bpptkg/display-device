@@ -13,7 +13,6 @@ import {
 } from '@/constants/events/energy'
 import EventBus from '@/utils/event-bus'
 import { toUnixMiliSeconds } from '@/utils/series'
-import { createPeriodText } from '@/utils/datetime'
 import DChart from '@/components/echarts/chart/DChart'
 import {
   baseChartOptions,
@@ -85,7 +84,6 @@ export default {
           }),
           title: {
             text: this.chartTitle,
-            subtext: createPeriodText(this.startTime, this.endTime),
             left: 'center',
             align: 'right',
             textStyle: {
