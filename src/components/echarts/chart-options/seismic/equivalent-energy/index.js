@@ -173,7 +173,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       },
     },
     title: {
-      text: 'RF-AP Equivalent Energy',
+      text: 'RF & AP Equivalent Energy',
       left: 'center',
       align: 'right',
       subtext: '',

@@ -23,7 +23,7 @@
             RSAM
           </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/seismic/equivalent-energy">
-            RF-AP Energy
+            RF &amp; AP Energy
           </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>

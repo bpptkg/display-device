@@ -75,7 +75,7 @@ export default {
               href: '/seismic/rsam',
             },
             {
-              title: 'RF-AP Energy',
+              title: 'RF & AP Energy',
               href: '/seismic/equivalent-energy',
             },
           ],
@@ -142,11 +142,11 @@ export default {
           icon: ObservationIcon,
           child: [
             {
-              title: 'RF-AP Distance',
+              title: 'RF & AP Distance',
               href: '/observation/rfap-distance',
             },
             {
-              title: 'RF-AP Direction',
+              title: 'RF & AP Direction',
               href: '/observation/rfap-direction',
             },
           ],

@@ -55,7 +55,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       align: 'right',
       left: 'center',
       show: true,
-      text: 'RF-AP Direction Group',
+      text: 'RF & AP Direction Group',
       textStyle: {
         fontSize: 16,
         fontWeight: 'bold',

@@ -29,7 +29,7 @@ export const createXAxis = (min, max) => {
 export const createYAxis = () => {
   return [
     {
-      name: 'Count',
+      name: 'RF & AP Count',
       nameGap: 40,
       nameLocation: 'center',
       scale: false,
@@ -94,7 +94,7 @@ export const baseChartOptions = ({
     grid: { bottom: 100 },
     legend: { type: 'scroll', bottom: 0 },
     title: {
-      text: 'RF-AP Direction Stack',
+      text: 'RF & AP Direction Stack',
       left: 'center',
       align: 'right',
       textStyle: {

@@ -42,8 +42,8 @@ export const state = () => {
 
 export const getters = {
   /**
-   * Reformat RF-AP direction data to (numData, numDirectionGroup) size where
-   * numData is number of data fetched from RF-AP rose API, and
+   * Reformat RF & AP direction data to (numData, numDirectionGroup) size where
+   * numData is number of data fetched from RF & AP rose API, and
    * numDirectionGroup is number of DIRECTION_GROUP.
    */
   rfapDirectionGroup(state) {
@@ -62,7 +62,7 @@ export const getters = {
     })
   },
   /**
-   * Sort RF-AP direction data in descending value and reformat to the form
+   * Sort RF & AP direction data in descending value and reformat to the form
    * [[count, direction], [count, direction], ...]
    */
   rfapDirectionSorted(state) {

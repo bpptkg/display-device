@@ -77,7 +77,7 @@ export const baseChartOptions = (
       align: 'right',
       left: 'center',
       show: true,
-      text: 'RF-AP Direction',
+      text: 'RF & AP Direction',
       textStyle: {
         fontSize: 16,
         fontWeight: 'bold',

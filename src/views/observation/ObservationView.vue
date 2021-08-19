@@ -9,14 +9,14 @@
             round="left"
             to="/observation/rfap-distance"
           >
-            RF-AP Distance
+            RF &amp; AP Distance
           </SidepanelMenuItem>
           <SidepanelMenuItem
             key="2"
             round="left"
             to="/observation/rfap-direction"
           >
-            RF-AP Direction
+            RF &amp; AP Direction
           </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
