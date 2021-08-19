@@ -19,7 +19,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       ...title,
     },
     grid: {
-      top: 75,
+      top: 70,
       bottom: 80,
     },
     toolbox: defaultToolbox,

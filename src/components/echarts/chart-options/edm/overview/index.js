@@ -121,7 +121,7 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(edmOptions.length, { left: 20, bottom: 5, top: 7 }),
+      grid: createRowGrid(edmOptions.length, { left: 20, bottom: 5, top: 5 }),
     },
   },
 ]

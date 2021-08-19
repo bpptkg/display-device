@@ -96,9 +96,6 @@ export const mediaQuery = (clusterGroup) => {
         ),
         title: {
           top: 5,
-          textStyle: {
-            fontSize: 13,
-          },
         },
         yAxis: createYAxisMobile(clusterGroup.map((v) => v.cluster) || [1]),
       },

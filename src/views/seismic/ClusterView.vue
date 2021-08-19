@@ -359,6 +359,13 @@ export default {
   }
 }
 
+.sampling-label {
+  color: #24292e;
+  font-size: 0.875rem;
+  font-style: normal;
+  opacity: 0.75;
+}
+
 @media (max-width: 575.98px) {
   .sampling-label {
     display: none;

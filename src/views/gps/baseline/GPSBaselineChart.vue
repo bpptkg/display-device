@@ -124,7 +124,7 @@ export default {
         baseOption: {
           ...baseChartOptions,
           dataZoom: createDataZoom(this.references.length),
-          grid: createRowGrid(this.references.length, { bottom: 8, top: 8 }),
+          grid: createRowGrid(this.references.length, { bottom: 8, top: 5 }),
           title: {
             text: this.chartTitle,
             left: 'center',
@@ -155,7 +155,7 @@ export default {
             option: {
               grid: createRowGrid(this.references.length, {
                 left: 22,
-                top: 12,
+                top: 8,
                 bottom: 8,
               }),
               title: {

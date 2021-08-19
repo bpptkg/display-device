@@ -144,14 +144,11 @@ export const mediaQuery = [
     },
     option: {
       grid: createRowGrid(eventTypes.length, {
-        top: 12,
+        top: 10,
         bottom: 10,
       }),
       title: {
-        top: 10,
-        textStyle: {
-          fontSize: 13,
-        },
+        top: 20,
       },
       yAxis: createYAxisMobile(eventTypes.map((v) => v.type)),
     },

@@ -161,10 +161,7 @@ export const mediaQuery = ({ bands = BANDS } = {}) => {
           left: 12,
         }),
         title: {
-          left: 0,
-          textStyle: {
-            fontSize: 13,
-          },
+          top: 25,
         },
       },
     },

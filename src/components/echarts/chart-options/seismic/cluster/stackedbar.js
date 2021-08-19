@@ -55,7 +55,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       left: 'center',
       align: 'right',
       textStyle: {
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: 'bold',
       },
       subtextStyle: {
@@ -99,6 +99,9 @@ export const mediaQuery = () => {
         },
         grid: {
           top: 75,
+        },
+        title: {
+          top: 20,
         },
       },
     },

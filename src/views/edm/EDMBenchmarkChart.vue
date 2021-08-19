@@ -293,7 +293,7 @@ export default {
                 calculateAdaptiveHeight(reflectorLength),
                 {
                   margin: 20,
-                  top: 95,
+                  top: 75,
                   right:
                     this.chartView === CHART_VIEWS.slope_distance ? 20 : 55,
                   bottom: 80,
@@ -301,7 +301,6 @@ export default {
                 }
               ),
               title: {
-                fontSize: 13,
                 top: 25,
               },
             },

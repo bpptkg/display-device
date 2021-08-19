@@ -152,7 +152,7 @@ export const mediaQuery = [
     option: {
       grid: createRowGrid(3, {
         margin: 4,
-        top: 20,
+        top: 15,
         right: 5,
         bottom: 12,
         left: 26,
@@ -172,7 +172,7 @@ export const baseChartOptions = {
   dataZoom: [{ type: 'slider', xAxisIndex: [0, 1, 2], realtime: false }],
   grid: createRowGrid(3, {
     margin: 4,
-    top: 15,
+    top: 7,
     right: 5,
     bottom: 12,
     left: 12,
