@@ -14,7 +14,7 @@ export const createDirectionNote = () => {
   const dir = DIRECTION_GROUP_INDEX.map((d, index) => {
     return `${d}: (${DIRECTION_GROUP[index].join(', ')})`
   })
-  return `${dir.join(', ')}`
+  return `Direction group list: ${dir.join('; ')}`
 }
 
 export const createXAxis = (min, max) => {

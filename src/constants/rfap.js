@@ -27,28 +27,40 @@ export const DIRECTION = Object.freeze({
 
 export const DIRECTION_GROUP = [
   // Utara
-  [],
+  [DIRECTION.utara],
 
   // Timur Laut
-  [],
+  [DIRECTION.timurlaut],
 
   // Timur
-  [],
+  [DIRECTION.timur],
 
   // Tenggara
-  [DIRECTION.gendol, DIRECTION.woro],
+  [DIRECTION.tenggara, DIRECTION.gendol, DIRECTION.woro],
 
   // Selatan
-  [DIRECTION.kuning, DIRECTION.opak],
+  [DIRECTION.selatan, DIRECTION.kuning, DIRECTION.opak],
 
   // Barat Daya
-  [DIRECTION.satputih, DIRECTION.krasak, DIRECTION.bebeng, DIRECTION.boyong],
+  [
+    DIRECTION.baratdaya,
+    DIRECTION.satputih,
+    DIRECTION.krasak,
+    DIRECTION.bebeng,
+    DIRECTION.boyong,
+  ],
 
   // Barat
-  [DIRECTION.senowo2, DIRECTION.senowo3, DIRECTION.batang, DIRECTION.lamat],
+  [
+    DIRECTION.barat,
+    DIRECTION.senowo2,
+    DIRECTION.senowo3,
+    DIRECTION.batang,
+    DIRECTION.lamat,
+  ],
 
   // Barat Laut
-  [DIRECTION.apu, DIRECTION.trising, DIRECTION.senowo1],
+  [DIRECTION.baratlaut, DIRECTION.apu, DIRECTION.trising, DIRECTION.senowo1],
 ]
 
 export const DIRECTION_GROUP_INDEX = [
