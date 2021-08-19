@@ -64,7 +64,7 @@ export const defaultTooltipFormatter = ({
           ? valueFormatter(value, props)
           : Number.isFinite(value[1])
           ? `${sValuePrefix || valuePrefix}${value[1].toFixed(
-              sValueDecimals || valueDecimals
+              typeof sValueDecimals == 'number' ? sValueDecimals : valueDecimals
             )}${sValueSuffix || valueSuffix}`
           : noData
 
@@ -94,7 +94,9 @@ export const defaultTooltipFormatter = ({
           ? valueFormatter(value, props)
           : Number.isFinite(value[1])
           ? `${sValuePrefix || valuePrefix}${value[1].toFixed(
-              sValueDecimals || valueDecimals
+              typeof sValueDecimals === 'number'
+                ? sValueDecimals
+                : valueDecimals
             )}${sValueSuffix || valueSuffix}`
           : noData
 

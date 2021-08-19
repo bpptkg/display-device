@@ -50,3 +50,14 @@ export const DIRECTION_GROUP = [
   // Barat Laut
   [DIRECTION.apu, DIRECTION.trising, DIRECTION.senowo1],
 ]
+
+export const DIRECTION_GROUP_INDEX = [
+  'N [Utara]',
+  'NE [Timur Laut]',
+  'E [Timur]',
+  'SE [Tenggara]',
+  'S [Selatan]',
+  'SW [Barat Daya]',
+  'W [Barat]',
+  'NW [Barat Laut]',
+]

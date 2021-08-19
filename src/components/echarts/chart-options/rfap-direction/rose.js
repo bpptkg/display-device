@@ -42,7 +42,9 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       data: DATA,
     },
     backgroundColor: '#fff',
-    polar: {},
+    polar: {
+      radius: '90%',
+    },
     radiusAxis: {
       axisLine: { show: false },
       axisLabel: { show: false },

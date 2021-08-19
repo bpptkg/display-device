@@ -11,6 +11,7 @@ import pageLoader from './loader'
 import realtime from './realtime'
 import rfapDistance from './rfap-distance'
 import rfapDirection from './rfap-direction'
+import rfapDistdir from './rfap-distdir'
 import seismic from './seismic'
 import sidebarMenu from './sidebar-menu'
 import tiltmeter from './tiltmeter'
@@ -31,6 +32,7 @@ export default new Vuex.Store({
     realtime,
     rfapDistance,
     rfapDirection,
+    rfapDistdir,
     seismic,
     sidebarMenu,
     tiltmeter,

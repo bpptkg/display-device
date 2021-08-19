@@ -54,10 +54,21 @@
           </div>
         </BCol>
       </BRow>
+      <BRow class="mt-3">
+        <BCol>
+          <DChart
+            ref="chartstack"
+            class="chart"
+            :options="chartOptionsStack"
+            manual-update
+          />
+        </BCol>
+      </BRow>
 
-      <DNote>
+      <DNote class="mt-3">
         &mdash; RF and AP data on the charts above are obtained from visual
         observation. <br />
+        &mdash; {{ directionNote }}. <br />
       </DNote>
     </div>
   </div>
@@ -73,6 +84,7 @@ import DNote from '@/components/base/note/DNote'
 
 import { DateRangeTypes } from '@/constants/date'
 import { createPeriodText } from '@/utils/datetime'
+import { toUnixMiliSeconds } from '@/utils/series'
 
 import {
   SET_PERIOD,
@@ -96,6 +108,17 @@ import rangeSelector, {
   maxCustomDuration,
 } from '@/store/rfap-direction/range-selector'
 
+// Stack data.
+import {
+  baseChartOptions as baseChartOptionsStack,
+  createSeries as createSeriesStack,
+  createXAxis as createXAxisStack,
+  mediaQuery as mediaQueryStack,
+  createDirectionNote,
+} from '@/components/echarts/chart-options/rfap-distdir'
+import { NAMESPACE as NAMESPACE_STACK } from '@/store/rfap-distdir'
+import { UPDATE_DATA as UPDATE_DATA_STACK } from '@/store/rfap-distdir/actions'
+
 export default {
   name: 'RfapDirectionView',
   components: {
@@ -113,6 +136,7 @@ export default {
       rangeSelector,
       SupportedXAxisType,
       axis: SupportedXAxisType.COUNT,
+      directionNote: createDirectionNote(),
     }
   },
   computed: {
@@ -122,6 +146,12 @@ export default {
       period: (state) => state.rfapDirection.period,
       startTime: (state) => state.rfapDirection.startTime,
       endTime: (state) => state.rfapDirection.endTime,
+      // Stack data.
+      sdata: (state) => state.rfapDistdir.data,
+      serror: (state) => state.rfapDistdir.error,
+      speriod: (state) => state.rfapDistdir.period,
+      sstartTime: (state) => state.rfapDistdir.startTime,
+      sendTime: (state) => state.rfapDistdir.endTime,
     }),
     ...mapGetters(NAMESPACE, ['rfapDirectionGroup', 'rfapDirectionSorted']),
 
@@ -157,10 +187,25 @@ export default {
         ],
       }
     },
+
+    chartOptionsStack() {
+      return {
+        baseOption: {
+          ...baseChartOptionsStack(),
+          series: createSeriesStack(this.sdata),
+          xAxis: createXAxisStack(
+            toUnixMiliSeconds(this.sstartTime),
+            toUnixMiliSeconds(this.sendTime)
+          ),
+        },
+        media: mediaQueryStack(),
+      }
+    },
   },
 
-  mounted() {
+  async mounted() {
     this.update()
+    this.updatestack()
   },
 
   methods: {
@@ -174,15 +219,28 @@ export default {
       setEndTime(commit, value) {
         return commit(NAMESPACE + '/' + SET_END_TIME, value)
       },
+      // Stack data.
+      ssetPeriod(commit, period) {
+        return commit(NAMESPACE_STACK + '/' + SET_PERIOD, period)
+      },
+      ssetStartTime(commit, value) {
+        return commit(NAMESPACE_STACK + '/' + SET_START_TIME, value)
+      },
+      ssetEndTime(commit, value) {
+        return commit(NAMESPACE_STACK + '/' + SET_END_TIME, value)
+      },
     }),
 
     ...mapActions({
       fetchData(dispatch) {
         return dispatch(NAMESPACE + '/' + UPDATE_DATA)
       },
+      fetchDataStack(dispatch) {
+        return dispatch(NAMESPACE_STACK + '/' + UPDATE_DATA_STACK)
+      },
     }),
 
-    update() {
+    async update() {
       const chart = this.$refs.chart.$refs.chart
       const chartbar = this.$refs.chartbar.$refs.chart
 
@@ -201,15 +259,34 @@ export default {
       })
     },
 
+    async updatestack() {
+      const chartstack = this.$refs.chartstack.$refs.chart
+      chartstack.clear()
+      chartstack.showLoading()
+      this.fetchDataStack().finally(() => {
+        chartstack.hideLoading()
+        chartstack.mergeOptions(this.chartOptionsStack)
+      })
+    },
+
     onPeriodChange(period, { startTime, endTime }) {
       if (period.type === DateRangeTypes.CUSTOM) {
         this.setPeriod(period)
         this.setStartTime(startTime)
         this.setEndTime(endTime)
         this.update()
+
+        // Stack data.
+        this.ssetPeriod(period)
+        this.ssetStartTime(startTime)
+        this.ssetEndTime(endTime)
+        this.updatestack()
       } else {
         this.setPeriod(period)
         this.update()
+        // Stack data.
+        this.ssetPeriod(period)
+        this.updatestack()
       }
     },
 

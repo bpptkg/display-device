@@ -46,12 +46,14 @@ const entries = new Map([
     SeriesNames.RF_COUNT,
     {
       valueSuffix: '',
+      valueDecimals: 0,
     },
   ],
   [
     SeriesNames.AP_COUNT,
     {
       valueSuffix: '',
+      valueDecimals: 0,
     },
   ],
   [
