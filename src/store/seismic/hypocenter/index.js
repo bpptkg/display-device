@@ -3,11 +3,11 @@ import { min, max } from 'lodash'
 
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
 import client from '@/utils/client'
-import Cache from '@/utils/cache'
 import { calculatePeriod } from '@/utils/datetime'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { DEFAULT_SETTINGS } from '@/components/echarts/chart-options/hypocenter'
 import eventFilterOptions from '@/components/event-filter/filters'
+import { isLocalStorageAvailable } from '@/utils/localstorage'
 
 import {
   SET_DATA,
@@ -35,7 +35,6 @@ export const NAMESPACE = 'seismic/hypocenter'
 const excludeLocationTypes = ['other event', 'not locatable']
 
 const topoCacheKey = 'hypocenter/topo/v1'
-const topoCache = new Cache()
 
 export const DEFAULT_RMS_RANGE = [0, 0.1]
 
@@ -274,8 +273,30 @@ export const actions = {
     }
   },
   async [FETCH_TOPO]({ commit }) {
-    if (topoCache.hasData(topoCacheKey)) {
-      commit(SET_TOPO, JSON.parse(topoCache.get(topoCacheKey)))
+    if (isLocalStorageAvailable()) {
+      const cachedTopo = JSON.parse(localStorage.getItem(topoCacheKey))
+      if (
+        cachedTopo !== null &&
+        Array.isArray(cachedTopo) &&
+        cachedTopo.length
+      ) {
+        commit(SET_TOPO, cachedTopo)
+      } else {
+        const data = await client
+          .get('topo/', {
+            params: {
+              model: 'm1000',
+            },
+          })
+          .then((response) => response.data.data)
+          .catch((error) => {
+            commit(SET_ERROR, error)
+            return []
+          })
+
+        localStorage.setItem(topoCacheKey, JSON.stringify(data))
+        commit(SET_TOPO, data)
+      }
     } else {
       const data = await client
         .get('topo/', {
@@ -289,7 +310,7 @@ export const actions = {
           return []
         })
 
-      topoCache.set(topoCacheKey, JSON.stringify(data))
+      localStorage.setItem(topoCacheKey, JSON.stringify(data))
       commit(SET_TOPO, data)
     }
   },
