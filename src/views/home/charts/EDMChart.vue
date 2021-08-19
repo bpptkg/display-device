@@ -37,6 +37,8 @@ import {
   createSeries,
   createXAxis,
   createYAxis,
+  CHART_VIEWS,
+  tooltipFormatter,
 } from '@/components/echarts/chart-options/edm'
 import { createDataZoom } from '@/components/echarts/chart-options/common/datazoom'
 import { UPDATE_EDM } from '@/store/edm/actions'
@@ -82,6 +84,15 @@ export default {
             textStyle: { fontSize: 14, fontWeight: 'normal' },
           },
           series: createSeries(this.data, this.reflectors),
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              lineStyle: {
+                type: 'dashed',
+              },
+            },
+            formatter: tooltipFormatter(CHART_VIEWS.slope_distance),
+          },
           xAxis: createXAxis(
             reflectorLength,
             toUnixMiliSeconds(this.startTime),
