@@ -3,6 +3,49 @@ import { get } from 'lodash'
 import { DATE_FORMAT } from '@/constants/date'
 import { createCircleTemplate } from '../series'
 
+export const createTooltipWrapper = (
+  template,
+  {
+    maxWidth = '300px',
+    maxHeight = '300px',
+    columnCount = 1,
+    columnGap = '10px',
+    fontSize = '0.85rem',
+    lineHeight = '0.92rem',
+  } = {}
+) => {
+  const style = `
+    max-width: ${maxWidth};
+    max-height: ${maxHeight};
+    overflow-y: auto;
+    overflow-x: auto;
+    font-size: ${fontSize};
+    line-height: ${lineHeight};
+    column-count: ${columnCount};
+    column-gap: ${columnGap};
+  `
+
+  if (Array.isArray(template) && template.length) {
+    const header = template[0]
+    const body = template.slice(1).join('')
+
+    return `
+      <div>
+        ${header}
+        <div style="${style}">
+          ${body}
+        </div>
+      </div>
+    `
+  } else {
+    return `
+      <div style="${style}">
+        ${template}
+      </div>
+    `
+  }
+}
+
 export const DEFAULT_FRACTION_DIGITS = 2
 export const SeriesProps = {
   VALUE_PREFIX: 'valuePrefix',
@@ -39,6 +82,9 @@ export const defaultTooltipFormatter = ({
   valueSuffix = '',
   seriesProps = {},
   noData = '',
+  adaptive = false,
+  adaptiveOptions = {},
+  excludeZero = false, // Only apply for multiple items.
 } = {}) => {
   // Return formatter function.
   return (params) => {
@@ -50,32 +96,40 @@ export const defaultTooltipFormatter = ({
         const props = get(seriesProps, seriesName)
 
         if (index === 0) {
-          template.push(`${moment(value[0]).format(format)}<br />`)
+          template.push(`<div>${moment(value[0]).format(format)}</div>`)
         }
 
-        const sValueDecimals = get(props, SeriesProps.VALUE_DECIMALS)
-        const sValueFormatter = get(props, SeriesProps.VALUE_FORMATTER)
-        const sValuePrefix = get(props, SeriesProps.VALUE_PREFIX, '')
-        const sValueSuffix = get(props, SeriesProps.VALUE_SUFFIX, '')
+        if (excludeZero === true && value[1] === 0) {
+          // Pass
+        } else {
+          const sValueDecimals = get(props, SeriesProps.VALUE_DECIMALS)
+          const sValueFormatter = get(props, SeriesProps.VALUE_FORMATTER)
+          const sValuePrefix = get(props, SeriesProps.VALUE_PREFIX, '')
+          const sValueSuffix = get(props, SeriesProps.VALUE_SUFFIX, '')
 
-        const valueFormatted = sValueFormatter
-          ? sValueFormatter(value, props)
-          : valueFormatter
-          ? valueFormatter(value, props)
-          : Number.isFinite(value[1])
-          ? `${sValuePrefix || valuePrefix}${value[1].toFixed(
-              typeof sValueDecimals === 'number'
-                ? sValueDecimals
-                : valueDecimals
-            )}${sValueSuffix || valueSuffix}`
-          : noData
+          const valueFormatted = sValueFormatter
+            ? sValueFormatter(value, props)
+            : valueFormatter
+            ? valueFormatter(value, props)
+            : Number.isFinite(value[1])
+            ? `${sValuePrefix || valuePrefix}${value[1].toFixed(
+                typeof sValueDecimals === 'number'
+                  ? sValueDecimals
+                  : valueDecimals
+              )}${sValueSuffix || valueSuffix}`
+            : noData
 
-        template.push(`
-          ${createCircleTemplate(color)}
-          ${seriesName}: ${valueFormatted}<br />`)
+          template.push(`
+          <div>${createCircleTemplate(color)}
+          ${seriesName}: ${valueFormatted}</div>`)
+        }
       })
 
-      return template.join('')
+      if (adaptive === true) {
+        return createTooltipWrapper(template, { ...adaptiveOptions })
+      } else {
+        return template.join('')
+      }
     } else {
       const { seriesName, value, color, name, componentType } = params
       if (componentType === 'markLine') {
@@ -102,9 +156,15 @@ export const defaultTooltipFormatter = ({
             )}${sValueSuffix || valueSuffix}`
           : noData
 
-        return `${moment(value[0]).format(format)}<br />
-        ${createCircleTemplate(color)} 
-        ${seriesName}: ${valueFormatted}<br />`
+        const template = `<div>${moment(value[0]).format(format)}</div>
+        <div>${createCircleTemplate(color)} 
+        ${seriesName}: ${valueFormatted}</div>`
+
+        if (adaptive === true) {
+          return createTooltipWrapper(template, { ...adaptiveOptions })
+        } else {
+          return template
+        }
       }
     }
   }

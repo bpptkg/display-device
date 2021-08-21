@@ -62,6 +62,14 @@
             :options="chartOptionsStack"
             manual-update
           />
+          <div class="mt-2">
+            <BLink @click="switchDirectionStack">
+              <small>
+                Show direction as
+                {{ useDirectionGroup ? 'item' : 'group' }}
+              </small>
+            </BLink>
+          </div>
         </BCol>
       </BRow>
 
@@ -137,6 +145,7 @@ export default {
       SupportedXAxisType,
       axis: SupportedXAxisType.COUNT,
       directionNote: createDirectionNote(),
+      useDirectionGroup: true,
     }
   },
   computed: {
@@ -192,7 +201,9 @@ export default {
       return {
         baseOption: {
           ...baseChartOptionsStack(),
-          series: createSeriesStack(this.sdata),
+          series: createSeriesStack(this.sdata, {
+            useDirectionGroup: this.useDirectionGroup,
+          }),
           xAxis: createXAxisStack(
             toUnixMiliSeconds(this.sstartTime),
             toUnixMiliSeconds(this.sendTime)
@@ -300,6 +311,18 @@ export default {
       const chart = this.$refs.chartbar.$refs.chart
       chart.clear()
       chart.mergeOptions(this.chartOptionsBar)
+    },
+
+    async switchDirectionStack() {
+      const chart = this.$refs.chartstack.$refs.chart
+      chart.clear()
+      chart.showLoading()
+      this.useDirectionGroup = !this.useDirectionGroup
+
+      setTimeout(() => {
+        chart.hideLoading()
+        chart.mergeOptions(this.chartOptionsStack)
+      }, 250)
     },
   },
 }

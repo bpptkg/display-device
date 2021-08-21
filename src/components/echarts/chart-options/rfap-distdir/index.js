@@ -63,7 +63,20 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
       }
     })
   } else {
-    return []
+    return Object.values(DIRECTION).map((d) => {
+      return {
+        areaStyle: {},
+        data: mapFieldColumns(data, 'timestamp', [
+          'countdir',
+          (countdir) => {
+            return _.get(countdir, d, 0)
+          },
+        ]),
+        name: d,
+        type: 'bar',
+        stack: 'one',
+      }
+    })
   }
 }
 
@@ -117,6 +130,9 @@ export const baseChartOptions = ({
         format: sampling === Sampling.DAY ? DATE_FORMAT : DATETIME_FORMAT,
         valueDecimals: 0,
         noData: '-',
+        adaptive: false,
+        adaptiveOptions: { columnCount: 2 },
+        excludeZero: true,
       }),
     },
     yAxis: createYAxis(),
