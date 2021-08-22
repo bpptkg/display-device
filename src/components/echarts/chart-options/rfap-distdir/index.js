@@ -8,6 +8,7 @@ import {
 import { Sampling } from '@/constants/rfap-distance'
 import { mapFieldColumns } from '@/utils/series'
 import { defaultTooltipFormatter } from '@/utils/echarts/tooltip'
+import { generateColormap } from '@/utils/color'
 import { defaultToolbox } from '../common/toolbox'
 
 export const createDirectionNote = () => {
@@ -39,6 +40,13 @@ export const createYAxis = () => {
   ]
 }
 
+const smartIndex = (index, length, clength) => {
+  if (length === clength) {
+    return index
+  }
+  return Math.floor(index * (clength / length))
+}
+
 export const createSeries = (data, { useDirectionGroup = true } = {}) => {
   // TODO(indra): Refactor creating series in the store getters.
   if (useDirectionGroup === true) {
@@ -64,7 +72,7 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
       }
     })
   } else {
-    const options = []
+    const nonEmptyData = []
     Object.values(DIRECTION).forEach((d) => {
       const filteredData = mapFieldColumns(data, 'timestamp', [
         'countdir',
@@ -75,21 +83,39 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
 
       // Only append non-empty data.
       if (filteredData.length) {
-        options.push({
-          areaStyle: {},
-          data: filteredData,
-          name: d,
-          type: 'bar',
-          stack: 'one',
-        })
+        nonEmptyData.push({ direction: d, data: filteredData })
       }
     })
 
-    return options
+    // Generate color map matching the length of non-empty data. If minimum
+    // length is not satisfied, return default length.
+    const minLength = 11
+    const colorMap = generateColormap('hsv', {
+      nshades:
+        nonEmptyData.length >= minLength ? nonEmptyData.length : minLength,
+    })
+
+    return nonEmptyData.map((d, index) => {
+      const newIndex =
+        nonEmptyData.length >= minLength
+          ? index
+          : smartIndex(index, nonEmptyData.length, minLength)
+
+      return {
+        areaStyle: {},
+        data: d.data,
+        itemStyle: {
+          color: colorMap[newIndex],
+        },
+        name: d.direction,
+        type: 'bar',
+        stack: 'one',
+      }
+    })
   }
 }
 
-const _createLegend = (options = {}) => {
+const createLegend = (options = {}) => {
   return {
     type: 'plain',
     bottom: 0,
@@ -112,7 +138,7 @@ export const mediaQuery = () => {
           top: 25,
           fontSize: 13,
         },
-        legend: _createLegend({ type: 'scroll' }),
+        legend: createLegend({ type: 'scroll' }),
       },
     },
   ]
@@ -125,7 +151,7 @@ export const baseChartOptions = ({
   return {
     backgroundColor: '#fff',
     grid: { bottom: 85 },
-    legend: _createLegend(),
+    legend: createLegend(),
     title: {
       text: 'RF & AP Direction Stack',
       left: 'center',
