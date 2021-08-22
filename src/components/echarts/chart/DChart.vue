@@ -2,7 +2,7 @@
   <ECharts
     ref="chart"
     :options="options"
-    theme="light"
+    :theme="theme"
     class="chart"
     autoresize
     v-bind="$attrs"
@@ -43,6 +43,7 @@ import '@/lib/echarts-extension/custom-visualmap/visualMapCustomPiecewise'
 
 // Import ECharts themes.
 import '@/lib/echarts-theme/dark'
+import '@/lib/echarts-theme/flow'
 import '@/lib/echarts-theme/infographic'
 import '@/lib/echarts-theme/macarons'
 import '@/lib/echarts-theme/roma'
@@ -60,6 +61,10 @@ export default {
       default: function () {
         return {}
       },
+    },
+    theme: {
+      type: String,
+      default: 'light',
     },
   },
 }
