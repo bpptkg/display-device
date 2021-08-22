@@ -8,7 +8,6 @@ import {
 import { Sampling } from '@/constants/rfap-distance'
 import { mapFieldColumns } from '@/utils/series'
 import { defaultTooltipFormatter } from '@/utils/echarts/tooltip'
-import { generateColormap } from '@/utils/color'
 import { defaultToolbox } from '../common/toolbox'
 
 export const createDirectionNote = () => {
@@ -73,6 +72,28 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
     })
   } else {
     const nonEmptyData = []
+    const colorMap = [
+      '#1f77b4',
+      '#aec7e8',
+      '#ff7f0e',
+      '#ffbb78',
+      '#2ca02c',
+      '#98df8a',
+      '#d62728',
+      '#ff9896',
+      '#9467bd',
+      '#c5b0d5',
+      '#8c564b',
+      '#c49c94',
+      '#e377c2',
+      '#f7b6d2',
+      '#7f7f7f',
+      '#c7c7c7',
+      '#bcbd22',
+      '#dbdb8d',
+      '#17becf',
+      '#9edae5',
+    ]
     Object.values(DIRECTION).forEach((d) => {
       const filteredData = mapFieldColumns(data, 'timestamp', [
         'countdir',
@@ -87,25 +108,13 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
       }
     })
 
-    // Generate color map matching the length of non-empty data. If minimum
-    // length is not satisfied, return default length.
-    const minLength = 11
-    const colorMap = generateColormap('hsv', {
-      nshades:
-        nonEmptyData.length >= minLength ? nonEmptyData.length : minLength,
-    })
-
     return nonEmptyData.map((d, index) => {
-      const newIndex =
-        nonEmptyData.length >= minLength
-          ? index
-          : smartIndex(index, nonEmptyData.length, minLength)
-
       return {
         areaStyle: {},
         data: d.data,
         itemStyle: {
-          color: colorMap[newIndex],
+          color:
+            colorMap[smartIndex(index, nonEmptyData.length, colorMap.length)],
         },
         name: d.direction,
         type: 'bar',
