@@ -21,7 +21,7 @@ export const restoreToolbox = {
 
 export const saveAsImageToolbox = {
   title: 'Save as image',
-  pixelRatio: 3,
+  pixelRatio: 5,
 }
 
 export const defaultToolbox = {

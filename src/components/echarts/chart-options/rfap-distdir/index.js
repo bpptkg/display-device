@@ -40,6 +40,7 @@ export const createYAxis = () => {
 }
 
 export const createSeries = (data, { useDirectionGroup = true } = {}) => {
+  // TODO(indra): Refactor creating series in the store getters.
   if (useDirectionGroup === true) {
     return DIRECTION_GROUP.map((group, index) => {
       return {
@@ -63,20 +64,39 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
       }
     })
   } else {
-    return Object.values(DIRECTION).map((d) => {
-      return {
-        areaStyle: {},
-        data: mapFieldColumns(data, 'timestamp', [
-          'countdir',
-          (countdir) => {
-            return _.get(countdir, d, 0)
-          },
-        ]),
-        name: d,
-        type: 'bar',
-        stack: 'one',
+    const options = []
+    Object.values(DIRECTION).forEach((d) => {
+      const filteredData = mapFieldColumns(data, 'timestamp', [
+        'countdir',
+        (countdir) => {
+          return _.get(countdir, d, 0)
+        },
+      ]).filter((v) => v[1] > 0)
+
+      // Only append non-empty data.
+      if (filteredData.length) {
+        options.push({
+          areaStyle: {},
+          data: filteredData,
+          name: d,
+          type: 'bar',
+          stack: 'one',
+        })
       }
     })
+
+    return options
+  }
+}
+
+const _createLegend = (options = {}) => {
+  return {
+    type: 'plain',
+    bottom: 0,
+    itemWidth: 15,
+    itemHeight: 10,
+    textStyle: { fontSize: 11 },
+    ...options,
   }
 }
 
@@ -92,6 +112,7 @@ export const mediaQuery = () => {
           top: 25,
           fontSize: 13,
         },
+        legend: _createLegend({ type: 'scroll' }),
       },
     },
   ]
@@ -103,9 +124,8 @@ export const baseChartOptions = ({
 } = {}) => {
   return {
     backgroundColor: '#fff',
-    dataZoom: { type: 'slider', realtime: false, bottom: 30 },
-    grid: { bottom: 100 },
-    legend: { type: 'scroll', bottom: 0 },
+    grid: { bottom: 85 },
+    legend: _createLegend(),
     title: {
       text: 'RF & AP Direction Stack',
       left: 'center',

@@ -145,7 +145,7 @@ export default {
       SupportedXAxisType,
       axis: SupportedXAxisType.COUNT,
       directionNote: createDirectionNote(),
-      useDirectionGroup: true,
+      useDirectionGroup: false,
     }
   },
   computed: {
