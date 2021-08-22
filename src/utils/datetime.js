@@ -24,6 +24,9 @@ export function calculatePeriod({ type, count, start, end }) {
     case DateRangeTypes.YEAR:
       duration = 'years'
       break
+    case DateRangeTypes.YTD:
+      duration = DateRangeTypes.YTD
+      break
     default:
       duration = DateRangeTypes.CUSTOM
   }
@@ -35,6 +38,21 @@ export function calculatePeriod({ type, count, start, end }) {
     return {
       startTime: moment(start),
       endTime: moment(end),
+    }
+  } else if (duration === DateRangeTypes.YTD) {
+    const endTime = moment()
+    const startTime = moment().set({
+      year: endTime.year(),
+      month: 0,
+      date: 1,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    })
+    return {
+      startTime,
+      endTime,
     }
   } else {
     if (!count)

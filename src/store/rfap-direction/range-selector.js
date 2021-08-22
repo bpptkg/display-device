@@ -29,6 +29,10 @@ const rangeSelector = [
     type: 'year',
     text: '1 year',
   },
+  {
+    type: 'ytd',
+    text: 'YTD',
+  },
 ]
 
 export const maxCustomDuration = {

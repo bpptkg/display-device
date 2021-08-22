@@ -9,4 +9,5 @@ export const DateRangeTypes = Object.freeze({
   MONTH: 'month',
   YEAR: 'year',
   CUSTOM: 'custom',
+  YTD: 'ytd',
 })
