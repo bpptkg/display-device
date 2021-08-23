@@ -6,9 +6,9 @@ import {
 } from '../../seismic/seismicity'
 
 const period = {
-  count: 1,
+  count: 2,
   type: 'month',
-  text: '1 month',
+  text: '2 months',
 }
 
 export default {

@@ -76,7 +76,7 @@ export const actions = {
   },
 }
 
-const defaultPeriod = rangeSelector[0]
+const defaultPeriod = rangeSelector[3]
 
 const babadan = {
   namespaced: true,

@@ -15,6 +15,11 @@ const rangeSelector = [
     text: '1 month',
   },
   {
+    count: 2,
+    type: 'month',
+    text: '2 months',
+  },
+  {
     count: 3,
     type: 'month',
     text: '3 months',

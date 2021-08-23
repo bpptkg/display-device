@@ -84,7 +84,7 @@ export const actions = {
   },
 }
 
-const state = initState(rangeSelector[0])
+const state = initState(rangeSelector[3])
 
 export default {
   namespaced: true,

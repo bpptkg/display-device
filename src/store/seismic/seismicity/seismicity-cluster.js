@@ -1,7 +1,7 @@
 import rangeSelector from './range-selector'
 import { initState, mutations, getters, actions } from './index'
 
-const defaultPeriod = rangeSelector[0]
+const defaultPeriod = rangeSelector[3]
 
 export default {
   namespaced: true,
