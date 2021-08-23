@@ -1,21 +1,12 @@
 import moment from 'moment'
 
-import { DATE_FORMAT, DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
+import { DATETIME_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/seismicity'
 import client from '@/utils/client'
 import { calculatePeriod } from '@/utils/datetime'
-import { primaryAnnotations } from '@/components/event-annotation/annotations'
 
-import {
-  SET_DATA,
-  SET_END_TIME,
-  SET_ERROR,
-  SET_LAST_UPDATED,
-  SET_START_TIME,
-} from '../../base/mutations'
-import { SET_SAMPLING } from '../seismicity/mutations'
-import { baseState, baseMutations, baseActions } from '../../base'
-import { FETCH_SEISMICITY, UPDATE_SEISMICITY } from '../seismicity/actions'
+import { SET_DATA, SET_ERROR, SET_LAST_UPDATED } from '../../base/mutations'
+import { FETCH_SEISMICITY } from '../seismicity/actions'
 import rangeSelector from './range-selector'
 import { SET_EVENT_TYPE } from './mutations'
 
