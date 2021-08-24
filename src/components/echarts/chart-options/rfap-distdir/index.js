@@ -10,6 +10,35 @@ import { mapFieldColumns } from '@/utils/series'
 import { defaultTooltipFormatter } from '@/utils/echarts/tooltip'
 import { defaultToolbox } from '../common/toolbox'
 
+// Tab20 color map is used because we need to differentiate the item to the
+// others.
+export const colorMap = [
+  '#1f77b4',
+  '#aec7e8',
+  '#ff7f0e',
+  '#ffbb78',
+  '#2ca02c',
+  '#98df8a',
+  '#d62728',
+  '#ff9896',
+  '#9467bd',
+  '#c5b0d5',
+  '#8c564b',
+  '#c49c94',
+  '#e377c2',
+  '#f7b6d2',
+  '#7f7f7f',
+  '#c7c7c7',
+  '#bcbd22',
+  '#dbdb8d',
+  '#17becf',
+  '#9edae5',
+]
+
+export const SeriesNames = Object.freeze({
+  MAX_DISTANCE: 'Max. Distance',
+})
+
 export const createDirectionNote = () => {
   const dir = DIRECTION_GROUP_INDEX.map((d, index) => {
     return `${d}: (${DIRECTION_GROUP[index].join(', ')})`
@@ -36,6 +65,14 @@ export const createYAxis = () => {
       splitLine: { show: false },
       type: 'value',
     },
+    {
+      name: 'Max. Distance (km)',
+      nameGap: 40,
+      nameLocation: 'center',
+      scale: false,
+      splitLine: { show: false },
+      type: 'value',
+    },
   ]
 }
 
@@ -47,9 +84,10 @@ const smartIndex = (index, length, clength) => {
 }
 
 export const createSeries = (data, { useDirectionGroup = true } = {}) => {
+  let seriesOptions = []
   // TODO(indra): Refactor creating series in the store getters.
   if (useDirectionGroup === true) {
-    return DIRECTION_GROUP.map((group, index) => {
+    seriesOptions = DIRECTION_GROUP.map((group, index) => {
       return {
         areaStyle: {},
         data: mapFieldColumns(data, 'timestamp', [
@@ -72,28 +110,7 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
     })
   } else {
     const nonEmptyData = []
-    const colorMap = [
-      '#1f77b4',
-      '#aec7e8',
-      '#ff7f0e',
-      '#ffbb78',
-      '#2ca02c',
-      '#98df8a',
-      '#d62728',
-      '#ff9896',
-      '#9467bd',
-      '#c5b0d5',
-      '#8c564b',
-      '#c49c94',
-      '#e377c2',
-      '#f7b6d2',
-      '#7f7f7f',
-      '#c7c7c7',
-      '#bcbd22',
-      '#dbdb8d',
-      '#17becf',
-      '#9edae5',
-    ]
+
     Object.values(DIRECTION).forEach((d) => {
       const filteredData = mapFieldColumns(data, 'timestamp', [
         'countdir',
@@ -108,7 +125,7 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
       }
     })
 
-    return nonEmptyData.map((d, index) => {
+    seriesOptions = nonEmptyData.map((d, index) => {
       return {
         areaStyle: {},
         data: d.data,
@@ -122,6 +139,22 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
       }
     })
   }
+
+  // Add max. distance plot to the secondary Y axis.
+  seriesOptions.push({
+    // Convert distance from m to km.
+    data: mapFieldColumns(data, 'timestamp', [
+      'distance',
+      (v) => (v ? v / 1000 : v),
+    ]),
+    name: SeriesNames.MAX_DISTANCE,
+    type: 'scatter',
+    symbol: 'circle',
+    symbolSize: 7,
+    yAxisIndex: 1,
+  })
+
+  return seriesOptions
 }
 
 const createLegend = (options = {}) => {
@@ -188,6 +221,12 @@ export const baseChartOptions = ({
         adaptive: false,
         adaptiveOptions: { columnCount: 2 },
         excludeZero: true,
+        seriesProps: {
+          [SeriesNames.MAX_DISTANCE]: {
+            valueDecimals: 2,
+            valueSuffix: ' km',
+          },
+        },
       }),
     },
     yAxis: createYAxis(),
