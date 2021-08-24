@@ -58,6 +58,7 @@ export default {
   height: 50px;
   padding-left: 24px;
   padding-right: 24px;
+  z-index: 9999;
 }
 
 .menu-link {

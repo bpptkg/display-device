@@ -1,42 +1,61 @@
 <template>
-  <div class="content">
-    <div v-if="error">
-      <ErrorMessage>
-        <p>Unable to load the chart.</p>
-        <p>Error: {{ error.message }}</p>
-        <p>
-          <BLink @click="update"> Try again </BLink>
-        </p>
-      </ErrorMessage>
+  <div class="dirview">
+    <div
+      class="
+        d-flex
+        justify-content-between
+        align-items-end
+        flex-wrap
+        toolbar-sticky
+        mb-3
+      "
+    >
+      <div class="d-flex align-items-center flex-wrap">
+        <RangeSelector
+          ref="range-selector"
+          size="sm"
+          custom-enabled
+          :selected="period"
+          :items="rangeSelector"
+          :max-custom-duration="maxCustomDuration"
+          @period-selected="onPeriodChange"
+        />
+      </div>
     </div>
 
-    <div v-show="!error">
-      <div
-        class="d-flex justify-content-between align-items-center flex-wrap mb-3"
-      >
-        <div class="d-flex align-items-center flex-wrap">
-          <RangeSelector
-            ref="range-selector"
-            size="sm"
-            custom-enabled
-            :selected="period"
-            :items="rangeSelector"
-            :max-custom-duration="maxCustomDuration"
-            @period-selected="onPeriodChange"
-          />
+    <BRow class="ml-0 mr-0">
+      <BCol md="6">
+        <div v-if="error">
+          <ErrorMessage>
+            <p>Unable to load the chart.</p>
+            <p>Error: {{ error.message }}</p>
+            <p>
+              <BLink @click="update">Try again</BLink>
+            </p>
+          </ErrorMessage>
         </div>
-      </div>
 
-      <BRow>
-        <BCol md="6">
+        <div v-show="!error">
           <DChart
             ref="chart"
             class="chart"
             :options="chartOptions"
             manual-update
           />
-        </BCol>
-        <BCol md="6">
+        </div>
+      </BCol>
+      <BCol md="6">
+        <div v-if="error">
+          <ErrorMessage>
+            <p>Unable to load the chart.</p>
+            <p>Error: {{ error.message }}</p>
+            <p>
+              <BLink @click="update">Try again</BLink>
+            </p>
+          </ErrorMessage>
+        </div>
+
+        <div v-show="!error">
           <DChart
             ref="chartbar"
             class="chart"
@@ -52,10 +71,22 @@
               </small>
             </BLink>
           </div>
-        </BCol>
-      </BRow>
-      <BRow class="mt-3">
-        <BCol>
+        </div>
+      </BCol>
+    </BRow>
+    <BRow class="mt-3 ml-0 mr-0">
+      <BCol>
+        <div v-if="serror">
+          <ErrorMessage>
+            <p>Unable to load the chart.</p>
+            <p>Error: {{ serror.message }}</p>
+            <p>
+              <BLink @click="updatestack">Try again</BLink>
+            </p>
+          </ErrorMessage>
+        </div>
+
+        <div v-show="!serror">
           <DChart
             ref="chartstack"
             class="chart"
@@ -71,15 +102,15 @@
               </small>
             </BLink>
           </div>
-        </BCol>
-      </BRow>
+        </div>
+      </BCol>
+    </BRow>
 
-      <DNote class="mt-3">
-        &mdash; RF and AP data on the charts above are obtained from visual
-        observation. <br />
-        &mdash; {{ directionNote }}. <br />
-      </DNote>
-    </div>
+    <DNote class="mt-3">
+      &mdash; RF and AP data on the charts above are obtained from visual
+      observation. <br />
+      &mdash; {{ directionNote }}. <br />
+    </DNote>
   </div>
 </template>
 
@@ -324,28 +355,42 @@ export default {
         chart.mergeOptions(this.chartOptionsStack)
       }, 250)
     },
+
+    async updateAll() {
+      this.update()
+      this.updatestack()
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.content {
+.dirview {
   margin-bottom: 50px;
   right: 0;
 }
 
+.toolbar-sticky {
+  position: sticky;
+  height: 40px;
+  top: 50px;
+  z-index: 999;
+  background-color: #fff;
+}
+
 @media (max-width: 991.98px) {
-  .content {
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-top: 60px;
+  .dirview {
+    top: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+    position: absolute;
   }
 }
 
 @media (min-width: 992px) {
-  .content {
+  .dirview {
     left: 200px;
-    padding: 1rem 1.25rem;
+    padding: 0 1.25rem 1rem 1.25rem;
     position: absolute;
     top: 50px;
   }
