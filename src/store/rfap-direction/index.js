@@ -15,8 +15,8 @@ import {
   SET_START_TIME,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
+import { FETCH_DATA, UPDATE_DATA } from '../base/actions'
 
-import { FETCH_DATA, UPDATE_DATA } from './actions'
 import rangeSelector from './range-selector'
 
 export const NAMESPACE = 'rfapDirection'

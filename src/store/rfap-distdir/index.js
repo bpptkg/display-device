@@ -15,9 +15,9 @@ import {
   SET_START_TIME,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
+import { SET_SAMPLING } from '../base/mutations'
+import { FETCH_DATA, UPDATE_DATA } from '../base/actions'
 
-import { SET_SAMPLING } from './mutations'
-import { FETCH_DATA, UPDATE_DATA } from './actions'
 import rangeSelector from '../rfap-direction/range-selector'
 
 export const NAMESPACE = 'rfapDistdir'

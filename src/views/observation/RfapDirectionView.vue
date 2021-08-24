@@ -100,6 +100,7 @@ import {
   SET_START_TIME,
   SET_END_TIME,
 } from '@/store/base/mutations'
+import { UPDATE_DATA } from '@/store/base/actions'
 
 import {
   baseChartOptions,
@@ -112,7 +113,6 @@ import {
 } from '@/components/echarts/chart-options/rfap-direction/bar'
 
 import { NAMESPACE } from '@/store/rfap-direction'
-import { UPDATE_DATA } from '@/store/rfap-direction/actions'
 import rangeSelector, {
   maxCustomDuration,
 } from '@/store/rfap-direction/range-selector'
@@ -126,7 +126,6 @@ import {
   createDirectionNote,
 } from '@/components/echarts/chart-options/rfap-distdir'
 import { NAMESPACE as NAMESPACE_STACK } from '@/store/rfap-distdir'
-import { UPDATE_DATA as UPDATE_DATA_STACK } from '@/store/rfap-distdir/actions'
 
 export default {
   name: 'RfapDirectionView',
@@ -248,7 +247,7 @@ export default {
         return dispatch(NAMESPACE + '/' + UPDATE_DATA)
       },
       fetchDataStack(dispatch) {
-        return dispatch(NAMESPACE_STACK + '/' + UPDATE_DATA_STACK)
+        return dispatch(NAMESPACE_STACK + '/' + UPDATE_DATA)
       },
     }),
 
