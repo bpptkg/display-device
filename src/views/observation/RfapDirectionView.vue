@@ -59,6 +59,7 @@
           <DChart
             ref="chartstack"
             class="chart"
+            theme="tab20"
             :options="chartOptionsStack"
             manual-update
           />
