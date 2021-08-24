@@ -152,7 +152,7 @@ export const actions = {
   },
 }
 
-const defaultPeriod = rangeSelector[3]
+const defaultPeriod = rangeSelector[2]
 
 export const initModule = (type, station, period = defaultPeriod) => {
   return {
