@@ -2,6 +2,7 @@ import AnnotationIcon from './AnnotationIcon'
 import DescriptionIcon from './DescriptionIcon'
 import HomeIcon from './HomeIcon'
 import InfoIcon from './InfoIcon'
+import LaunchIcon from './LaunchIcon'
 import RecordVoiceOverIcon from './RecordVoiceOverIcon'
 import RoomIcon from './RoomIcon'
 import SearchIcon from './SearchIcon'
@@ -16,6 +17,7 @@ export {
   DescriptionIcon,
   HomeIcon,
   InfoIcon,
+  LaunchIcon,
   RecordVoiceOverIcon,
   RoomIcon,
   SearchIcon,
