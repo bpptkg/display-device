@@ -48,6 +48,7 @@ import '@/lib/echarts-theme/infographic'
 import '@/lib/echarts-theme/macarons'
 import '@/lib/echarts-theme/roma'
 import '@/lib/echarts-theme/shine'
+import '@/lib/echarts-theme/tab20'
 import '@/lib/echarts-theme/vintage'
 
 export default {
