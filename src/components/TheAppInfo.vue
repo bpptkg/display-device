@@ -21,22 +21,24 @@
           </div>
         </BListGroupItem>
 
-        <BListGroupItem>
-          <BLink
-            href="https://github.com/bpptkg/display-device"
-            target="_blank"
-          >
-            Developer resources
-          </BLink>
+        <BListGroupItem
+          href="https://github.com/bpptkg/display-device"
+          target="_blank"
+        >
+          <div class="d-flex justify-content-between">
+            <div>Developer resources</div>
+            <LaunchIcon />
+          </div>
         </BListGroupItem>
 
-        <BListGroupItem>
-          <BLink
-            href="https://github.com/bpptkg/display-device/issues"
-            target="_blank"
-          >
-            Report an issue
-          </BLink>
+        <BListGroupItem
+          href="https://github.com/bpptkg/display-device/issues"
+          target="_blank"
+        >
+          <div class="d-flex justify-content-between">
+            <div>Report an issue</div>
+            <LaunchIcon />
+          </div>
         </BListGroupItem>
       </BListGroup>
     </BCard>
@@ -58,16 +60,17 @@
 
 <script>
 import moment from 'moment'
-import { BCard, BLink, BListGroup, BListGroupItem } from 'bootstrap-vue'
+import { BCard, BListGroup, BListGroupItem } from 'bootstrap-vue'
 import { LogoIcon } from '@/components/icons'
+import { LaunchIcon } from '@/components/icons/action'
 import versionInfo from '@/utils/version'
 
 export default {
   name: 'TheAppInfo',
   components: {
     BCard,
+    LaunchIcon,
     LogoIcon,
-    BLink,
     BListGroup,
     BListGroupItem,
   },
@@ -90,7 +93,17 @@ export default {
 .app-info-card {
   box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 4px 2px rgb(60 64 67 / 15%);
   background: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
+
+  & > .list-group:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  & > .list-group:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }
 
 .secondary {
