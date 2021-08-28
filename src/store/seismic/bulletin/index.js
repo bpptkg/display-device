@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { get } from 'lodash'
 import client from '@/utils/client'
-import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
+import { DateRangeTypes } from '@/constants/date'
 import { calculatePeriod } from '@/utils/datetime'
 
 import {
@@ -13,7 +13,16 @@ import {
 } from '../../base/mutations'
 import { baseState, baseMutations } from '../../base'
 import { FETCH_BULLETIN, UPDATE_BULLETIN } from './actions'
-import { RESET_EVENT_TYPE, SET_CLUSTER_DICT, SET_EVENT_TYPE } from './mutations'
+import {
+  RESET_EVENT_TYPE,
+  SET_CLUSTER_DICT,
+  SET_EVENT_TYPE,
+  SET_PAGE,
+  SET_PAGE_SIZE,
+  SET_LINK,
+  SET_PAGES,
+  SET_TOTAL,
+} from './mutations'
 import rangeSelector from './range-selector'
 import { seismicEvents } from '@/constants/bulletin'
 
@@ -32,6 +41,15 @@ export const initialState = {
   ...baseState,
   clusterDict: {},
   eventType: 'ALL',
+  page: 1,
+  pages: 0,
+  total: 0,
+  totalItems: 0,
+  pageSize: 10,
+  hasNext: false,
+  hasPrevious: false,
+  nexLink: '',
+  previousLink: '',
 }
 
 export const initState = (period) => {
@@ -61,6 +79,25 @@ export const mutations = {
   },
   [RESET_EVENT_TYPE](state) {
     state.eventType = 'ALL'
+  },
+  [SET_PAGE](state, page) {
+    state.page = page
+  },
+  [SET_PAGE_SIZE](state, size) {
+    state.pageSize = size
+  },
+  [SET_LINK](state, links) {
+    const { next, previous } = links
+    state.nexLink = next
+    state.previousLink = previous
+    state.hasNext = next !== null
+    state.hasPrevious = previous !== null
+  },
+  [SET_PAGES](state, pages) {
+    state.pages = pages
+  },
+  [SET_TOTAL](state, total) {
+    state.total = total
   },
 }
 
@@ -102,10 +139,9 @@ export const actions = {
     ]
 
     const params = {
-      eventdate__gte: state.startTime.format(DATETIME_FORMAT),
-      eventdate__lt: state.endTime.format(DATETIME_FORMAT),
+      page: state.page,
+      page_size: state.pageSize,
       eventtype__isnull: false,
-      nolimit: true,
       ordering: '-eventdate',
       fields: fields.join(','),
     }
@@ -117,7 +153,7 @@ export const actions = {
       params,
     })
 
-    const { data, clusterDict } = await Promise.all([
+    const { data, clusterDict, rawData } = await Promise.all([
       bulletinRequest,
       clusterDictRequest,
     ]).then((responses) => {
@@ -126,15 +162,21 @@ export const actions = {
         return acc
       }, {})
 
-      const data = responses[0].data.map((v) => {
+      const results = responses[0].data.results || []
+      const data = results.map((v) => {
         return {
           ...v,
           clusterEvent: get(clusterDict, v.cluster, 'UNCLUSTERED'),
         }
       })
 
-      return { data, clusterDict }
+      return { data, clusterDict, rawData: responses[0].data }
     })
+
+    const { links, pages, total } = rawData
+    commit(SET_PAGES, pages)
+    commit(SET_LINK, links)
+    commit(SET_TOTAL, total)
 
     commit(SET_CLUSTER_DICT, clusterDict)
     commit(SET_DATA, data)

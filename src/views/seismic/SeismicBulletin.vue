@@ -2,18 +2,7 @@
   <div class="bulletin-view">
     <h5>Seismic Bulletin</h5>
 
-    <div class="d-flex">
-      <RangeSelector
-        ref="range-selector"
-        size="sm"
-        class="mb-4"
-        custom-enabled
-        :selected="period"
-        :items="rangeSelector"
-        :max-custom-duration="maxCustomDuration"
-        @period-selected="onPeriodChange"
-      />
-
+    <div class="d-flex mb-2">
       <BButtonGroup class="ml-2">
         <DButtonIcon
           v-b-tooltip.hover
@@ -86,10 +75,10 @@
           :busy="busy"
           :items="data"
           :fields="fieldOptions"
-          :current-page="currentPage"
           :per-page="perPage"
           :filter="filter"
           @filtered="onFiltered"
+          @context-changed="onContextChanged"
         >
           <template #cell(actions)="row">
             <MoreMenu>
@@ -178,7 +167,6 @@ import {
 
 import MoreMenu from '@/components/more-menu'
 import ErrorMessage from '@/components/error-message'
-import RangeSelector from '@/components/range-selector'
 import HypocenterViewer from '@/components/viewer/HypocenterViewer'
 import DButtonIcon from '@/components/base/button-icon/DButtonIcon'
 import { SaveAltIcon } from '@/components/icons/content'
@@ -199,6 +187,11 @@ import { UPDATE_BULLETIN } from '@/store/seismic/bulletin/actions'
 import { SET_EVENT_TYPE } from '@/store/seismic/bulletin/mutations'
 import ClusterMediaImageViewer from './ClusterMediaImageViewer'
 import ClusterMediaStream from './ClusterMediaStream'
+import {
+  SET_PAGE_SIZE,
+  SET_PAGE,
+  SET_TOTAL,
+} from '../../store/seismic/bulletin/mutations'
 
 export default {
   name: 'SeismicBulletin',
@@ -221,7 +214,6 @@ export default {
     ErrorMessage,
     HypocenterViewer,
     MoreMenu,
-    RangeSelector,
   },
   directives: {
     'b-tooltip': VBTooltip,
@@ -229,7 +221,6 @@ export default {
   data() {
     return {
       busy: false,
-      currentPage: 1,
       event: {},
       eventTypesFilter,
       fieldOptions,
@@ -237,10 +228,9 @@ export default {
       labelOptions,
       maxCustomDuration,
       pageOptions: [10, 25, 50, 100, 200],
-      perPage: 10,
       rangeSelector,
       tabIndex: 0,
-      totalRows: 1,
+      totalItems: 0,
       SaveAltIcon,
       RefreshIcon,
       isDownloading: false,
@@ -266,14 +256,45 @@ export default {
         this.setEventType(value)
       },
     },
+    currentPage: {
+      get() {
+        return this.$store.state.seismic.bulletin.page
+      },
+      set(value) {
+        this.setPage(value)
+      },
+    },
+    perPage: {
+      get() {
+        return this.$store.state.seismic.bulletin.pageSize
+      },
+      set(value) {
+        this.setPageSize(value)
+      },
+    },
+    totalRows: {
+      get() {
+        return this.$store.state.seismic.bulletin.total
+      },
+      set(value) {
+        this.setTotal(value)
+      },
+    },
   },
   watch: {
-    eventType(value) {
+    eventType(_value) {
+      this.update()
+    },
+    currentPage(_value) {
+      this.update()
+    },
+    perPage(_value) {
       this.update()
     },
   },
   async mounted() {
     this.update()
+    this.totalItems = this.totalRows
   },
   methods: {
     isPlottableVolcanicEvent,
@@ -290,6 +311,15 @@ export default {
       setEventType(commit, value) {
         return commit(NAMESPACE + '/' + SET_EVENT_TYPE, value)
       },
+      setPage(commit, page) {
+        return commit(NAMESPACE + '/' + SET_PAGE, page)
+      },
+      setPageSize(commit, size) {
+        return commit(NAMESPACE + '/' + SET_PAGE_SIZE, size)
+      },
+      setTotal(commit, total) {
+        return commit(NAMESPACE + '/' + SET_TOTAL, total)
+      },
     }),
     ...mapActions({
       fetchData(dispatch) {
@@ -299,7 +329,6 @@ export default {
     async update() {
       this.busy = true
       this.fetchData().finally(() => {
-        this.totalRows = this.data.length
         this.busy = false
       })
     },
@@ -311,7 +340,6 @@ export default {
       this.isRefreshing = true
       this.busy = true
       this.fetchData().finally(() => {
-        this.totalRows = this.data.length
         this.isRefreshing = false
         this.busy = false
       })
@@ -386,10 +414,8 @@ export default {
         this.update()
       }
     },
-    onFiltered(filteredItems) {
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
-    },
+    onFiltered(filteredItems) {},
+    onContextChanged(ctx) {},
   },
 }
 </script>

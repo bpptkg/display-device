@@ -1,3 +1,8 @@
 export const SET_CLUSTER_DICT = 'setClusterDict'
 export const SET_EVENT_TYPE = 'setEventType'
 export const RESET_EVENT_TYPE = 'resetEventType'
+export const SET_PAGE = 'setPage'
+export const SET_PAGE_SIZE = 'setPageSize'
+export const SET_LINK = 'setLink'
+export const SET_PAGES = 'setPages'
+export const SET_TOTAL = 'setTotal'
