@@ -230,7 +230,6 @@ export default {
       pageOptions: [10, 25, 50, 100, 200],
       rangeSelector,
       tabIndex: 0,
-      totalItems: 0,
       SaveAltIcon,
       RefreshIcon,
       isDownloading: false,
@@ -294,7 +293,6 @@ export default {
   },
   async mounted() {
     this.update()
-    this.totalItems = this.totalRows
   },
   methods: {
     isPlottableVolcanicEvent,

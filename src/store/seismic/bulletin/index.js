@@ -44,7 +44,6 @@ export const initialState = {
   page: 1,
   pages: 0,
   total: 0,
-  totalItems: 0,
   pageSize: 10,
   hasNext: false,
   hasPrevious: false,
