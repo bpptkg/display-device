@@ -1,28 +1,22 @@
 <template>
   <div>
-    <Viewer :images="images" :options="options" @inited="inited">
-      <template #default="scope">
-        <div v-for="(img, index) in scope.images" :key="index">
-          <BOverlay :show="isFetching">
-            <img
-              v-if="isAvailable"
-              :src="img.src"
-              alt="Cluster match plot"
-              class="w-100 img"
-            />
-            <div
-              v-else
-              class="d-flex align-items-center justify-content-center"
-              style="height: 300px"
-            >
-              <ErrorMessage>
-                Cluster match plot is not available.
-              </ErrorMessage>
-            </div>
-          </BOverlay>
+    <div v-for="(img, index) in images" :key="index">
+      <BOverlay :show="isFetching">
+        <img
+          v-if="isAvailable"
+          :src="img.src"
+          alt="Cluster match plot"
+          class="w-100 img"
+        />
+        <div
+          v-else
+          class="d-flex align-items-center justify-content-center"
+          style="height: 300px"
+        >
+          <ErrorMessage> Cluster match plot is not available. </ErrorMessage>
         </div>
-      </template>
-    </Viewer>
+      </BOverlay>
+    </div>
 
     <div
       v-if="images.length == 0"
@@ -35,7 +29,6 @@
 </template>
 
 <script>
-import { component as Viewer } from 'v-viewer'
 import { BOverlay } from 'bootstrap-vue'
 import { buildClusterMediaParentLink } from '@/utils/bulletin'
 import { ApiKeyBasedClient as client } from '@/utils/client'
@@ -46,7 +39,6 @@ const noop = (_) => {}
 export default {
   name: 'ClusterMediaImageViewer',
   components: {
-    Viewer,
     BOverlay,
     ErrorMessage,
   },
@@ -108,9 +100,4 @@ export default {
 .img {
   cursor: pointer;
 }
-</style>
-
-<style lang="scss">
-// We need to load patched SCSS from viewerjs libary.
-@import '@/lib/viewerjs/index';
 </style>
