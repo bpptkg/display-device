@@ -1,7 +1,7 @@
 <template>
   <div>
     <Viewer :images="images" :options="options" @inited="inited">
-      <template slot-scope="scope">
+      <template #default="scope">
         <div v-for="(img, index) in scope.images" :key="index">
           <BOverlay :show="isFetching">
             <img
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import Viewer from 'v-viewer'
+import { component as Viewer } from 'v-viewer'
 import { BOverlay } from 'bootstrap-vue'
 import { buildClusterMediaParentLink } from '@/utils/bulletin'
 import { ApiKeyBasedClient as client } from '@/utils/client'
