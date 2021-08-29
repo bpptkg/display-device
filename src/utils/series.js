@@ -72,10 +72,10 @@ export const toUnixMiliSeconds = (value) => {
  * arguments.
  */
 export const mapFieldColumns = (data, timestamp, ...columnNames) => {
-  return data.map((item) => {
+  return data.map((item, index) => {
     return [
       moment(item[timestamp]).unix() * 1000, // Convert to unix miliseconds
-      ...columnNames.map((col, index) => {
+      ...columnNames.map((col) => {
         if (Array.isArray(col)) {
           if (col.length !== 2)
             throw new Error('Item array must be length of 2')
@@ -93,8 +93,8 @@ export const mapFieldColumns = (data, timestamp, ...columnNames) => {
 }
 
 export const getFieldColumns = (data, ...columnNames) => {
-  return data.map((item) => {
-    return columnNames.map((col, index) => {
+  return data.map((item, index) => {
+    return columnNames.map((col) => {
       if (Array.isArray(col)) {
         if (col.length !== 2) throw new Error('Item array must be length of 2')
         const [name, callback] = col
