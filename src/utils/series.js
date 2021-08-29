@@ -68,7 +68,7 @@ export const toUnixMiliSeconds = (value) => {
  * @param {Array} data Array of objects.
  * @param {String} timestamp Timestamp field name.
  * @param  {...[String | Array]} columnNames Column name to get the value.
- * @returns {Array} Array of two or more columns asscociated with getter
+ * @returns {Array} Array of two or more columns associated with getter
  * arguments.
  */
 export const mapFieldColumns = (data, timestamp, ...columnNames) => {
@@ -134,13 +134,13 @@ export const createCircleTemplate = (color, size = 12) => {
 
 export const createDividerTemplate = ({
   margin = '5px 0',
-  bordercolor = '#fff',
+  borderColor = '#fff',
   borderWidth = '1px',
   borderType = 'solid',
   height = '1px',
   width = '100%',
 } = {}) => {
-  return `<span style="margin:${margin};border-top:${borderWidth} ${borderType} ${bordercolor};display:block;height:${height};width:${width};"></span>`
+  return `<span style="margin:${margin};border-top:${borderWidth} ${borderType} ${borderColor};display:block;height:${height};width:${width};"></span>`
 }
 
 /**
