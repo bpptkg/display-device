@@ -100,9 +100,9 @@ export default {
 
 <style lang="scss" scoped>
 .collection-item {
-  &:hover {
-    box-shadow: 0 0 30px #ccd1d4;
-  }
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 4px 2px rgb(60 64 67 / 15%);
+  background: #fff;
+  border-radius: 10px;
 }
 
 .collection-item-title {
