@@ -5,7 +5,7 @@
  * @param {params} Parameters
  * @param {params.fractionDigits} Number of decimal digits
  * to display, defaults to using `toLocaleString` defaults.
- * @param {params.maxLength} Max output char lenght at the
+ * @param {params.maxLength} Max output char length at the
  * expense of precision, if the output is longer than this,
  * the formatter switches to using exponential notation.
  * @param {params.factor} Value is multiplied by this factor,
