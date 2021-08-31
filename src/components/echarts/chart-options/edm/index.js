@@ -8,18 +8,43 @@ import {
 } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
+/**
+ * EDM chart view types.
+ *
+ * slope_distance: EDM slope distance chart.
+ * slope_distance_and_rate: EDM slope distance and rate chart.
+ * csd_and_rate: EDM CSD (Change of Slope Distance) and rate chart.
+ */
 export const CHART_VIEWS = Object.freeze({
   slope_distance: 'slope_distance',
   slope_distance_and_rate: 'slope_distance_and_rate',
   csd_and_rate: 'csd_and_rate',
 })
 
+/**
+ * EDM chart series types.
+ */
 export const SERIES = Object.freeze({
   slope_distance: 'Slope Dist.',
   rate: 'Rate',
   csd: 'CSD',
 })
 
+/**
+ * Create EDM ECharts series data.
+ *
+ * @param {Array} data Array of EDM data fetched from external API. It probably
+ * obtained from EDM store because it contains data from many benchmark and
+ * reflector combination.
+ *
+ * @param {Array} reflectors Array of EDM reflectors associated with particular
+ * benchmark.
+ *
+ * @param {Object} options Optional argument to adjust series data based on
+ * chart view type.
+ *
+ * @returns {Array} Array of ECharts series.
+ */
 export const createSeries = (
   data,
   reflectors,
@@ -73,7 +98,7 @@ export const createSeries = (
         const rateSeries = {
           data: mapFieldColumns(
             getSeriesByIndex(data, index),
-            'timestamp',
+            'timestamp', // Index 0
             'rate', // Index 1
             'intercept', // Index 2
             'r2', // Index 3
@@ -100,8 +125,8 @@ export const createRegressionSeries = (
   data,
   { chartView = CHART_VIEWS.slope_distance } = {}
 ) => {
-  // Data from regression info are in unix days and milimeter. So, we need to
-  // convert unix days to miliseconds and milimeter to meter.
+  // Data from regression info are in Unix days and milimeter. So, we need to
+  // convert Unix days to miliseconds and milimeter to meter.
   return data.map((item, index) => {
     return {
       data: item.points.length
@@ -218,7 +243,7 @@ export const baseChartOptions = {
 }
 
 /**
- * Calculate adaptive height based on number of suplots.
+ * Calculate adaptive height based on number of subplots.
  *
  * @param {Number} nrows Number of subplots
  * @returns {Number} Height in pixel.
@@ -240,6 +265,11 @@ export const calculateAdaptiveHeight = (nrows) => {
   }
 }
 
+/**
+ * Create tooltip formatter function based on the chart view type.
+ * @param {Object} chartView Chart view type.
+ * @returns {Function} Tooltip formatter function.
+ */
 export const tooltipFormatter = (chartView) => {
   const noData = '-'
 
