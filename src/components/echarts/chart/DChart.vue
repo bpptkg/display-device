@@ -39,6 +39,8 @@ import 'echarts/lib/component/visualMap'
 import 'echarts/lib/component/visualMapContinuous'
 import 'echarts/lib/component/visualMapPiecewise'
 
+// Import custom visual map. It used to add the features that ECharts hasn't
+// provided yet.
 import '@/lib/echarts-extension/custom-visualmap/visualMapCustomPiecewise'
 
 // Import ECharts themes.
