@@ -1,6 +1,6 @@
 <template>
   <div class="display-banner d-flex justify-content-center">
-    <h5>Present Realtime Chart on Display Device.</h5>
+    <h5>Present Realtime Charts on Display Device.</h5>
   </div>
 </template>
 
