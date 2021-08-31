@@ -84,6 +84,8 @@ export const createShortNameFromPeriod = (period) => {
       return `${count}mo`
     case DateRangeTypes.YEAR:
       return `${count}y`
+    case DateRangeTypes.YTD:
+      return `ytd`
     default:
       return `custom`
   }
