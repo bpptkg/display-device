@@ -37,6 +37,7 @@ import {
   getStatsInfo,
   getLinearRegressionInfo,
 } from '@/components/echarts/chart-options/edm/utils'
+import { EDMBenchmark } from '@/constants/edm'
 import fieldOptions, { linregressFieldOptions } from '@/store/edm/field-options'
 import { SET_SHOW_REGRESSION_LINE } from '@/store/edm/mutations'
 
@@ -52,7 +53,7 @@ export default {
     return {
       fieldOptions,
       linregressFieldOptions,
-      benchmark: 'BAB0',
+      benchmark: EDMBenchmark.BAB0,
     }
   },
 

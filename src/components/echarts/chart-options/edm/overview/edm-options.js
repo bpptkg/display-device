@@ -1,38 +1,40 @@
+import { EDMBenchmark, EDMReflector } from '@/constants/edm'
+
 export default [
   {
-    benchmark: 'BAB0',
-    reflector: 'RB1',
+    benchmark: EDMBenchmark.BAB0,
+    reflector: EDMReflector.RB1,
   },
   {
-    benchmark: 'STA0',
-    reflector: 'RB3',
+    benchmark: EDMBenchmark.STA0,
+    reflector: EDMReflector.RB3,
   },
   {
-    benchmark: 'JRK0',
-    reflector: 'RJ1',
+    benchmark: EDMBenchmark.JRK0,
+    reflector: EDMReflector.RJ1,
   },
   {
-    benchmark: 'KAJ0',
-    reflector: 'RJ1',
+    benchmark: EDMBenchmark.KAJ0,
+    reflector: EDMReflector.RJ1,
   },
   {
-    benchmark: 'SEL0',
-    reflector: 'RS1',
+    benchmark: EDMBenchmark.SEL0,
+    reflector: EDMReflector.RS1,
   },
   {
-    benchmark: 'GEB0',
-    reflector: 'RS1',
+    benchmark: EDMBenchmark.GEB0,
+    reflector: EDMReflector.RS1,
   },
   {
-    benchmark: 'MRY0',
-    reflector: 'RM1',
+    benchmark: EDMBenchmark.MRY0,
+    reflector: EDMReflector.RM1,
   },
   {
-    benchmark: 'BEL0',
-    reflector: 'RM1',
+    benchmark: EDMBenchmark.BEL0,
+    reflector: EDMReflector.RM1,
   },
   {
-    benchmark: 'DEL0',
-    reflector: 'RD1',
+    benchmark: EDMBenchmark.DEL0,
+    reflector: EDMReflector.RD1,
   },
 ]
