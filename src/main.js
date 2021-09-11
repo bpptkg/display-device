@@ -43,7 +43,7 @@ const initApp = () => {
         process.env.NODE_ENV === 'production' ||
         process.env.NODE_ENV === 'staging'
       ) {
-        return (window.location.href = process.env.VUE_APP_CENDANA_URL)
+        return (window.location.href = process.env.VUE_APP_CENDANA_URL || '/')
       } else {
         // Skip authentication on local development.
         initApp()
