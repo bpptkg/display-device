@@ -1,4 +1,4 @@
-export const EDMBenchmarks = Object.freeze({
+export const EDMBenchmark = Object.freeze({
   BAB0: 'BAB0',
   BAB1: 'BAB1',
   BAT0: 'BAT0',
@@ -16,7 +16,7 @@ export const EDMBenchmarks = Object.freeze({
   TRI0: 'TRI0',
 })
 
-export const EDMReflectors = Object.freeze({
+export const EDMReflector = Object.freeze({
   RB1: 'RB1',
   RB2: 'RB2',
   RB3: 'RB3',
@@ -37,25 +37,45 @@ export const EDMReflectors = Object.freeze({
   RS4: 'RS4',
 })
 
-export const edmBenchmarks = Object.values(EDMBenchmarks)
-export const edmReflectors = Object.values(EDMReflectors)
+export const edmBenchmarks = Object.values(EDMBenchmark)
+export const edmReflectors = Object.values(EDMReflector)
 
-export const EDMBenchmarkReflectorRelations = {
-  BAB0: ['RB1', 'RB2'],
-  BAB1: ['RB1', 'RB2'],
-  BAT0: ['RK1', 'RK2'],
-  BEL0: ['RM1', 'RM2'],
-  CEP0: ['RS1', 'RS2', 'RS3', 'RS4'],
-  DEL0: ['RD1'],
-  GEB0: ['RS1', 'RS2', 'RS4'],
-  JRK0: ['RJ1', 'RJ2'],
-  KAJ0: ['RJ1', 'RJ2', 'RS2', 'RS3'],
-  KAL0: ['RK2', 'RK3'],
-  MRY0: ['RM1', 'RM2'],
-  SAP0: ['RD1'],
-  SEL0: ['RS1', 'RS2', 'RS3', 'RS4'],
-  STA0: ['RB1', 'RB2', 'RB3', 'RJ2'],
-  TRI0: ['RK2', 'RK3'],
+export const EDMBenchmarkReflectorRelation = {
+  [EDMBenchmark.BAB0]: [EDMReflector.RB1, EDMReflector.RB2],
+  [EDMBenchmark.BAB1]: [EDMReflector.RB1, EDMReflector.RB2],
+  [EDMBenchmark.BAT0]: [EDMReflector.RK1, EDMReflector.RK2],
+  [EDMBenchmark.BEL0]: [EDMReflector.RM1, EDMReflector.RM2],
+  [EDMBenchmark.CEP0]: [
+    EDMReflector.RS1,
+    EDMReflector.RS2,
+    EDMReflector.RS3,
+    EDMReflector.RS4,
+  ],
+  [EDMBenchmark.DEL0]: [EDMReflector.RD1],
+  [EDMBenchmark.GEB0]: [EDMReflector.RS1, EDMReflector.RS2, EDMReflector.RS4],
+  [EDMBenchmark.JRK0]: [EDMReflector.RJ1, EDMReflector.RJ2],
+  [EDMBenchmark.KAJ0]: [
+    EDMReflector.RJ1,
+    EDMReflector.RJ2,
+    EDMReflector.RS2,
+    EDMReflector.RS3,
+  ],
+  [EDMBenchmark.KAL0]: [EDMReflector.RK2, EDMReflector.RK3],
+  [EDMBenchmark.MRY0]: [EDMReflector.RM1, EDMReflector.RM2],
+  [EDMBenchmark.SAP0]: [EDMReflector.RD1],
+  [EDMBenchmark.SEL0]: [
+    EDMReflector.RS1,
+    EDMReflector.RS2,
+    EDMReflector.RS3,
+    EDMReflector.RS4,
+  ],
+  [EDMBenchmark.STA0]: [
+    EDMReflector.RB1,
+    EDMReflector.RB2,
+    EDMReflector.RB3,
+    EDMReflector.RJ2,
+  ],
+  [EDMBenchmark.TRI0]: [EDMReflector.RK2, EDMReflector.RK3],
 }
 
 export const FIELDS = {
@@ -64,79 +84,79 @@ export const FIELDS = {
 }
 
 export const edmBenchmarkInfo = {
-  BAB0: {
-    code: 'BAB0',
+  [EDMBenchmark.BAB0]: {
+    code: EDMBenchmark.BAB0,
     name: 'Babadan 0',
-    reflectors: EDMBenchmarkReflectorRelations.BAB0,
+    reflectors: EDMBenchmarkReflectorRelation.BAB0,
   },
-  BAB1: {
-    code: 'BAB1',
+  [EDMBenchmark.BAB1]: {
+    code: EDMBenchmark.BAB1,
     name: 'Babadan 1',
-    reflectors: EDMBenchmarkReflectorRelations.BAB1,
+    reflectors: EDMBenchmarkReflectorRelation.BAB1,
   },
-  BAT0: {
-    code: 'BAT0',
+  [EDMBenchmark.BAT0]: {
+    code: EDMBenchmark.BAT0,
     name: 'Batu Alin',
-    reflectors: EDMBenchmarkReflectorRelations.BAT0,
+    reflectors: EDMBenchmarkReflectorRelation.BAT0,
   },
-  BEL0: {
-    code: 'BEL0',
+  [EDMBenchmark.BEL0]: {
+    code: EDMBenchmark.BEL0,
     name: 'Beling',
-    reflectors: EDMBenchmarkReflectorRelations.BEL0,
+    reflectors: EDMBenchmarkReflectorRelation.BEL0,
   },
-  CEP0: {
-    code: 'CEP0',
+  [EDMBenchmark.CEP0]: {
+    code: EDMBenchmark.CEP0,
     name: 'Cepogo',
-    reflectors: EDMBenchmarkReflectorRelations.CEP0,
+    reflectors: EDMBenchmarkReflectorRelation.CEP0,
   },
-  DEL0: {
-    code: 'DEL0',
+  [EDMBenchmark.DEL0]: {
+    code: EDMBenchmark.DEL0,
     name: 'Deles',
-    reflectors: EDMBenchmarkReflectorRelations.DEL0,
+    reflectors: EDMBenchmarkReflectorRelation.DEL0,
   },
-  GEB0: {
-    code: 'GEB0',
+  [EDMBenchmark.GEB0]: {
+    code: EDMBenchmark.GEB0,
     name: 'Gebyok',
-    reflectors: EDMBenchmarkReflectorRelations.GEB0,
+    reflectors: EDMBenchmarkReflectorRelation.GEB0,
   },
-  JRK0: {
-    code: 'JRK0',
+  [EDMBenchmark.JRK0]: {
+    code: EDMBenchmark.JRK0,
     name: 'Jrakah',
-    reflectors: EDMBenchmarkReflectorRelations.JRK0,
+    reflectors: EDMBenchmarkReflectorRelation.JRK0,
   },
-  KAJ0: {
-    code: 'KAJ0',
+  [EDMBenchmark.KAJ0]: {
+    code: EDMBenchmark.KAJ0,
     name: 'Kajor',
-    reflectors: EDMBenchmarkReflectorRelations.KAJ0,
+    reflectors: EDMBenchmarkReflectorRelation.KAJ0,
   },
-  KAL0: {
-    code: 'KAL0',
+  [EDMBenchmark.KAL0]: {
+    code: EDMBenchmark.KAL0,
     name: 'Kaliurang',
-    reflectors: EDMBenchmarkReflectorRelations.KAL0,
+    reflectors: EDMBenchmarkReflectorRelation.KAL0,
   },
-  MRY0: {
-    code: 'MRY0',
+  [EDMBenchmark.MRY0]: {
+    code: EDMBenchmark.MRY0,
     name: 'Mriyan',
-    reflectors: EDMBenchmarkReflectorRelations.MRY0,
+    reflectors: EDMBenchmarkReflectorRelation.MRY0,
   },
-  SAP0: {
-    code: 'SAP0',
+  [EDMBenchmark.SAP0]: {
+    code: EDMBenchmark.SAP0,
     name: 'Sapu Angin',
-    reflectors: EDMBenchmarkReflectorRelations.SAP0,
+    reflectors: EDMBenchmarkReflectorRelation.SAP0,
   },
-  SEL0: {
-    code: 'SEL0',
+  [EDMBenchmark.SEL0]: {
+    code: EDMBenchmark.SEL0,
     name: 'Selo',
-    reflectors: EDMBenchmarkReflectorRelations.SEL0,
+    reflectors: EDMBenchmarkReflectorRelation.SEL0,
   },
-  STA0: {
-    code: 'STA0',
+  [EDMBenchmark.STA0]: {
+    code: EDMBenchmark.STA0,
     name: 'Stabelan',
-    reflectors: EDMBenchmarkReflectorRelations.STA0,
+    reflectors: EDMBenchmarkReflectorRelation.STA0,
   },
-  TRI0: {
-    code: 'TRI0',
+  [EDMBenchmark.TRI0]: {
+    code: EDMBenchmark.TRI0,
     name: 'Tritis',
-    reflectors: EDMBenchmarkReflectorRelations.TRI0,
+    reflectors: EDMBenchmarkReflectorRelation.TRI0,
   },
 }

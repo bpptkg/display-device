@@ -3,7 +3,7 @@ import moment from 'moment'
 import client from '@/utils/client'
 import { calculatePeriod } from '@/utils/datetime'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
-import { EDMBenchmarkReflectorRelations } from '@/constants/edm'
+import { EDMBenchmarkReflectorRelation, EDMBenchmark } from '@/constants/edm'
 import annotations from '@/components/event-annotation/annotations'
 import { CHART_VIEWS } from '@/components/echarts/chart-options/edm'
 import {
@@ -48,7 +48,7 @@ export const initState = (
     ...initialState,
     period,
     benchmark,
-    reflectors: EDMBenchmarkReflectorRelations[benchmark],
+    reflectors: EDMBenchmarkReflectorRelation[benchmark],
     startTime,
     endTime,
     isVectorSupported,
@@ -122,7 +122,9 @@ const defaultPeriod = rangeSelector[2]
 
 const BAB0 = {
   namespaced: true,
-  state: initState('BAB0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.BAB0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -130,7 +132,9 @@ const BAB0 = {
 
 const BAB1 = {
   namespaced: true,
-  state: initState('BAB1', defaultPeriod, { isVectorSupported: true }),
+  state: initState(EDMBenchmark.BAB1, defaultPeriod, {
+    isVectorSupported: true,
+  }),
   getters,
   mutations,
   actions,
@@ -138,7 +142,9 @@ const BAB1 = {
 
 const BAT0 = {
   namespaced: true,
-  state: initState('BAT0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.BAT0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -146,7 +152,9 @@ const BAT0 = {
 
 const BEL0 = {
   namespaced: true,
-  state: initState('BEL0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.BEL0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -154,7 +162,9 @@ const BEL0 = {
 
 const CEP0 = {
   namespaced: true,
-  state: initState('CEP0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.CEP0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -162,7 +172,9 @@ const CEP0 = {
 
 const DEL0 = {
   namespaced: true,
-  state: initState('DEL0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.DEL0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -170,7 +182,9 @@ const DEL0 = {
 
 const GEB0 = {
   namespaced: true,
-  state: initState('GEB0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.GEB0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -178,7 +192,9 @@ const GEB0 = {
 
 const JRK0 = {
   namespaced: true,
-  state: initState('JRK0', defaultPeriod, { isVectorSupported: true }),
+  state: initState(EDMBenchmark.JRK0, defaultPeriod, {
+    isVectorSupported: true,
+  }),
   getters,
   mutations,
   actions,
@@ -186,7 +202,9 @@ const JRK0 = {
 
 const KAJ0 = {
   namespaced: true,
-  state: initState('KAJ0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.KAJ0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -194,7 +212,9 @@ const KAJ0 = {
 
 const KAL0 = {
   namespaced: true,
-  state: initState('KAL0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.KAL0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -202,7 +222,9 @@ const KAL0 = {
 
 const MRY0 = {
   namespaced: true,
-  state: initState('MRY0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.MRY0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -210,7 +232,9 @@ const MRY0 = {
 
 const SAP0 = {
   namespaced: true,
-  state: initState('SAP0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.SAP0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -218,7 +242,9 @@ const SAP0 = {
 
 const SEL0 = {
   namespaced: true,
-  state: initState('SEL0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.SEL0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
@@ -226,7 +252,9 @@ const SEL0 = {
 
 const STA0 = {
   namespaced: true,
-  state: initState('STA0', defaultPeriod, { isVectorSupported: true }),
+  state: initState(EDMBenchmark.STA0, defaultPeriod, {
+    isVectorSupported: true,
+  }),
   getters,
   mutations,
   actions,
@@ -234,7 +262,9 @@ const STA0 = {
 
 const TRI0 = {
   namespaced: true,
-  state: initState('TRI0', defaultPeriod, { isVectorSupported: false }),
+  state: initState(EDMBenchmark.TRI0, defaultPeriod, {
+    isVectorSupported: false,
+  }),
   getters,
   mutations,
   actions,
