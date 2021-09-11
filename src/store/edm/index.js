@@ -208,6 +208,14 @@ const MRY0 = {
   actions,
 }
 
+const SAP0 = {
+  namespaced: true,
+  state: initState('SAP0', defaultPeriod, { isVectorSupported: false }),
+  getters,
+  mutations,
+  actions,
+}
+
 const SEL0 = {
   namespaced: true,
   state: initState('SEL0', defaultPeriod, { isVectorSupported: false }),
@@ -247,6 +255,7 @@ export default {
     KAJ0,
     KAL0,
     MRY0,
+    SAP0,
     SEL0,
     STA0,
     TRI0,

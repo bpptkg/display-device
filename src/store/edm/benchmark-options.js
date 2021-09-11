@@ -70,6 +70,13 @@ export default [
     isVectorSupported: false,
   },
   {
+    value: 'SAP0',
+    text: 'Sapu Angin',
+    chartTitle: 'EDM Sapu Angin',
+    coordChartTitle: 'EDM Coordinate Sapu Angin',
+    isVectorSupported: false,
+  },
+  {
     value: 'SEL0',
     text: 'Selo',
     chartTitle: 'EDM Selo',

@@ -10,6 +10,7 @@ export const EDMBenchmarks = Object.freeze({
   KAJ0: 'KAJ0',
   KAL0: 'KAL0',
   MRY0: 'MRY0',
+  SAP0: 'SAP0',
   SEL0: 'SEL0',
   STA0: 'STA0',
   TRI0: 'TRI0',
@@ -51,6 +52,7 @@ export const EDMBenchmarkReflectorRelations = {
   KAJ0: ['RJ1', 'RJ2', 'RS2', 'RS3'],
   KAL0: ['RK2', 'RK3'],
   MRY0: ['RM1', 'RM2'],
+  SAP0: ['RD1'],
   SEL0: ['RS1', 'RS2', 'RS3', 'RS4'],
   STA0: ['RB1', 'RB2', 'RB3', 'RJ2'],
   TRI0: ['RK2', 'RK3'],
@@ -116,6 +118,11 @@ export const edmBenchmarkInfo = {
     code: 'MRY0',
     name: 'Mriyan',
     reflectors: EDMBenchmarkReflectorRelations.MRY0,
+  },
+  SAP0: {
+    code: 'SAP0',
+    name: 'Sapu Angin',
+    reflectors: EDMBenchmarkReflectorRelations.SAP0,
   },
   SEL0: {
     code: 'SEL0',
