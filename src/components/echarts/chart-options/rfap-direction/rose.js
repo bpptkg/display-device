@@ -43,7 +43,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
     },
     backgroundColor: '#fff',
     polar: {
-      radius: '90%',
+      radius: '60%',
     },
     radiusAxis: {
       axisLine: { show: false },
