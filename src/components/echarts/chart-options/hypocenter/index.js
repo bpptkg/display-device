@@ -61,9 +61,10 @@ export const createSeries = (
       data: data.map((v) => {
         const utm = fromLatLon(v.latitude, v.longitude, ZONE_NUMBER)
 
-        // Ordering on this return array are used in the tooltip and visual map
+        // Ordering of this array is used in the tooltip and visual map
         // components. So, if you change the order index, you have to also
-        // change corresponding dependencies.
+        // change corresponding dependencies, particularly in the tooltip
+        // formatter function.
         return [
           utm.easting, // Array index: 0
           utm.northing, // 1
