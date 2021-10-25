@@ -74,6 +74,12 @@ export const mutations = {
   },
 }
 
+export const getSsamAdaptiveSampling = (startTime, endTime) => {
+  const maxDuration = 7 // Duration is days
+  const duration = moment.duration(endTime.diff(startTime)).asDays()
+  return duration >= maxDuration ? 'ssam1' : 'ssam'
+}
+
 export const actions = {
   ...baseActions,
   async [FETCH_RSAM]({ commit, state }) {
@@ -87,7 +93,7 @@ export const actions = {
           timestamp__gte: state.startTime.format(DATETIME_FORMAT),
           timestamp__lt: state.endTime.format(DATETIME_FORMAT),
           nolimit: true,
-          sampling: 'ssam',
+          sampling: getSsamAdaptiveSampling(state.startTime, state.endTime),
         },
       })
       .then((response) => response.data)
