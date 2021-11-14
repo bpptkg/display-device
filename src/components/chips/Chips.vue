@@ -1,12 +1,23 @@
 <template>
-  <div class="chips" :class="classNames" @click="emitClick">
+  <div
+    v-b-tooltip.hover
+    class="chips"
+    :class="classNames"
+    @click="emitClick"
+    :title="text || tooltip || ''"
+  >
     {{ text }}
   </div>
 </template>
 
 <script>
+import { VBTooltip } from 'bootstrap-vue'
+
 export default {
   name: 'Chips',
+  directives: {
+    VBTooltip,
+  },
   props: {
     text: {
       type: String,
@@ -18,6 +29,10 @@ export default {
     },
     value: {
       type: Number,
+    },
+    tooltip: {
+      type: String,
+      default: '',
     },
   },
   computed: {
