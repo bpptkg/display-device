@@ -76,7 +76,7 @@ export const createYAxis = () => {
   ]
 }
 
-const smartIndex = (index, length, clength) => {
+export const smartIndex = (index, length, clength) => {
   if (length === clength) {
     return index
   }

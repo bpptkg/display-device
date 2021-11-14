@@ -5,13 +5,18 @@ import { defaultToolbox } from '../common/toolbox'
 import { DATE_FORMAT, DATETIME_FORMAT } from '@/constants/date'
 import { Sampling } from '@/constants/rfap-distance'
 import { defaultTooltipFormatter } from '@/utils/echarts/tooltip'
-import { createLegend, SeriesNames } from '../rfap-distdir'
+import {
+  createLegend,
+  SeriesNames,
+  colorMap,
+  smartIndex,
+} from '../rfap-distdir'
 
 // Exclude Kantor BPPTKG station and convert objects to array.
 export const STATIONS = _.values(_.omit(ALL_STATIONS, ['monroom']))
 
 export const createSeries = (data) => {
-  const seriesOptions = STATIONS.map((station) => {
+  const seriesOptions = STATIONS.map((station, index) => {
     return {
       areaStyle: {},
       data: mapFieldColumns(data, 'timestamp', [
@@ -23,6 +28,9 @@ export const createSeries = (data) => {
           )
         },
       ]),
+      itemStyle: {
+        color: colorMap[smartIndex(index, STATIONS.length, colorMap.length)],
+      },
       name: station.name,
       type: 'bar',
       stack: 'one',
