@@ -73,8 +73,8 @@
           observation. <br />
         </DNote>
         <DNote>
-          &mdash; By default, all RF and AP types are displayed when no type
-          filter selected. <br />
+          &mdash; By default, all RF and AP whose type, e.g. "Terlihat",
+          "Terdengar" or not are displayed when no type filter selected. <br />
         </DNote>
 
         <BCard title="Statistics" title-tag="h6" class="stats-panel mt-3">
