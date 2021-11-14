@@ -129,7 +129,7 @@ import DChart from '@/components/echarts/chart/DChart'
 import MoreMenu from '@/components/more-menu'
 import Chips from '@/components/chips'
 import chartMixin from '@/components/mixins/charts'
-import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
+import { createShortNameFromPeriod } from '@/utils/bulletin'
 import { TimelineIcon } from '@/components/icons/content'
 
 import {
@@ -284,10 +284,10 @@ export default {
     }),
 
     async downloadData() {
-      const blob = new Blob([createCSVContent(this.data)], {
-        type: 'text/csv;charset=utf-8',
+      const blob = new Blob([JSON.stringify(this.data)], {
+        type: 'text/json;charset=utf-8',
       })
-      saveAs(blob, `rfap-type-${createShortNameFromPeriod(this.period)}.csv`)
+      saveAs(blob, `rfap-type-${createShortNameFromPeriod(this.period)}.json`)
     },
 
     onRfapTypeChange(value) {
