@@ -43,7 +43,7 @@ export const initialState = {
       value: 3,
       text: 'Terlihat & Terdengar',
       selected: false,
-      tooltip: 'Guguran dan Awan Panas yang terlihat dan terdengar',
+      tooltip: 'Guguran dan Awan Panas yang terlihat dan sekaligus terdengar',
     },
   ],
 }
