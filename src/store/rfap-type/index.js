@@ -31,19 +31,19 @@ export const initialState = {
       value: 1,
       text: 'Terlihat',
       selected: false,
-      tooltip: 'Guguran yang hanya terlihat',
+      tooltip: 'Guguran dan Awan Panas yang hanya terlihat',
     },
     {
       value: 2,
       text: 'Terdengar',
       selected: false,
-      tooltip: 'Guguran yang hanya terdengar',
+      tooltip: 'Guguran dan Awan Panas yang hanya terdengar',
     },
     {
       value: 3,
       text: 'Terlihat & Terdengar',
       selected: false,
-      tooltip: 'Guguran yang terlihat dan terdengar',
+      tooltip: 'Guguran dan Awan Panas yang terlihat dan terdengar',
     },
   ],
 }
