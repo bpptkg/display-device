@@ -149,6 +149,10 @@ export default {
               title: 'RF & AP Direction',
               href: '/observation/rfap-direction',
             },
+            {
+              title: 'RF & AP Type',
+              href: '/observation/rfap-type',
+            },
           ],
         },
         {

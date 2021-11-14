@@ -222,6 +222,10 @@ const routes = [
         path: 'rfap-direction',
         component: () => import('../views/observation/RfapDirectionView'),
       },
+      {
+        path: 'rfap-type',
+        component: () => import('../views/observation/RfapTypeView'),
+      },
     ],
   },
   {

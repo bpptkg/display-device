@@ -157,7 +157,7 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
   return seriesOptions
 }
 
-const createLegend = (options = {}) => {
+export const createLegend = (options = {}) => {
   return {
     type: 'plain',
     bottom: 0,
