@@ -77,13 +77,14 @@ export const mapFieldColumns = (data, timestamp, ...columnNames) => {
       moment(item[timestamp]).unix() * 1000, // Convert to unix miliseconds
       ...columnNames.map((col) => {
         if (Array.isArray(col)) {
-          if (col.length !== 2)
-            throw new Error('Item array must be length of 2')
-          const [name, callback] = col
-          return callback(item[name], item, index, data)
+          if (col.length < 2) {
+            throw new Error('Column getters length must not less than 2')
+          }
+          const [name, callback, altName] = col
+          return callback(item[name] || item[altName], item, index, data)
         } else if (typeof col === 'object') {
-          const { name, callback } = col
-          return callback(item[name], item, index, data)
+          const { name, callback, altName } = col
+          return callback(item[name] || item[altName], item, index, data)
         } else {
           return item[col]
         }
@@ -96,12 +97,14 @@ export const getFieldColumns = (data, ...columnNames) => {
   return data.map((item, index) => {
     return columnNames.map((col) => {
       if (Array.isArray(col)) {
-        if (col.length !== 2) throw new Error('Item array must be length of 2')
-        const [name, callback] = col
-        return callback(item[name], item, index, data)
+        if (col.length < 2) {
+          throw new Error('Column getters length must not less than 2')
+        }
+        const [name, callback, altName] = col
+        return callback(item[name] || item[altName], item, index, data)
       } else if (typeof col === 'object') {
-        const { name, callback } = col
-        return callback(item[name], item, index, data)
+        const { name, callback, altName } = col
+        return callback(item[name] || item[altName], item, index, data)
       } else {
         return item[col]
       }
