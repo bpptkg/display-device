@@ -18,6 +18,9 @@
           >
             RF &amp; AP Direction
           </SidepanelMenuItem>
+          <SidepanelMenuItem key="3" round="left" to="/observation/rfap-type">
+            RF &amp; AP Type
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
