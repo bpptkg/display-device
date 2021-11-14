@@ -4,7 +4,7 @@ Display Device (DD) is a full front-end app built using
 [Vue.js](https://vuejs.org/), [Bootstrap](https://getbootstrap.com/),
 [ECharts](https://echarts.apache.org/), and many awesome open source libraries.
 It provides various charts and analytics information about BPPTKG monitoring
-data.
+data. See example screenshots [here](./resources/screenshot.png).
 
 For current version, DD only supports Vue.js version 2, Bootstrap version 4, and
 ECharts version 4.
