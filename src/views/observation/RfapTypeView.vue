@@ -55,7 +55,7 @@
             :text="type.text"
             :active="type.selected"
             :value="type.value"
-            :title="type.tooltip"
+            :tooltip="type.tooltip"
             class="mr-2 mb-2"
             @click="onRfapTypeChange"
           />

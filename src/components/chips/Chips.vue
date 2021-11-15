@@ -4,7 +4,7 @@
     class="chips"
     :class="classNames"
     @click="emitClick"
-    :title="text || tooltip || ''"
+    :title="tooltip || text"
   >
     {{ text }}
   </div>
@@ -16,7 +16,7 @@ import { VBTooltip } from 'bootstrap-vue'
 export default {
   name: 'Chips',
   directives: {
-    VBTooltip,
+    'b-tooltip': VBTooltip,
   },
   props: {
     text: {
