@@ -7,14 +7,12 @@ export const getStatsInfo = (data) => {
 
   BANDS.forEach((band) => {
     const series = data.map((v) => v[band.name])
-    const trueMaxValue = max(series)
-    const normalMaxValue = trueMaxValue > 0 ? trueMaxValue : 1
 
     stats.push({
       band: `Band ${band.band}`,
-      min: min(series) / normalMaxValue,
-      max: max(series) / normalMaxValue,
-      mean: mean(series) / normalMaxValue,
+      min: min(series),
+      max: max(series),
+      mean: mean(series),
     })
   })
 
