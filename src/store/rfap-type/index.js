@@ -5,7 +5,7 @@ import client from '@/utils/client'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
 import { calculatePeriod } from '@/utils/datetime'
 
-import { Sampling } from '@/constants/rfap-distance'
+import { Sampling, RfapTypes } from '@/constants/rfap-distance'
 
 import {
   SET_DATA,
@@ -28,19 +28,19 @@ export const initialState = {
   sampling: Sampling.DAY,
   rfapTypes: [
     {
-      value: 1,
+      value: RfapTypes.seen,
       text: 'Terlihat',
       selected: false,
       tooltip: 'Guguran dan Awan Panas yang hanya terlihat',
     },
     {
-      value: 2,
+      value: RfapTypes.heard,
       text: 'Terdengar',
       selected: false,
       tooltip: 'Guguran dan Awan Panas yang hanya terdengar',
     },
     {
-      value: 3,
+      value: RfapTypes.seenAndHeard,
       text: 'Terlihat & Terdengar',
       selected: false,
       tooltip: 'Guguran dan Awan Panas yang terlihat dan sekaligus terdengar',
@@ -82,6 +82,31 @@ export const mutations = {
   },
 }
 
+/**
+ * Get index based on RF & AP type state.
+ *
+ * RF & AP "seen" (terlihat) needs to be added with "seedAndHeard" (terlihat dan
+ * terdengar). Think seenAndHeard as an overlap value of the seen type.
+ *
+ * The case is the same with "heard" type. It needs to be added with
+ * "seenAndHeard".
+ */
+export const getTypeIndex = (state) => {
+  const indices = state.rfapTypes.filter((v) => v.selected).map((v) => v.value)
+  if (
+    indices.includes(RfapTypes.seen) &&
+    !indices.includes(RfapTypes.seenAndHeard)
+  ) {
+    indices.push(RfapTypes.seenAndHeard)
+  } else if (
+    indices.includes(RfapTypes.heard) &&
+    !indices.includes(RfapTypes.seenAndHeard)
+  ) {
+    indices.push(RfapTypes.seenAndHeard)
+  }
+  return indices
+}
+
 export const actions = {
   ...baseActions,
   async [FETCH_DATA]({ commit, state, getters }) {
@@ -95,12 +120,7 @@ export const actions = {
           start: state.startTime.format(DATETIME_FORMAT),
           end: state.endTime.format(DATETIME_FORMAT),
           sampling: state.sampling,
-          type: getters.isRfapTypeSelected
-            ? state.rfapTypes
-                .filter((v) => v.selected)
-                .map((v) => v.value)
-                .join(',')
-            : '',
+          type: getters.isRfapTypeSelected ? getTypeIndex(state).join(',') : '',
         },
       })
       .then((response) => response.data)
