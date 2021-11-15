@@ -226,7 +226,7 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions(this.sampling),
+          ...baseChartOptions({ sampling: this.sampling }),
           series: createSeries(this.data),
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),
