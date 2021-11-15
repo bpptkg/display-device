@@ -5,7 +5,6 @@ import { calculatePeriod } from '@/utils/datetime'
 import annotations from '@/components/event-annotation/annotations'
 import { STATIONS } from '@/constants/rsam'
 import { mapFieldColumns, cumulativeSum } from '@/utils/series'
-import { max } from 'lodash'
 
 import {
   SET_DATA,
@@ -75,7 +74,7 @@ export const mutations = {
 }
 
 export const getSsamAdaptiveSampling = (startTime, endTime) => {
-  const maxDuration = 7 // Duration is days
+  const maxDuration = 7 // Duration in days
   const duration = moment.duration(endTime.diff(startTime)).asDays()
   return duration >= maxDuration ? 'ssam1' : 'ssam'
 }

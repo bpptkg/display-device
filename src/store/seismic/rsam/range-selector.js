@@ -39,11 +39,16 @@ const rangeSelector = [
     type: 'month',
     text: '6 months',
   },
+  {
+    count: 1,
+    type: 'year',
+    text: '1 year',
+  },
 ]
 
 export const maxCustomDuration = {
-  count: 6,
-  type: 'months',
+  count: 1,
+  type: 'years',
 }
 
 export default rangeSelector
