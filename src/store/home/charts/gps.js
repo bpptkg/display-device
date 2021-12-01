@@ -1,9 +1,9 @@
 import { initState, getters, mutations, actions } from '../../gps/baseline'
 
 const period = {
-  count: 3,
+  count: 1,
   type: 'month',
-  text: '3 months',
+  text: '1 month',
 }
 
 export default {

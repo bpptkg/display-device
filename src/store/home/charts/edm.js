@@ -2,9 +2,9 @@ import { initState, getters, mutations, actions } from '../../edm'
 import { EDMBenchmark } from '@/constants/edm'
 
 const period = {
-  count: 3,
+  count: 1,
   type: 'month',
-  text: '3 months',
+  text: '1 month',
 }
 
 export default {
