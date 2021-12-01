@@ -55,7 +55,7 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions(),
+          ...baseChartOptions({ title: { text: '' } }),
           series: createSeries(this.rainfallData, this.rainfallEvents),
           tooltip: createTooltip(this.rainfallEvents),
         },
