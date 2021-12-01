@@ -73,6 +73,7 @@ export const baseChartOptions = (
   const options = {
     backgroundColor: '#fff',
     legend: legend,
+    grid: { left: 100 },
     title: {
       align: 'right',
       left: 'center',
