@@ -10,6 +10,9 @@
         <div class="mb-3">
           <EDMChart />
         </div>
+        <div class="mb-3">
+          <WeatherPasarbubarChart />
+        </div>
       </BCol>
       <BCol md="6">
         <div class="mb-3">
@@ -30,6 +33,7 @@ import EDMChart from './charts/EDMChart'
 import GPSBaselineChart from './charts/GPSBaselineChart'
 import SeismicityChart from './charts/SeismicityChart'
 import TiltmeterChart from './charts/TiltmeterChart'
+import WeatherPasarbubarChart from './charts/WeatherPasarbubarChart'
 
 export default {
   name: 'HomeView',
@@ -41,6 +45,7 @@ export default {
     GPSBaselineChart,
     SeismicityChart,
     TiltmeterChart,
+    WeatherPasarbubarChart,
   },
 }
 </script>
