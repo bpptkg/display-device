@@ -2,9 +2,9 @@ import { LavaDome } from '../../../constants/lava-domes'
 import { initModule } from '../../lava-domes'
 
 const period = {
-  count: 3,
+  count: 1,
   type: 'month',
-  text: '1 months',
+  text: '1 month',
 }
 
 export default {
