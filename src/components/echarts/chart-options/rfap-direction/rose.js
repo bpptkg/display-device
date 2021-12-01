@@ -30,7 +30,11 @@ export const DATA_SHORT = [
   'NW [BL]',
 ]
 
-export const baseChartOptions = ({ title = {} } = {}) => {
+export const baseChartOptions = ({
+  title = {},
+  axisLabel = {},
+  tooltip = {},
+} = {}) => {
   return {
     angleAxis: {
       type: 'category',
@@ -56,7 +60,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
     },
     radiusAxis: {
       axisLine: { show: false },
-      axisLabel: { show: true, fontSize: 9 },
+      axisLabel: { show: true, fontSize: 9, ...axisLabel },
       minorTick: { show: false },
       axisTick: { show: false },
     },
@@ -87,6 +91,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
         )}<br />
         `
       },
+      ...tooltip,
     },
   }
 }

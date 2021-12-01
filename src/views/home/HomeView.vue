@@ -13,6 +13,9 @@
         <div class="mb-3">
           <WeatherPasarbubarChart />
         </div>
+        <div class="mb-3">
+          <RfapDirectionChart />
+        </div>
       </BCol>
       <BCol md="6">
         <div class="mb-3">
@@ -35,6 +38,7 @@ import { BContainer, BCol, BRow } from 'bootstrap-vue'
 import EDMChart from './charts/EDMChart'
 import GPSBaselineChart from './charts/GPSBaselineChart'
 import LavaDomeChart from './charts/LavaDomeChart'
+import RfapDirectionChart from './charts/RfapDirectionChart'
 import SeismicityChart from './charts/SeismicityChart'
 import TiltmeterChart from './charts/TiltmeterChart'
 import WeatherPasarbubarChart from './charts/WeatherPasarbubarChart'
@@ -48,6 +52,7 @@ export default {
     EDMChart,
     GPSBaselineChart,
     LavaDomeChart,
+    RfapDirectionChart,
     SeismicityChart,
     TiltmeterChart,
     WeatherPasarbubarChart,

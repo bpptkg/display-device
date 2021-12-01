@@ -71,6 +71,24 @@ export const getters = {
       d.direction,
     ])
   },
+  /**
+   * Same as rfapDirectionGroup but return distance instead of count.
+   */
+  rfapDirectionGroupDistance(state) {
+    return state.data.map((d) => {
+      const bin = DIRECTION_GROUP.reduce((acc, g) => {
+        const caseInsensitiveDirectionGroup = g.map((v) => v.toLowerCase())
+        if (caseInsensitiveDirectionGroup.includes(d.direction.toLowerCase())) {
+          acc.push(d.distance)
+        } else {
+          acc.push(0)
+        }
+        return acc
+      }, [])
+
+      return { binData: bin, direction: d.direction }
+    })
+  },
 }
 
 export const mutations = {
