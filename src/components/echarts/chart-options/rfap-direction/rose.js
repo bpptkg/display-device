@@ -47,7 +47,7 @@ export const baseChartOptions = ({ title = {} } = {}) => {
     },
     radiusAxis: {
       axisLine: { show: false },
-      axisLabel: { show: false },
+      axisLabel: { show: true, fontSize: 9 },
       minorTick: { show: false },
       axisTick: { show: false },
     },
