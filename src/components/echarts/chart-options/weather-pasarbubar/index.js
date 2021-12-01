@@ -279,7 +279,7 @@ export const createYAxis = (names) => {
       },
       nameGap: 7,
       scale: index !== 0,
-      splitLine: { show: false },
+      splitLine: { show: true },
       type: 'value',
     }
   })
