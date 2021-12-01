@@ -21,6 +21,9 @@
         <div class="mb-3">
           <TiltmeterChart />
         </div>
+        <div class="mb-3">
+          <LavaDomeChart />
+        </div>
       </BCol>
     </BRow>
   </BContainer>
@@ -31,6 +34,7 @@ import { BContainer, BCol, BRow } from 'bootstrap-vue'
 
 import EDMChart from './charts/EDMChart'
 import GPSBaselineChart from './charts/GPSBaselineChart'
+import LavaDomeChart from './charts/LavaDomeChart'
 import SeismicityChart from './charts/SeismicityChart'
 import TiltmeterChart from './charts/TiltmeterChart'
 import WeatherPasarbubarChart from './charts/WeatherPasarbubarChart'
@@ -43,6 +47,7 @@ export default {
     BRow,
     EDMChart,
     GPSBaselineChart,
+    LavaDomeChart,
     SeismicityChart,
     TiltmeterChart,
     WeatherPasarbubarChart,
