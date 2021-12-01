@@ -1,5 +1,7 @@
 import moment from 'moment'
+import { isFinite } from 'lodash'
 import { SamplingTypes } from '@/constants/tiltmeter'
+import { NO_DATA_NOTATION } from '@/constants/stats'
 import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
 import { createRowGrid } from '@/utils/echarts/grid'
 import { defaultToolbox } from '../common/toolbox'
@@ -156,7 +158,9 @@ export const tooltipFormatter = (sampling) => {
         }
         template.push(`
         ${createCircleTemplate(color)}
-        ${seriesName}: ${value[1] ? value[1].toFixed(2) : value[1]}<br />
+        ${seriesName}: ${
+          isFinite(value[1]) ? value[1].toFixed(2) : NO_DATA_NOTATION
+        }<br />
         `)
       })
       return template.join('')
@@ -173,7 +177,9 @@ export const tooltipFormatter = (sampling) => {
             : moment(value[0]).format('YYYY-MM-DD HH:mm:00')
         }<br />
         ${createCircleTemplate(color)} 
-        ${seriesName}: ${value[1] ? value[1].toFixed(2) : value[1]}<br />`
+        ${seriesName}: ${
+          isFinite(value[1]) ? value[1].toFixed(2) : NO_DATA_NOTATION
+        }<br />`
       }
     }
   }
