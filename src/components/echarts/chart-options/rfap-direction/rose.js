@@ -2,6 +2,8 @@ import { saveAsImageToolbox } from '../common/toolbox'
 import { createCircleTemplate } from '@/utils/series'
 import { numberFormatterFactory } from '@/utils/formatter-factory'
 
+import { colorMap, smartIndex } from '../rfap-distdir'
+
 const f = numberFormatterFactory(0)
 
 const SECTOR = 8
@@ -42,6 +44,13 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       data: DATA,
     },
     backgroundColor: '#fff',
+    legend: {
+      type: 'plain',
+      bottom: 0,
+      itemWidth: 15,
+      itemHeight: 10,
+      textStyle: { fontSize: 11 },
+    },
     polar: {
       radius: '60%',
     },
@@ -86,13 +95,16 @@ export const createSeries = (data) => {
   if (data.length === 0) return []
 
   const series = []
-  data.forEach((d) => {
+  data.forEach((d, index) => {
     series.push({
       type: 'bar',
       data: d.binData,
       coordinateSystem: 'polar',
       stack: 'a',
       name: d.direction,
+      itemStyle: {
+        color: colorMap[smartIndex(index, data.length, colorMap.length)],
+      },
     })
   })
   return series

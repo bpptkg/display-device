@@ -23,8 +23,8 @@
       </div>
     </div>
 
-    <BRow class="ml-0 mr-0">
-      <BCol md="6">
+    <BRow>
+      <BCol md="6" class="mb-2">
         <div v-if="error">
           <ErrorMessage>
             <p>Unable to load the chart.</p>
@@ -74,7 +74,7 @@
         </div>
       </BCol>
     </BRow>
-    <BRow class="mt-3 ml-0 mr-0">
+    <BRow class="mt-3">
       <BCol>
         <div v-if="serror">
           <ErrorMessage>
