@@ -11,7 +11,7 @@
       @click.native="toggle"
     />
     <div v-show="visible" class="dropdown-content">
-      <BLink class="dropdown-item" to="/about">About</BLink>
+      <router-link class="dropdown-item" to="/about">About</router-link>
       <div class="dropdown-divider"></div>
       <BLink
         class="dropdown-item"
