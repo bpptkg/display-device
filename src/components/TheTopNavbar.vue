@@ -12,6 +12,7 @@
       </BLink>
     </div>
     <div class="w-100 d-flex justify-content-end align-items-center">
+      <TheHelpMenu class="mr-2" />
       <TheAppLauncher />
     </div>
   </DNavbar>
@@ -25,6 +26,7 @@ import DNavbar from './base/navbar/DNavbar'
 import { LogoIcon, MenuIcon } from './icons'
 import TheAppLauncher from './TheAppLauncher'
 import TheSidebarMenu from './TheSidebarMenu'
+import TheHelpMenu from './TheHelpMenu'
 import { HIDE_MENU } from '../store/sidebar-menu/actions'
 
 export default {
@@ -36,6 +38,7 @@ export default {
     MenuIcon,
     TheAppLauncher,
     TheSidebarMenu,
+    TheHelpMenu,
   },
   directives: {
     clickaway,
