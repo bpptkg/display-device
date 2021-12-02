@@ -13,7 +13,8 @@
     </div>
     <div class="w-100 d-flex justify-content-end align-items-center">
       <TheHelpMenu class="mr-2" />
-      <TheAppLauncher />
+      <TheAppLauncher class="mr-2" />
+      <TheAvatar />
     </div>
   </DNavbar>
 </template>
@@ -27,6 +28,7 @@ import { LogoIcon, MenuIcon } from './icons'
 import TheAppLauncher from './TheAppLauncher'
 import TheSidebarMenu from './TheSidebarMenu'
 import TheHelpMenu from './TheHelpMenu'
+import TheAvatar from './TheAvartar'
 import { HIDE_MENU } from '../store/sidebar-menu/actions'
 
 export default {
@@ -39,6 +41,7 @@ export default {
     TheAppLauncher,
     TheSidebarMenu,
     TheHelpMenu,
+    TheAvatar,
   },
   directives: {
     clickaway,
