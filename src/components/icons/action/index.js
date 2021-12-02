@@ -1,5 +1,6 @@
 import AnnotationIcon from './AnnotationIcon'
 import DescriptionIcon from './DescriptionIcon'
+import HelpOutlineIcon from './HelpOutlineIcon'
 import HomeIcon from './HomeIcon'
 import InfoIcon from './InfoIcon'
 import LaunchIcon from './LaunchIcon'
@@ -15,6 +16,7 @@ import ZoomOutIcon from './ZoomOutIcon'
 export {
   AnnotationIcon,
   DescriptionIcon,
+  HelpOutlineIcon,
   HomeIcon,
   InfoIcon,
   LaunchIcon,
