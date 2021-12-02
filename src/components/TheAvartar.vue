@@ -99,9 +99,14 @@ export default {
       /**
        * Sign out may not work when developing the app on localhost server.
        */
-      await Axios.post('/logout').catch((_) => {
-        window.location.replace('/')
-      })
+      await Axios.post('/logout')
+        .catch((_) => {
+          // Ignore the error. This typically occurred when you're developing on
+          // localhost server.
+        })
+        .finally(() => {
+          window.location.replace('/')
+        })
     },
   },
 }
