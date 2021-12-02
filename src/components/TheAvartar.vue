@@ -1,11 +1,7 @@
 <template>
   <div class="account">
     <div class="avatar" v-clickaway="hide" @click="toggle">
-      <BAvatar
-        size="2rem"
-        variant="light"
-        :text="isAuthenticated ? abbrevName : ''"
-      />
+      <BAvatar size="2rem" :text="isAuthenticated ? abbrevName : ''" />
     </div>
     <div v-show="visible" class="account-content">
       <div v-if="isAuthenticated">
