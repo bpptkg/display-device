@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import edm from './edm'
 import geochemistry from './geochemistry'
 import gps from './gps'
+import helicorder from './helicorder'
 import home from './home'
 import lavaDome from './lava-domes'
 import observation from './observation'
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     edm,
     geochemistry,
     gps,
+    helicorder,
     home,
     lavaDome,
     observation,

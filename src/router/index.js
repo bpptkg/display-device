@@ -210,6 +210,10 @@ const routes = [
     ],
   },
   {
+    path: '/seismic/helicorder',
+    component: () => import('../views/seismic/HelicorderView'),
+  },
+  {
     path: '/observation',
     component: () => import('../views/observation/ObservationView'),
     redirect: '/observation/rfap-distance',

@@ -25,6 +25,9 @@
           <SidepanelMenuItem round="left" to="/seismic/equivalent-energy">
             RF &amp; AP Energy
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/seismic/helicorder">
+            Helicorder
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>

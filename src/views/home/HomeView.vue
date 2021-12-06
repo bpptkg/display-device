@@ -5,6 +5,9 @@
     <BRow>
       <BCol md="6">
         <div class="mb-3">
+          <HelicorderChart />
+        </div>
+        <div class="mb-3">
           <SeismicityChart />
         </div>
         <div class="mb-3">
@@ -37,6 +40,7 @@ import { BContainer, BCol, BRow } from 'bootstrap-vue'
 
 import EDMChart from './charts/EDMChart'
 import GPSBaselineChart from './charts/GPSBaselineChart'
+import HelicorderChart from './charts/HelicorderChart'
 import LavaDomeChart from './charts/LavaDomeChart'
 import RfapDirectionChart from './charts/RfapDirectionChart'
 import SeismicityChart from './charts/SeismicityChart'
@@ -51,6 +55,7 @@ export default {
     BRow,
     EDMChart,
     GPSBaselineChart,
+    HelicorderChart,
     LavaDomeChart,
     RfapDirectionChart,
     SeismicityChart,

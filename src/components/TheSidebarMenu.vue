@@ -78,6 +78,10 @@ export default {
               title: 'RF & AP Energy',
               href: '/seismic/equivalent-energy',
             },
+            {
+              title: 'Helicorder',
+              href: '/seismic/helicorder',
+            },
           ],
         },
         {
