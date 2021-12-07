@@ -87,7 +87,6 @@ export default {
       },
     }),
     update() {
-      this.setSettled(false)
       this.updateImage()
     },
   },

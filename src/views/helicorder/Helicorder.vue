@@ -1,17 +1,26 @@
 <template>
   <div ref="helicorder" class="helicorder">
-    <div class="text-center spin-container" v-if="!settled">
+    <ErrorMessage v-if="error">
+      <p>Unable to load the image.</p>
+      <p>Error: {{ error.message }}</p>
+      <p>
+        <BLink @click="update"> Try again </BLink>
+      </p>
+    </ErrorMessage>
+    <div class="text-center spin-container" v-if="!settled && !error">
       <BSpinner label="Spinning"></BSpinner>
     </div>
-    <img v-else :src="src" alt="Helicorder" class="helicorder" />
+    <img v-else :src="src" :alt="code" class="helicorder" />
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BSpinner } from 'bootstrap-vue'
+import { BSpinner, BLink } from 'bootstrap-vue'
+import ErrorMessage from '@/components/error-message'
 import { UPDATE_IMAGE } from '@/store/helicorder/actions'
 import { SET_CODE, SET_OPTIONS } from '@/store/helicorder/mutations'
+import { SET_SETTLED } from '../../store/helicorder/mutations'
 
 const NAMESPACE = 'helicorder'
 
@@ -27,6 +36,8 @@ export default {
   name: 'Helicorder',
   components: {
     BSpinner,
+    BLink,
+    ErrorMessage,
   },
   props: {
     code: {
@@ -50,6 +61,9 @@ export default {
       },
       settled(state) {
         return state.helicorder[this.code].settled
+      },
+      error(state) {
+        return state.helicorder[this.code].error
       },
     }),
 
@@ -93,12 +107,18 @@ export default {
       setCode(commit, code) {
         return commit(this.namespace + '/' + SET_CODE, code)
       },
+      setSettled(commit, value) {
+        return commit(this.namespace + '/' + SET_SETTLED, value)
+      },
     }),
     ...mapActions({
       updateImage(dispatch) {
         return dispatch(this.namespace + '/' + UPDATE_IMAGE)
       },
     }),
+    update() {
+      this.updateImage()
+    },
   },
 }
 </script>
