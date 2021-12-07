@@ -29,6 +29,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { BCard, BLink, BSpinner } from 'bootstrap-vue'
+import ErrorMessage from '@/components/error-message'
 import { HelicorderChannel } from '@/store/helicorder'
 import {
   SET_CODE,
@@ -45,6 +46,7 @@ export default {
     BCard,
     BLink,
     BSpinner,
+    ErrorMessage,
   },
   computed: {
     ...mapState(NAMESPACE, {
