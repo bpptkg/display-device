@@ -118,11 +118,10 @@ export default {
   flex: 50%;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991.98px) {
   .helicorder-wrapper {
     position: static;
     display: block;
-    margin-top: 50px;
   }
 }
 </style>
