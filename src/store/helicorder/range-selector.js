@@ -12,7 +12,7 @@ const rangeSelector = [
   {
     count: 2,
     type: 'day',
-    text: '3 days',
+    text: '2 days',
   },
   {
     count: 4,
