@@ -35,10 +35,10 @@ import {
   SET_CODE,
   SET_OPTIONS,
   SET_SETTLED,
-} from '../../../store/helicorder/mutations'
-import { UPDATE_IMAGE } from '../../../store/helicorder/actions'
+} from '@/store/helicorder/mutations'
+import { UPDATE_IMAGE } from '@/store/helicorder/actions'
 
-const NAMESPACE = `helicorder/${HelicorderChannel.PASB_BHZ_MP_10}`
+const NAMESPACE = `home/charts/helicorder/${HelicorderChannel.PASB_BHZ_MP_10}`
 
 export default {
   name: 'HelicorderChart',
@@ -66,7 +66,7 @@ export default {
     }
   },
   mounted() {
-    this.interval = setInterval(this.updateImage, 5000)
+    this.interval = setInterval(this.updateImage, 10000)
     this.updateImage()
   },
   methods: {
