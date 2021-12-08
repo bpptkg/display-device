@@ -39,6 +39,7 @@ export const initialState = {
    */
   options: {
     lb: 1,
+    tz: 'Asia/Jakarta',
   },
   /**
    * Channel name (code).
@@ -212,7 +213,7 @@ export default {
   state: () => {
     return {
       /**
-       * Helicorder channel list. For now, it only support 2 channels.
+       * Helicorder channel list. For now, it only supports 2 channels.
        */
       channels: [
         HelicorderChannel.PASB_BHZ_MP_10,
