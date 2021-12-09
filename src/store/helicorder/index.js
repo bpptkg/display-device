@@ -1,23 +1,40 @@
 import moment from 'moment'
 import client from '@/utils/client'
+import { DateRangeTypes } from '@/constants/date'
+import { calculatePeriod } from '@/utils/datetime'
 import {
   SET_PERIOD,
   SET_START_TIME,
   SET_END_TIME,
   SET_ERROR,
+  SET_LAST_UPDATED,
 } from '../base/mutations'
 import { SET_SETTLED, SET_IMAGE, SET_CODE, SET_OPTIONS } from './mutations'
 import { UPDATE_IMAGE } from './actions'
-import { SET_LAST_UPDATED } from '../base/mutations'
 import rangeSelector from './range-selector'
-import { DateRangeTypes } from '../../constants/date'
-import { calculatePeriod } from '../../utils/datetime'
 
 export const defaultPeriod = rangeSelector[0]
 
+/**
+ * Helicorder channels.
+ *
+ * Refer to the Winston Wave Server for more information.
+ */
 export const HelicorderChannel = Object.freeze({
-  PASB_BHZ_MP_10: 'PASB_BHZ_MP_10',
   DELS_SHZ_MP_01: 'DELS_SHZ_MP_01',
+  GRAB_BHZ_MP_05: 'GRAB_BHZ_MP_05',
+  IJOB_BHZ_MP_08: 'IJOB_BHZ_MP_08',
+  IMOB_BHZ_MP_09: 'IMOB_BHZ_MP_09',
+  JRJB_BHZ_MP_13: 'JRJB_BHZ_MP_13',
+  KLAB_BHZ_MP_06: 'KLAB_BHZ_MP_06',
+  KLAS_SHZ_MP_02: 'KLAS_SHZ_MP_02',
+  LABB_BHZ_MP_07: 'LABB_BHZ_MP_07',
+  MEGEM_HHZ_VG_00: 'MEGEM_HHZ_VG_00',
+  MEPET_HHZ_VG_00: 'MEPET_HHZ_VG_00',
+  MERB_BHZ_MP_12: 'MERB_BHZ_MP_12',
+  PASB_BHZ_MP_10: 'PASB_BHZ_MP_10',
+  PLAS_SHZ_MP_04: 'PLAS_SHZ_MP_04',
+  PUSS_SHZ_MP_03: 'PUSS_SHZ_MP_03',
 })
 
 export const initialState = {
@@ -217,7 +234,7 @@ export default {
        */
       channels: [
         HelicorderChannel.PASB_BHZ_MP_10,
-        HelicorderChannel.DELS_SHZ_MP_01,
+        HelicorderChannel.LABB_BHZ_MP_07,
       ],
     }
   },
@@ -228,5 +245,19 @@ export default {
     namespaced: true,
     [HelicorderChannel.DELS_SHZ_MP_01]: initModule(),
     [HelicorderChannel.PASB_BHZ_MP_10]: initModule(),
+    [HelicorderChannel.DELS_SHZ_MP_01]: initModule(),
+    [HelicorderChannel.GRAB_BHZ_MP_05]: initModule(),
+    [HelicorderChannel.IJOB_BHZ_MP_08]: initModule(),
+    [HelicorderChannel.IMOB_BHZ_MP_09]: initModule(),
+    [HelicorderChannel.JRJB_BHZ_MP_13]: initModule(),
+    [HelicorderChannel.KLAB_BHZ_MP_06]: initModule(),
+    [HelicorderChannel.KLAS_SHZ_MP_02]: initModule(),
+    [HelicorderChannel.LABB_BHZ_MP_07]: initModule(),
+    [HelicorderChannel.MEGEM_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEPET_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MERB_BHZ_MP_12]: initModule(),
+    [HelicorderChannel.PASB_BHZ_MP_10]: initModule(),
+    [HelicorderChannel.PLAS_SHZ_MP_04]: initModule(),
+    [HelicorderChannel.PUSS_SHZ_MP_03]: initModule(),
   },
 }
