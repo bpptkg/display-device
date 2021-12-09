@@ -12,8 +12,11 @@ export const SeriesName = Object.freeze({
   TEMPERATURE: 'Temperature',
 })
 
-export const createSeries = (data, { annotations = [] } = {}) => {
-  return [
+export const createSeries = (
+  data,
+  { annotations = [], omitTemperature = false } = {}
+) => {
+  const options = [
     {
       data: mapFieldColumns(data, 'timestamp', 'x'),
       markLine: {
@@ -54,12 +57,14 @@ export const createSeries = (data, { annotations = [] } = {}) => {
       yAxisIndex: 2,
     },
   ]
+
+  return omitTemperature ? options.slice(0, -1) : options
 }
 
-export const createXAxis = (min, max) => {
-  return [
+export const createXAxis = (min, max, { omitTemperature = false } = {}) => {
+  const options = [
     {
-      axisLabel: { show: false },
+      axisLabel: { show: omitTemperature ? true : false },
       gridIndex: 0,
       min,
       max,
@@ -76,6 +81,8 @@ export const createXAxis = (min, max) => {
       type: 'time',
     },
   ]
+
+  return omitTemperature ? options.slice(0, -1) : options
 }
 
 export const mediaQuery = [
@@ -95,21 +102,8 @@ export const mediaQuery = [
   },
 ]
 
-export const baseChartOptions = {
-  backgroundColor: '#fff',
-  dataZoom: [{ type: 'slider', xAxisIndex: [0, 1], realtime: false }],
-  grid: [
-    {
-      top: '10%',
-      height: '35%',
-    },
-    {
-      top: '50%',
-      bottom: 80,
-    },
-  ],
-  toolbox: defaultToolbox,
-  yAxis: [
+export const createYAxis = ({ omitTemperature = false } = {}) => {
+  const options = [
     {
       gridIndex: 0,
       name: 'X (\u00B5rad)',
@@ -137,7 +131,36 @@ export const baseChartOptions = {
       splitLine: { show: false },
       type: 'value',
     },
+  ]
+
+  return omitTemperature ? options.slice(0, -1) : options
+}
+
+export const createDataZoom = ({ omitTemperature = false } = {}) => {
+  return [
+    {
+      type: 'slider',
+      xAxisIndex: omitTemperature ? [0] : [0, 1],
+      realtime: false,
+    },
+  ]
+}
+
+export const baseChartOptions = {
+  backgroundColor: '#fff',
+  dataZoom: createDataZoom(),
+  grid: [
+    {
+      top: '10%',
+      height: '35%',
+    },
+    {
+      top: '50%',
+      bottom: 80,
+    },
   ],
+  toolbox: defaultToolbox,
+  yAxis: createYAxis(),
 }
 
 export const tooltipFormatter = (sampling) => {

@@ -35,12 +35,30 @@ import {
   baseChartOptions,
   createSeries,
   createXAxis,
-  mediaQuery,
+  createYAxis,
+  createDataZoom,
   tooltipFormatter,
 } from '@/components/echarts/chart-options/tiltmeter'
 import { UPDATE_TILTMETER } from '@/store/tiltmeter/actions'
 
 const NAMESPACE = 'home/charts/tiltmeter'
+
+const mediaQuery = [
+  {
+    query: {
+      maxWidth: 575.98,
+    },
+    option: {
+      grid: createRowGrid(1, { top: 15, bottom: 15, left: 22, right: 22 }),
+      title: {
+        top: 25,
+        textStyle: {
+          fontSize: 13,
+        },
+      },
+    },
+  },
+]
 
 export default {
   name: 'TiltmeterChart',
@@ -63,8 +81,10 @@ export default {
       const options = {
         baseOption: {
           ...baseChartOptions,
-          grid: createRowGrid(2, { top: 10, bottom: 15, left: 15, right: 15 }),
-          series: createSeries(this.data),
+          dataZoom: createDataZoom({ omitTemperature: true }),
+          yAxis: createYAxis({ omitTemperature: true }),
+          grid: createRowGrid(1, { top: 10, bottom: 15, left: 10, right: 10 }),
+          series: createSeries(this.data, { omitTemperature: true }),
           title: {
             align: 'right',
             left: 'center',
@@ -84,7 +104,8 @@ export default {
           },
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),
-            toUnixMiliSeconds(this.endTime)
+            toUnixMiliSeconds(this.endTime),
+            { omitTemperature: true }
           ),
         },
         media: mediaQuery,
