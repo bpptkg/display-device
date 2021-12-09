@@ -1,43 +1,37 @@
 <template>
-  <BContainer fluid="xl" class="content">
+  <div class="home-view">
     <h6>Quick Chart</h6>
 
-    <BRow>
-      <BCol md="6">
-        <div class="mb-3">
-          <HelicorderChart />
-        </div>
-        <div class="mb-3">
-          <SeismicityChart />
-        </div>
-        <div class="mb-3">
-          <EDMChart />
-        </div>
-        <div class="mb-3">
-          <WeatherPasarbubarChart />
-        </div>
-        <div class="mb-3">
-          <RfapDirectionChart />
-        </div>
-      </BCol>
-      <BCol md="6">
-        <div class="mb-3">
-          <GPSBaselineChart />
-        </div>
-        <div class="mb-3">
-          <TiltmeterChart />
-        </div>
-        <div class="mb-3">
-          <LavaDomeChart />
-        </div>
-      </BCol>
-    </BRow>
-  </BContainer>
+    <div class="masonry-container">
+      <div class="masonry-item">
+        <HelicorderChart class="chart-item" />
+      </div>
+      <div class="masonry-item">
+        <SeismicityChart class="chart-item" />
+      </div>
+      <div class="masonry-item">
+        <EDMChart class="chart-item" />
+      </div>
+      <div class="masonry-item">
+        <WeatherPasarbubarChart class="chart-item" />
+      </div>
+      <div class="masonry-item">
+        <RfapDirectionChart class="chart-item" />
+      </div>
+      <div class="masonry-item">
+        <GPSBaselineChart class="chart-item" />
+      </div>
+      <div class="masonry-item">
+        <TiltmeterChart class="chart-item" />
+      </div>
+      <div class="masonry-item">
+        <LavaDomeChart class="chart-item" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { BContainer, BCol, BRow } from 'bootstrap-vue'
-
 import EDMChart from './charts/EDMChart'
 import GPSBaselineChart from './charts/GPSBaselineChart'
 import HelicorderChart from './charts/HelicorderChart'
@@ -50,9 +44,7 @@ import WeatherPasarbubarChart from './charts/WeatherPasarbubarChart'
 export default {
   name: 'HomeView',
   components: {
-    BCol,
-    BContainer,
-    BRow,
+    // BContainer,
     EDMChart,
     GPSBaselineChart,
     HelicorderChart,
@@ -62,11 +54,65 @@ export default {
     TiltmeterChart,
     WeatherPasarbubarChart,
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.resizeAllGridItems()
+      window.addEventListener('resize', this.resizeAllGridItems)
+    })
+  },
+  methods: {
+    resizeGridItem(item) {
+      const grid = document.getElementsByClassName('masonry-container')[0]
+      const rowHeight = parseInt(
+        window.getComputedStyle(grid).getPropertyValue('grid-auto-rows')
+      )
+      const rowGap = parseInt(
+        window.getComputedStyle(grid).getPropertyValue('grid-row-gap')
+      )
+      const rowSpan = Math.ceil(
+        (item.querySelector('.chart-item').getBoundingClientRect().height +
+          rowGap) /
+          (rowHeight + rowGap)
+      )
+      item.style.gridRowEnd = 'span ' + rowSpan
+    },
+
+    resizeAllGridItems() {
+      const allItems = document.getElementsByClassName('masonry-item')
+      for (let x = 0; x < allItems.length; x++) {
+        this.resizeGridItem(allItems[x])
+      }
+    },
+
+    resizeInstance(instance) {
+      const item = instance.elements[0]
+      this.resizeGridItem(item)
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.content {
+.home-view {
   margin-top: 80px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.masonry-container {
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  grid-auto-rows: 15px;
+}
+
+.masonry-item {
+  display: inline-block;
+  width: 100%;
+}
+
+.masonry-item .chart-item {
+  display: block;
+  width: 100%;
 }
 </style>

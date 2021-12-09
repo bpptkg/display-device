@@ -80,13 +80,17 @@ export const initialState = {
   period: defaultPeriod,
 }
 
-export const initState = (period = defaultPeriod) => {
+export const initState = ({ period = defaultPeriod, options = {} } = {}) => {
   const { startTime, endTime } = calculatePeriod(period)
   return {
     ...initialState,
     period,
     startTime,
     endTime,
+    options: {
+      ...initialState.options,
+      ...options,
+    },
   }
 }
 
@@ -210,10 +214,10 @@ export const actions = {
   },
 }
 
-export const initModule = () => {
+export const initModule = (args = {}) => {
   return {
     namespaced: true,
-    state: initState(),
+    state: initState(args),
     getters,
     mutations,
     actions,

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="helicorder">
     <BCard v-if="error">
       <ErrorMessage>
         <p>Unable to load the image.</p>
@@ -18,10 +18,12 @@
           </router-link>
         </div>
       </template>
-      <div class="text-center p-4" v-if="!settled">
-        <BSpinner label="Spinning"></BSpinner>
+      <div class="helicorder-container">
+        <div class="text-center" v-if="!settled">
+          <BSpinner label="Spinning"></BSpinner>
+        </div>
+        <img v-else :src="src" alt="Helicorder" class="helicorder" />
       </div>
-      <img v-else :src="src" alt="Helicorder" class="helicorder" />
     </BCard>
   </div>
 </template>
@@ -37,6 +39,7 @@ import {
   SET_SETTLED,
 } from '@/store/helicorder/mutations'
 import { UPDATE_IMAGE } from '@/store/helicorder/actions'
+import { validateWidth, validateHeight } from '@/utils/helicorder'
 
 const NAMESPACE = `home/charts/helicorder/${HelicorderChannel.PASB_BHZ_MP_10}`
 
@@ -65,9 +68,15 @@ export default {
       clearInterval(this.interval)
     }
   },
+  destroyed() {
+    window.removeEventListener('resize', this.onWindowResize)
+  },
   mounted() {
-    this.interval = setInterval(this.updateImage, 10000)
-    this.updateImage()
+    this.$nextTick(() => {
+      this.resizeAndUpdate()
+      this.interval = setInterval(this.updateImage, 10000)
+    })
+    window.addEventListener('resize', this.onWindowResize)
   },
   methods: {
     ...mapMutations({
@@ -89,11 +98,30 @@ export default {
     update() {
       this.updateImage()
     },
+    resizeAndUpdate() {
+      const width = this.$refs.helicorder.offsetWidth
+      const height = this.$refs.helicorder.offsetHeight
+      const options = {
+        w: validateWidth(width),
+        h: validateHeight(width, height),
+      }
+
+      this.setOptions(options)
+      this.updateImage()
+    },
+    onWindowResize() {
+      this.$nextTick(this.resizeAndUpdate)
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.helicorder-container {
+  width: 100%;
+  height: 400px;
+}
+
 .helicorder {
   width: 100%;
   height: 100%;
