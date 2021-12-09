@@ -19,10 +19,10 @@
         <RfapDirectionChart class="chart-item" />
       </div>
       <div class="masonry-item">
-        <GPSBaselineChart class="chart-item" />
+        <TiltmeterChart class="chart-item" />
       </div>
       <div class="masonry-item">
-        <TiltmeterChart class="chart-item" />
+        <GPSBaselineChart class="chart-item" />
       </div>
       <div class="masonry-item">
         <LavaDomeChart class="chart-item" />
