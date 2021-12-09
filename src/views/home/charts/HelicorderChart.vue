@@ -119,7 +119,7 @@ export default {
 <style lang="scss" scoped>
 .helicorder-container {
   width: 100%;
-  height: 400px;
+  height: 450px;
 }
 
 .helicorder {
