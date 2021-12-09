@@ -115,4 +115,14 @@ export default {
   display: block;
   width: 100%;
 }
+
+@media (max-width: 575.98px) {
+  .masonry-container {
+    display: block;
+  }
+
+  .masonry-item {
+    margin-bottom: 15px;
+  }
+}
 </style>
