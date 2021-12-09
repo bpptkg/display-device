@@ -6,9 +6,9 @@ import {
 } from '../../weather/pasarbubar/rainfall'
 
 const period = {
-  count: 10,
-  type: 'minute',
-  text: '10 minutes',
+  count: 6,
+  type: 'hour',
+  text: '6 hours',
 }
 
 export default {

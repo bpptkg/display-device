@@ -47,6 +47,11 @@ export default {
     DChart,
     ErrorMessage,
   },
+  data() {
+    return {
+      interval: null,
+    }
+  },
   computed: {
     ...mapState(NAMESPACE, {
       error: (state) => state.error,
@@ -64,8 +69,14 @@ export default {
       return options
     },
   },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
   async mounted() {
     this.update()
+    this.interval = setInterval(this.update, 60000)
   },
   methods: {
     ...mapActions({
