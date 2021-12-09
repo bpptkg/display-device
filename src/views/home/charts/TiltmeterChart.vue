@@ -12,8 +12,8 @@
     <BCard v-show="!error">
       <template #header>
         <div class="d-flex justify-content-between">
-          <h6>Tiltmeter Selokopo</h6>
-          <router-link to="/tiltmeter/platform/selokopo">
+          <h6>Tiltmeter Borehole Klatakan</h6>
+          <router-link to="/tiltmeter/borehole/klatakan">
             <small>See more</small>
           </router-link>
         </div>
@@ -57,6 +57,7 @@ export default {
       period: (state) => state.period,
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
+      sampling: (state) => state.sampling,
     }),
     chartOptions() {
       const options = {
@@ -68,7 +69,7 @@ export default {
             align: 'right',
             left: 'center',
             show: false,
-            text: 'Tiltmeter Selokopo',
+            text: 'Tiltmeter Borehole',
             textStyle: { fontSize: 14, fontWeight: 'normal' },
           },
           tooltip: {

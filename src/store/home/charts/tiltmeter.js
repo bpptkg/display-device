@@ -9,7 +9,7 @@ const period = {
 
 export default {
   namespaced: true,
-  state: initState(DataTypes.PLATFORM, 'selokopo', period),
+  state: initState(DataTypes.BOREHOLE, 'klatakan', period),
   getters,
   mutations,
   actions,
