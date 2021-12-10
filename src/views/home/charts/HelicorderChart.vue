@@ -19,7 +19,10 @@
         </div>
       </template>
       <div class="helicorder-container">
-        <div class="text-center" v-if="!settled">
+        <div
+          class="d-flex align-items-center justify-content-center h-100"
+          v-if="!settled"
+        >
           <BSpinner label="Spinning"></BSpinner>
         </div>
         <img v-else :src="src" alt="Helicorder" class="helicorder" />
