@@ -27,29 +27,31 @@ const initApp = () => {
   }).$mount('#app')
 }
 
-// Show initial page loader and fetch user data.
-;(async () => {
-  store.dispatch(PAGE_LOADER_NAMESPACE + '/' + SHOW_PAGE_LOADER)
+// Show initial page loader.
+store.dispatch(PAGE_LOADER_NAMESPACE + '/' + SHOW_PAGE_LOADER)
 
-  // Get authenticated user.
-  store
-    .dispatch(USER_NAMESPACE + '/' + UPDATE_USER_DATA)
-    .then((_user) => {
-      initApp()
-      store.dispatch(USER_NAMESPACE + '/' + GET_CSRF_TOKEN)
-    })
-    .catch((_error) => {
-      if (
-        process.env.NODE_ENV === 'production' ||
-        process.env.NODE_ENV === 'staging'
-      ) {
-        return (window.location.href = process.env.VUE_APP_CENDANA_URL || '/')
-      } else {
-        // Skip authentication on local development.
+window.addEventListener('load', () => {
+  ;(async () => {
+    // Get authenticated user.
+    store
+      .dispatch(USER_NAMESPACE + '/' + UPDATE_USER_DATA)
+      .then((_user) => {
         initApp()
-      }
-    })
-    .finally(() => {
-      store.dispatch(PAGE_LOADER_NAMESPACE + '/' + HIDE_PAGE_LOADER)
-    })
-})()
+        store.dispatch(USER_NAMESPACE + '/' + GET_CSRF_TOKEN)
+      })
+      .catch((_error) => {
+        if (
+          process.env.NODE_ENV === 'production' ||
+          process.env.NODE_ENV === 'staging'
+        ) {
+          return (window.location.href = process.env.VUE_APP_CENDANA_URL || '/')
+        } else {
+          // Skip authentication on local development.
+          initApp()
+        }
+      })
+      .finally(() => {
+        store.dispatch(PAGE_LOADER_NAMESPACE + '/' + HIDE_PAGE_LOADER)
+      })
+  })()
+})
