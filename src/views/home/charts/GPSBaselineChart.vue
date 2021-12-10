@@ -64,7 +64,7 @@ export default {
         baseOption: {
           ...baseChartOptions,
           dataZoom: createDataZoom(this.references.length),
-          grid: createRowGrid(this.references.length, { bottom: 8 }),
+          grid: createRowGrid(this.references.length, { bottom: 8, left: 13 }),
           series: createSeries(this.data, this.references),
           title: {
             align: 'right',
