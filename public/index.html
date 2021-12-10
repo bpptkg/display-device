@@ -4,13 +4,43 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- Primary Meta Tags -->
+    <title>Display Device</title>
+    <meta name="title" content="Display Device" />
+    <meta
+      name="description"
+      content="BPPTKG Display Device provides various charts and analytics information about Merapi Volcano monitoring data."
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://cendana15.com/display-device/" />
+    <meta property="og:title" content="Display Device" />
+    <meta
+      property="og:description"
+      content="BPPTKG Display Device provides various charts and analytics information about Merapi Volcano monitoring data."
+    />
+    <meta property="og:image" content="<%= BASE_URL %>img/display-device.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://cendana15.com/display-device/"
+    />
+    <meta property="twitter:title" content="Display Device" />
+    <meta
+      property="twitter:description"
+      content="BPPTKG Display Device provides various charts and analytics information about Merapi Volcano monitoring data."
+    />
+    <meta property="twitter:image" content="<%= BASE_URL %>img/display-device.png" />
+
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-    <title>Display Device</title>
     <style>
       .loader {
         border: 16px solid #f3f3f3;
@@ -50,8 +80,15 @@
         right: 0;
         z-index: 1000;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+      }
+
+      #page-loader .loader-message {
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
       }
     </style>
   </head>
@@ -64,6 +101,7 @@
     </noscript>
     <div id="page-loader">
       <div class="loader"></div>
+      <div class="loader-message">Please wait a moment...</div>
     </div>
     <div id="app"></div>
   </body>
