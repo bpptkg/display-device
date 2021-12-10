@@ -16,7 +16,7 @@ export const createSeries = (data) => {
         {
           areaStyle: {},
           data: mapFieldColumns(data[index], 'timestamp', 'volume'),
-          name: `${dome}: ${SeriesNames.VOLUME}`,
+          name: `${SeriesNames.VOLUME}`,
           type: 'line',
           symbol: 'none',
           xAxisIndex: index,
@@ -27,7 +27,7 @@ export const createSeries = (data) => {
         },
         {
           data: mapFieldColumns(data[index], 'timestamp', 'rate'),
-          name: `${dome}: ${SeriesNames.RATE}`,
+          name: `${SeriesNames.RATE}`,
           type: 'line',
           symbol: 'circle',
           xAxisIndex: index,
