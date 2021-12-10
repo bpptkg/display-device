@@ -8,6 +8,11 @@
         </BListGroupItem>
 
         <BListGroupItem>
+          Display Device is a web app that provides various charts and analytics
+          information about Merapi Volcano monitoring data.
+        </BListGroupItem>
+
+        <BListGroupItem>
           <div>
             Version: <span class="secondary">{{ versionInfo.version }}</span>
           </div>
