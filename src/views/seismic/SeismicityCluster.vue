@@ -199,7 +199,7 @@ export default {
     ...mapGetters(NAMESPACE, ['eventItems', 'duration']),
     sampling: {
       get() {
-        return this.$store.state.seismic.seismicity.sampling
+        return this.$store.state.seismic.seismicityCluster.sampling
       },
       set(value) {
         this.setSampling(value)
