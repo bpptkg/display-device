@@ -1,6 +1,6 @@
 <template>
   <div class="home-view">
-    <h6>Quick Chart</h6>
+    <h6>Quick Charts</h6>
 
     <div class="masonry-container">
       <div class="masonry-item">
