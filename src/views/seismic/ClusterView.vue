@@ -203,8 +203,8 @@ export default {
     return {
       eventTypes,
       samplingOptions: [
-        { value: SamplingTypes.DAY, text: 'Day' },
-        { value: SamplingTypes.HOUR, text: 'Hour' },
+        { value: SamplingTypes.DAY, text: 'Daily' },
+        { value: SamplingTypes.HOUR, text: 'Hourly' },
       ],
       TimelineIcon,
       SaveAltIcon,

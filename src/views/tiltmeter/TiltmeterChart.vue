@@ -108,8 +108,8 @@ export default {
     return {
       sampling: SamplingTypes.DAY,
       samplingOptions: [
-        { value: SamplingTypes.DAY, text: 'Day' },
-        { value: SamplingTypes.MINUTE, text: 'Minute' },
+        { value: SamplingTypes.DAY, text: 'Daily' },
+        { value: SamplingTypes.MINUTE, text: 'Minutely' },
       ],
     }
   },

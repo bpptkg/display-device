@@ -186,8 +186,8 @@ export default {
     return {
       fieldOptions,
       samplingOptions: [
-        { value: Sampling.DAY, text: 'Day' },
-        { value: Sampling.HOUR, text: 'Hour' },
+        { value: Sampling.DAY, text: 'Daily' },
+        { value: Sampling.HOUR, text: 'Hourly' },
       ],
       TimelineIcon,
     }
