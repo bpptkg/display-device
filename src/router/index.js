@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '@/views/home/HomeView'
 import RealtimeSeismic from '@/views/realtime/RealtimeSeismic'
+import HelicorderView from '@/views/seismic/HelicorderView'
 
 Vue.use(VueRouter)
 
@@ -217,7 +218,7 @@ const routes = [
   },
   {
     path: '/seismic/helicorder',
-    component: () => import('../views/seismic/HelicorderView'),
+    component: HelicorderView,
   },
   {
     path: '/observation',
