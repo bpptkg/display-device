@@ -1,9 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '@/views/home/HomeView'
+import RealtimeSeismic from '@/views/realtime/RealtimeSeismic'
 
 Vue.use(VueRouter)
 
+/**
+ * For a view that contains auto update interval, it is better to use static
+ * component instead of dynamically importing the component.
+ */
 const routes = [
   {
     path: '/',
@@ -19,7 +24,7 @@ const routes = [
   },
   {
     path: '/realtime/seismic',
-    component: () => import('../views/realtime/RealtimeSeismic'),
+    component: RealtimeSeismic,
   },
   {
     path: '/edm-overview',
