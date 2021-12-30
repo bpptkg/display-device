@@ -4,6 +4,6 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    [HelicorderChannel.PASB_BHZ_MP_10]: initModule(),
+    [HelicorderChannel.MEPAS_HHZ_VG_00]: initModule(),
   },
 }

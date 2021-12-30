@@ -21,20 +21,18 @@ export const defaultPeriod = rangeSelector[0]
  * Refer to the Winston Wave Server for more information.
  */
 export const HelicorderChannel = Object.freeze({
-  DELS_SHZ_MP_01: 'DELS_SHZ_MP_01',
-  GRAB_BHZ_MP_05: 'GRAB_BHZ_MP_05',
-  IJOB_BHZ_MP_08: 'IJOB_BHZ_MP_08',
-  IMOB_BHZ_MP_09: 'IMOB_BHZ_MP_09',
-  JRJB_BHZ_MP_13: 'JRJB_BHZ_MP_13',
-  KLAB_BHZ_MP_06: 'KLAB_BHZ_MP_06',
-  KLAS_SHZ_MP_02: 'KLAS_SHZ_MP_02',
-  LABB_BHZ_MP_07: 'LABB_BHZ_MP_07',
-  MEGEM_HHZ_VG_00: 'MEGEM_HHZ_VG_00',
-  MEPET_HHZ_VG_00: 'MEPET_HHZ_VG_00',
-  MERB_BHZ_MP_12: 'MERB_BHZ_MP_12',
-  PASB_BHZ_MP_10: 'PASB_BHZ_MP_10',
-  PLAS_SHZ_MP_04: 'PLAS_SHZ_MP_04',
-  PUSS_SHZ_MP_03: 'PUSS_SHZ_MP_03',
+  MEPET_HHZ_VG_00: 'MPET_HHZ_VG_00',
+  MEIJO_HHZ_VG_00: 'MIJO_HHZ_VG_00',
+  MEGEM_HHZ_VG_00: 'MGEM_HHZ_VG_00',
+  MELAB_HHZ_VG_00: 'MLAB_HHZ_VG_00',
+  MEJRO_HHZ_VG_00: 'MJRO_HHZ_VG_00',
+  MEDEL_HHZ_VG_00: 'MDEL_HHZ_VG_00',
+  MEPAS_HHZ_VG_00: 'MPAS_HHZ_VG_00',
+  MEIMO_HHZ_VG_00: 'MIMO_HHZ_VG_00',
+  MEDEL_EHZ_VG_00: 'MDEL_EHZ_VG_00',
+  MEPUS_EHZ_VG_00: 'MPUS_EHZ_VG_00',
+  MEKLA_EHZ_VG_00: 'MKLA_EHZ_VG_00',
+  MEPLA_EHZ_VG_00: 'MPLA_EHZ_VG_00',
 })
 
 export const initialState = {
@@ -61,7 +59,7 @@ export const initialState = {
   /**
    * Channel name (code).
    */
-  code: HelicorderChannel.PASB_BHZ_MP_10,
+  code: HelicorderChannel.MEPAS_HHZ_VG_00,
   /**
    * Last updated timestamp.
    */
@@ -227,7 +225,7 @@ export const initModule = (args = {}) => {
 /**
  * Default channel name for period data sharing.
  */
-export const defaultChannel = HelicorderChannel.PASB_BHZ_MP_10
+export const defaultChannel = HelicorderChannel.MEPAS_HHZ_VG_00
 
 export default {
   namespaced: true,
@@ -237,8 +235,8 @@ export default {
        * Helicorder channel list. For now, it only supports 2 channels.
        */
       channels: [
-        HelicorderChannel.PASB_BHZ_MP_10,
-        HelicorderChannel.LABB_BHZ_MP_07,
+        HelicorderChannel.MEPAS_HHZ_VG_00,
+        HelicorderChannel.MELAB_HHZ_VG_00,
       ],
     }
   },
@@ -247,21 +245,17 @@ export default {
   actions: {},
   modules: {
     namespaced: true,
-    [HelicorderChannel.DELS_SHZ_MP_01]: initModule(),
-    [HelicorderChannel.PASB_BHZ_MP_10]: initModule(),
-    [HelicorderChannel.DELS_SHZ_MP_01]: initModule(),
-    [HelicorderChannel.GRAB_BHZ_MP_05]: initModule(),
-    [HelicorderChannel.IJOB_BHZ_MP_08]: initModule(),
-    [HelicorderChannel.IMOB_BHZ_MP_09]: initModule(),
-    [HelicorderChannel.JRJB_BHZ_MP_13]: initModule(),
-    [HelicorderChannel.KLAB_BHZ_MP_06]: initModule(),
-    [HelicorderChannel.KLAS_SHZ_MP_02]: initModule(),
-    [HelicorderChannel.LABB_BHZ_MP_07]: initModule(),
-    [HelicorderChannel.MEGEM_HHZ_VG_00]: initModule(),
     [HelicorderChannel.MEPET_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MERB_BHZ_MP_12]: initModule(),
-    [HelicorderChannel.PASB_BHZ_MP_10]: initModule(),
-    [HelicorderChannel.PLAS_SHZ_MP_04]: initModule(),
-    [HelicorderChannel.PUSS_SHZ_MP_03]: initModule(),
+    [HelicorderChannel.MEIJO_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEGEM_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MELAB_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEJRO_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEDEL_EHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEPAS_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEIMO_HHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEDEL_EHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEPUS_EHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEKLA_EHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEPLA_EHZ_VG_00]: initModule(),
   },
 }
