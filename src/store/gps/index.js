@@ -1,5 +1,6 @@
 import baseline from './baseline'
 import coordinate from './coordinate'
+import graphs from './graphs'
 
 export default {
   namespaced: true,
@@ -7,5 +8,6 @@ export default {
     namespaced: true,
     baseline,
     coordinate,
+    graphs,
   },
 }

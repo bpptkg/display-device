@@ -11,6 +11,20 @@ const client = Axios.create({
   },
 })
 
+export const BaseApiKeyClient = Axios.create({
+  baseURL: BMA_URL,
+  headers: {
+    Authorization: `Api-Key ${API_KEY}`,
+  },
+})
+
+export const BaseOauth2Client = Axios.create({
+  baseURL: BMA_URL,
+  headers: {
+    Authorization: `Bearer ${ACCESS_TOKEN}`,
+  },
+})
+
 export const ApiKeyBasedClient = Axios.create({
   headers: {
     Authorization: `Api-Key ${API_KEY}`,

@@ -310,7 +310,6 @@ export const actions = {
           return []
         })
 
-      localStorage.setItem(topoCacheKey, JSON.stringify(data))
       commit(SET_TOPO, data)
     }
   },

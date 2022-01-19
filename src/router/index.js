@@ -86,6 +86,18 @@ const routes = [
     ],
   },
   {
+    path: '/gps/graphs',
+    redirect: '/gps/graphs/summary',
+    component: () => import('../views/gps/graphs/GPSGraphView'),
+    children: [
+      {
+        path: ':graph',
+        component: () => import('../views/gps/graphs/GPSGraphAdapter'),
+        props: true,
+      },
+    ],
+  },
+  {
     path: '/geochemistry',
     component: () => import('../views/geochemistry/GeochemistryView'),
     redirect: '/geochemistry/vogamos',

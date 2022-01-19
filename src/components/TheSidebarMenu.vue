@@ -110,6 +110,10 @@ export default {
               title: 'Coordinate',
               href: '/gps/coordinate',
             },
+            {
+              title: 'Graphs',
+              href: '/gps/graphs',
+            },
           ],
         },
         {
