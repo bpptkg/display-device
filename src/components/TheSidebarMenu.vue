@@ -111,7 +111,7 @@ export default {
               href: '/gps/coordinate',
             },
             {
-              title: 'Graphs',
+              title: 'Modeling',
               href: '/gps/graphs',
             },
           ],
