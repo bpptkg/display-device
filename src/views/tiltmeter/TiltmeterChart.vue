@@ -38,6 +38,21 @@
         </div>
       </div>
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
+      <div v-if="isTiltmeterBorehole" class="mt-2">
+        <input
+          v-model="midMode"
+          type="checkbox"
+          id="useCustomHourAgg"
+          name="useCustomHourAgg"
+        />
+        <label
+          for="useCustomHourAgg"
+          class="small ml-1"
+          v-b-hover
+          title="Use custom hour range daily aggregation at 00-01 AM instead of using a whole day data."
+          >Use custom hour range daily aggregation (00-01 AM)</label
+        >
+      </div>
     </BCard>
   </div>
 </template>
@@ -46,7 +61,7 @@
 import moment from 'moment'
 
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BFormSelect, BLink } from 'bootstrap-vue'
+import { BCard, BFormSelect, BLink, VBHover } from 'bootstrap-vue'
 
 import { DATE_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/tiltmeter'
@@ -79,7 +94,7 @@ import {
   SET_ANNOTATION_OPTIONS,
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
-import { SET_SAMPLING } from '@/store/tiltmeter/mutations'
+import { SET_SAMPLING, SET_MID_MODE } from '@/store/tiltmeter/mutations'
 import { UPDATE_TILTMETER } from '@/store/tiltmeter/actions'
 
 export default {
@@ -92,6 +107,9 @@ export default {
     ErrorMessage,
     EventAnnotation,
     RangeSelector,
+  },
+  directives: {
+    'b-hover': VBHover,
   },
   mixins: [chartMixin],
   props: {
@@ -136,6 +154,9 @@ export default {
       annotations(state) {
         return state.tiltmeter[this.type][this.station].annotations
       },
+      mid(state) {
+        return state.tiltmeter[this.type][this.station].mid
+      },
     }),
     namespace() {
       return `tiltmeter/${this.type}/${this.station}`
@@ -149,6 +170,17 @@ export default {
       return this.sampling === SamplingTypes.DAY
         ? maxCustomDurationDay
         : maxCustomDurationMinute
+    },
+    isTiltmeterBorehole() {
+      return this.type === 'borehole'
+    },
+    midMode: {
+      get: function () {
+        return this.mid
+      },
+      set: function (value) {
+        return this.setMidMode(value)
+      },
     },
     chartTitle() {
       return stationOptions.find(
@@ -206,6 +238,9 @@ export default {
       this.$refs['range-selector'].setSelectedPeriod(period)
       this.update()
     },
+    mid(_value) {
+      this.update()
+    },
   },
   mounted() {
     this.update()
@@ -226,6 +261,9 @@ export default {
       },
       setAnnotationOptions(commit, options) {
         return commit(this.namespace + '/' + SET_ANNOTATION_OPTIONS, options)
+      },
+      setMidMode(commit, value) {
+        return commit(this.namespace + '/' + SET_MID_MODE, value)
       },
     }),
     ...mapActions({

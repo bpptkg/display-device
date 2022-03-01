@@ -18,7 +18,7 @@ import {
   SET_START_TIME,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
-import { SET_SAMPLING, SET_TYPE, SET_STATION } from './mutations'
+import { SET_SAMPLING, SET_TYPE, SET_STATION, SET_MID_MODE } from './mutations'
 import { FETCH_TILTMETER, UPDATE_TILTMETER } from './actions'
 import rangeSelector from './range-selector-day'
 
@@ -31,6 +31,8 @@ export const initialState = {
   sampling: SamplingTypes.DAY,
   station: '',
   type: '',
+  // Use custom range hour daily aggregation for tiltmeter borehole.
+  mid: true,
 }
 
 export const initState = (type, station, period) => {
@@ -68,6 +70,9 @@ export const mutations = {
   [SET_STATION](state, station) {
     state.station = station
   },
+  [SET_MID_MODE](state, value) {
+    state.mid = Boolean(value)
+  },
 }
 
 export const actions = {
@@ -91,6 +96,10 @@ export const actions = {
         break
       case DataTypes.BOREHOLE:
         url = `/tiltborehole/${state.station}/`
+        // Use mid data aggregation for tiltmeter borehole.
+        params = {
+          mid: state.mid,
+        }
         break
       case DataTypes.TLR:
         params =
