@@ -133,6 +133,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       fieldOptions,
       maxCustomDuration,
       rangeSelector,
@@ -186,8 +187,14 @@ export default {
       return getStatsInfo(this.data)
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 900000)
   },
   methods: {
     ...mapMutations({

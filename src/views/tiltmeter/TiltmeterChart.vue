@@ -35,6 +35,9 @@
             size="sm"
             :options="samplingOptions"
           />
+          <MoreMenu right class="ml-2">
+            <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
+          </MoreMenu>
         </div>
       </div>
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
@@ -61,7 +64,13 @@
 import moment from 'moment'
 
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BFormSelect, BLink, VBHover } from 'bootstrap-vue'
+import {
+  BCard,
+  BFormSelect,
+  BLink,
+  VBHover,
+  BDropdownItem,
+} from 'bootstrap-vue'
 
 import { DATE_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/tiltmeter'
@@ -96,17 +105,21 @@ import {
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 import { SET_SAMPLING, SET_MID_MODE } from '@/store/tiltmeter/mutations'
 import { UPDATE_TILTMETER } from '@/store/tiltmeter/actions'
+import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
+import MoreMenu from '@/components/more-menu'
 
 export default {
   name: 'TiltmeterChart',
   components: {
     BCard,
+    BDropdownItem,
     BFormSelect,
     BLink,
     DChart,
     ErrorMessage,
     EventAnnotation,
     RangeSelector,
+    MoreMenu,
   },
   directives: {
     'b-hover': VBHover,
@@ -124,6 +137,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       sampling: SamplingTypes.DAY,
       samplingOptions: [
         { value: SamplingTypes.DAY, text: 'Daily' },
@@ -242,8 +256,14 @@ export default {
       this.update()
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 900000)
   },
   methods: {
     ...mapMutations({
@@ -274,6 +294,34 @@ export default {
         return dispatch(this.namespace + '/' + UPDATE_ANNOTATIONS)
       },
     }),
+    downloadData() {
+      const csvString = createCSVContent(this.data)
+      console.log(csvString) //see the results
+      const doDownloadAsync = async (data, exportFilename) => {
+        const blob = new Blob([createCSVContent(this.data)], {
+          type: 'text/csv;charset=utf-8',
+        })
+        if (navigator.msSaveBlob) {
+          navigator.msSaveBlob(blob, exportFilename)
+        } else {
+          const link = document.createElement('a')
+          if (link.download !== undefined) {
+            const url = URL.createObjectURL(blob)
+            link.setAttribute('href', url)
+            link.setAttribute('download', exportFilename)
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+          }
+        }
+      }
+      doDownloadAsync(
+        this.data,
+        `Tiltmeter ${this.station}-${createShortNameFromPeriod(
+          this.period
+        )}.csv`
+      )
+    },
   },
 }
 </script>

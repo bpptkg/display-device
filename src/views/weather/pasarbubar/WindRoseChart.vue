@@ -18,7 +18,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import { BCard, BLink } from 'bootstrap-vue'
+import { BCard, BLink, BDropdownItem } from 'bootstrap-vue'
 import ErrorMessage from '@/components/error-message'
 import DChart from '@/components/echarts/chart/DChart'
 import { createPeriodText } from '@/utils/datetime'
@@ -29,6 +29,7 @@ import {
 } from '@/components/echarts/chart-options/wind-rose'
 import { NAMESPACE } from '@/store/weather/pasarbubar/wind-rose'
 import { UPDATE_METEOROLOGY } from '@/store/weather/pasarbubar/rainfall/actions'
+//import MoreMenu from '@/components/more-menu'
 
 export default {
   name: 'WindRoseChart',
@@ -69,6 +70,9 @@ export default {
       return options
     },
   },
+  /*mounted() {
+    setInterval(this.update, 60000)
+  },*/
   methods: {
     ...mapActions({
       fetchData(dispatch) {

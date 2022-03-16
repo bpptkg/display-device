@@ -39,6 +39,11 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      interval: null,
+    }
+  },
   computed: {
     ...mapState({
       data(state) {
@@ -100,8 +105,14 @@ export default {
       return options
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 900000)
     EventBus.$on(EVENT_UPDATE_CHART_DISPATCHED, this.update)
     EventBus.$on(
       EVENT_UPDATE_ANNOTATION_DISPATCHED,
@@ -128,6 +139,7 @@ export default {
       },
     }),
     update() {
+      console.log('Updating Seismic Energy Chart...')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()

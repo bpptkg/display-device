@@ -94,6 +94,7 @@ export default {
   mixins: [rangeSelectorMixin],
   data() {
     return {
+      interval: null,
       maxCustomDuration,
       rangeSelector,
     }
@@ -131,8 +132,14 @@ export default {
       }
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 600000)
   },
   methods: {
     ...mapMutations({
@@ -158,6 +165,7 @@ export default {
       },
     }),
     update() {
+      console.log('Updating EDM Chart....')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()

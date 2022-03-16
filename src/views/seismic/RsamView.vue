@@ -189,6 +189,7 @@ export default {
   data() {
     return {
       tab: 0,
+      interval: null,
       rangeSelector,
       maxCustomDuration,
       stationOptions,
@@ -256,8 +257,14 @@ export default {
       this.update()
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   async mounted() {
     this.update()
+    this.interval = setInterval(this.update, 60000)
   },
   methods: {
     ...mapMutations({

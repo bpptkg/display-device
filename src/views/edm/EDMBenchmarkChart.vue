@@ -173,6 +173,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       maxCustomDuration,
       rangeSelector,
       CHART_VIEWS,
@@ -346,8 +347,14 @@ export default {
       this.updateChartWithRegression(show)
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 180000)
   },
   methods: {
     ...mapMutations({
@@ -378,6 +385,7 @@ export default {
     }),
 
     update() {
+      console.log('Updating EDM Benchmark Chart...')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()

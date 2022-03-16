@@ -140,6 +140,7 @@ export default {
   mixins: [chartMixin],
   data() {
     return {
+      interval: null,
       rangeSelector,
       maxCustomDuration,
       fieldOptions,
@@ -175,8 +176,14 @@ export default {
       return getStatsInfo(this.data)
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 900000)
   },
   methods: {
     ...mapMutations({

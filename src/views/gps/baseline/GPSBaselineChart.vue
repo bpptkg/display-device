@@ -82,6 +82,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       maxCustomDuration,
       rangeSelector,
     }
@@ -171,8 +172,14 @@ export default {
       return options
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 900000)
   },
   methods: {
     ...mapMutations({
@@ -197,6 +204,9 @@ export default {
         return dispatch(this.namespace + '/' + UPDATE_ANNOTATIONS)
       },
     }),
+  },
+  update() {
+    console.log('Updating GPSBaseline Chart...')
   },
 }
 </script>

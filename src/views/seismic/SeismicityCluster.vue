@@ -178,6 +178,7 @@ export default {
   mixins: [chartMixin],
   data() {
     return {
+      interval: null,
       samplingOptions: [
         { value: SamplingTypes.DAY, text: 'Daily' },
         { value: SamplingTypes.HOUR, text: 'Hourly' },
@@ -263,8 +264,14 @@ export default {
       this.update()
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 900000)
   },
   methods: {
     ...mapMutations({

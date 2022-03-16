@@ -92,6 +92,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       station: null,
       selected: null,
       stationOptions,
@@ -109,7 +110,14 @@ export default {
       return this.filterStationByDataType(stationOptions, DataTypes.TLR)
     },
   },
-  mounted() {},
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
+  mounted() {
+    this.interval = setInterval(this.update, 900000)
+  },
   methods: {
     filterStationByDataType(stations, type) {
       return stations.filter((v) => v.value.split('/')[0] === type)

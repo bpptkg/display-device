@@ -177,12 +177,21 @@ export default {
   },
   data() {
     return {
+      interval: null,
       fieldOptions,
       maxCustomDuration,
       rangeSelector,
       tabNav,
       TimelineIcon,
     }
+  },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
+  mounted() {
+    this.interval = setInterval(this.update, 900000)
   },
   computed: {
     ...mapState({

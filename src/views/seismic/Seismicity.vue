@@ -145,6 +145,7 @@ export default {
   name: 'Seismicity',
   components: {
     BCard,
+    BDropdownItem,
     BFormSelect,
     BLink,
     DChart,
@@ -157,7 +158,6 @@ export default {
     StatsPanelPeriod,
     StatsPanelTable,
     MoreMenu,
-    BDropdownItem,
   },
   directives: {
     'b-tooltip': VBTooltip,
@@ -165,6 +165,7 @@ export default {
   mixins: [chartMixin],
   data() {
     return {
+      interval: null,
       samplingOptions: [
         { value: SamplingTypes.DAY, text: 'Daily' },
         { value: SamplingTypes.HOUR, text: 'Hourly' },
@@ -250,8 +251,14 @@ export default {
       this.update()
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.update()
+    this.interval = setInterval(this.update, 900000)
   },
   methods: {
     ...mapMutations({
@@ -279,6 +286,7 @@ export default {
         return dispatch(NAMESPACE + '/' + UPDATE_ANNOTATIONS)
       },
     }),
+
     async downloadData() {
       const doDownloadAsync = async (data, exportFilename) => {
         const blob = new Blob([createCSVContent(data)], {

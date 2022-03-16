@@ -201,6 +201,7 @@ export default {
   },
   data() {
     return {
+      interval: null,
       eventTypes,
       samplingOptions: [
         { value: SamplingTypes.DAY, text: 'Daily' },
@@ -295,9 +296,15 @@ export default {
       this.update()
     },
   },
+  beforeDestroy() {
+    if (this.interval !== null) {
+      clearInterval(this.interval)
+    }
+  },
   mounted() {
     this.setEventType(this.eventType)
     this.update()
+    this.interval = setInterval(this.update, 900000)
   },
   methods: {
     ...mapMutations({
