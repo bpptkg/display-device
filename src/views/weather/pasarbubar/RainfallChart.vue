@@ -83,7 +83,6 @@ export default {
       },
     }),
     update() {
-      console.log('Updating Rainfall Chart...')
       this.showLoading()
       this.fetchData().finally(() => {
         this.hideLoading()
@@ -104,7 +103,6 @@ export default {
     },
     downloadData() {
       const csvString = createCSVContent(this.rainfallData)
-      //console.log(csvString) //see the results
       const doDownloadAsync = async (rainfallData, exportFilename) => {
         const blob = new Blob([createCSVContent(this.rainfallData)], {
           type: 'text/csv;charset=utf-8',

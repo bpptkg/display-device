@@ -385,7 +385,6 @@ export default {
     }),
 
     update() {
-      console.log('Updating EDM Benchmark Chart...')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()

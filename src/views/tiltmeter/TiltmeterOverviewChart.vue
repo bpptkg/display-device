@@ -239,7 +239,6 @@ export default {
     }),
     downloadData() {
       const csvString = createCSVContent(this.data)
-      console.log(csvString) //see the results
       const doDownloadAsync = async (data, exportFilename) => {
         const blob = new Blob([createCSVContent(this.data)], {
           type: 'text/csv;charset=utf-8',

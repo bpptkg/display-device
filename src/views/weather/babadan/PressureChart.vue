@@ -87,7 +87,6 @@ export default {
       },
     }),
     update() {
-      console.log('Updating Pressure Chart...')
       this.showLoading()
       this.fetchData().finally(() => {
         this.hideLoading()
@@ -115,7 +114,6 @@ export default {
         }
       })
       const csvString = createCSVContent(pressure)
-      console.log(pressure)
       const doDownloadAsync = async (pressure, exportFilename) => {
         const blob = new Blob([createCSVContent(pressure)], {
           type: 'text/csv;charset=utf-8',

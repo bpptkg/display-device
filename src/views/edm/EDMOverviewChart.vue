@@ -165,7 +165,6 @@ export default {
       },
     }),
     update() {
-      console.log('Updating EDM Chart....')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()

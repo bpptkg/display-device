@@ -139,7 +139,6 @@ export default {
       },
     }),
     update() {
-      console.log('Updating Seismic Energy Chart...')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()

@@ -205,9 +205,6 @@ export default {
       },
     }),
   },
-  update() {
-    console.log('Updating GPSBaseline Chart...')
-  },
 }
 </script>
 

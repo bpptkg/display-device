@@ -82,7 +82,6 @@ export default {
       },
     }),
     update() {
-      console.log('Updating Rainfall Chart...')
       this.showLoading()
       this.fetchData().finally(() => {
         this.hideLoading()
@@ -102,7 +101,6 @@ export default {
       this.delegateMethod('clear')
     },
     downloadData() {
-      console.log(this.data)
       const csvString = createCSVContent(this.data)
       const doDownloadAsync = async (data, exportFilename) => {
         const blob = new Blob([createCSVContent(this.data)], {
