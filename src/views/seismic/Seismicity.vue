@@ -45,6 +45,10 @@
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
     </BCard>
 
+    <DNote>
+      &mdash; Seismicity data before 2016-11-21 do not support hourly sampling.
+    </DNote>
+
     <div class="bot-panel mt-3">
       <BCard title="Statistics" title-tag="h6">
         <StatsPanelPeriod
@@ -109,6 +113,7 @@ import RangeSelector from '@/components/range-selector'
 import MoreMenu from '@/components/more-menu'
 import EventAnnotation from '@/components/event-annotation'
 import chartMixin from '@/components/mixins/charts'
+import DNote from '@/components/base/note/DNote'
 
 import {
   baseChartOptions,
@@ -148,6 +153,7 @@ export default {
     BFormSelect,
     BLink,
     DChart,
+    DNote,
     ErrorMessage,
     EventAnnotation,
     RangeSelector,
