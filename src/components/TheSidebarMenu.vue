@@ -16,6 +16,7 @@ import {
   GpsIcon,
   HomeIcon,
   LavaDomeIcon,
+  MagneticIcon,
   ObservationIcon,
   SeismicIcon,
   TiltmeterIcon,
@@ -162,6 +163,11 @@ export default {
               href: '/observation/rfap-type',
             },
           ],
+        },
+        {
+          title: 'Magnetic',
+          icon: MagneticIcon,
+          href: '/magnetic',
         },
         {
           divider: true,

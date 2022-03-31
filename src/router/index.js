@@ -255,6 +255,14 @@ const routes = [
     path: '/about',
     component: () => import('../views/common/AppInfoView'),
   },
+  {
+    path: '/magnetic',
+    redirect: '/magnetic/imogiri',
+  },
+  {
+    path: '/magnetic/imogiri',
+    component: () => import('../views/magnetic/MagneticImogiriView'),
+  },
 ]
 
 const router = new VueRouter({

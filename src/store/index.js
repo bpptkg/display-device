@@ -7,6 +7,7 @@ import gps from './gps'
 import helicorder from './helicorder'
 import home from './home'
 import lavaDome from './lava-domes'
+import magnetic from './magnetic'
 import observation from './observation'
 import pageLoader from './loader'
 import realtime from './realtime'
@@ -30,6 +31,7 @@ export default new Vuex.Store({
     helicorder,
     home,
     lavaDome,
+    magnetic,
     observation,
     pageLoader,
     realtime,

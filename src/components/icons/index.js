@@ -8,6 +8,7 @@ import LavaDomeIcon from './LavaDomeIcon'
 import LayoutIcon from './LayoutIcon'
 import LogoIcon from './LogoIcon'
 import LogoBetaIcon from './LogoBetaIcon'
+import MagneticIcon from './MagneticIcon'
 import MenuIcon from './MenuIcon'
 import ObservationIcon from './ObservationIcon'
 import RainfallIcon from './RainfallIcon'
@@ -27,6 +28,7 @@ export {
   LayoutIcon,
   LogoIcon,
   LogoBetaIcon,
+  MagneticIcon,
   MenuIcon,
   ObservationIcon,
   RainfallIcon,
