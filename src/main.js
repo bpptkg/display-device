@@ -5,6 +5,7 @@ import DisplayDevicePlugins from './plugins'
 import ProgressBar from './components/progressbar'
 import router from './router'
 import store from './store'
+import './registerServiceWorker'
 
 import { NAMESPACE as PAGE_LOADER_NAMESPACE } from './store/loader'
 import { SHOW_PAGE_LOADER, HIDE_PAGE_LOADER } from './store/loader/actions'

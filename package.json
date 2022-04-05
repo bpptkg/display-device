@@ -20,6 +20,7 @@
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
+    "register-service-worker": "^1.7.1",
     "v-viewer": "^1.6.4",
     "viewerjs": "^1.10.1",
     "vue": "^2.6.11",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-pwa": "~4.5.13",
     "@vue/cli-service": "~4.5.0",
     "@vue/composition-api": "^1.1.0",
     "babel-eslint": "^10.1.0",
