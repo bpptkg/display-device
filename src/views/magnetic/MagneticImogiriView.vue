@@ -165,6 +165,6 @@ export default {
 }
 
 .chart {
-  min-height: 600px !important;
+  min-height: 700px !important;
 }
 </style>

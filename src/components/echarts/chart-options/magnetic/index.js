@@ -9,7 +9,18 @@ export const SeriesName = Object.freeze({
   Y: 'Y',
   Z: 'Z',
   R: 'R',
+  T: 'Temperature',
+  B: 'Battery',
 })
+
+export const seriesProps = {
+  [SeriesName.X]: { valueSuffix: ' nT' },
+  [SeriesName.Y]: { valueSuffix: ' nT' },
+  [SeriesName.Z]: { valueSuffix: ' nT' },
+  [SeriesName.R]: { valueSuffix: ' nT' },
+  [SeriesName.T]: { valueSuffix: ' \u00B0C', valueDecimals: 2 },
+  [SeriesName.B]: { valueSuffix: ' V', valueDecimals: 2 },
+}
 
 export const createSeries = (data, { annotations = [] } = {}) => {
   const options = [
@@ -65,6 +76,32 @@ export const createSeries = (data, { annotations = [] } = {}) => {
       xAxisIndex: 3,
       yAxisIndex: 3,
     },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'temperature'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.T,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 4,
+      yAxisIndex: 4,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'battery'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.B,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 5,
+      yAxisIndex: 5,
+    },
   ]
 
   return options
@@ -100,8 +137,26 @@ export const createXAxis = (min, max) => {
       type: 'time',
     },
     {
-      axisLabel: { show: true },
+      axisLabel: { show: false },
       gridIndex: 3,
+      min,
+      max,
+      position: 'bottom',
+      splitLine: { show: false },
+      type: 'time',
+    },
+    {
+      axisLabel: { show: false },
+      gridIndex: 4,
+      min,
+      max,
+      position: 'bottom',
+      splitLine: { show: false },
+      type: 'time',
+    },
+    {
+      axisLabel: { show: true },
+      gridIndex: 5,
       min,
       max,
       splitLine: { show: false },
@@ -119,7 +174,7 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(4, { bottom: 11, right: 5, left: 20, top: 10 }),
+      grid: createRowGrid(6, { bottom: 11, right: 5, left: 20, top: 10 }),
       title: {
         top: 27,
         textStyle: {
@@ -170,6 +225,24 @@ export const createYAxis = () => {
       splitLine: { show: false },
       type: 'value',
     },
+    {
+      gridIndex: 4,
+      name: 'Temperature (\u00B0C)',
+      nameGap: 55,
+      nameLocation: 'center',
+      scale: true,
+      splitLine: { show: false },
+      type: 'value',
+    },
+    {
+      gridIndex: 5,
+      name: 'Battery (V)',
+      nameGap: 55,
+      nameLocation: 'center',
+      scale: true,
+      splitLine: { show: false },
+      type: 'value',
+    },
   ]
 
   return options
@@ -179,10 +252,10 @@ export const baseChartOptions = {
   backgroundColor: '#fff',
   dataZoom: {
     type: 'slider',
-    xAxisIndex: [0, 1, 2, 3],
+    xAxisIndex: [0, 1, 2, 3, 4, 5],
     realtime: false,
   },
-  grid: createRowGrid(4, { bottom: 11, right: 5 }),
+  grid: createRowGrid(6, { bottom: 11, right: 5 }),
   title: {
     text: 'Base Magnetic Imogiri',
     left: 'center',
@@ -207,7 +280,7 @@ export const baseChartOptions = {
     formatter: defaultTooltipFormatter({
       format: 'YYYY-MM-DD HH:mm:ss',
       valueDecimals: 3,
-      valueSuffix: ' nT',
+      seriesProps: seriesProps,
     }),
   },
   yAxis: createYAxis(),
