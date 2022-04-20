@@ -138,6 +138,14 @@
           ></BFormSelect>
         </BFormGroup>
 
+        <BFormGroup label="Sort event date">
+          <BFormSelect
+            v-model="filterEventDateSortMode"
+            size="sm"
+            :options="eventDateSortModeOptions"
+          ></BFormSelect>
+        </BFormGroup>
+
         <BFormGroup>
           <template #label>
             <span class="rs-custom-input-label">Start time</span>
@@ -209,7 +217,11 @@ import { FilterListIcon, SaveAltIcon } from '@/components/icons/content'
 import { RefreshIcon } from '@/components/icons/navigation'
 import DateTimePicker from '@/components/base/datetime-picker'
 
-import { NAMESPACE, eventTypesFilter } from '@/store/seismic/bulletin'
+import {
+  NAMESPACE,
+  eventTypesFilter,
+  eventDateSortModeOptions,
+} from '@/store/seismic/bulletin'
 import rangeSelector, {
   maxCustomDuration,
 } from '@/store/seismic/bulletin/range-selector'
@@ -263,6 +275,7 @@ export default {
       busy: false,
       event: {},
       eventTypesFilter,
+      eventDateSortModeOptions,
       fieldOptions,
       filter: null,
       labelOptions,
@@ -347,6 +360,15 @@ export default {
       },
       set(value) {
         this.updateFilterOptions({ name: 'eventType', value: value })
+      },
+    },
+    filterEventDateSortMode: {
+      get() {
+        return this.$store.state.seismic.bulletin.filterOptions
+          .eventDateSortMode
+      },
+      set(value) {
+        this.updateFilterOptions({ name: 'eventDateSortMode', value: value })
       },
     },
   },

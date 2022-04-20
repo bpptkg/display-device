@@ -40,10 +40,17 @@ export const eventTypesFilter = [
   })),
 ]
 
+export const eventDateSortModeOptions = [
+  { value: 'asc', text: 'Ascending' },
+  { value: 'desc', text: 'Descending' },
+]
+
 export const defaultFilterOptions = {
   eventType: 'ALL',
   start: '',
   end: '',
+  // Sort eventdate field by ascending (asc) or descending (desc).
+  eventDateSortMode: 'desc',
 }
 
 export const initialState = {
@@ -164,7 +171,6 @@ export const actions = {
       page: state.page,
       page_size: state.pageSize,
       eventtype__isnull: false,
-      ordering: '-eventdate',
       fields: fields.join(','),
     }
 
@@ -180,6 +186,11 @@ export const actions = {
     }
     if (state.filterOptions.end) {
       params.eventdate__lt = state.filterOptions.end
+    }
+    if (state.filterOptions.eventDateSortMode === 'desc') {
+      params.ordering = '-eventdate'
+    } else {
+      params.ordering = 'eventdate'
     }
 
     const bulletinRequest = client.get('/bulletin/', {
