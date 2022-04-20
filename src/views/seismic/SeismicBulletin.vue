@@ -2,29 +2,6 @@
   <div class="bulletin-view">
     <h5>Seismic Bulletin</h5>
 
-    <div class="d-flex mb-2">
-      <BButtonGroup class="ml-2">
-        <DButtonIcon
-          v-b-tooltip.hover
-          :busy="isRefreshing"
-          :icon="RefreshIcon"
-          no-border
-          no-shadow
-          title="Refresh Table"
-          @click.native="refreshTable"
-        />
-        <DButtonIcon
-          v-b-tooltip.hover
-          :busy="isDownloading"
-          :icon="SaveAltIcon"
-          no-border
-          no-shadow
-          title="Download Table"
-          @click.native="downloadEventsCSV"
-        />
-      </BButtonGroup>
-    </div>
-
     <ErrorMessage v-if="error">
       <p>Unable to load data.</p>
       <p>Error: {{ error.message }}</p>
@@ -36,30 +13,56 @@
     <div v-show="!error">
       <div class="d-flex flex-wrap justify-content-between">
         <div class="d-flex flex-wrap">
-          <BFormGroup label="Show">
+          <BFormGroup label="">
             <BFormSelect
+              v-b-tooltip.hover
+              title="Number of items per page"
               v-model="perPage"
               size="sm"
               :options="pageOptions"
             ></BFormSelect>
           </BFormGroup>
 
-          <BFormGroup label="Event type" class="ml-2">
-            <BFormSelect
-              v-model="eventType"
-              size="sm"
-              :options="eventTypesFilter"
-            ></BFormSelect>
+          <BFormGroup label="" class="ml-2">
+            <DButtonIcon
+              v-b-tooltip.hover
+              :icon="FilterListIcon"
+              no-shadow
+              title="Show filter options"
+              @click.native="showFilterOptions"
+            />
+          </BFormGroup>
+
+          <BFormGroup class="ml-2">
+            <DButtonIcon
+              v-b-tooltip.hover
+              :busy="isRefreshing"
+              :icon="RefreshIcon"
+              no-shadow
+              title="Refresh table"
+              @click.native="refreshTable"
+            />
+          </BFormGroup>
+
+          <BFormGroup class="ml-2">
+            <DButtonIcon
+              v-b-tooltip.hover
+              :busy="isDownloading"
+              :icon="SaveAltIcon"
+              no-shadow
+              title="Download table"
+              @click.native="downloadEventsCSV"
+            />
           </BFormGroup>
         </div>
 
-        <BFormGroup label="Filter">
+        <BFormGroup label="">
           <BInputGroup size="sm">
             <BFormInput
               id="filterInput"
               v-model="filter"
               type="search"
-              placeholder="Type to Search"
+              placeholder="Search table"
             ></BFormInput>
           </BInputGroup>
         </BFormGroup>
@@ -126,6 +129,39 @@
         </BTabs>
       </BModal>
 
+      <BModal ref="filterOptions" size="sm" title="Filter Options">
+        <BFormGroup label="Event type">
+          <BFormSelect
+            v-model="filterEventType"
+            size="sm"
+            :options="eventTypesFilter"
+          ></BFormSelect>
+        </BFormGroup>
+
+        <BFormGroup>
+          <template #label>
+            <span class="rs-custom-input-label">Start time</span>
+          </template>
+          <DateTimePicker v-model="filterStart" :config="dateOptions" />
+        </BFormGroup>
+
+        <BFormGroup>
+          <template #label>
+            <span class="rs-custom-input-label">End time</span>
+          </template>
+          <DateTimePicker v-model="filterEnd" :config="dateOptions" />
+        </BFormGroup>
+
+        <template #modal-footer>
+          <BButton variant="primary" @click="clearFilterOptions">
+            Clear
+          </BButton>
+          <BButton variant="primary" @click="applyFilterOptions">
+            Apply
+          </BButton>
+        </template>
+      </BModal>
+
       <div class="d-flex justify-content-center">
         <BPagination
           v-model="currentPage"
@@ -143,7 +179,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import {
-  BButtonGroup,
+  BButton,
   BDropdownItem,
   BFormGroup,
   BFormInput,
@@ -169,8 +205,9 @@ import MoreMenu from '@/components/more-menu'
 import ErrorMessage from '@/components/error-message'
 import HypocenterViewer from '@/components/viewer/HypocenterViewer'
 import DButtonIcon from '@/components/base/button-icon/DButtonIcon'
-import { SaveAltIcon } from '@/components/icons/content'
+import { FilterListIcon, SaveAltIcon } from '@/components/icons/content'
 import { RefreshIcon } from '@/components/icons/navigation'
+import DateTimePicker from '@/components/base/datetime-picker'
 
 import { NAMESPACE, eventTypesFilter } from '@/store/seismic/bulletin'
 import rangeSelector, {
@@ -191,12 +228,14 @@ import {
   SET_PAGE_SIZE,
   SET_PAGE,
   SET_TOTAL,
+  UPDATE_FILTER_OPTIONS,
+  RESET_FILTER_OPTIONS,
 } from '../../store/seismic/bulletin/mutations'
 
 export default {
   name: 'SeismicBulletin',
   components: {
-    BButtonGroup,
+    BButton,
     BDropdownItem,
     BFormGroup,
     BFormInput,
@@ -210,6 +249,7 @@ export default {
     BTabs,
     ClusterMediaImageViewer,
     ClusterMediaStream,
+    DateTimePicker,
     DButtonIcon,
     ErrorMessage,
     HypocenterViewer,
@@ -230,10 +270,16 @@ export default {
       pageOptions: [10, 25, 50, 100, 200],
       rangeSelector,
       tabIndex: 0,
+      FilterListIcon,
       SaveAltIcon,
       RefreshIcon,
       isDownloading: false,
       isRefreshing: false,
+      dateOptions: {
+        format: 'YYYY-MM-DD HH:mm:ss',
+        showClose: true,
+        showClear: true,
+      },
     }
   },
   computed: {
@@ -279,6 +325,30 @@ export default {
         this.setTotal(value)
       },
     },
+    filterStart: {
+      get() {
+        return this.$store.state.seismic.bulletin.filterOptions.start
+      },
+      set(value) {
+        this.updateFilterOptions({ name: 'start', value: value })
+      },
+    },
+    filterEnd: {
+      get() {
+        return this.$store.state.seismic.bulletin.filterOptions.end
+      },
+      set(value) {
+        this.updateFilterOptions({ name: 'end', value: value })
+      },
+    },
+    filterEventType: {
+      get() {
+        return this.$store.state.seismic.bulletin.filterOptions.eventType
+      },
+      set(value) {
+        this.updateFilterOptions({ name: 'eventType', value: value })
+      },
+    },
   },
   watch: {
     eventType(_value) {
@@ -318,6 +388,12 @@ export default {
       setTotal(commit, total) {
         return commit(NAMESPACE + '/' + SET_TOTAL, total)
       },
+      updateFilterOptions(commit, options) {
+        return commit(NAMESPACE + '/' + UPDATE_FILTER_OPTIONS, options)
+      },
+      resetFilterOptions(commit) {
+        return commit(NAMESPACE + '/' + RESET_FILTER_OPTIONS)
+      },
     }),
     ...mapActions({
       fetchData(dispatch) {
@@ -333,6 +409,16 @@ export default {
     showDetails(item) {
       this.event = this.data.find((v) => v.eventid === item.eventid)
       this.$refs.dialog.show()
+    },
+    showFilterOptions() {
+      this.$refs.filterOptions.show()
+    },
+    applyFilterOptions() {
+      this.$refs.filterOptions.hide()
+      this.update()
+    },
+    clearFilterOptions() {
+      this.resetFilterOptions()
     },
     refreshTable() {
       this.isRefreshing = true
@@ -419,6 +505,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rs-custom-input-label {
+  color: #24292e;
+  font-size: 0.875rem;
+  opacity: 0.75;
+}
+
 .bulletin-view {
   margin-bottom: 50px;
   padding: 10px;

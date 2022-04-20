@@ -15,13 +15,16 @@ import { baseState, baseMutations } from '../../base'
 import { FETCH_BULLETIN, UPDATE_BULLETIN } from './actions'
 import {
   RESET_EVENT_TYPE,
+  RESET_FILTER_OPTIONS,
   SET_CLUSTER_DICT,
   SET_EVENT_TYPE,
-  SET_PAGE,
-  SET_PAGE_SIZE,
+  SET_FILTER_OPTIONS,
   SET_LINK,
+  SET_PAGE_SIZE,
+  SET_PAGE,
   SET_PAGES,
   SET_TOTAL,
+  UPDATE_FILTER_OPTIONS,
 } from './mutations'
 import rangeSelector from './range-selector'
 import { seismicEvents } from '@/constants/bulletin'
@@ -37,10 +40,16 @@ export const eventTypesFilter = [
   })),
 ]
 
+export const defaultFilterOptions = {
+  eventType: 'ALL',
+  start: '',
+  end: '',
+}
+
 export const initialState = {
   ...baseState,
   clusterDict: {},
-  eventType: 'ALL',
+  eventType: 'ALL', // Deprecated. Use filterOptions instead.
   page: 1,
   pages: 0,
   total: 0,
@@ -49,6 +58,9 @@ export const initialState = {
   hasPrevious: false,
   nexLink: '',
   previousLink: '',
+  filterOptions: {
+    ...defaultFilterOptions,
+  },
 }
 
 export const initState = (period) => {
@@ -98,6 +110,17 @@ export const mutations = {
   [SET_TOTAL](state, total) {
     state.total = total
   },
+  [SET_FILTER_OPTIONS](state, options) {
+    state.filterOptions = options
+  },
+  [UPDATE_FILTER_OPTIONS](state, { name, value }) {
+    if (name in state.filterOptions) {
+      state.filterOptions[name] = value
+    }
+  },
+  [RESET_FILTER_OPTIONS](state) {
+    state.filterOptions = { ...defaultFilterOptions }
+  },
 }
 
 export const actions = {
@@ -144,42 +167,54 @@ export const actions = {
       ordering: '-eventdate',
       fields: fields.join(','),
     }
-    if (state.eventType !== 'ALL') {
-      params.eventtype = state.eventType
+
+    // Apply filter options.
+    if (
+      state.filterOptions.eventType &&
+      state.filterOptions.eventType !== 'ALL'
+    ) {
+      params.eventtype = state.filterOptions.eventType
+    }
+    if (state.filterOptions.start) {
+      params.eventdate__gte = state.filterOptions.start
+    }
+    if (state.filterOptions.end) {
+      params.eventdate__lt = state.filterOptions.end
     }
 
     const bulletinRequest = client.get('/bulletin/', {
       params,
     })
 
-    const { data, clusterDict, rawData } = await Promise.all([
-      bulletinRequest,
-      clusterDictRequest,
-    ]).then((responses) => {
-      const clusterDict = responses[1].data.reduce((acc, cur) => {
-        acc[cur.cluster] = cur.eventtype
-        return acc
-      }, {})
+    await Promise.all([bulletinRequest, clusterDictRequest])
+      .then((responses) => {
+        const clusterDict = responses[1].data.reduce((acc, cur) => {
+          acc[cur.cluster] = cur.eventtype
+          return acc
+        }, {})
 
-      const results = responses[0].data.results || []
-      const data = results.map((v) => {
-        return {
-          ...v,
-          clusterEvent: get(clusterDict, v.cluster, 'UNCLUSTERED'),
-        }
+        const results = responses[0].data.results || []
+        const data = results.map((v) => {
+          return {
+            ...v,
+            clusterEvent: get(clusterDict, v.cluster, 'UNCLUSTERED'),
+          }
+        })
+
+        const rawData = responses[0].data
+        const { links, pages, total } = rawData
+        commit(SET_PAGES, pages)
+        commit(SET_LINK, links)
+        commit(SET_TOTAL, total)
+
+        commit(SET_CLUSTER_DICT, clusterDict)
+        commit(SET_DATA, data)
+        commit(SET_LAST_UPDATED, moment())
       })
-
-      return { data, clusterDict, rawData: responses[0].data }
-    })
-
-    const { links, pages, total } = rawData
-    commit(SET_PAGES, pages)
-    commit(SET_LINK, links)
-    commit(SET_TOTAL, total)
-
-    commit(SET_CLUSTER_DICT, clusterDict)
-    commit(SET_DATA, data)
-    commit(SET_LAST_UPDATED, moment())
+      .catch((error) => {
+        commit(SET_ERROR, error)
+        commit(SET_LAST_UPDATED, moment())
+      })
   },
 
   async [UPDATE_BULLETIN]({ dispatch, commit, state }) {
