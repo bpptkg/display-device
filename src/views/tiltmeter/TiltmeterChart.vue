@@ -35,6 +35,9 @@
             size="sm"
             :options="samplingOptions"
           />
+          <MoreMenu right class="ml-2">
+            <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
+          </MoreMenu>
         </div>
       </div>
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
@@ -61,7 +64,13 @@
 import moment from 'moment'
 
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BFormSelect, BLink, VBHover } from 'bootstrap-vue'
+import {
+  BCard,
+  BDropdownItem,
+  BFormSelect,
+  BLink,
+  VBHover,
+} from 'bootstrap-vue'
 
 import { DATE_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/tiltmeter'
@@ -96,16 +105,21 @@ import {
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 import { SET_SAMPLING, SET_MID_MODE } from '@/store/tiltmeter/mutations'
 import { UPDATE_TILTMETER } from '@/store/tiltmeter/actions'
+import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
+import MoreMenu from '@/components/more-menu'
+import { saveAs } from '@/lib/file-saver'
 
 export default {
   name: 'TiltmeterChart',
   components: {
     BCard,
+    BDropdownItem,
     BFormSelect,
     BLink,
     DChart,
     ErrorMessage,
     EventAnnotation,
+    MoreMenu,
     RangeSelector,
   },
   directives: {
@@ -274,6 +288,17 @@ export default {
         return dispatch(this.namespace + '/' + UPDATE_ANNOTATIONS)
       },
     }),
+    async downloadData() {
+      const blob = new Blob([createCSVContent(this.data)], {
+        type: 'text/csv;charset=utf-8',
+      })
+      saveAs(
+        blob,
+        `tiltmeter-${this.type}-${this.station}-${
+          this.sampling
+        }-${createShortNameFromPeriod(this.period)}.csv`
+      )
+    },
   },
 }
 </script>
