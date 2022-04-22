@@ -11,6 +11,11 @@
     </BCard>
 
     <BCard v-show="!error" title-tag="h5">
+      <div class="d-flex justify-content-end">
+        <MoreMenu right>
+          <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
+        </MoreMenu>
+      </div>
       <DChart ref="chart" :options="chartOptions" class="chart" />
     </BCard>
   </div>
@@ -18,7 +23,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import { BCard, BLink } from 'bootstrap-vue'
+import { BCard, BLink, BDropdownItem } from 'bootstrap-vue'
 import ErrorMessage from '@/components/error-message'
 import DChart from '@/components/echarts/chart/DChart'
 import {
@@ -29,18 +34,24 @@ import {
 } from '@/components/echarts/chart-options/weather-pasarbubar'
 import { NAMESPACE } from '@/store/weather/pasarbubar/rainfall'
 import { UPDATE_METEOROLOGY } from '@/store/weather/pasarbubar/rainfall/actions'
+import MoreMenu from '@/components/more-menu'
+import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
+import { saveAs } from '@/lib/file-saver'
 
 export default {
   name: 'RainfallChart',
   components: {
     BCard,
+    BDropdownItem,
     BLink,
     DChart,
     ErrorMessage,
+    MoreMenu,
   },
   computed: {
     ...mapState(NAMESPACE, {
       error: (state) => state.error,
+      period: (state) => state.period,
     }),
     ...mapGetters(NAMESPACE, ['rainfallData', 'rainfallEvents']),
     chartOptions() {
@@ -79,6 +90,15 @@ export default {
     },
     clear() {
       this.delegateMethod('clear')
+    },
+    async downloadData() {
+      const blob = new Blob([createCSVContent(this.rainfallData)], {
+        type: 'text/csv;charset=utf-8',
+      })
+      saveAs(
+        blob,
+        `weather-pasarbubar-${createShortNameFromPeriod(this.period)}.csv`
+      )
     },
   },
 }
