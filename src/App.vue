@@ -16,6 +16,7 @@ import {
   SET_REGISTRATION,
   SET_UPDATE_EXISTS,
 } from './store/version/mutations'
+import versionInfo from './utils/version'
 
 export default {
   name: 'App',
@@ -70,6 +71,9 @@ export default {
     updateAvailable(event) {
       this.setRegistration(event.detail)
       this.setUpdateExists(true)
+      console.log(
+        `New version available, version ${versionInfo.version}, build ${versionInfo.commitHash}`
+      )
     },
   },
 }
