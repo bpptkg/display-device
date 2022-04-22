@@ -35,6 +35,9 @@
             size="sm"
             :options="samplingOptions"
           />
+          <MoreMenu right class="ml-2">
+            <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
+          </MoreMenu>
         </div>
       </div>
       <DChart
@@ -48,10 +51,11 @@
 </template>
 
 <script>
+import JSZip from 'jszip'
 import moment from 'moment'
 
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BFormSelect, BLink } from 'bootstrap-vue'
+import { BCard, BFormSelect, BLink, BDropdownItem } from 'bootstrap-vue'
 
 import { DATE_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/tiltmeter'
@@ -85,16 +89,22 @@ import {
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 import { SET_SAMPLING } from '@/store/tiltmeter/overview/mutations'
 import { UPDATE_TILTMETER } from '@/store/tiltmeter/overview/actions'
+import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
+import MoreMenu from '@/components/more-menu'
+import { saveAs } from '@/lib/file-saver'
+import tiltOptions from '@/components/echarts/chart-options/tiltmeter/overview/tilt-options'
 
 export default {
   name: 'TiltmeterOverviewChart',
   components: {
     BCard,
+    BDropdownItem,
     BFormSelect,
     BLink,
     DChart,
     ErrorMessage,
     EventAnnotation,
+    MoreMenu,
     RangeSelector,
   },
   mixins: [chartMixin],
@@ -223,6 +233,22 @@ export default {
         return dispatch(this.namespace + '/' + UPDATE_ANNOTATIONS)
       },
     }),
+    async downloadData() {
+      const zip = new JSZip()
+      this.data.forEach((array, index) => {
+        const { type, station } = tiltOptions[index]
+        zip.file(`tiltmeter-${type}-${station}.csv`, createCSVContent(array))
+      })
+
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        saveAs(
+          content,
+          `tiltmeter-overview-${this.sampling}-${createShortNameFromPeriod(
+            this.period
+          )}.zip`
+        )
+      })
+    },
   },
 }
 </script>
