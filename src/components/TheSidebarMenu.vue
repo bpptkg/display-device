@@ -1,6 +1,7 @@
 <template>
   <SidebarMenu :menu="menu" :collapsed="isCollapsed" @item-click="onItemClick">
     <template #header>
+      <NewVersion />
       <SidebarMenuHeader @menu-click="toggleMenu" />
     </template>
   </SidebarMenu>
@@ -24,12 +25,14 @@ import {
 } from './icons'
 import { EqualizerIcon } from './icons/av'
 import { InfoIcon } from './icons/action'
+import NewVersion from './NewVersion.vue'
 
 export default {
   name: 'TheSidebarMenu',
   components: {
     SidebarMenu,
     SidebarMenuHeader,
+    NewVersion,
   },
   data() {
     return {
