@@ -1,5 +1,5 @@
 <template>
-  <a v-if="updateExists" class="menu-link" @click="refreshApp">
+  <a v-show="updateExists" class="menu-link" @click="refreshApp">
     <div>New version available</div>
     <div>Click to update</div>
   </a>
@@ -15,6 +15,7 @@ export default {
   computed: {
     ...mapState(NAMESPACE, {
       updateExists: (state) => state.updateExists,
+      registration: (state) => state.registration,
     }),
   },
   methods: {
