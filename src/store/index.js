@@ -20,6 +20,7 @@ import sidebarMenu from './sidebar-menu'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import weather from './weather'
+import version from './version'
 
 Vue.use(Vuex)
 
@@ -44,5 +45,6 @@ export default new Vuex.Store({
     tiltmeter,
     user,
     weather,
+    version,
   },
 })

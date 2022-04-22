@@ -6,10 +6,29 @@
 </template>
 
 <script>
-import update from './mixins/update'
+import { mapMutations, mapState } from 'vuex'
+import { NAMESPACE } from '@/store/version'
+import { SET_UPDATE_EXISTS } from '@/store/version/mutations'
+
 export default {
   name: 'NewVersion',
-  mixins: [update],
+  computed: {
+    ...mapState(NAMESPACE, {
+      updateExists: (state) => state.updateExists,
+    }),
+  },
+  methods: {
+    ...mapMutations({
+      setUpdateExists(commit, value) {
+        return commit(NAMESPACE + '/' + SET_UPDATE_EXISTS, value)
+      },
+    }),
+    refreshApp() {
+      this.setUpdateExists(false)
+      if (!this.registration || !this.registration.waiting) return
+      this.registration.waiting.postMessage({ type: 'SKIP_WAITING' })
+    },
+  },
 }
 </script>
 

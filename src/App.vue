@@ -7,14 +7,28 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex'
 import ProgressBar from './components/progressbar/ProgressBar'
 import TheTopNavbar from './components/TheTopNavbar'
+import { NAMESPACE } from './store/version'
+import {
+  SET_REFRESHING,
+  SET_REGISTRATION,
+  SET_UPDATE_EXISTS,
+} from './store/version/mutations'
 
 export default {
   name: 'App',
   components: {
     TheTopNavbar,
     ProgressBar,
+  },
+  computed: {
+    ...mapState(NAMESPACE, {
+      registration: (state) => state.registration,
+      refreshing: (state) => state.refreshing,
+      updateExists: (state) => state.updateExists,
+    }),
   },
   mounted() {
     this.$Progress.finish()
@@ -32,6 +46,31 @@ export default {
     this.$router.afterEach((to, from) => {
       this.$Progress.finish()
     })
+
+    document.addEventListener('swUpdated', this.updateAvailable, { once: true })
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (this.refreshing) return
+      this.setRefreshing(true)
+      window.location.reload()
+    })
+  },
+  methods: {
+    ...mapMutations({
+      setRefreshing(commit, value) {
+        return commit(NAMESPACE + '/' + SET_REFRESHING, value)
+      },
+      setRegistration(commit, registration) {
+        return commit(NAMESPACE + '/' + SET_REGISTRATION, registration)
+      },
+      setUpdateExists(commit, value) {
+        return commit(NAMESPACE + '/' + SET_UPDATE_EXISTS, value)
+      },
+    }),
+    updateAvailable(event) {
+      this.setRegistration(event.detail)
+      this.setUpdateExists(true)
+    },
   },
 }
 </script>
