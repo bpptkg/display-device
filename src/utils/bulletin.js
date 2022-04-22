@@ -73,17 +73,17 @@ export const createShortNameFromPeriod = (period) => {
   const { type, count = undefined } = period
   switch (type) {
     case DateRangeTypes.SECOND:
-      return `${count}s`
+      return `${count}sec`
     case DateRangeTypes.MINUTE:
-      return `${count}m`
+      return `${count}min`
     case DateRangeTypes.HOUR:
-      return `${count}h`
+      return `${count}hour`
     case DateRangeTypes.DAY:
-      return `${count}d`
+      return `${count}day`
     case DateRangeTypes.MONTH:
-      return `${count}mo`
+      return `${count}month`
     case DateRangeTypes.YEAR:
-      return `${count}y`
+      return `${count}year`
     case DateRangeTypes.YTD:
       return `ytd`
     default:
