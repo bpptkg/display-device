@@ -20,6 +20,11 @@
         </div>
       </template>
       <DChart ref="chart" :options="chartOptions" class="chart" />
+      <DNote>
+        &mdash; Rainfall event may be clipped if rainfall duration greater than
+        time period selected. Using longer time period is recommended to avoid
+        this clipping issue.
+      </DNote>
     </BCard>
   </div>
 </template>
@@ -36,6 +41,7 @@ import {
   createTooltip,
 } from '@/components/echarts/chart-options/weather-pasarbubar'
 import { UPDATE_METEOROLOGY } from '@/store/weather/pasarbubar/rainfall/actions'
+import DNote from '@/components/base/note/DNote'
 
 const NAMESPACE = 'home/charts/weather'
 
@@ -45,6 +51,7 @@ export default {
     BCard,
     BLink,
     DChart,
+    DNote,
     ErrorMessage,
   },
   data() {
