@@ -44,7 +44,6 @@ import WeatherPasarbubarChart from './charts/WeatherPasarbubarChart'
 export default {
   name: 'HomeView',
   components: {
-    // BContainer,
     EDMChart,
     GPSBaselineChart,
     HelicorderChart,
