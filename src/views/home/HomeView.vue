@@ -94,7 +94,7 @@ export default {
 
 <style lang="scss" scoped>
 .home-view {
-  margin-top: 80px;
+  margin-top: 60px;
   padding-left: 15px;
   padding-right: 15px;
 }
