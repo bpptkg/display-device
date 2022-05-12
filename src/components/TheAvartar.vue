@@ -1,13 +1,17 @@
 <template>
   <div class="account">
     <div class="avatar" v-clickaway="hide" @click="toggle">
-      <BAvatar size="2rem" :text="isAuthenticated ? abbrevName : ''" />
+      <BAvatar
+        class="b-avatar"
+        size="2rem"
+        :text="isAuthenticated ? abbrevName : ''"
+      />
     </div>
     <div v-show="visible" class="account-content">
       <div v-if="isAuthenticated">
         <div class="account-content-info">
           <div class="account-content-info-avatar">
-            <BAvatar :text="abbrevName" size="4rem" />
+            <BAvatar class="b-avatar" :text="abbrevName" size="4rem" />
           </div>
           <div class="account-content-info-name">
             {{ user.name || user.username }}
@@ -188,5 +192,9 @@ export default {
   text-align: center;
   text-decoration: none;
   white-space: normal;
+}
+
+.b-avatar {
+  background-color: #ef5483 !important;
 }
 </style>
