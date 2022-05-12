@@ -57,19 +57,19 @@ export default {
       return this.user.username !== undefined && this.user.username !== null
     },
     abbrevName() {
-      const defaultAbbrevName = 'HI'
+      const defaultAbbrevName = 'D'
       if (this.isAuthenticated) {
         const userSplit = this.user.name.split(' ')
         const name =
           userSplit.length > 1
             ? userSplit
                 .map((n) => n[0].toUpperCase())
-                .slice(0, 2)
+                .slice(0, 1)
                 .join('')
             : this.user.name.length > 1
             ? [...this.user.name]
                 .map((n) => n.toUpperCase())
-                .slice(0, 2)
+                .slice(0, 1)
                 .join('')
             : defaultAbbrevName
         return name
