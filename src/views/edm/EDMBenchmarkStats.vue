@@ -18,7 +18,9 @@
     />
     <div class="p-2">
       <input v-model="showRegression" type="checkbox" />
-      <label for="checkbox"><small>Show regression line</small></label>
+      <label for="checkbox" class="ml-2">
+        <small>Show regression line</small>
+      </label>
     </div>
   </div>
 </template>

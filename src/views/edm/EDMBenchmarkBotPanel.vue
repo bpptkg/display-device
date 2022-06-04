@@ -21,7 +21,9 @@
         show-no-data-label
       />
       <input v-model="showRegression" type="checkbox" />
-      <label for="checkbox"><small>Show regression line</small></label>
+      <label for="checkbox" class="ml-2">
+        <small>Show regression line</small>
+      </label>
     </BCard>
   </div>
 </template>
