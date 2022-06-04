@@ -78,7 +78,10 @@ export const baseChartOptions = (
       align: 'right',
       left: 'center',
       show: true,
-      text: 'RF & AP Direction',
+      text:
+        axis === SupportedXAxisType.COUNT
+          ? 'RF & AP Direction'
+          : 'RF & AP Distance',
       textStyle: {
         fontSize: 16,
         fontWeight: 'bold',
