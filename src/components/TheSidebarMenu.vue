@@ -20,6 +20,7 @@ import {
   MagneticIcon,
   ObservationIcon,
   SeismicIcon,
+  ThermalIcon,
   TiltmeterIcon,
   WeatherIcon,
 } from './icons'
@@ -171,6 +172,11 @@ export default {
           title: 'Magnetic',
           icon: MagneticIcon,
           href: '/magnetic',
+        },
+        {
+          title: 'Thermal',
+          icon: ThermalIcon,
+          href: '/thermal',
         },
         {
           divider: true,

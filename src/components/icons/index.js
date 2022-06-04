@@ -14,6 +14,7 @@ import ObservationIcon from './ObservationIcon'
 import RainfallIcon from './RainfallIcon'
 import SeismicIcon from './SeismicIcon'
 import TemplateIcon from './TemplateIcon'
+import ThermalIcon from './ThermalIcon'
 import TiltmeterIcon from './TiltmeterIcon'
 import WeatherIcon from './WeatherIcon'
 
@@ -34,6 +35,7 @@ export {
   RainfallIcon,
   SeismicIcon,
   TemplateIcon,
+  ThermalIcon,
   TiltmeterIcon,
   WeatherIcon,
 }

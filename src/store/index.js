@@ -17,6 +17,7 @@ import rfapDistdir from './rfap-distdir'
 import rfapType from './rfap-type'
 import seismic from './seismic'
 import sidebarMenu from './sidebar-menu'
+import thermal from './thermal'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import weather from './weather'
@@ -42,6 +43,7 @@ export default new Vuex.Store({
     rfapType,
     seismic,
     sidebarMenu,
+    thermal,
     tiltmeter,
     user,
     weather,

@@ -169,6 +169,22 @@ const routes = [
     ],
   },
   {
+    path: '/thermal',
+    component: () => import('../views/thermal/ThermalView'),
+    redirect: '/thermal/kaliurang',
+    children: [
+      {
+        path: ':station',
+        name: 'thermal-chart',
+        components: {
+          default: () => import('../views/thermal/ThermalChart'),
+          stats: () => import('../views/thermal/ThermalStats'),
+        },
+        props: { default: true, stats: (route) => route.params },
+      },
+    ],
+  },
+  {
     path: '/seismic',
     component: () => import('../views/seismic/SeismicView'),
     redirect: '/seismic/seismicity',
