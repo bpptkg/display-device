@@ -50,7 +50,20 @@ export const KALIURANG = [
   },
 ]
 
-export const BABADAN = []
+export const BABADAN = [
+  {
+    id: 'baba-kubah-bd',
+    name: 'Kubah BD',
+  },
+  {
+    id: 'baba-asap',
+    name: 'Asap',
+  },
+  {
+    id: 'baba-barat-laut',
+    name: 'Barat Laut',
+  },
+]
 
 export const AREAS_STATION_MAP = {
   kaliurang: KALIURANG,
