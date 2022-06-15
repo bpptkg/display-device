@@ -3,8 +3,16 @@
     <StatsPanelPeriod :start="startTime" :end="endTime" />
     <SidepanelListDivider />
     <StatsPanelTable
+      :title="'Max. Temperature (\u00B0C)'"
       :fields="fieldOptions"
       :items="statsInfo"
+      scrollable
+      show-no-data-label
+    />
+    <StatsPanelTable
+      title="Density (%)"
+      :fields="fieldOptions"
+      :items="densityStatsInfo"
       scrollable
       show-no-data-label
     />
@@ -18,7 +26,10 @@ import {
   StatsPanelPeriod,
   StatsPanelTable,
 } from '@/components/sidepanel/panel/stats'
-import { getStatsInfo } from '@/components/echarts/chart-options/thermal/utils'
+import {
+  getStatsInfo,
+  getDensityStatsInfo,
+} from '@/components/echarts/chart-options/thermal/utils'
 import fieldOptions from '@/store/thermal/field-options'
 
 export default {
@@ -56,6 +67,9 @@ export default {
     },
     statsInfo() {
       return getStatsInfo(this.data, this.station)
+    },
+    densityStatsInfo() {
+      return getDensityStatsInfo(this.data, this.station)
     },
   },
 }

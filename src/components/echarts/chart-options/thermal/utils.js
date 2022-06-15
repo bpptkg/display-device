@@ -19,3 +19,21 @@ export const getStatsInfo = (data, station) => {
 
   return stats
 }
+
+export const getDensityStatsInfo = (data, station) => {
+  const stats = []
+
+  const areas = AREAS_STATION_MAP[station]
+  areas.forEach((area, index) => {
+    const array = getSeriesByIndex(data, index).map((v) => v.density)
+
+    stats.push({
+      name: area.name,
+      min: min(array),
+      max: max(array),
+      mean: mean(array),
+    })
+  })
+
+  return stats
+}

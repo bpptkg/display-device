@@ -36,6 +36,10 @@
       </div>
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
     </BCard>
+    <DNote>
+      &mdash; Density refer to percentage of pixel area that has temperature
+      value > 50 &deg;C compared to all pixels in the particular area.
+    </DNote>
   </div>
 </template>
 
@@ -50,11 +54,13 @@ import DChart from '@/components/echarts/chart/DChart'
 import ErrorMessage from '@/components/error-message'
 import RangeSelector from '@/components/range-selector'
 import EventAnnotation from '@/components/event-annotation'
+import DNote from '@/components/base/note/DNote'
 import {
   baseChartOptions,
   createSeries,
   createXAxis,
   mediaQuery,
+  createTooltipFormatter,
 } from '@/components/echarts/chart-options/thermal'
 
 import stationOptions from '@/store/thermal/station-options'
@@ -82,6 +88,7 @@ export default {
     BDropdownItem,
     BLink,
     DChart,
+    DNote,
     ErrorMessage,
     EventAnnotation,
     MoreMenu,
@@ -152,6 +159,10 @@ export default {
               color: '#363636',
             },
           },
+          tooltip: {
+            trigger: 'axis',
+            formatter: createTooltipFormatter(AREAS_STATION_MAP[this.station]),
+          },
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),
             toUnixMiliSeconds(this.endTime)
@@ -209,6 +220,6 @@ export default {
 
 <style lang="scss" scoped>
 .chart {
-  min-height: 450px;
+  min-height: 500px;
 }
 </style>

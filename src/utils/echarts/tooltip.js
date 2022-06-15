@@ -52,6 +52,7 @@ export const SeriesProps = {
   VALUE_SUFFIX: 'valueSuffix',
   VALUE_DECIMALS: 'valueDecimals',
   VALUE_FORMATTER: 'valueFormatter',
+  NAME: 'name',
 }
 
 /**
@@ -106,6 +107,7 @@ export const defaultTooltipFormatter = ({
           const sValueFormatter = get(props, SeriesProps.VALUE_FORMATTER)
           const sValuePrefix = get(props, SeriesProps.VALUE_PREFIX, '')
           const sValueSuffix = get(props, SeriesProps.VALUE_SUFFIX, '')
+          const sName = get(props, SeriesProps.NAME, '')
 
           const valueFormatted = sValueFormatter
             ? sValueFormatter(value, props)
@@ -121,7 +123,7 @@ export const defaultTooltipFormatter = ({
 
           template.push(`
           <div>${createCircleTemplate(color)}
-          ${seriesName}: ${valueFormatted}</div>`)
+          ${sName || seriesName}: ${valueFormatted}</div>`)
         }
       })
 
@@ -143,6 +145,7 @@ export const defaultTooltipFormatter = ({
         const sValueFormatter = get(props, SeriesProps.VALUE_FORMATTER)
         const sValuePrefix = get(props, SeriesProps.VALUE_PREFIX, '')
         const sValueSuffix = get(props, SeriesProps.VALUE_SUFFIX, '')
+        const sName = get(props, SeriesProps.NAME, '')
 
         const valueFormatted = sValueFormatter
           ? sValueFormatter(value, props)
@@ -158,7 +161,7 @@ export const defaultTooltipFormatter = ({
 
         const template = `<div>${moment(value[0]).format(format)}</div>
         <div>${createCircleTemplate(color)} 
-        ${seriesName}: ${valueFormatted}</div>`
+        ${sName || seriesName}: ${valueFormatted}</div>`
 
         if (adaptive === true) {
           return createTooltipWrapper(template, { ...adaptiveOptions })
