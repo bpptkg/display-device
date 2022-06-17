@@ -37,8 +37,9 @@
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
     </BCard>
     <DNote>
-      &mdash; Density refer to percentage of pixel area that has temperature
-      value > 50 &deg;C compared to all pixels in the particular area.
+      &mdash; Density refer to percentage of pixel area whose temperature value
+      >50&deg;C compared to all pixels in the particular area. Missing data is
+      due to excluding values on foggy weather.
     </DNote>
   </div>
 </template>
