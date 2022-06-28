@@ -38,8 +38,8 @@
     </BCard>
     <DNote>
       &mdash; Density refer to percentage of pixel area whose temperature value
-      >50&deg;C compared to all pixels in the particular area. Missing data is
-      due to excluding values on foggy weather.
+      >50&deg;C compared to all pixels in the particular area. Density values
+      which greater than 30% are excluded.
     </DNote>
   </div>
 </template>
