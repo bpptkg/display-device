@@ -20,6 +20,16 @@ export const isPlottableVolcanicEvent = (event) => {
   )
 }
 
+export const isPlottableVolcanicEventBtbb = (event) => {
+  if (!isVolcanicEvent(event)) return false
+  if (!event.btbb) return false
+  return (
+    Number.isFinite(event.btbb.lat) &&
+    Number.isFinite(event.btbb.lon) &&
+    Number.isFinite(event.btbb.z)
+  )
+}
+
 /**
  * Create CSV content string from array of objects or object.
  *

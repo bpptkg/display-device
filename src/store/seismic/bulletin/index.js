@@ -165,6 +165,7 @@ export const actions = {
       'location_mode',
       'cluster',
       'corr_coef',
+      'btbb',
     ]
 
     const params = {

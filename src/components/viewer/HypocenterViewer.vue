@@ -53,6 +53,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    hypocenterMode: {
+      type: String,
+      default: 'manual',
+    },
   },
   data() {
     return {
@@ -62,12 +66,27 @@ export default {
   },
   computed: {
     data() {
+      let events = []
       if (Array.isArray(this.events)) {
-        return this.events
+        events = this.events
       } else if (isObject(this.events)) {
-        return new Array(this.events)
+        events = new Array(this.events)
       } else {
-        return []
+        events = []
+      }
+
+      if (this.hypocenterMode === 'manual') {
+        return events
+      } else {
+        return events.map((event) => {
+          return {
+            ...event,
+            latitude: event.btbb.lat,
+            longitude: event.btbb.lon,
+            depth: event.btbb.z,
+            rmsp: event.btbb.rmsp,
+          }
+        })
       }
     },
     viewerSettings() {

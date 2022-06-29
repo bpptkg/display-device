@@ -113,13 +113,38 @@
           </BTab>
 
           <BTab class="hypoview-container" title="Hypocenter" lazy>
-            <HypocenterViewer v-if="isPlottableEvent" :events="event" lazy />
+            <div v-if="isPlottableEvent" class="hypoview-content">
+              <HypocenterViewer
+                :events="event"
+                :hypocenter-mode="hypocenterMode"
+                lazy
+              />
+            </div>
             <div
               v-else
-              class="h-100 d-flex align-items-center justify-content-center"
+              class="
+                hypoview-content
+                d-flex
+                align-items-center
+                justify-content-center
+              "
             >
               <ErrorMessage> This hypocenter is not plottable. </ErrorMessage>
             </div>
+            <BButtonGroup size="sm">
+              <BButton
+                variant="outline-primary"
+                :class="{ active: hypocenterMode === 'auto' }"
+                @click="setHypocenterMode('auto')"
+                >Automatic</BButton
+              >
+              <BButton
+                variant="outline-primary"
+                :class="{ active: hypocenterMode === 'manual' }"
+                @click="setHypocenterMode('manual')"
+                >Manual</BButton
+              >
+            </BButtonGroup>
           </BTab>
 
           <BTab title="Cluster">
@@ -188,6 +213,7 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import {
   BButton,
+  BButtonGroup,
   BDropdownItem,
   BFormGroup,
   BFormInput,
@@ -205,6 +231,7 @@ import {
 import { DateRangeTypes } from '@/constants/date'
 import {
   isPlottableVolcanicEvent,
+  isPlottableVolcanicEventBtbb,
   createCSVContent,
   createFilenameFromEventDate,
 } from '@/utils/bulletin'
@@ -248,6 +275,7 @@ export default {
   name: 'SeismicBulletin',
   components: {
     BButton,
+    BButtonGroup,
     BDropdownItem,
     BFormGroup,
     BFormInput,
@@ -293,6 +321,7 @@ export default {
         showClose: true,
         showClear: true,
       },
+      hypocenterMode: 'auto', // Use 'auto' or 'manual' in hypocenter mode.
     }
   },
   computed: {
@@ -304,7 +333,11 @@ export default {
       endTime: (state) => state.endTime,
     }),
     isPlottableEvent() {
-      return isPlottableVolcanicEvent(this.event)
+      if (this.hypocenterMode === 'manual') {
+        return isPlottableVolcanicEvent(this.event)
+      } else {
+        return isPlottableVolcanicEventBtbb(this.event)
+      }
     },
     eventType: {
       get() {
@@ -522,6 +555,9 @@ export default {
     },
     onFiltered(filteredItems) {},
     onContextChanged(ctx) {},
+    setHypocenterMode(mode) {
+      this.hypocenterMode = mode
+    },
   },
 }
 </script>
@@ -551,6 +587,11 @@ export default {
   position: relative;
   width: 100%;
   height: 400px;
+}
+
+.hypoview-content {
+  width: 100%;
+  height: 375px;
 }
 
 .info-container {
