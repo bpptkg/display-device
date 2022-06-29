@@ -38,8 +38,7 @@
     </BCard>
     <DNote>
       &mdash; Density refer to percentage of pixel area whose temperature value
-      >50&deg;C compared to all pixels in the particular area. Density values
-      which greater than 30% are excluded.
+      >30&deg;C compared to all pixels in the particular area.
     </DNote>
   </div>
 </template>
