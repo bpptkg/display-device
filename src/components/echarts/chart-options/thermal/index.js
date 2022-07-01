@@ -35,7 +35,7 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
           )
             // Filter out density outliers which usually occur because of foggy
             // weather.
-            .filter((item) => item[1] < 30.0),
+            .filter((item) => item[1] < 100),
           name: `${SeriesType.DENSITY} ${area.name}`,
           markLine: {
             symbol: 'none',
