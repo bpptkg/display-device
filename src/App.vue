@@ -35,7 +35,6 @@ export default {
     this.$Progress.finish()
   },
   created() {
-    this.$Progress.start()
     this.$router.beforeEach((to, from, next) => {
       if (to.meta.progress !== undefined) {
         const meta = to.meta.progress

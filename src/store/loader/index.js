@@ -5,10 +5,10 @@ export const state = {}
 export const getters = {}
 export const mutations = {}
 export const actions = {
-  [SHOW_PAGE_LOADER](context) {
+  async [SHOW_PAGE_LOADER](context) {
     document.getElementById('page-loader').style.display = 'flex'
   },
-  [HIDE_PAGE_LOADER](content) {
+  async [HIDE_PAGE_LOADER](content) {
     document.getElementById('page-loader').style.display = 'none'
   },
 }

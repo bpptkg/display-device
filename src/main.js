@@ -31,7 +31,7 @@ const initApp = () => {
 // Show initial page loader.
 store.dispatch(PAGE_LOADER_NAMESPACE + '/' + SHOW_PAGE_LOADER)
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   ;(async () => {
     // Get authenticated user.
     store
