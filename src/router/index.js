@@ -279,6 +279,10 @@ const routes = [
     path: '/magnetic/imogiri',
     component: () => import('../views/magnetic/MagneticImogiriView'),
   },
+  {
+    path: '*',
+    redirect: '/',
+  },
 ]
 
 const router = new VueRouter({
