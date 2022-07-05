@@ -10,15 +10,12 @@
           <SidepanelMenuItem round="left" to="/weather/babadan">
             Babadan
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/rainfall-station">
+            Rainfall Station
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
-    <BNav tabs class="tab-nav">
-      <BNavItem to="/weather/pasarbubar" active-class="active">
-        Pasarbubar
-      </BNavItem>
-      <BNavItem to="/weather/babadan" active-class="active"> Babadan </BNavItem>
-    </BNav>
     <div class="content">
       <keep-alive>
         <router-view></router-view>
@@ -28,7 +25,6 @@
 </template>
 
 <script>
-import { BNav, BNavItem } from 'bootstrap-vue'
 import {
   Sidepanel,
   SidepanelMenuHeader,
@@ -39,8 +35,6 @@ import {
 export default {
   name: 'WeatherView',
   components: {
-    BNav,
-    BNavItem,
     Sidepanel,
     SidepanelMenuHeader,
     SidepanelMenuItem,
@@ -51,4 +45,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/scss/layout-monkey';
+
+@media (max-width: 991.98px) {
+  .content {
+    margin-top: 60px;
+  }
+}
 </style>

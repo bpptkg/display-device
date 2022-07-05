@@ -127,6 +127,11 @@ const routes = [
         path: 'babadan',
         component: () => import('../views/weather/babadan/WeatherBabadanView'),
       },
+      {
+        path: 'rainfall-station',
+        component: () =>
+          import('../views/weather/rainfall-station/RainfallStationView'),
+      },
     ],
   },
   {

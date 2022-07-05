@@ -148,7 +148,20 @@ export default {
         {
           title: 'Weather',
           icon: WeatherIcon,
-          href: '/weather',
+          child: [
+            {
+              title: 'Pasarbubar',
+              href: '/weather/pasarbubar',
+            },
+            {
+              title: 'Babadan',
+              href: '/weather/babadan',
+            },
+            {
+              title: 'Rainfall Station',
+              href: '/weather/rainfall-station',
+            },
+          ],
         },
         {
           title: 'Observation',

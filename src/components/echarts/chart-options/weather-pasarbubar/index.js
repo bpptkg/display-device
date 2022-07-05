@@ -88,7 +88,7 @@ const entries = new Map([
 
 export const seriesProps = Object.fromEntries(entries)
 
-const formatDate = (date) => {
+export const formatDate = (date) => {
   return moment(date).format(DATETIME_FORMAT)
 }
 

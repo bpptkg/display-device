@@ -152,11 +152,11 @@ export const createDividerTemplate = ({
  * @param {Array} data Array of seismicity data.
  * @param {Number} index Index number whose data to get.
  */
-export const getSeriesByIndex = (data, index) => {
+export const getSeriesByIndex = (data, index, { defaultData = [] } = {}) => {
   if (index >= 0 && index < data.length) {
     return data[index]
   } else {
-    return []
+    return defaultData
   }
 }
 

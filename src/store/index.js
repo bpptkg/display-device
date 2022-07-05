@@ -9,6 +9,7 @@ import home from './home'
 import lavaDome from './lava-domes'
 import magnetic from './magnetic'
 import observation from './observation'
+import rainfallStation from './rainfall-station'
 import pageLoader from './loader'
 import realtime from './realtime'
 import rfapDistance from './rfap-distance'
@@ -35,6 +36,7 @@ export default new Vuex.Store({
     lavaDome,
     magnetic,
     observation,
+    rainfallStation,
     pageLoader,
     realtime,
     rfapDistance,
