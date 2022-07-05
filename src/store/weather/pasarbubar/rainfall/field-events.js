@@ -36,4 +36,11 @@ export default [
     label: 'Intensity (mm/h)',
     formatter: numberFormatterFactory(2),
   },
+  {
+    key: 'state',
+    label: 'State',
+    formatter: (v) => {
+      return v === 0 ? 'Ended' : 'Ongoing'
+    },
+  },
 ]
