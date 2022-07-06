@@ -175,7 +175,7 @@ export default {
       if (period.type === DateRangeTypes.CUSTOM) {
         this.setPeriod(period)
         this.setStartTime(startTime)
-        this.endTime(endTime)
+        this.setEndTime(endTime)
         this.update()
       } else {
         this.setPeriod(period)
