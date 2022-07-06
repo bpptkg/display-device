@@ -30,6 +30,12 @@
         </div>
         <DChart ref="chart" :options="chartOptions" class="chart" />
       </BCard>
+
+      <DNote>
+        &mdash; Rainfall event may be clipped if rainfall duration greater than
+        time period selected. Using longer time period is recommended to avoid
+        this clipping issue.
+      </DNote>
     </div>
 
     <SidepanelTabs v-model="tabIndex" sidepanel-class="secondary-nav">
@@ -88,6 +94,8 @@ import RainfallStationInfoBotPanel from './RainfallStationInfoBotPanel'
 
 import { DateRangeTypes } from '@/constants/date'
 
+import DNote from '@/components/base/note/DNote'
+
 export default {
   name: 'RainfallStationView',
   components: {
@@ -102,6 +110,7 @@ export default {
     SidepanelTabs,
     RainfallStationInfo,
     RainfallStationInfoBotPanel,
+    DNote,
   },
   data() {
     return {
