@@ -64,7 +64,7 @@ export const actions = {
     }
 
     const requests = state.stations.map((station) => {
-      return client.get(`/rainfall-station/${station.stationId}`, {
+      return client.get(`/rainfall-station/${station.stationId}/`, {
         params: {
           timestamp__gte: state.startTime.format(DATETIME_FORMAT),
           timestamp__lt: state.endTime.format(DATETIME_FORMAT),
