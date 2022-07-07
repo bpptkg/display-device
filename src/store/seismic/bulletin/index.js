@@ -1,3 +1,4 @@
+import axios from 'axios'
 import moment from 'moment'
 import { get } from 'lodash'
 import client from '@/utils/client'
@@ -10,6 +11,7 @@ import {
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
+  SET_CANCEL_TOKEN,
 } from '../../base/mutations'
 import { baseState, baseMutations } from '../../base'
 import { FETCH_BULLETIN, UPDATE_BULLETIN } from './actions'
@@ -132,13 +134,21 @@ export const mutations = {
 
 export const actions = {
   async [FETCH_BULLETIN]({ commit, state }) {
+    if (state.cancelToken !== null) {
+      state.cancelToken.cancel('Operation canceled due to new request')
+    }
+
+    commit(SET_CANCEL_TOKEN, axios.CancelToken.source())
+
     if (state.error) {
       commit(SET_ERROR, null)
     }
 
     // Because bulletin API doesn't has clusterEvent included, we need to fetch
     // cluster dictionary to calculate clusterEvent.
-    const clusterDictRequest = client.get('/cluster/dict/')
+    const clusterDictRequest = client.get('/cluster/dict/', {
+      cancelToken: state.cancelToken.token,
+    })
 
     // Fetch for selected fields to speed up query.
     const fields = [
@@ -196,6 +206,7 @@ export const actions = {
 
     const bulletinRequest = client.get('/bulletin/', {
       params,
+      cancelToken: state.cancelToken.token,
     })
 
     await Promise.all([bulletinRequest, clusterDictRequest])

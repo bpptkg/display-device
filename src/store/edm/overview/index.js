@@ -10,6 +10,7 @@ import {
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
+  SET_CANCEL_TOKEN,
 } from '../../base/mutations'
 import { baseState, baseMutations, baseActions } from '../../base'
 
@@ -43,6 +44,12 @@ export const mutations = {
 export const actions = {
   ...baseActions,
   async [FETCH_EDM]({ commit, state }) {
+    if (state.cancelToken !== null) {
+      state.cancelToken.cancel('Operation canceled due to new request')
+    }
+
+    commit(SET_CANCEL_TOKEN, Axios.CancelToken.source())
+
     if (state.error) {
       commit(SET_ERROR, null)
     }
@@ -58,6 +65,7 @@ export const actions = {
           ordering: 'timestamp',
           compact: true,
         },
+        cancelToken: state.cancelToken.token,
       })
     })
 

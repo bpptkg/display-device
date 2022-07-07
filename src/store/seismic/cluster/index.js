@@ -1,11 +1,17 @@
 import moment from 'moment'
+import axios from 'axios'
 
 import { DATETIME_FORMAT } from '@/constants/date'
 import { SamplingTypes } from '@/constants/seismicity'
 import client from '@/utils/client'
 import { calculatePeriod } from '@/utils/datetime'
 
-import { SET_DATA, SET_ERROR, SET_LAST_UPDATED } from '../../base/mutations'
+import {
+  SET_DATA,
+  SET_ERROR,
+  SET_LAST_UPDATED,
+  SET_CANCEL_TOKEN,
+} from '../../base/mutations'
 import { FETCH_SEISMICITY } from '../seismicity/actions'
 import rangeSelector from './range-selector'
 import { SET_EVENT_TYPE } from './mutations'
@@ -50,6 +56,12 @@ export const getters = {
 export const actions = {
   ...seismicityActions,
   async [FETCH_SEISMICITY]({ commit, state }) {
+    if (state.cancelToken !== null) {
+      state.cancelToken.cancel('Operation canceled due to new request')
+    }
+
+    commit(SET_CANCEL_TOKEN, axios.CancelToken.source())
+
     if (state.error) {
       commit(SET_ERROR, null)
     }
@@ -66,6 +78,7 @@ export const actions = {
           start: state.startTime.format(DATETIME_FORMAT),
           end: state.endTime.format(DATETIME_FORMAT),
         },
+        cancelToken: state.cancelToken.token,
       })
       .then((response) => response.data)
       .catch((error) => {

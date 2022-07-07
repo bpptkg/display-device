@@ -1,4 +1,5 @@
 import moment from 'moment'
+import axios from 'axios'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
 import client from '@/utils/client'
 import { calculatePeriod } from '@/utils/datetime'
@@ -12,6 +13,7 @@ import {
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
+  SET_CANCEL_TOKEN,
 } from '../../base/mutations'
 
 import { baseState, baseMutations, baseActions } from '../../base'
@@ -82,6 +84,12 @@ export const getSsamAdaptiveSampling = (startTime, endTime) => {
 export const actions = {
   ...baseActions,
   async [FETCH_RSAM]({ commit, state }) {
+    if (state.cancelToken !== null) {
+      state.cancelToken.cancel('Operation canceled due to new request')
+    }
+
+    commit(SET_CANCEL_TOKEN, axios.CancelToken.source())
+
     if (state.error) {
       commit(SET_ERROR, null)
     }
@@ -94,6 +102,7 @@ export const actions = {
           nolimit: true,
           sampling: getSsamAdaptiveSampling(state.startTime, state.endTime),
         },
+        cancelToken: state.cancelToken.token,
       })
       .then((response) => response.data)
       .catch((error) => {

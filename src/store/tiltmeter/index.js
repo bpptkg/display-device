@@ -1,4 +1,5 @@
 import moment from 'moment'
+import axios from 'axios'
 
 import { calculatePeriod } from '@/utils/datetime'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
@@ -16,6 +17,7 @@ import {
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
+  SET_CANCEL_TOKEN,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
 import { SET_SAMPLING, SET_TYPE, SET_STATION, SET_MID_MODE } from './mutations'
@@ -81,6 +83,12 @@ export const actions = {
    * Fetch tiltmeter data using existing store state.
    */
   async [FETCH_TILTMETER]({ commit, state }) {
+    if (state.cancelToken !== null) {
+      state.cancelToken.cancel('Operation canceled due to new request')
+    }
+
+    commit(SET_CANCEL_TOKEN, axios.CancelToken.source())
+
     if (state.error) {
       commit(SET_ERROR, null)
     }
@@ -134,6 +142,7 @@ export const actions = {
           aggregation: aggregation,
           ...params,
         },
+        cancelToken: state.cancelToken.token,
       })
       .then((response) => response.data)
       .catch((error) => {

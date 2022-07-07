@@ -1,4 +1,5 @@
 import moment from 'moment'
+import axios from 'axios'
 
 import client from '@/utils/client'
 import { calculatePeriod } from '@/utils/datetime'
@@ -10,6 +11,7 @@ import {
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
+  SET_CANCEL_TOKEN,
 } from '../../../base/mutations'
 import { baseState, baseMutations } from '../../../base'
 import { FETCH_WIND_ROSE, UPDATE_WIND_ROSE } from './actions'
@@ -56,6 +58,12 @@ export const mutations = {
 
 export const actions = {
   async [FETCH_WIND_ROSE]({ commit, state }) {
+    if (state.cancelToken !== null) {
+      state.cancelToken.cancel('Operation canceled due to new request')
+    }
+
+    commit(SET_CANCEL_TOKEN, axios.CancelToken.source())
+
     if (state.error) {
       commit(SET_ERROR, null)
     }
@@ -70,6 +78,7 @@ export const actions = {
           sector: 16,
           normed: true,
         },
+        cancelToken: state.cancelToken.token,
       })
       .then((response) => response.data)
       .catch((error) => {
