@@ -138,7 +138,16 @@ export default {
         {
           title: 'Geochemistry',
           icon: GasIcon,
-          href: '/geochemistry',
+          child: [
+            {
+              title: 'Vogamos',
+              href: '/geochemistry/vogamos',
+            },
+            {
+              title: 'DOAS',
+              href: '/geochemistry/doas/babadan',
+            },
+          ],
         },
         {
           title: 'Lava Domes',
