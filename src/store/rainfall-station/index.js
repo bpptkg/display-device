@@ -9,11 +9,13 @@ import {
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
+  SET_CANCEL_TOKEN,
 } from '../base/mutations'
 import { baseState, baseMutations } from '../base'
 
 import { FETCH_RAINFALL, UPDATE_RAINFALL } from './actions'
 import rangeSelector from './range-selector'
+import axios from 'axios'
 
 export const NAMESPACE = 'rainfallStation'
 
@@ -59,6 +61,12 @@ export const mutations = {
 
 export const actions = {
   async [FETCH_RAINFALL]({ commit, state }) {
+    if (state.cancelToken !== null) {
+      state.cancelToken.cancel('Operation canceled due to new request')
+    }
+
+    commit(SET_CANCEL_TOKEN, axios.CancelToken.source())
+
     if (state.error) {
       commit(SET_ERROR, null)
     }
@@ -70,6 +78,7 @@ export const actions = {
           timestamp__lt: state.endTime.format(DATETIME_FORMAT),
           nolimit: true,
         },
+        cancelToken: state.cancelToken.token,
       })
     })
 

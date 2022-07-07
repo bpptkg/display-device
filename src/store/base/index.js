@@ -11,6 +11,7 @@ import {
   SET_LAST_UPDATED,
   SET_PERIOD,
   SET_START_TIME,
+  SET_CANCEL_TOKEN,
 } from './mutations'
 import { UPDATE_ANNOTATIONS } from './actions'
 
@@ -55,6 +56,10 @@ export const baseState = {
    * `annotations` stores actual data of annotations fetched from external API.
    */
   annotations: [],
+  /**
+   * Axios cancellation token.
+   */
+  cancelToken: null,
 }
 
 /**
@@ -84,6 +89,9 @@ export const baseMutations = {
   },
   [SET_ANNOTATIONS](state, annotations) {
     state.annotations = annotations
+  },
+  [SET_CANCEL_TOKEN](state, token) {
+    state.cancelToken = token
   },
 }
 
