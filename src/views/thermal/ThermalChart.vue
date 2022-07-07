@@ -38,7 +38,8 @@
     </BCard>
     <DNote>
       &mdash; Density refer to percentage of pixel area whose temperature value
-      >30&deg;C compared to all pixels in the particular area.
+      >30&deg;C compared to all pixels in the particular area. Values greater
+      than {{ `${DENSITY_FILTER_THRESHOLD}%` }} are excluded.
     </DNote>
   </div>
 </template>
@@ -61,6 +62,7 @@ import {
   createXAxis,
   mediaQuery,
   createTooltipFormatter,
+  DENSITY_FILTER_THRESHOLD,
 } from '@/components/echarts/chart-options/thermal'
 
 import stationOptions from '@/store/thermal/station-options'
@@ -108,6 +110,7 @@ export default {
     return {
       rangeSelector,
       maxCustomDuration,
+      DENSITY_FILTER_THRESHOLD,
     }
   },
   computed: {

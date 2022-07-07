@@ -8,6 +8,11 @@ export const SeriesType = Object.freeze({
   DENSITY: 'Density',
 })
 
+/**
+ * Exclude density value that equal or greater than this value. Unit: %.
+ */
+export const DENSITY_FILTER_THRESHOLD = 90
+
 export const createSeries = (data, areas, { annotations = [] } = {}) => {
   return areas
     .map((area, index) => {
@@ -35,7 +40,7 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
           )
             // Filter out density outliers which usually occur because of foggy
             // weather.
-            .filter((item) => item[1] < 100),
+            .filter((item) => item[1] <= DENSITY_FILTER_THRESHOLD),
           name: `${SeriesType.DENSITY} ${area.name}`,
           markLine: {
             symbol: 'none',
