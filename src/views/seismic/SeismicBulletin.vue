@@ -210,6 +210,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import {
   BButton,
@@ -527,7 +528,7 @@ export default {
         })
       }
 
-      downloadTableAsync(this.data)
+      downloadTableAsync(this.data.map((e) => this.reformatEvent(e)))
         .then((content) => {
           const exportFilename = 'bulletin.csv'
           const blob = new Blob([content], {
@@ -557,6 +558,21 @@ export default {
     onContextChanged(ctx) {},
     setHypocenterMode(mode) {
       this.hypocenterMode = mode
+    },
+
+    /**
+     * Reformat event object by combining eventdate miliseconds.
+     */
+    reformatEvent(item) {
+      const dateString = `${item.eventdate}.${
+        item.eventdate_microsecond || '00'
+      }`
+      const dateFormat = 'YYYY-MM-DD HH:mm:ss.SS'
+      const eventdate = moment(dateString).format(dateFormat)
+      return {
+        ...item,
+        eventdate,
+      }
     },
   },
 }
