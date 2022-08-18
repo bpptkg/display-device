@@ -25,6 +25,13 @@
         time period selected. Using longer time period is recommended to avoid
         this clipping issue.
       </DNote>
+
+      <hr />
+      <InfoNote
+        :start-time="startTime"
+        :end-time="endTime"
+        :last-updated="lastUpdated"
+      ></InfoNote>
     </BCard>
   </div>
 </template>
@@ -43,6 +50,8 @@ import {
 import { UPDATE_METEOROLOGY } from '@/store/weather/pasarbubar/rainfall/actions'
 import DNote from '@/components/base/note/DNote'
 
+import InfoNote from './InfoNote.vue'
+
 const NAMESPACE = 'home/charts/weather'
 
 export default {
@@ -53,6 +62,7 @@ export default {
     DChart,
     DNote,
     ErrorMessage,
+    InfoNote,
   },
   data() {
     return {
@@ -62,6 +72,9 @@ export default {
   computed: {
     ...mapState(NAMESPACE, {
       error: (state) => state.error,
+      startTime: (state) => state.startTime,
+      endTime: (state) => state.endTime,
+      lastUpdated: (state) => state.lastUpdated,
     }),
     ...mapGetters(NAMESPACE, ['rainfallData', 'rainfallEvents']),
     chartOptions() {

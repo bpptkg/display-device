@@ -19,6 +19,13 @@
         </div>
       </template>
       <DChart ref="chart" :options="chartOptions" :style="style" />
+
+      <hr />
+      <InfoNote
+        :start-time="startTime"
+        :end-time="endTime"
+        :last-updated="lastUpdated"
+      ></InfoNote>
     </BCard>
   </div>
 </template>
@@ -43,6 +50,8 @@ import {
 import { createDataZoom } from '@/components/echarts/chart-options/common/datazoom'
 import { UPDATE_EDM } from '@/store/edm/actions'
 
+import InfoNote from './InfoNote.vue'
+
 const NAMESPACE = 'home/charts/edm'
 
 export default {
@@ -52,6 +61,12 @@ export default {
     BLink,
     DChart,
     ErrorMessage,
+    InfoNote,
+  },
+  data() {
+    return {
+      interval: null,
+    }
   },
   computed: {
     ...mapState(NAMESPACE, {
@@ -61,6 +76,7 @@ export default {
       period: (state) => state.period,
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
+      lastUpdated: (state) => state.lastUpdated,
     }),
     chartOptions() {
       const reflectorLength = this.reflectors.length
@@ -123,8 +139,17 @@ export default {
       }
     },
   },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
   async mounted() {
     this.update()
+
+    this.interval = setInterval(() => {
+      this.update()
+    }, 1000 * 60 * 30)
   },
   methods: {
     ...mapActions({

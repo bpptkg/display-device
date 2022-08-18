@@ -19,6 +19,13 @@
         </div>
       </template>
       <DChart ref="chart" :options="chartOptions" class="chart" />
+
+      <hr />
+      <InfoNote
+        :start-time="startTime"
+        :end-time="endTime"
+        :last-updated="lastUpdated"
+      ></InfoNote>
     </BCard>
   </div>
 </template>
@@ -42,6 +49,8 @@ import {
 import eventTypes from '@/components/echarts/chart-options/seismic/seismicity/event-types'
 import { UPDATE_SEISMICITY } from '@/store/seismic/seismicity/actions'
 
+import InfoNote from './InfoNote.vue'
+
 const NAMESPACE = 'home/charts/seismicity'
 
 const customMediaQuery = [
@@ -64,6 +73,12 @@ export default {
     BLink,
     DChart,
     ErrorMessage,
+    InfoNote,
+  },
+  data() {
+    return {
+      interval: null,
+    }
   },
   computed: {
     ...mapState(NAMESPACE, {
@@ -72,6 +87,7 @@ export default {
       period: (state) => state.period,
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
+      lastUpdated: (state) => state.lastUpdated,
     }),
     chartOptions() {
       const options = {
@@ -106,8 +122,17 @@ export default {
       return options
     },
   },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
   async mounted() {
     this.update()
+
+    this.interval = setInterval(() => {
+      this.update()
+    }, 1000 * 60 * 10)
   },
   methods: {
     ...mapActions({

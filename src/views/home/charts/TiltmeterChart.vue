@@ -19,6 +19,13 @@
         </div>
       </template>
       <DChart ref="chart" :options="chartOptions" class="chart" />
+
+      <hr />
+      <InfoNote
+        :start-time="startTime"
+        :end-time="endTime"
+        :last-updated="lastUpdated"
+      ></InfoNote>
     </BCard>
   </div>
 </template>
@@ -40,6 +47,8 @@ import {
   tooltipFormatter,
 } from '@/components/echarts/chart-options/tiltmeter'
 import { UPDATE_TILTMETER } from '@/store/tiltmeter/actions'
+
+import InfoNote from './InfoNote.vue'
 
 const NAMESPACE = 'home/charts/tiltmeter'
 
@@ -67,6 +76,12 @@ export default {
     BLink,
     DChart,
     ErrorMessage,
+    InfoNote,
+  },
+  data() {
+    return {
+      interval: null,
+    }
   },
   computed: {
     ...mapState(NAMESPACE, {
@@ -76,6 +91,7 @@ export default {
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
       sampling: (state) => state.sampling,
+      lastUpdated: (state) => state.lastUpdated,
     }),
     chartOptions() {
       const options = {
@@ -113,8 +129,17 @@ export default {
       return options
     },
   },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
   async mounted() {
     this.update()
+
+    this.interval = setInterval(() => {
+      this.update()
+    }, 1000 * 60 * 60)
   },
   methods: {
     ...mapActions({

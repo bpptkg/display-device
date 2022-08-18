@@ -20,6 +20,13 @@
         </div>
       </template>
       <DChart ref="chart" class="chart" :options="chartOptions" />
+
+      <hr />
+      <InfoNote
+        :start-time="startTime"
+        :end-time="endTime"
+        :last-updated="lastUpdated"
+      ></InfoNote>
     </BCard>
   </div>
 </template>
@@ -37,6 +44,8 @@ import {
   mediaQuery,
 } from '@/components/echarts/chart-options/rfap-direction/rose'
 import { UPDATE_DATA } from '@/store/base/actions'
+
+import InfoNote from './InfoNote.vue'
 
 const NAMESPACE = 'home/charts/rfapDirection'
 
@@ -57,6 +66,12 @@ export default {
     BLink,
     DChart,
     ErrorMessage,
+    InfoNote,
+  },
+  data() {
+    return {
+      interval: null,
+    }
   },
   computed: {
     ...mapState(NAMESPACE, {
@@ -65,6 +80,7 @@ export default {
       period: (state) => state.period,
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
+      lastUpdated: (state) => state.lastUpdated,
     }),
 
     ...mapGetters(NAMESPACE, ['rfapDirectionGroupDistance']),
@@ -89,8 +105,17 @@ export default {
       return options
     },
   },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
   async mounted() {
     this.update()
+
+    this.interval = setInterval(() => {
+      this.update()
+    }, 1000 * 60 * 30)
   },
   methods: {
     ...mapActions({

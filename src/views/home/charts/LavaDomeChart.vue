@@ -20,6 +20,13 @@
         </div>
       </template>
       <DChart ref="chart" :options="chartOptions" class="chart" />
+
+      <hr />
+      <InfoNote
+        :start-time="startTime"
+        :end-time="endTime"
+        :last-updated="lastUpdated"
+      ></InfoNote>
     </BCard>
   </div>
 </template>
@@ -39,6 +46,8 @@ import {
   mediaQuery,
 } from '@/components/echarts/chart-options/lava-domes/subplots'
 
+import InfoNote from './InfoNote.vue'
+
 const NS_SOUTHWEST = 'home/charts/lavaDome/domeSouthwest'
 const NS_CENTER = 'home/charts/lavaDome/domeCenter'
 
@@ -49,6 +58,12 @@ export default {
     BLink,
     DChart,
     ErrorMessage,
+    InfoNote,
+  },
+  data() {
+    return {
+      interval: null,
+    }
   },
   computed: {
     // State from lava dome southwest.
@@ -57,6 +72,7 @@ export default {
       ldswError: (state) => state.error,
       ldswStartTime: (state) => state.startTime,
       ldswEndTime: (state) => state.endTime,
+      lastUpdated: (state) => state.lastUpdated,
     }),
 
     // State from lava dome center.
@@ -103,8 +119,17 @@ export default {
       return options
     },
   },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
   async mounted() {
     this.update()
+
+    this.interval = setInterval(() => {
+      this.update()
+    }, 1000 * 60 * 30)
   },
   methods: {
     ...mapActions({
