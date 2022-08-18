@@ -35,11 +35,17 @@
         </div>
       </div>
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
+
+      <div class="mt-2">
+        <input v-model="showStdDev" type="checkbox" />
+        <label for="checkbox" class="ml-2">
+          <small>Plot max. temperature standard deviation value</small>
+        </label>
+      </div>
     </BCard>
     <DNote>
       &mdash; Density refer to percentage of pixel area whose temperature value
-      >30&deg;C compared to all pixels in the particular area. Values greater
-      than {{ `${DENSITY_FILTER_THRESHOLD}%` }} are excluded.
+      >30&deg;C compared to all pixels in the particular area.
     </DNote>
   </div>
 </template>
@@ -77,6 +83,7 @@ import {
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 import { UPDATE_THERMAL } from '@/store/thermal/actions'
+import { SET_STD_DEV } from '@/store/thermal/mutations'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import MoreMenu from '@/components/more-menu'
 import { saveAs } from '@/lib/file-saver'
@@ -136,6 +143,9 @@ export default {
       annotations(state) {
         return state.thermal[this.station].annotations
       },
+      plotStdDev(state) {
+        return state.thermal[this.station].plotStdDev
+      },
     }),
     namespace() {
       return `thermal/${this.station}`
@@ -146,9 +156,10 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions(),
+          ...baseChartOptions({ plotStdDev: this.plotStdDev }),
           series: createSeries(this.data, AREAS_STATION_MAP[this.station], {
             annotations: this.annotations,
+            plotStdDev: this.plotStdDev,
           }),
           title: {
             text: this.chartTitle,
@@ -175,8 +186,20 @@ export default {
       }
       return options
     },
+    showStdDev: {
+      get() {
+        return this.plotStdDev
+      },
+      set(value) {
+        return this.setStdDev(value)
+      },
+    },
   },
-  watch: {},
+  watch: {
+    plotStdDev() {
+      this.reupdateChart()
+    },
+  },
   mounted() {
     this.update()
   },
@@ -193,6 +216,9 @@ export default {
       },
       setAnnotationOptions(commit, options) {
         return commit(this.namespace + '/' + SET_ANNOTATION_OPTIONS, options)
+      },
+      setStdDev(commit, value) {
+        return commit(this.namespace + '/' + SET_STD_DEV, value)
       },
     }),
     ...mapActions({
@@ -216,6 +242,11 @@ export default {
           `${this.station}-${createShortNameFromPeriod(this.period)}.zip`
         )
       })
+    },
+    reupdateChart() {
+      const chart = this.$refs.chart.$refs.chart
+      chart.clear()
+      chart.mergeOptions(this.chartOptions)
     },
   },
 }

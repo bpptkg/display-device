@@ -14,7 +14,7 @@ import {
   SET_CANCEL_TOKEN,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
-import { SET_STATION } from './mutations'
+import { SET_STATION, SET_STD_DEV } from './mutations'
 import { FETCH_THERMAL, UPDATE_THERMAL } from './actions'
 import rangeSelector from './range-selector'
 
@@ -23,6 +23,7 @@ export const initialState = {
   annotationOptions: annotations,
   station: '',
   areas: [],
+  plotStdDev: false,
 }
 
 export const KALIURANG = [
@@ -95,6 +96,9 @@ export const mutations = {
   [SET_STATION](state, station) {
     state.station = station
   },
+  [SET_STD_DEV](state, value) {
+    state.plotStdDev = value
+  },
 }
 
 export const actions = {
@@ -110,23 +114,18 @@ export const actions = {
       commit(SET_ERROR, null)
     }
 
-    const requests = state.areas.map((area) => {
-      return client.get('/thermal2/', {
-        params: {
-          timestamp__gte: state.startTime.format(DATETIME_FORMAT),
-          timestamp__lt: state.endTime.format(DATETIME_FORMAT),
-          area: area.id,
-          nolimit: true,
-          fields: 'timestamp,temperature,density',
-        },
-        cancelToken: state.cancelToken.token,
-      })
+    const request = client.get('/thermal2/', {
+      params: {
+        stddev_mode: true,
+        area_list: state.areas.map((area) => area.id).join(','),
+        start: state.startTime.format(DATETIME_FORMAT),
+        end: state.endTime.format(DATETIME_FORMAT),
+      },
+      cancelToken: state.cancelToken.token,
     })
 
-    const data = await Promise.all(requests)
-      .then((responses) => {
-        return responses.map((response) => response.data)
-      })
+    const data = await request
+      .then((response) => response.data)
       .catch((error) => {
         commit(SET_ERROR, error)
         return []

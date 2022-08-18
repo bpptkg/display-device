@@ -1,4 +1,4 @@
-import { getSeriesByIndex, mapFieldColumns } from '@/utils/series'
+import { mapFieldColumns } from '@/utils/series'
 import { defaultTooltipFormatter } from '@/utils/echarts/tooltip'
 import { createRowGrid } from '@/utils/echarts/grid'
 import { defaultToolbox } from '../common/toolbox'
@@ -6,6 +6,7 @@ import { defaultToolbox } from '../common/toolbox'
 export const SeriesType = Object.freeze({
   TEMPERATURE: 'Max. Temp.',
   DENSITY: 'Density',
+  STDDEV: 'Std. Dev.',
 })
 
 /**
@@ -13,16 +14,16 @@ export const SeriesType = Object.freeze({
  */
 export const DENSITY_FILTER_THRESHOLD = 90
 
-export const createSeries = (data, areas, { annotations = [] } = {}) => {
-  return areas
-    .map((area, index) => {
+export const createSeries = (
+  data,
+  areas,
+  { annotations = [], plotStdDev = false } = {}
+) => {
+  const option = areas
+    .map((area) => {
       return [
         {
-          data: mapFieldColumns(
-            getSeriesByIndex(data, index),
-            'timestamp',
-            'temperature'
-          ),
+          data: mapFieldColumns(data, 'timestamp', `temperature_${area.id}`),
           name: `${SeriesType.TEMPERATURE} ${area.name}`,
           markLine: {
             symbol: 'none',
@@ -33,14 +34,7 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
           type: 'line',
         },
         {
-          data: mapFieldColumns(
-            getSeriesByIndex(data, index),
-            'timestamp',
-            'density'
-          )
-            // Filter out density outliers which usually occur because of foggy
-            // weather.
-            .filter((item) => item[1] <= DENSITY_FILTER_THRESHOLD),
+          data: mapFieldColumns(data, 'timestamp', `density_${area.id}`),
           name: `${SeriesType.DENSITY} ${area.name}`,
           markLine: {
             symbol: 'none',
@@ -55,6 +49,25 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
       ]
     })
     .flat(1)
+
+  if (plotStdDev) {
+    option.push({
+      data: mapFieldColumns(data, 'timestamp', 'stddev'),
+      lineStyle: {
+        color: 'black',
+      },
+      itemStyle: {
+        color: 'black',
+      },
+      name: SeriesType.STDDEV,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 2,
+    })
+  }
+
+  return option
 }
 
 export const createXAxis = (min, max) => {
@@ -122,7 +135,37 @@ export const mediaQuery = [
   },
 ]
 
-export const baseChartOptions = ({ title = {} } = {}) => {
+export const baseChartOptions = ({ title = {}, plotStdDev = false } = {}) => {
+  const yAxis = [
+    {
+      type: 'value',
+      scale: true,
+      name: 'Max. Temp. (\u00B0C)',
+      nameLocation: 'center',
+      nameGap: 45,
+      gridIndex: 0,
+    },
+    {
+      type: 'value',
+      scale: true,
+      name: 'Density (%)',
+      nameLocation: 'center',
+      nameGap: 45,
+      gridIndex: 1,
+    },
+  ]
+
+  if (plotStdDev) {
+    yAxis.push({
+      type: 'value',
+      scale: true,
+      name: 'Std. Dev',
+      nameLocation: 'center',
+      nameGap: 45,
+      gridIndex: 0,
+    })
+  }
+
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -140,30 +183,13 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       },
       ...title,
     },
-    grid: createRowGrid(2, { top: 10, bottom: 20, right: 5 }),
+    grid: createRowGrid(2, { top: 10, bottom: 20, right: plotStdDev ? 10 : 5 }),
     legend: createLegend(),
     tooltip: {
       trigger: 'axis',
     },
     toolbox: defaultToolbox,
-    yAxis: [
-      {
-        type: 'value',
-        scale: true,
-        name: 'Max. Temp. (\u00B0C)',
-        nameLocation: 'center',
-        nameGap: 45,
-        gridIndex: 0,
-      },
-      {
-        type: 'value',
-        scale: true,
-        name: 'Density (%)',
-        nameLocation: 'center',
-        nameGap: 45,
-        gridIndex: 1,
-      },
-    ],
+    yAxis: yAxis,
   }
 }
 
@@ -179,9 +205,11 @@ export const createTooltipFormatter = (areas) => {
       name: area.name,
     }
   })
+
   return defaultTooltipFormatter({
     format: 'YYYY-MM-DD HH:mm:ss',
     valueDecimals: 2,
+    noData: '-',
     seriesProps,
   })
 }
