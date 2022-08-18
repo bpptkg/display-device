@@ -255,8 +255,6 @@ export const calculateAdaptiveHeight = (nrows) => {
   } else if (nrows === 2) {
     return 425
   } else if (nrows === 3) {
-    return 450
-  } else if (nrows === 3) {
     return 500
   } else if (nrows === 4) {
     return 550
