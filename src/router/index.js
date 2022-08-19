@@ -279,10 +279,14 @@ const routes = [
   {
     path: '/magnetic',
     redirect: '/magnetic/imogiri',
-  },
-  {
-    path: '/magnetic/imogiri',
-    component: () => import('../views/magnetic/MagneticImogiriView'),
+    component: () => import('../views/magnetic/MagneticView'),
+    children: [
+      {
+        path: ':station',
+        component: () => import('../views/magnetic/MagneticChartView'),
+        props: true,
+      },
+    ],
   },
   {
     path: '*',

@@ -60,7 +60,7 @@ export const actions = {
     }
 
     const data = await client
-      .get('/magnetic/imogiri/', {
+      .get(`/magnetic/${state.station}/`, {
         params: {
           timestamp__gte: state.startTime.format(DATETIME_FORMAT),
           timestamp__lt: state.endTime.format(DATETIME_FORMAT),
@@ -106,5 +106,6 @@ export default {
   modules: {
     namespaced: true,
     imogiri: initModule('imogiri'),
+    babadan: initModule('babadan'),
   },
 }
