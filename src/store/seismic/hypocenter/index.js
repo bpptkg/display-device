@@ -36,7 +36,7 @@ export const NAMESPACE = 'seismic/hypocenter'
 // Events with the following types are not locatable.
 const excludeLocationTypes = ['other event', 'not locatable']
 
-const topoCacheKey = 'hypocenter/topo/v1'
+const topoCacheKey = 'display-device:hypocenter/topo/v1'
 
 export const DEFAULT_RMS_RANGE = [0, 0.1]
 

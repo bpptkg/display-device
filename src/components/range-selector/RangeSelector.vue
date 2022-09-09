@@ -104,7 +104,7 @@ import { calculatePeriod } from '@/utils/datetime'
 import DateTimePicker from '@/components/base/datetime-picker'
 import { ErrorOutlineIcon } from '@/components/icons/alert'
 
-const DEFAULT_CUSTOM_CACHE_KEY = 'rangeSelector'
+const DEFAULT_CUSTOM_CACHE_KEY = 'display-device:rangeSelector'
 
 function getCustomRangeCache(key) {
   if (localStorage.getItem(key) !== null) {

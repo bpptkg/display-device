@@ -21,7 +21,7 @@ const VIEWER_SETTINGS = {
   showTimeColormap: false,
 }
 
-const topoCacheKey = 'hypocenterViewer/topo/v1'
+const topoCacheKey = 'display-device:hypocenterViewer/topo/v1'
 
 export default {
   name: 'HypocenterViewer',

@@ -5,7 +5,7 @@
         ref="range-selector"
         size="sm"
         class="mb-1"
-        custom-cache-key="seismic/hypocenter/rangeSelector"
+        custom-cache-key="display-device:seismic/hypocenter/rangeSelector"
         custom-enabled
         :selected="period"
         :items="rangeSelector"
