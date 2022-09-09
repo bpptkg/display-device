@@ -6,6 +6,7 @@ const eventTypes = [
   { type: 'RF', code: 'ROCKFALL', text: 'Rockfall', label: 'RF' },
   { type: 'DG', code: 'GASBURST', text: 'Degassing', label: 'DG' },
   { type: 'AP', code: 'AWANPANAS', text: 'Awanpanas', label: 'AP' },
+  { type: 'TREMOR', code: 'TREMOR', text: 'Tremor', label: 'TREMOR' },
   { type: 'TECT', code: 'TECT', text: 'Tectonic', label: 'TECT' },
 ]
 
