@@ -17,12 +17,14 @@
             Version: <span class="secondary">{{ versionInfo.version }}</span>
           </div>
           <div>
-            Build:
+            Commit:
             <span class="secondary">{{ versionInfo.commitHash }}</span>
           </div>
           <div>
             Build date:
-            <span class="secondary">{{ versionInfo.buildDate }} UTC</span>
+            <span class="secondary">
+              {{ versionInfo.buildDate }} ({{ buildDateDuration }})
+            </span>
           </div>
         </BListGroupItem>
 
@@ -85,6 +87,9 @@ export default {
     },
     versionInfo() {
       return versionInfo
+    },
+    buildDateDuration() {
+      return moment(this.versionInfo.buildDate).fromNow()
     },
   },
 }

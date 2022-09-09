@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const appVersion = require('./package.json').version
 
 const commitHash = require('child_process')
-  .execSync('git rev-parse --short HEAD')
+  .execSync('git rev-parse HEAD')
   .toString()
 
 const buildDate = new Date()
