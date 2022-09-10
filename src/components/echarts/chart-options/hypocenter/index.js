@@ -140,6 +140,9 @@ export const createVisualMap = ({
   timeColormap = 'jet',
   theme = 'dark',
   showMagnitude = true,
+  timeColormapOptions = {},
+  surfaceColormapOptions = {},
+  magnitudeVisualMapOptions = {},
 } = {}) => {
   const options = []
 
@@ -168,6 +171,7 @@ export const createVisualMap = ({
         fontSize: 10,
       },
       type: 'continuous',
+      ...timeColormapOptions,
     })
   }
 
@@ -190,6 +194,7 @@ export const createVisualMap = ({
         fontSize: 10,
       },
       type: 'continuous',
+      ...surfaceColormapOptions,
     })
   }
 
@@ -270,6 +275,7 @@ export const createVisualMap = ({
         fontSize: 10,
       },
       type: 'customPiecewise',
+      ...magnitudeVisualMapOptions,
     })
   }
 

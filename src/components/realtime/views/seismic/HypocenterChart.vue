@@ -41,6 +41,20 @@ export default {
     DGLChart,
     ErrorMessage,
   },
+  props: {
+    timeColormapOptions: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+    magnitudeVisualMapOptions: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
+  },
   data() {
     return {
       interval: null,
@@ -68,6 +82,8 @@ export default {
           ...this.settings,
           timeMin: toUnixMiliSeconds(this.startTime),
           timeMax: toUnixMiliSeconds(this.endTime),
+          timeColormapOptions: this.timeColormapOptions,
+          magnitudeVisualMapOptions: this.magnitudeVisualMapOptions,
         })
         options.visualMap = visualMap
       }

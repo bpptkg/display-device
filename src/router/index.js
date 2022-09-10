@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '@/views/home/HomeView'
 import RealtimeSeismic from '@/views/realtime/RealtimeSeismic'
+import RealtimeSeismic2 from '@/views/realtime/RealtimeSeismic2'
 import HelicorderView from '@/views/seismic/HelicorderView'
 
 Vue.use(VueRouter)
@@ -26,6 +27,10 @@ const routes = [
   {
     path: '/realtime/seismic',
     component: RealtimeSeismic,
+  },
+  {
+    path: '/realtime/seismic2',
+    component: RealtimeSeismic2,
   },
   {
     path: '/edm-overview',

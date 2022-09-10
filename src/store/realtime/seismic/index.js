@@ -1,6 +1,7 @@
 import seismicity from './seismicity'
 import energy from './energy'
 import hypocenter from './hypocenter'
+import rfapEnergy from './rfap-energy'
 
 export default {
   namespaced: true,
@@ -8,5 +9,6 @@ export default {
     seismicity,
     energy,
     hypocenter,
+    rfapEnergy,
   },
 }

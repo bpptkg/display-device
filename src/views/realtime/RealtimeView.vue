@@ -1,21 +1,15 @@
 <template>
   <DisplayRoot>
-    <DisplayBanner />
     <DisplayCollection :items="items" />
   </DisplayRoot>
 </template>
 
 <script>
-import {
-  DisplayBanner,
-  DisplayCollection,
-  DisplayRoot,
-} from '@/components/realtime'
+import { DisplayCollection, DisplayRoot } from '@/components/realtime'
 
 export default {
   name: 'RealtimeView',
   components: {
-    DisplayBanner,
     DisplayCollection,
     DisplayRoot,
   },
@@ -26,6 +20,11 @@ export default {
           to: '/realtime/seismic',
           title: 'Seismic',
           imgSrc: `${this.$baseUrl}img/realtime/seismic.png`,
+        },
+        {
+          to: '/realtime/seismic2',
+          title: 'Seismic2',
+          imgSrc: `${this.$baseUrl}img/realtime/seismic2.png`,
         },
       ],
     }
