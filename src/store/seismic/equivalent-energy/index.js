@@ -22,9 +22,15 @@ export const NAMESPACE = 'seismic/equivalentEnergy'
 
 export const initialState = {
   ...baseState,
+  sampling: '',
 }
 
-export const initState = (period) => {
+export const SamplingTypes = Object.freeze({
+  DAY: 'day',
+  HOUR: 'hour',
+})
+
+export const initState = (period, sampling = SamplingTypes.DAY) => {
   const { startTime, endTime } = calculatePeriod(period)
 
   return {
@@ -32,6 +38,7 @@ export const initState = (period) => {
     endTime,
     period,
     startTime,
+    sampling,
   }
 }
 
@@ -66,6 +73,7 @@ export const actions = {
           eventtype__in: 'ROCKFALL,AWANPANAS',
           nolimit: true,
           sep: true,
+          accumulate: state.sampling,
         },
         cancelToken: state.cancelToken.token,
       })

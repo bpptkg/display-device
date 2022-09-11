@@ -27,6 +27,7 @@ import {
   mediaQuery,
 } from '@/components/echarts/chart-options/seismic/equivalent-energy'
 
+import { SamplingTypes } from '@/store/seismic/equivalent-energy'
 import { UPDATE_ENERGY } from '@/store/seismic/equivalent-energy/actions'
 
 const NAMESPACE = 'realtime/seismic/rfapEnergy'
@@ -53,7 +54,9 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions(),
+          ...baseChartOptions({
+            sampling: SamplingTypes.HOUR,
+          }),
           series: createSeries(this.data),
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),

@@ -6,6 +6,7 @@ import {
   createCircleTemplate,
 } from '@/utils/series'
 import { defaultToolbox } from '../../common/toolbox'
+import { SamplingTypes } from '@/store/seismic/equivalent-energy'
 
 export const SeriesName = Object.freeze({
   RF_COUNT: 'RF count',
@@ -135,7 +136,10 @@ export const mediaQuery = () => {
   ]
 }
 
-export const baseChartOptions = ({ title = {} } = {}) => {
+export const baseChartOptions = ({
+  title = {},
+  sampling = SamplingTypes.DAY,
+} = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: { type: 'slider', realtime: false, bottom: 30 },
@@ -155,7 +159,13 @@ export const baseChartOptions = ({ title = {} } = {}) => {
         params.forEach((param, index) => {
           const { seriesName, value, color } = param
           if (index === 0) {
-            template.push(`${moment(value[0]).format('YYYY-MM-DD')}<br />`)
+            template.push(
+              `${moment(value[0]).format(
+                sampling === SamplingTypes.DAY
+                  ? 'YYYY-MM-DD'
+                  : 'YYYY-MM-DD HH:mm'
+              )}<br />`
+            )
           }
           template.push(`
           ${createCircleTemplate(color)}

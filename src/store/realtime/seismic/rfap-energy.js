@@ -3,6 +3,7 @@ import {
   mutations,
   getters,
   actions,
+  SamplingTypes,
 } from '@/store/seismic/equivalent-energy'
 
 const period = {
@@ -13,7 +14,7 @@ const period = {
 
 export default {
   namespaced: true,
-  state: initState(period),
+  state: initState(period, SamplingTypes.HOUR),
   getters,
   mutations,
   actions,
