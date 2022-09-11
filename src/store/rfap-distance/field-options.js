@@ -6,6 +6,11 @@ export default [
     label: 'Name',
   },
   {
+    key: 'sum',
+    label: 'Sum',
+    formatter: numberFormatterFactory(0),
+  },
+  {
     key: 'min',
     label: 'Min',
     formatter: numberFormatterFactory(0),
@@ -18,6 +23,6 @@ export default [
   {
     key: 'mean',
     label: 'Mean',
-    formatter: numberFormatterFactory(0),
+    formatter: numberFormatterFactory(2),
   },
 ]

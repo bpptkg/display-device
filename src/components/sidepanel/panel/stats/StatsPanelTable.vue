@@ -29,7 +29,7 @@
             <td v-for="col in fields" :key="col.key" class="table-data">
               {{
                 col.formatter
-                  ? col.formatter(get(row, col.key), row)
+                  ? col.formatter(get(row, col.key), index, row, items)
                   : get(row, col.key)
               }}
             </td>

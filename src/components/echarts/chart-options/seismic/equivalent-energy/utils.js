@@ -1,21 +1,28 @@
-import { min, max, mean } from 'lodash'
+import { min, max, mean, sum } from 'lodash'
 import { cumulativeSum1D } from '@/utils/series'
 
 const keys = [
   {
-    name: 'Count',
+    name: 'Count RF',
+    field: 'count_ROCKFALL',
+  },
+  {
+    name: 'Count AP',
+    field: 'count_AWANPANAS',
+  },
+  {
+    name: 'Count RF & AP',
     field: 'count',
-    cumulative: false,
   },
   {
     name: 'Energy',
     field: 'energy',
-    cumulative: false,
   },
   {
     name: 'Cum. energy',
     field: 'energy',
     cumulative: true,
+    excludeSum: true,
   },
 ]
 
@@ -27,9 +34,11 @@ export const getStatsInfo = (data) => {
     const array = k.cumulative ? cumulativeSum1D(series) : series
     stats.push({
       name: k.name,
+      field: k.field,
       min: min(array),
       max: max(array),
       mean: mean(array),
+      sum: k.excludeSum ? null : sum(array),
     })
   })
 

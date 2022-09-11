@@ -1,4 +1,4 @@
-import { min, max, mean, get } from 'lodash'
+import { min, max, mean, get, sum } from 'lodash'
 import { STATIONS } from './index'
 
 export const getStatsInfo = (data) => {
@@ -11,9 +11,10 @@ export const getStatsInfo = (data) => {
     })
     stats.push({
       name: station.name,
-      min: min(series),
+      min: min(series.filter((v) => v > 0)),
       max: max(series),
       mean: mean(series),
+      sum: sum(series),
     })
   })
 
