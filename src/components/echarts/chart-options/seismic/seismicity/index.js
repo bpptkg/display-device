@@ -112,7 +112,7 @@ export const createXAxis = (nrows, min, max) => {
   return axis
 }
 
-export const createYAxis = (names) => {
+export const createYAxis = (names, options = {}) => {
   return names.map((name, index) => {
     return {
       axisTick: { interval: 2 },
@@ -124,6 +124,7 @@ export const createYAxis = (names) => {
       scale: false,
       splitLine: { show: false },
       type: 'value',
+      ...options,
     }
   })
 }
@@ -155,7 +156,7 @@ export const mediaQuery = [
   },
 ]
 
-export const baseChartOptions = ({ title = {} } = {}) => {
+export const baseChartOptions = ({ title = {}, yAxisOptions = {} } = {}) => {
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -180,7 +181,10 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       ...title,
     },
     xAxis: createXAxis(eventTypes.length),
-    yAxis: createYAxis(eventTypes.map((v) => v.type)),
+    yAxis: createYAxis(
+      eventTypes.map((v) => v.type),
+      yAxisOptions
+    ),
     toolbox: defaultToolbox,
   }
 }

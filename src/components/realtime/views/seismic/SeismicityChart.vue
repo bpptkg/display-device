@@ -91,7 +91,9 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions(),
+          ...baseChartOptions({
+            yAxisOptions: { nameTextStyle: { fontSize: 10 } },
+          }),
           dataZoom: [],
           grid: createRowGrid(eventTypes.length, { top: 10, bottom: 10 }),
           series: createSeries(this.data),
