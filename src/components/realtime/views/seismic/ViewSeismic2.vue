@@ -42,6 +42,23 @@ export default {
     HypocenterChart,
     RfapEnergyChart,
   },
+  data() {
+    return {
+      timer: null,
+    }
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
+  },
+  mounted() {
+    // Set timer for reload the page after 1 hour. It helps use to update the
+    // app or refresh if any error occurred.
+    this.timer = setTimeout(() => {
+      window.location.reload()
+    }, 60 * 60 * 1000)
+  },
 }
 </script>
 

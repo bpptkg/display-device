@@ -26,11 +26,24 @@ export default {
     SeismicEnergyChart,
     HypocenterChart,
   },
+  data() {
+    return {
+      timer: null,
+    }
+  },
   beforeDestroy() {
     window.removeEventListener('keyup', this.toggleFullscreen)
+
+    if (this.timer) {
+      clearTimeout(this.timer)
+    }
   },
   mounted() {
     window.addEventListener('keyup', this.toggleFullscreen)
+
+    this.timer = setTimeout(() => {
+      window.location.reload()
+    }, 60 * 60 * 1000)
   },
   methods: {
     toggleFullscreen(event) {
