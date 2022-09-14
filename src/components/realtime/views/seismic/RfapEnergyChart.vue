@@ -30,6 +30,8 @@ import {
 import { SamplingTypes } from '@/store/seismic/equivalent-energy'
 import { UPDATE_ENERGY } from '@/store/seismic/equivalent-energy/actions'
 
+import { patchRfapEnergyGrid } from './patch'
+
 const NAMESPACE = 'realtime/seismic/rfapEnergy'
 
 export default {
@@ -57,6 +59,7 @@ export default {
           ...baseChartOptions({
             sampling: SamplingTypes.HOUR,
           }),
+          dataZoom: [],
           series: createSeries(this.data),
           xAxis: createXAxis(
             toUnixMiliSeconds(this.startTime),
@@ -66,7 +69,7 @@ export default {
         media: mediaQuery(),
       }
 
-      return options
+      return patchRfapEnergyGrid(options)
     },
   },
   beforeDestroy() {

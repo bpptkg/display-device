@@ -85,6 +85,7 @@ export default {
         },
         media: mediaQuery(this.type),
       }
+
       return options
     },
   },

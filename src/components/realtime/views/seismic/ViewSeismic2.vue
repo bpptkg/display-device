@@ -82,7 +82,7 @@ export default {
   flex: 50%;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 991.98px) {
   .g-container {
     display: block;
   }

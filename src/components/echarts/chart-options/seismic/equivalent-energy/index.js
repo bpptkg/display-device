@@ -154,6 +154,7 @@ export const baseChartOptions = ({
         },
       },
       formatter: (params) => {
+        const noData = '-'
         const template = []
 
         params.forEach((param, index) => {
@@ -170,12 +171,12 @@ export const baseChartOptions = ({
           template.push(`
           ${createCircleTemplate(color)}
           ${seriesName}: ${
-            value[1]
+            Number.isFinite(value[1])
               ? seriesName === SeriesName.RF_COUNT ||
                 seriesName === SeriesName.AP_COUNT
                 ? value[1].toFixed(0)
                 : value[1].toFixed(2)
-              : value[1]
+              : noData
           }<br />
           `)
         })
