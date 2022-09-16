@@ -12,13 +12,7 @@
       </div>
       <div v-show="!error">
         <div
-          class="
-            d-flex
-            justify-content-between
-            align-items-center
-            flex-wrap
-            mb-2
-          "
+          class="d-flex justify-content-between align-items-center flex-wrap mb-2"
         >
           <div class="d-flex align-items-center flex-wrap">
             <RangeSelector

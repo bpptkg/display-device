@@ -2,6 +2,7 @@
   <div class="dropdown">
     <DButtonIcon
       v-clickaway="hide"
+      v-b-tooltip.hover
       :icon="HelpOutlineIcon"
       icon-color="#5f6368"
       circle
@@ -9,6 +10,7 @@
       no-shadow
       :active="visible"
       @click.native="toggle"
+      title="Help"
     />
     <div v-show="visible" class="dropdown-content">
       <router-link class="dropdown-item" to="/about">About</router-link>
@@ -40,7 +42,7 @@
 
 <script>
 import { directive as clickaway } from 'vue-clickaway'
-import { BLink } from 'bootstrap-vue'
+import { BLink, VBTooltip } from 'bootstrap-vue'
 import DButtonIcon from './base/button-icon/DButtonIcon'
 import { HelpOutlineIcon } from './icons/action'
 
@@ -52,6 +54,7 @@ export default {
   },
   directives: {
     clickaway,
+    'b-tooltip': VBTooltip,
   },
   data() {
     return {

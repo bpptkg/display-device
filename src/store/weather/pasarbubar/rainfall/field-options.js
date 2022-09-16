@@ -4,7 +4,7 @@ export default [
   {
     key: 'label',
     label: 'Name',
-    formatter: (v, row) => {
+    formatter: (v, _, row) => {
       return `${v} (${row.valueSuffix})`
     },
   },

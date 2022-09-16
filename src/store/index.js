@@ -23,6 +23,7 @@ import tiltmeter from './tiltmeter'
 import user from './user'
 import weather from './weather'
 import version from './version'
+import search from './search'
 
 Vue.use(Vuex)
 
@@ -50,5 +51,6 @@ export default new Vuex.Store({
     user,
     weather,
     version,
+    search,
   },
 })

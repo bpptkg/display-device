@@ -9,17 +9,18 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
-    "axios": "^0.21.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "colormap": "^2.3.2",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "echarts-gl": "^1.1.2",
+    "fuse.js": "^6.6.2",
     "jquery": "^3.6.0",
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4",
+    "moment": "^2.29.1",
     "register-service-worker": "^1.7.1",
     "v-viewer": "^1.6.4",
     "viewerjs": "^1.10.1",
@@ -33,7 +34,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-pwa": "~4.5.13",
     "@vue/cli-service": "~4.5.0",
     "@vue/composition-api": "^1.1.0",
@@ -48,7 +49,7 @@
     "prettier": "^2.3.2",
     "sass": "^1.37.5",
     "sass-loader": "^10.2.0",
-    "vue-template-compiler": "^2.6.11",
+    "vue-template-compiler": "^2.6.14",
     "webpack": "^4.46.0"
   },
   "browserslist": [

@@ -58,6 +58,13 @@ export default {
         baseOption: {
           ...baseChartOptions({
             sampling: SamplingTypes.HOUR,
+            title: {
+              text: 'RF & AP Energy',
+              textStyle: {
+                fontSize: 14,
+                fontWeight: 'normal',
+              },
+            },
           }),
           dataZoom: [],
           series: createSeries(this.data),

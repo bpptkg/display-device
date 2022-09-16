@@ -2,6 +2,7 @@
   <div class="app-launcher">
     <DButtonIcon
       v-clickaway="hide"
+      v-b-tooltip.hover
       :icon="AppsIcon"
       icon-color="#5f6368"
       circle
@@ -9,6 +10,7 @@
       no-shadow
       :active="visible"
       @click.native="toggle"
+      title="Cendana15 apps"
     />
     <div v-show="visible" class="wrapper">
       <div class="content-scroll">
@@ -29,7 +31,7 @@
 </template>
 
 <script>
-import { BLink } from 'bootstrap-vue'
+import { BLink, VBTooltip } from 'bootstrap-vue'
 import { directive as clickaway } from 'vue-clickaway'
 import DButtonIcon from '../base/button-icon/DButtonIcon'
 import AppLauncherItem from './AppLaucherItem'
@@ -44,6 +46,7 @@ export default {
   },
   directives: {
     clickaway,
+    'b-tooltip': VBTooltip,
   },
   props: {
     items: {

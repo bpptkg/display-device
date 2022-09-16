@@ -1,14 +1,7 @@
 <template>
   <div class="dirview">
     <div
-      class="
-        d-flex
-        justify-content-between
-        align-items-end
-        flex-wrap
-        toolbar-sticky
-        mb-3
-      "
+      class="d-flex justify-content-between align-items-end flex-wrap toolbar-sticky mb-3"
     >
       <div class="d-flex align-items-center flex-wrap">
         <RangeSelector

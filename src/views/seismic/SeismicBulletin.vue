@@ -122,12 +122,7 @@
             </div>
             <div
               v-else
-              class="
-                hypoview-content
-                d-flex
-                align-items-center
-                justify-content-center
-              "
+              class="hypoview-content d-flex align-items-center justify-content-center"
             >
               <ErrorMessage> This hypocenter is not plottable. </ErrorMessage>
             </div>

@@ -2,6 +2,8 @@
   <div class="account">
     <div class="avatar" v-clickaway="hide" @click="toggle">
       <BAvatar
+        v-b-tooltip.hover
+        title="Account"
         class="b-avatar"
         size="2rem"
         :text="isAuthenticated ? abbrevName : ''"
@@ -37,7 +39,7 @@
 import { mapState } from 'vuex'
 import Axios from 'axios'
 import { directive as clickaway } from 'vue-clickaway'
-import { BAvatar } from 'bootstrap-vue'
+import { BAvatar, VBTooltip } from 'bootstrap-vue'
 
 export default {
   name: 'TheAvatar',
@@ -46,6 +48,7 @@ export default {
   },
   directives: {
     clickaway,
+    'b-tooltip': VBTooltip,
   },
   data() {
     return {
