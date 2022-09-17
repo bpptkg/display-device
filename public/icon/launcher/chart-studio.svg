@@ -1,0 +1,17 @@
+<svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="140" height="140" rx="32" fill="url(#paint0_linear_0_1)" />
+    <path d="M42 110C37.5817 110 34 106.418 34 102V62C34 57.5817 37.5817 54 42 54V54C46.4183 54 50 57.5817 50 62V102C50 106.418 46.4183 110 42 110V110ZM70 110C65.5817 110 62 106.418 62 102V38C62 33.5817 65.5817 30 70 30V30C74.4183 30 78 33.5817 78 38V102C78 106.418 74.4183 110 70 110V110ZM98 110C93.5817 110 90 106.418 90 102V86C90 81.5817 93.5817 78 98 78V78C102.418 78 106 81.5817 106 86V102C106 106.418 102.418 110 98 110V110Z" fill="url(#paint1_linear_0_1)" />
+    <defs>
+        <linearGradient id="paint0_linear_0_1" x1="70" y1="0" x2="70" y2="140" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#16C4FF" />
+            <stop offset="0.281173" stop-color="#1AADFA" />
+            <stop offset="0.585338" stop-color="#1E9EF7" />
+            <stop offset="1" stop-color="#1B73F1" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_0_1" x1="70" y1="30" x2="70" y2="110" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" />
+            <stop offset="1" stop-color="white" stop-opacity="0.78" />
+        </linearGradient>
+    </defs>
+</svg>
+    

@@ -29,33 +29,39 @@ export default {
     items() {
       return [
         {
-          src: `${baseUrl}icon/launcher/file.svg`,
+          src: `${baseUrl}icon/launcher/file-manager.svg`,
           href: '/file-manager',
           text: 'File Manager',
           visible: true,
         },
         {
-          src: `${baseUrl}icon/launcher/report.svg`,
+          src: `${baseUrl}icon/launcher/data-entry.svg`,
           href: '/data-entry',
           text: 'Data Entry',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `${baseUrl}icon/launcher/task.svg`,
+          src: `${baseUrl}icon/launcher/assignment.svg`,
           href: '/assignment/',
           text: 'Assignment',
           visible: true,
         },
         {
-          src: `${baseUrl}icon/launcher/analytic.svg`,
+          src: `${baseUrl}icon/launcher/data-analysis.svg`,
           href: '/data-analysis',
           text: 'Data Analysis',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `${baseUrl}icon/launcher/display.svg`,
+          src: `${baseUrl}icon/launcher/display-device.svg`,
           href: '/display-device',
           text: 'Display Device',
+          visible: ME_POSITION_NAMES.includes(this.userPositionName),
+        },
+        {
+          src: `${baseUrl}icon/launcher/chart-studio.svg`,
+          href: '/chart-studio',
+          text: 'Chart Studio',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
@@ -65,7 +71,7 @@ export default {
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
-          src: `${baseUrl}icon/launcher/beaker.png`,
+          src: `${baseUrl}icon/launcher/lims.png`,
           href: '/lims',
           text: 'LIMS',
           visible: PL_POSITION_NAMES.includes(this.userPositionName),
