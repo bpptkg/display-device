@@ -5,12 +5,14 @@
       class="w-100 d-flex justify-content-center align-items-center"
     >
       <DButtonIcon
+        v-b-tooltip.hover
         :icon="ArrowBackIcon"
         icon-color="#5f6368"
         circle
         no-border
         no-shadow
         @click.native="hideSearchOpen"
+        title="Go back"
       />
       <SearchBox class="ml-2" ref="searchBox" />
     </div>
