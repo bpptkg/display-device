@@ -50,36 +50,39 @@
 import { mapActions, mapMutations, mapState } from 'vuex'
 import { BLink, VBTooltip } from 'bootstrap-vue'
 import { directive as clickaway } from 'vue-clickaway'
+
 import DNavbar from './base/navbar/DNavbar'
+import DButtonIcon from './base/button-icon/DButtonIcon'
+
 import { LogoIcon, MenuIcon } from './icons'
+import { ArrowBackIcon } from './icons/navigation'
+
 import TheAppLauncher from './TheAppLauncher'
 import TheSidebarMenu from './TheSidebarMenu'
 import TheHelpMenu from './TheHelpMenu'
 import TheAvatar from './TheAvartar'
 import SearchBar from './SearchBar'
+import SearchBox from './SearchBox'
+
 import { HIDE_MENU } from '@/store/sidebar-menu/actions'
 
 import { NAMESPACE } from '@/store/search'
 import { SET_SEARCH_OPEN } from '@/store/search/mutations'
 
-import SearchBox from './SearchBox'
-import DButtonIcon from './base/button-icon/DButtonIcon'
-import { ArrowBackIcon } from './icons/navigation'
-
 export default {
   name: 'TheTopNavbar',
   components: {
     BLink,
+    DButtonIcon,
     DNavbar,
     LogoIcon,
     MenuIcon,
-    TheAppLauncher,
-    TheSidebarMenu,
-    TheHelpMenu,
-    TheAvatar,
     SearchBar,
     SearchBox,
-    DButtonIcon,
+    TheAppLauncher,
+    TheAvatar,
+    TheHelpMenu,
+    TheSidebarMenu,
   },
   directives: {
     clickaway,

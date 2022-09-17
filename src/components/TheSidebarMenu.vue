@@ -31,9 +31,9 @@ import NewVersion from './NewVersion.vue'
 export default {
   name: 'TheSidebarMenu',
   components: {
+    NewVersion,
     SidebarMenu,
     SidebarMenuHeader,
-    NewVersion,
   },
   data() {
     return {

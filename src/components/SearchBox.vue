@@ -58,9 +58,8 @@ export default {
   components: {
     BFormInput,
     BInputGroup,
-    SearchIcon,
-
     DButtonIcon,
+    SearchIcon,
   },
   data() {
     return {
@@ -82,7 +81,7 @@ export default {
   watch: {
     pattern(value) {
       this.searchResult = fuse.search(value).slice(0, 10)
-      this.focus = 0
+      this.focusIndex = 0
     },
   },
   methods: {

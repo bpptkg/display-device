@@ -103,7 +103,7 @@ export default {
        * Sign out may not work when developing the app on localhost server.
        */
       await Axios.post('/logout')
-        .catch((_) => {
+        .catch((_error) => {
           // Ignore the error. This typically occurred when you're developing on
           // localhost server.
         })
