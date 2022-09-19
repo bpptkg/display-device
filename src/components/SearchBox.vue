@@ -104,6 +104,20 @@ export default {
             break
           case 13: // Enter Key.
             this.goTo(this.searchResult[this.focusIndex].item.path)
+            break
+          case 27: // Esc Key.
+            if (this.isSearchOpen) {
+              this.setSearchOpen(false)
+            }
+            break
+        }
+      } else {
+        switch (event.keyCode) {
+          case 27: // Esc Key.
+            if (this.isSearchOpen) {
+              this.setSearchOpen(false)
+            }
+            break
         }
       }
     },
