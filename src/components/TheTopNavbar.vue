@@ -37,8 +37,8 @@
         </div>
       </div>
       <div class="d-flex align-items-center">
-        <SearchBar class="mx-2" />
-        <TheHelpMenu class="mr-2" />
+        <SearchBar class="mx-1" />
+        <TheHelpMenu class="mr-1" />
         <TheAppLauncher class="mr-2" />
         <TheAvatar />
       </div>
