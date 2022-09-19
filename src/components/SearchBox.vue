@@ -207,6 +207,6 @@ export default {
   padding-left: 32px;
   padding-right: 32px;
   border-radius: 8px !important;
-  min-width: 250px;
+  min-width: 200px;
 }
 </style>
