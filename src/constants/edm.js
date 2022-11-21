@@ -41,8 +41,8 @@ export const edmBenchmarks = Object.values(EDMBenchmark)
 export const edmReflectors = Object.values(EDMReflector)
 
 export const EDMBenchmarkReflectorRelation = {
-  [EDMBenchmark.BAB0]: [EDMReflector.RB1, EDMReflector.RB2],
-  [EDMBenchmark.BAB1]: [EDMReflector.RB1, EDMReflector.RB2],
+  [EDMBenchmark.BAB0]: [EDMReflector.RB1, EDMReflector.RB2, EDMReflector.RB3],
+  [EDMBenchmark.BAB1]: [EDMReflector.RB1, EDMReflector.RB2, EDMReflector.RB3],
   [EDMBenchmark.BAT0]: [EDMReflector.RK1, EDMReflector.RK2],
   [EDMBenchmark.BEL0]: [EDMReflector.RM1, EDMReflector.RM2],
   [EDMBenchmark.CEP0]: [
