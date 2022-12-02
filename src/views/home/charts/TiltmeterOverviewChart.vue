@@ -51,7 +51,6 @@ import {
   baseChartOptions,
   createSeries,
   createXAxis,
-  //   mediaQuery,
 } from '@/components/echarts/chart-options/tiltmeter/overview'
 import { tooltipFormatter } from '@/components/echarts/chart-options/tiltmeter'
 import { createRowGrid } from '@/utils/echarts/grid'
@@ -66,7 +65,7 @@ const mediaQuery = (tiltOptions) => {
   return [
     {
       query: {
-        maxWidth: 575.98,
+        maxWidth: 767.98,
       },
       option: {
         grid: createRowGrid(tiltOptions.length, {
