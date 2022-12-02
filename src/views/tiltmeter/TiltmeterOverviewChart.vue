@@ -152,8 +152,10 @@ export default {
     chartOptions() {
       const options = {
         baseOption: {
-          ...baseChartOptions(),
-          series: createSeries(this.data, { annotations: this.annotations }),
+          ...baseChartOptions(this.tiltOptions),
+          series: createSeries(this.data, this.tiltOptions, {
+            annotations: this.annotations,
+          }),
           title: {
             text: 'Tiltmeter',
             left: 'center',
@@ -182,10 +184,11 @@ export default {
                 ? moment(this.startTime.format(DATE_FORMAT))
                 : this.startTime
             ),
-            toUnixMiliSeconds(this.endTime)
+            toUnixMiliSeconds(this.endTime),
+            this.tiltOptions
           ),
         },
-        media: mediaQuery,
+        media: mediaQuery(this.tiltOptions),
       }
       return options
     },

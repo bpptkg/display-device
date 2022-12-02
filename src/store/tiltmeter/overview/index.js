@@ -31,10 +31,10 @@ export const initialState = {
   ...baseState,
   annotationOptions: annotations,
   sampling: SamplingTypes.DAY,
-  tiltOptions,
+  tiltOptions: [],
 }
 
-export const initState = (period) => {
+export const initState = (period, tiltOptions) => {
   const { startTime, endTime } = calculatePeriod(period)
 
   return {
@@ -42,6 +42,7 @@ export const initState = (period) => {
     period,
     startTime,
     endTime,
+    tiltOptions,
   }
 }
 
@@ -162,7 +163,7 @@ const defaultPeriod = rangeSelector[2]
 
 export default {
   namespaced: true,
-  state: initState(defaultPeriod),
+  state: initState(defaultPeriod, tiltOptions),
   getters,
   mutations,
   actions,

@@ -19,7 +19,7 @@
         <RfapDirectionChart class="chart-item" />
       </div>
       <div class="masonry-item">
-        <TiltmeterChart class="chart-item" />
+        <TiltmeterOverviewChart class="chart-item" />
       </div>
       <div class="masonry-item">
         <GPSBaselineChart class="chart-item" />
@@ -38,7 +38,7 @@ import HelicorderChart from './charts/HelicorderChart'
 import LavaDomeChart from './charts/LavaDomeChart'
 import RfapDirectionChart from './charts/RfapDirectionChart'
 import SeismicityChart from './charts/SeismicityChart'
-import TiltmeterChart from './charts/TiltmeterChart'
+import TiltmeterOverviewChart from './charts/TiltmeterOverviewChart.vue'
 import WeatherPasarbubarChart from './charts/WeatherPasarbubarChart'
 
 export default {
@@ -50,7 +50,7 @@ export default {
     LavaDomeChart,
     RfapDirectionChart,
     SeismicityChart,
-    TiltmeterChart,
+    TiltmeterOverviewChart,
     WeatherPasarbubarChart,
   },
   mounted() {

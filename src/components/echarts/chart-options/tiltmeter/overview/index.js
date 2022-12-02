@@ -4,7 +4,6 @@ import { scaledFormatter } from '@/utils/formatter'
 
 import { defaultToolbox } from '../../common/toolbox'
 import { SeriesName } from '../index'
-import tiltOptions from './tilt-options'
 
 /**
  * Simple fuzzy label formatter.
@@ -13,7 +12,7 @@ function axisLabelFormatter(value) {
   return scaledFormatter(['', 'k', 'M', 'G'])(value)
 }
 
-export const createSeries = (data, { annotations = [] } = {}) => {
+export const createSeries = (data, tiltOptions, { annotations = [] } = {}) => {
   return tiltOptions
     .map((tilt, index) => {
       return [
@@ -56,7 +55,7 @@ export const createSeries = (data, { annotations = [] } = {}) => {
     .flat(1)
 }
 
-export const createXAxis = (min, max) => {
+export const createXAxis = (min, max, tiltOptions) => {
   return tiltOptions.map((tilt, index) => {
     return index === tiltOptions.length - 1
       ? {
@@ -81,7 +80,7 @@ export const createXAxis = (min, max) => {
   })
 }
 
-export const createYAxis = () => {
+export const createYAxis = (tiltOptions) => {
   return tiltOptions
     .map((tilt, index) => {
       return [
@@ -112,29 +111,31 @@ export const createYAxis = () => {
     .flat(1)
 }
 
-export const mediaQuery = [
-  {
-    query: {
-      maxWidth: 575.98,
-    },
-    option: {
-      grid: createRowGrid(tiltOptions.length, {
-        top: 5,
-        bottom: 5,
-        left: 15,
-        right: 15,
-      }),
-      title: {
-        top: 15,
-        textStyle: {
-          fontSize: 13,
+export const mediaQuery = (tiltOptions) => {
+  return [
+    {
+      query: {
+        maxWidth: 575.98,
+      },
+      option: {
+        grid: createRowGrid(tiltOptions.length, {
+          top: 5,
+          bottom: 5,
+          left: 15,
+          right: 15,
+        }),
+        title: {
+          top: 15,
+          textStyle: {
+            fontSize: 13,
+          },
         },
       },
     },
-  },
-]
+  ]
+}
 
-export const baseChartOptions = () => {
+export const baseChartOptions = (tiltOptions) => {
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -145,7 +146,7 @@ export const baseChartOptions = () => {
       },
     ],
     grid: createRowGrid(tiltOptions.length, { bottom: 5, top: 5 }),
-    yAxis: createYAxis(),
+    yAxis: createYAxis(tiltOptions),
     toolbox: defaultToolbox,
   }
 }

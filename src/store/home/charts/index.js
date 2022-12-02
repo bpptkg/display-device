@@ -5,6 +5,7 @@ import lavaDome from './lavadomes'
 import rfapDirection from './rfap-direction'
 import seismicity from './seismicity'
 import tiltmeter from './tiltmeter'
+import tiltmeterOverview from './tiltmeter-overview'
 import weather from './weather'
 
 export default {
@@ -17,6 +18,7 @@ export default {
     rfapDirection,
     seismicity,
     tiltmeter,
+    tiltmeterOverview,
     weather,
   },
 }
