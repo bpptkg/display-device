@@ -111,6 +111,14 @@ const deles = {
   actions,
 }
 
+const delessendang = {
+  namespaced: true,
+  state: initState('delessendang', defaultPeriod),
+  getters,
+  mutations,
+  actions,
+}
+
 const grawah = {
   namespaced: true,
   state: initState('grawah', defaultPeriod),
@@ -182,6 +190,7 @@ export default {
     babadan,
     bpptkg,
     deles,
+    delessendang,
     grawah,
     jrakah,
     klatakan,

@@ -18,6 +18,12 @@ export default [
     chartTitle: 'GPS Baseline Deles',
   },
   {
+    value: 'delessendang',
+    text: 'Deles Sendang',
+    code: 'DLSS',
+    chartTitle: 'GPS Baseline Deles Sendang Gemuling',
+  },
+  {
     value: 'grawah',
     text: 'Grawah',
     code: 'GRWH',
