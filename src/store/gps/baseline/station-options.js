@@ -13,15 +13,15 @@ export default [
   },
   {
     value: 'deles',
-    text: 'Deles',
+    text: 'Deles_1',
     code: 'DELS',
-    chartTitle: 'GPS Baseline Deles',
+    chartTitle: 'GPS Baseline Deles_1',
   },
   {
     value: 'delessendang',
-    text: 'Deles Sendang',
+    text: 'Deles0',
     code: 'DLSS',
-    chartTitle: 'GPS Baseline Deles Sendang Gemuling',
+    chartTitle: 'GPS Baseline Deles0',
   },
   {
     value: 'grawah',

@@ -13,15 +13,15 @@ export default [
   },
   {
     value: 'deles',
-    text: 'Deles',
+    text: 'Deles_1',
     code: 'DELS',
-    chartTitle: 'Deles',
+    chartTitle: 'Deles_1',
   },
   {
     value: 'delessendang',
-    text: 'Deles Sendang',
+    text: 'Deles0',
     code: 'DLSS',
-    chartTitle: 'Deles Sendang Gemuling',
+    chartTitle: 'Deles0',
   },
   {
     value: 'grawah',
