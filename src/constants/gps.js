@@ -33,7 +33,7 @@ export const gpsStationCodes = {
 export const gpsLabels = {
   babadan: 'Babadan',
   bpptkg: 'BPPTKG',
-  deles: 'Deles_1',
+  deles: 'Deles1',
   delessendang: 'Deles0',
   grawah: 'Grawah',
   jrakah: 'Jrakah',

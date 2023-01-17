@@ -13,9 +13,9 @@ export default [
   },
   {
     value: 'deles',
-    text: 'Deles_1',
+    text: 'Deles1',
     code: 'DELS',
-    chartTitle: 'Deles_1',
+    chartTitle: 'Deles1',
   },
   {
     value: 'delessendang',

@@ -13,9 +13,9 @@ export default [
   },
   {
     value: 'deles',
-    text: 'Deles_1',
+    text: 'Deles1',
     code: 'DELS',
-    chartTitle: 'GPS Baseline Deles_1',
+    chartTitle: 'GPS Baseline Deles1',
   },
   {
     value: 'delessendang',
