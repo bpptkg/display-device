@@ -80,7 +80,6 @@
         <EventFilter
           class="ml-1"
           :events="eventFilter"
-          :disabled="!settings.useBtbbHypo"
           @change="handleEventFilter"
         />
       </div>
