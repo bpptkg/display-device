@@ -4,6 +4,7 @@ import FogIcon from './FogIcon'
 import GasIcon from './GasIcon'
 import GpsIcon from './GpsIcon'
 import HomeIcon from './HomeIcon'
+import InfographicIcon from './InfographicIcon'
 import LavaDomeIcon from './LavaDomeIcon'
 import LayoutIcon from './LayoutIcon'
 import LogoIcon from './LogoIcon'
@@ -25,6 +26,7 @@ export {
   GasIcon,
   GpsIcon,
   HomeIcon,
+  InfographicIcon,
   LavaDomeIcon,
   LayoutIcon,
   LogoIcon,

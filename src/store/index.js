@@ -25,6 +25,8 @@ import weather from './weather'
 import version from './version'
 import search from './search'
 
+import infographic from '@/lib/infographic/store'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -34,6 +36,7 @@ export default new Vuex.Store({
     gps,
     helicorder,
     home,
+    infographic,
     lavaDome,
     magnetic,
     observation,
