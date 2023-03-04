@@ -1,234 +1,235 @@
 <template>
-  <div style="margin-top: 60px; width: 100%; overflow-x: hidden">
-    <div class="d-flex flex-wrap">
-      <BCol sm="3">
-        <BCard header="Settings" class="my-1" style="height: 600px">
-          <ScrollWrapper>
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Period:</small></label>
-              </BCol>
-              <BCol>
-                <RangeSelector
-                  ref="range-selector"
-                  size="sm"
-                  custom-enabled
-                  hide-period-label
-                  :selected="period"
-                  :items="periods"
-                  :max-custom-duration="maxCustomDuration"
-                  @period-selected="onPeriodChange"
-                />
-              </BCol>
-            </BRow>
+  <div class="d-flex flex-wrap" style="margin-top: 60px">
+    <BCol sm="3">
+      <BCard header="Settings" class="panel">
+        <ScrollWrapper>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Period:</small></label>
+            </BCol>
+            <BCol>
+              <RangeSelector
+                ref="range-selector"
+                size="sm"
+                custom-enabled
+                hide-period-label
+                :selected="period"
+                :items="periods"
+                :max-custom-duration="maxCustomDuration"
+                @period-selected="onPeriodChange"
+              />
+            </BCol>
+          </BRow>
 
-            <hr />
+          <hr />
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Width:</small></label>
-              </BCol>
-              <BCol>
-                <BFormInput v-model="cwidth" type="number" size="sm" />
-              </BCol>
-              <BCol sm="2"><small>px</small></BCol>
-            </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Width:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cwidth" type="number" size="sm" />
+            </BCol>
+            <BCol sm="2"><small>px</small></BCol>
+          </BRow>
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Height:</small></label>
-              </BCol>
-              <BCol>
-                <BFormInput v-model="cheight" type="number" size="sm" />
-              </BCol>
-              <BCol sm="2"><small>px</small></BCol>
-            </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Height:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cheight" type="number" size="sm" />
+            </BCol>
+            <BCol sm="2"><small>px</small></BCol>
+          </BRow>
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Theme:</small></label>
-              </BCol>
-              <BCol>
-                <BFormSelect v-model="ctheme" :options="themes" size="sm" />
-              </BCol>
-            </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Theme:</small></label>
+            </BCol>
+            <BCol>
+              <BFormSelect v-model="ctheme" :options="themes" size="sm" />
+            </BCol>
+          </BRow>
 
-            <hr />
+          <hr />
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Benchmark:</small></label>
-              </BCol>
-              <BCol>
-                <BFormSelect
-                  v-model="cbenchmark"
-                  :options="benchmarks"
-                  size="sm"
-                  :disabled="isFetching"
-                />
-              </BCol>
-            </BRow>
-
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Reflector:</small></label>
-              </BCol>
-              <BCol>
-                <BFormSelect
-                  v-model="creflector"
-                  :options="reflectors"
-                  size="sm"
-                  :disabled="isFetching"
-                />
-              </BCol>
-            </BRow>
-
-            <hr />
-
-            <BRow>
-              <BCol>
-                <label><small>Events:</small></label>
-              </BCol>
-            </BRow>
-            <BFormGroup>
-              <BFormCheckboxGroup
-                v-model="cSelectedEvents"
-                :options="events"
-                stacked
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Benchmark:</small></label>
+            </BCol>
+            <BCol>
+              <BFormSelect
+                v-model="cbenchmark"
+                :options="benchmarks"
+                size="sm"
                 :disabled="isFetching"
               />
-            </BFormGroup>
+            </BCol>
+          </BRow>
 
-            <hr />
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Reflector:</small></label>
+            </BCol>
+            <BCol>
+              <BFormSelect
+                v-model="creflector"
+                :options="reflectors"
+                size="sm"
+                :disabled="isFetching"
+              />
+            </BCol>
+          </BRow>
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>EDM Y Label:</small></label>
-              </BCol>
-              <BCol>
-                <BFormInput v-model="cEdmYLabel" size="sm" />
-              </BCol>
-            </BRow>
+          <hr />
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Gap:</small></label>
-              </BCol>
-              <BCol>
-                <BFormInput v-model="cEdmNameGap" size="sm" type="number" />
-              </BCol>
-            </BRow>
+          <BRow>
+            <BCol>
+              <label><small>Events:</small></label>
+            </BCol>
+          </BRow>
+          <BFormGroup>
+            <BFormCheckboxGroup
+              v-model="cSelectedEvents"
+              :options="events"
+              stacked
+              :disabled="isFetching"
+            />
+          </BFormGroup>
 
-            <hr />
+          <hr />
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Seismicity Y Label:</small></label>
-              </BCol>
-              <BCol>
-                <BFormInput v-model="cSeismicityYLabel" size="sm" />
-              </BCol>
-            </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>EDM Y Label:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cEdmYLabel" size="sm" />
+            </BCol>
+          </BRow>
 
-            <BRow class="my-1">
-              <BCol sm="4">
-                <label><small>Gap:</small></label>
-              </BCol>
-              <BCol>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Gap:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cEdmNameGap" size="sm" type="number" />
+            </BCol>
+          </BRow>
+
+          <hr />
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Seismicity Y Label:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cSeismicityYLabel" size="sm" />
+            </BCol>
+          </BRow>
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Gap:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput
+                v-model="cSeismicityNameGap"
+                size="sm"
+                type="number"
+              />
+            </BCol>
+          </BRow>
+
+          <hr />
+          <label><small>Margin (%):</small></label>
+
+          <div class="d-flex flex-column justify-content-center w-100">
+            <div class="d-flex align-items-end justify-content-center">
+              <div class="margin">
                 <BFormInput
-                  v-model="cSeismicityNameGap"
                   size="sm"
                   type="number"
+                  placeholder="Top"
+                  v-model="cMarginTop"
                 />
-              </BCol>
-            </BRow>
-
-            <hr />
-            <label><small>Margin (%):</small></label>
-
-            <div class="d-flex flex-column justify-content-center w-100">
-              <div class="d-flex align-items-end justify-content-center">
-                <div class="margin">
-                  <BFormInput
-                    size="sm"
-                    type="number"
-                    placeholder="Top"
-                    v-model="cMarginTop"
-                  />
-                </div>
-              </div>
-              <div
-                class="d-flex align-items-center justify-content-center w-100"
-              >
-                <div class="margin">
-                  <BFormInput
-                    size="sm"
-                    type="number"
-                    placeholder="Left"
-                    v-model="cMarginLeft"
-                  />
-                </div>
-                <div class="page"></div>
-                <div class="margin">
-                  <BFormInput
-                    size="sm"
-                    type="number"
-                    placeholder="Right"
-                    v-model="cMarginRight"
-                  />
-                </div>
-              </div>
-              <div class="d-flex justify-content-center">
-                <div class="margin">
-                  <BFormInput
-                    size="sm"
-                    type="number"
-                    placeholder="Bottom"
-                    v-model="cMarginBottom"
-                  />
-                </div>
               </div>
             </div>
-          </ScrollWrapper>
-        </BCard>
-      </BCol>
-
-      <BCol>
-        <BCard>
-          <template #header>
-            <div class="d-flex justify-content-between">
-              <h6>Chart</h6>
-
-              <MoreMenu right class="ml-2">
-                <BDropdownItem @click="downloadAsSVG">
-                  Download as SVG
-                </BDropdownItem>
-              </MoreMenu>
+            <div class="d-flex align-items-center justify-content-center w-100">
+              <div class="margin">
+                <BFormInput
+                  size="sm"
+                  type="number"
+                  placeholder="Left"
+                  v-model="cMarginLeft"
+                />
+              </div>
+              <div class="page"></div>
+              <div class="margin">
+                <BFormInput
+                  size="sm"
+                  type="number"
+                  placeholder="Right"
+                  v-model="cMarginRight"
+                />
+              </div>
             </div>
-          </template>
-
-          <ErrorMessage v-if="error">
-            <p>Unable to load data.</p>
-            <p>Error: {{ error.message }}</p>
-            <p>
-              <BLink @click="update"> Try again </BLink>
-            </p>
-          </ErrorMessage>
-          <div class="preview">
-            <div class="canvas">
-              <div v-show="!error" id="chart" :style="style"></div>
+            <div class="d-flex justify-content-center">
+              <div class="margin">
+                <BFormInput
+                  size="sm"
+                  type="number"
+                  placeholder="Bottom"
+                  v-model="cMarginBottom"
+                />
+              </div>
             </div>
           </div>
-        </BCard>
+        </ScrollWrapper>
+      </BCard>
+    </BCol>
 
-        <div class="my-2">
-          <small>
-            Period: <code>{{ startTime }}</code> to <code>{{ endTime }}</code
-            >.
-          </small>
+    <BCol>
+      <BCard class="panel" no-body>
+        <template #header>
+          <div class="d-flex justify-content-between align-items-center">
+            <h6>Chart</h6>
+
+            <MoreMenu right class="ml-2">
+              <BDropdownItem @click="downloadAsSVG">
+                Download as SVG
+              </BDropdownItem>
+              <BDropdownItem @click="downloadAsPNG">
+                Download as PNG
+              </BDropdownItem>
+            </MoreMenu>
+          </div>
+        </template>
+
+        <ErrorMessage v-if="error">
+          <p>Unable to load data.</p>
+          <p>Error: {{ error.message }}</p>
+          <p>
+            <BLink @click="update"> Try again </BLink>
+          </p>
+        </ErrorMessage>
+        <div class="preview">
+          <div class="canvas">
+            <div v-show="!error" id="chart" :style="style"></div>
+          </div>
+          <div class="overlay" :style="stylehiddenoverlay"></div>
+          <div id="charthidden" :style="stylehidden"></div>
         </div>
-      </BCol>
-    </div>
+      </BCard>
+
+      <div class="my-2">
+        <small>
+          Period: <code>{{ startTime.format(DATETIME_FORMAT) }}</code> ~
+          <code>{{ endTime.format(DATETIME_FORMAT) }}</code>
+        </small>
+      </div>
+    </BCol>
   </div>
 </template>
 
@@ -246,6 +247,7 @@ import {
   BFormGroup,
   BFormCheckboxGroup,
 } from 'bootstrap-vue'
+import Panzoom from '@panzoom/panzoom'
 import { createChartOptions } from './chart'
 import RangeSelector from '@/components/range-selector'
 import ErrorMessage from '@/components/error-message'
@@ -534,8 +536,30 @@ export default {
 
     style() {
       return {
+        position: 'absolute',
+        'z-index': 999,
         minWidth: `${this.cwidth}px`,
         minHeight: `${this.cheight}px`,
+        backgroundColor: '#fff',
+      }
+    },
+
+    stylehidden() {
+      return {
+        position: 'absolute',
+        'z-index': 1,
+        minWidth: `${this.cwidth}px`,
+        minHeight: `${this.cheight}px`,
+      }
+    },
+
+    stylehiddenoverlay() {
+      return {
+        position: 'absolute',
+        'z-index': 50,
+        minWidth: `${this.cwidth}px`,
+        minHeight: `${this.cheight}px`,
+        backgroundColor: '#fff',
       }
     },
 
@@ -543,7 +567,7 @@ export default {
       const options = createChartOptions({
         edmData: this.edmData,
         seismicityData: this.seismicityData,
-        // ECharts bugs, need to subtract min to prevent the bar from
+        // ECharts bugs, need to adjust min and max to prevent the bar from
         // overlapping with the vertical Y axis.
         tMin: toUnixMiliSeconds(this.startTime.clone().subtract(1, 'days')),
         tMax: toUnixMiliSeconds(this.endTime.clone().add(1, 'days')),
@@ -570,6 +594,12 @@ export default {
     this.chart = init(this.theme)
     window.addEventListener('resize', this.chart.resize)
     this.update()
+    const dom = document.getElementById('chart')
+    const panzoom = Panzoom(dom, {
+      maxScale: 5,
+    })
+    panzoom.zoom(0.8)
+    dom.parentElement.addEventListener('wheel', panzoom.zoomWithWheel)
   },
 
   methods: {
@@ -673,8 +703,27 @@ export default {
       saveAs(src, 'chart.svg')
     },
 
-    handleEventChange(event) {
-      console.log(event)
+    downloadAsPNG() {
+      if (!this.chart) {
+        return
+      }
+      // eslint-disable-next-line
+      const chart = echarts.init(
+        document.getElementById('charthidden'),
+        this.theme,
+        {
+          renderer: 'canvas',
+        }
+      )
+      chart.on('finished', () => {
+        const src = chart.getDataURL({
+          type: 'png',
+          pixelRatio: PIXEL_RATIO,
+        })
+        saveAs(src, 'chart.png')
+        chart.dispose()
+      })
+      chart.setOption(this.chartOptions)
     },
   },
 }
@@ -683,7 +732,7 @@ export default {
 <style lang="scss">
 .preview {
   width: 100%;
-  min-height: 500px;
+  height: 100%;
   position: relative;
 }
 
@@ -693,10 +742,12 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  overflow: auto;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #ececec;
+  z-index: 99;
 }
 
 .page {
@@ -712,5 +763,9 @@ export default {
 
 .margin {
   width: 70px;
+}
+
+.panel {
+  height: 500px;
 }
 </style>

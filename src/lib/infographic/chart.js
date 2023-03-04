@@ -8,8 +8,8 @@ export const createEdmSeries = (benchmark, reflector, data) => {
     symbol: 'circle',
     symbolSize: 6,
     type: 'line',
-    xAxisIndex: 0,
-    yAxisIndex: 0,
+    xAxisIndex: 1,
+    yAxisIndex: 1,
   }
 }
 
@@ -27,8 +27,8 @@ export const createSeismicitySeries = (data, events) => {
       name: EVENTS_MAP[code].text,
       type: 'bar',
       stack: 'total',
-      xAxisIndex: 1,
-      yAxisIndex: 1,
+      xAxisIndex: 0,
+      yAxisIndex: 0,
     }
   })
 }
@@ -68,8 +68,8 @@ export const createGridSpec = ({
   bottom = 0,
   gap = 5,
 }) => {
-  let c1 = 0.25
-  let c2 = 0.75
+  let c1 = 0.75
+  let c2 = 0.25
   let heightContainer = 100 - (top + bottom + gap)
   let h1 = heightContainer * c1
   let h2 = heightContainer * c2
@@ -119,34 +119,34 @@ export const createChartOptions = ({
       textStyle: { fontSize: 11 },
     },
     series: [
-      createEdmSeries(benchmark, reflector, edmData),
       createSeismicitySeries(seismicityData, events),
+      createEdmSeries(benchmark, reflector, edmData),
     ].flat(1),
     grid,
     xAxis: createXAxis(2, tMin, tMax),
     yAxis: [
+      {
+        axisLine: { show: true },
+        axisTick: { show: true },
+        gridIndex: 0,
+        name: seismicityYLabel,
+        nameGap: seismicityNameGap,
+        nameLocation: 'middle',
+        scale: false,
+        splitLine: { show: false },
+        type: 'value',
+      },
       {
         axisLabel: {
           formatter: (v) => (v ? v.toFixed(2) : v),
         },
         axisLine: { show: true },
         axisTick: { show: true },
-        gridIndex: 0,
+        gridIndex: 1,
         name: edmYLabel,
         nameGap: edmNameGap,
         nameLocation: 'middle',
         scale: true,
-        splitLine: { show: false },
-        type: 'value',
-      },
-      {
-        axisLine: { show: true },
-        axisTick: { show: true },
-        gridIndex: 1,
-        name: seismicityYLabel,
-        nameGap: seismicityNameGap,
-        nameLocation: 'middle',
-        scale: false,
         splitLine: { show: false },
         type: 'value',
       },
