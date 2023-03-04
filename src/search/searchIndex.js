@@ -427,4 +427,17 @@ export default [
     name: 'About',
     path: '/about',
   },
+  // Infographic.
+  {
+    name: 'Infographic',
+    path: '/infographic',
+  },
+  {
+    name: 'Quick Charts',
+    path: '/',
+  },
+  {
+    name: 'Home',
+    path: '/',
+  },
 ]
