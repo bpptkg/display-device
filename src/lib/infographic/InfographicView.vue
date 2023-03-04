@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex flex-wrap" style="margin-top: 60px">
     <BCol sm="3">
-      <BCard header="Settings" class="panel">
+      <BCard header="Settings" class="panel" body-class="px-3 py-0">
         <ScrollWrapper>
-          <BRow class="my-1">
+          <BRow class="pt-3">
             <BCol sm="4">
               <label><small>Period:</small></label>
             </BCol>
@@ -145,7 +145,7 @@
           <hr />
           <label><small>Margin (%):</small></label>
 
-          <div class="d-flex flex-column justify-content-center w-100">
+          <div class="d-flex flex-column justify-content-center w-100 pb-3">
             <div class="d-flex align-items-end justify-content-center">
               <div class="margin">
                 <BFormInput
@@ -218,8 +218,13 @@
           <div class="canvas">
             <div v-show="!error" id="chart" :style="style"></div>
           </div>
-          <div class="overlay" :style="stylehiddenoverlay"></div>
-          <div id="charthidden" :style="stylehidden"></div>
+          <div
+            class="d-flex justify-content-center align-items-center w-100 h-100"
+            style="position: relative; z-index: -999"
+          >
+            <div class="overlay" :style="stylehiddenoverlay"></div>
+            <div id="charthidden" :style="stylehidden"></div>
+          </div>
         </div>
       </BCard>
 
@@ -766,6 +771,6 @@ export default {
 }
 
 .panel {
-  height: 500px;
+  height: 520px;
 }
 </style>
