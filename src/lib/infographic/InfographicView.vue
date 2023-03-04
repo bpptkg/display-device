@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-wrap" style="margin-top: 60px">
     <BCol md="4" lg="3">
-      <BCard header="Settings" class="panel" body-class="px-3 py-0">
+      <BCard header="Settings" class="panel" body-class="py-0">
         <ScrollWrapper>
           <BRow class="pt-3">
             <BCol sm="4">
@@ -30,7 +30,7 @@
             <BCol>
               <BFormInput v-model="cwidth" type="number" size="sm" />
             </BCol>
-            <BCol sm="2" class="px-0"><small>px</small></BCol>
+            <BCol class="px-0"><small>px</small></BCol>
           </BRow>
 
           <BRow class="my-1">
@@ -40,7 +40,7 @@
             <BCol>
               <BFormInput v-model="cheight" type="number" size="sm" />
             </BCol>
-            <BCol sm="2" class="px-0"><small>px</small></BCol>
+            <BCol class="px-0"><small>px</small></BCol>
           </BRow>
 
           <BRow class="my-1">
