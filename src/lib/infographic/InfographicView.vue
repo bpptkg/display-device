@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-wrap" style="margin-top: 60px">
-    <BCol sm="3">
+    <BCol md="4" lg="3">
       <BCard header="Settings" class="panel" body-class="px-3 py-0">
         <ScrollWrapper>
           <BRow class="pt-3">
@@ -191,7 +191,7 @@
     </BCol>
 
     <BCol>
-      <BCard class="panel" no-body>
+      <BCard class="panel panel--mobile" no-body>
         <template #header>
           <div class="d-flex justify-content-between align-items-center">
             <h6>Chart</h6>
@@ -218,10 +218,7 @@
           <div class="canvas">
             <div v-show="!error" id="chart" :style="style"></div>
           </div>
-          <div
-            class="d-flex justify-content-center align-items-center w-100 h-100"
-            style="position: relative; z-index: -999"
-          >
+          <div class="canvas" style="z-index: -999">
             <div class="overlay" :style="stylehiddenoverlay"></div>
             <div id="charthidden" :style="stylehidden"></div>
           </div>
@@ -771,5 +768,11 @@ export default {
 
 .panel {
   height: 520px;
+
+  &--mobile {
+    @media (max-width: 767.98px) {
+      margin-top: 15px;
+    }
+  }
 }
 </style>
