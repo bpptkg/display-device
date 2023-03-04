@@ -13,6 +13,8 @@ import {
   SET_END_TIME,
 } from '../../store/base/mutations'
 import { baseMutations } from '../../store/base'
+import { cache, createEdmCacheKey, createSeismcitityCacheKey } from './cache'
+import { toPlain } from './util'
 
 export const EVENTS = [
   { value: 'VTA', text: 'Vulkanik Dalam', label: 'VTA' },
@@ -92,6 +94,7 @@ export const initialState = {
     { value: 'purple-passion', text: 'Purple Passion' },
     { value: 'roma', text: 'Roma' },
     { value: 'shine', text: 'Shine' },
+    { value: 'tab20', text: 'Tab20' },
     { value: 'vintage', text: 'Vintage' },
     { value: 'walden', text: 'Walden' },
     { value: 'westeros', text: 'Wasteros' },
@@ -125,7 +128,7 @@ export const getters = {
   seismicityData(state) {
     const data = state.data
     if (Array.isArray(data) && data.length > 1) {
-      return data.slice(1, data.length - 1)
+      return data.slice(1, data.length)
     }
     return []
   },
@@ -202,61 +205,108 @@ export const actions = {
     }
 
     const requests = []
+    let seismicityCacheKey = ''
+    let edmCacheKey = ''
 
-    requests.push(
-      client.get('/edm/', {
-        params: {
-          start_at: state.startTime.format(DATETIME_FORMAT),
-          end_at: state.endTime.format(DATETIME_FORMAT),
-          ci: true,
-          benchmark: state.benchmark,
-          reflector: state.reflector,
-          ordering: 'timestamp',
-          compact: true,
-          rate: true,
-        },
-      })
+    edmCacheKey = createEdmCacheKey(
+      state.benchmark,
+      state.reflector,
+      state.startTime,
+      state.endTime
     )
-
-    state.selectedEvents.forEach((event) => {
+    if (cache.has(edmCacheKey)) {
+      requests.push(Promise.resolve(cache.get(edmCacheKey)))
+    } else {
       requests.push(
-        client.get('/seismicity/', {
+        client.get('/edm/', {
           params: {
-            count_per: state.sampling,
-            end: state.endTime.format(DATETIME_FORMAT),
-            eventdate__gte: state.startTime.format(DATETIME_FORMAT),
-            eventdate__lt: state.endTime.format(DATETIME_FORMAT),
-            eventtype: event,
-            nolimit: true,
-            reindex: true,
-            start: state.startTime.format(DATETIME_FORMAT),
+            start_at: state.startTime.format(DATETIME_FORMAT),
+            end_at: state.endTime.format(DATETIME_FORMAT),
+            ci: true,
+            benchmark: state.benchmark,
+            reflector: state.reflector,
+            ordering: 'timestamp',
+            compact: true,
+            rate: true,
           },
         })
       )
+    }
+
+    state.selectedEvents.forEach((code) => {
+      seismicityCacheKey = createSeismcitityCacheKey(
+        code,
+        state.startTime,
+        state.endTime
+      )
+      if (cache.has(seismicityCacheKey)) {
+        requests.push(Promise.resolve(cache.get(seismicityCacheKey)))
+      } else {
+        requests.push(
+          client.get('/seismicity/', {
+            params: {
+              count_per: state.sampling,
+              end: state.endTime.format(DATETIME_FORMAT),
+              eventdate__gte: state.startTime.format(DATETIME_FORMAT),
+              eventdate__lt: state.endTime.format(DATETIME_FORMAT),
+              eventtype: code,
+              nolimit: true,
+              reindex: true,
+              start: state.startTime.format(DATETIME_FORMAT),
+            },
+          })
+        )
+      }
     })
 
     const data = await Promise.all(requests)
       .then((responses) => {
-        return responses.map((response) => response.data)
+        return responses.map((response) => {
+          if (response.config != null) {
+            return response.data
+          } else {
+            return response
+          }
+        })
       })
       .catch((error) => {
         commit(SET_ERROR, error)
         return []
       })
 
+    if (Array.isArray(data) && data.length) {
+      const edmData = toPlain(data[0])
+      cache.set(edmCacheKey, edmData)
+
+      const seismicityData = data.slice(1, data.length)
+      state.selectedEvents.forEach((code, index) => {
+        seismicityCacheKey = createSeismcitityCacheKey(
+          code,
+          state.startTime,
+          state.endTime
+        )
+        cache.set(seismicityCacheKey, toPlain(seismicityData[index]))
+      })
+    }
+
     commit(SET_DATA, data)
     commit(SET_LAST_UPDATED, moment())
     state.isFetching = false
   },
 
-  async [UPDATE_DATA]({ dispatch, commit, state }, { dirty = true } = {}) {
+  async [UPDATE_DATA](
+    { dispatch, commit, state },
+    { dirty = true, updatePeriod = false } = {}
+  ) {
     if (dirty) {
       if (state.period.type === DateRangeTypes.CUSTOM) {
         return dispatch(FETCH_DATA)
       } else {
-        const { startTime, endTime } = calculatePeriod(state.period)
-        commit(SET_START_TIME, startTime)
-        commit(SET_END_TIME, endTime)
+        if (updatePeriod) {
+          const { startTime, endTime } = calculatePeriod(state.period)
+          commit(SET_START_TIME, startTime)
+          commit(SET_END_TIME, endTime)
+        }
         return dispatch(FETCH_DATA)
       }
     }

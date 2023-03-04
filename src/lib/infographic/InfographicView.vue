@@ -30,7 +30,7 @@
             <BCol>
               <BFormInput v-model="cwidth" type="number" size="sm" />
             </BCol>
-            <BCol sm="2"><small>px</small></BCol>
+            <BCol sm="2" class="px-0"><small>px</small></BCol>
           </BRow>
 
           <BRow class="my-1">
@@ -40,7 +40,7 @@
             <BCol>
               <BFormInput v-model="cheight" type="number" size="sm" />
             </BCol>
-            <BCol sm="2"><small>px</small></BCol>
+            <BCol sm="2" class="px-0"><small>px</small></BCol>
           </BRow>
 
           <BRow class="my-1">
@@ -297,6 +297,7 @@ import './theme/macarons'
 import './theme/purple-passion'
 import './theme/roma'
 import './theme/shine'
+import './theme/tab20'
 import './theme/vintage'
 import './theme/walden'
 import './theme/westeros'
@@ -390,8 +391,6 @@ export default {
         this.setReflector(EDMBenchmarkReflectorRelation[value][0])
         this.setBenchmark(value)
         this.isBenchmarkUpdating = false
-
-        this.update()
       },
     },
 
@@ -693,7 +692,7 @@ export default {
         this.update()
       } else {
         this.setPeriod(period)
-        this.update()
+        this.update({ updatePeriod: true })
       }
     },
 
