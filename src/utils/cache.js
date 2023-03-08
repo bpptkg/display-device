@@ -15,6 +15,10 @@ export default class Cache {
     return Object.prototype.hasOwnProperty.call(this.internalStorage, key)
   }
 
+  has(key) {
+    return Object.prototype.hasOwnProperty.call(this.internalStorage, key)
+  }
+
   remove(key) {
     delete this.internalStorage[key]
   }

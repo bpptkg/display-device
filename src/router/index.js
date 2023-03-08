@@ -294,6 +294,10 @@ const routes = [
     ],
   },
   {
+    path: '/infographic',
+    component: () => import('@/lib/infographic/InfographicView'),
+  },
+  {
     path: '*',
     redirect: '/',
   },

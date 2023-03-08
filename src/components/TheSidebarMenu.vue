@@ -16,6 +16,7 @@ import {
   GasIcon,
   GpsIcon,
   HomeIcon,
+  InfographicIcon,
   LavaDomeIcon,
   MagneticIcon,
   ObservationIcon,
@@ -199,6 +200,11 @@ export default {
           title: 'Thermal',
           icon: ThermalIcon,
           href: '/thermal',
+        },
+        {
+          title: 'Infographic',
+          icon: InfographicIcon,
+          href: '/infographic',
         },
         {
           divider: true,
