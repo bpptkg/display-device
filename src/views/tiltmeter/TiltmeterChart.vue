@@ -398,7 +398,7 @@ export default {
     registerAutoUpdate() {
       this.interval = setInterval(() => {
         this.update()
-      }, 1000 * 15)
+      }, 1000 * 30)
     },
     clearAutoUpdate() {
       if (this.interval) {
