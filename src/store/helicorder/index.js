@@ -1,4 +1,4 @@
-import moment from 'moment'
+import moment from 'moment-timezone'
 import client from '@/utils/client'
 import { DateRangeTypes } from '@/constants/date'
 import { calculatePeriod } from '@/utils/datetime'
@@ -163,6 +163,11 @@ export const calculateStartTime = (period) => {
 
 export const WINSTON_DATETIME_FORMAT = 'YYYYMMDDHHmm'
 
+export const toUTC = (date) => {
+  const dt = moment(date.clone()).tz('Asia/Jakarta')
+  return moment(dt).tz('UTC')
+}
+
 export const actions = {
   async [UPDATE_IMAGE]({ commit, state }) {
     if (state.error) {
@@ -173,10 +178,10 @@ export const actions = {
     if (isAbsolutePeriod(state.period)) {
       // Set t1 & t2 parameters if period is custom or absolute.
       periodParams['t1'] = state.startTime
-        ? state.startTime.format(WINSTON_DATETIME_FORMAT)
+        ? toUTC(state.startTime).format(WINSTON_DATETIME_FORMAT)
         : ''
       periodParams['t2'] = state.endTime
-        ? state.endTime.format(WINSTON_DATETIME_FORMAT)
+        ? toUTC(state.endTime).format(WINSTON_DATETIME_FORMAT)
         : ''
     } else {
       // For relative period, we only have to set t1 parameter and leave t2
