@@ -29,11 +29,21 @@
           />
         </div>
         <div class="d-flex align-items-center">
-          <span class="sampling-label mr-1">Sampling:</span>
           <BFormSelect
-            v-model="sampling"
+            class="mr-1"
+            v-if="isTiltmeterPlatform"
+            v-b-tooltip.hover
+            v-model="filterDataType"
+            size="sm"
+            :options="filterDataTypes"
+            title="Data Type"
+          />
+          <BFormSelect
+            v-b-tooltip.hover
+            v-model="samplingType"
             size="sm"
             :options="samplingOptions"
+            title="Sampling"
           />
           <MoreMenu right class="ml-2">
             <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
@@ -57,6 +67,10 @@
         >
       </div>
     </BCard>
+    <div>
+      <BFormCheckbox v-model="useAutoUpdate">Auto Update</BFormCheckbox>
+    </div>
+    <DNote> Last updated <TimeAgo :date="lastUpdated"></TimeAgo>. </DNote>
   </div>
 </template>
 
@@ -70,6 +84,8 @@ import {
   BFormSelect,
   BLink,
   VBHover,
+  VBTooltip,
+  BFormCheckbox,
 } from 'bootstrap-vue'
 
 import { DATE_FORMAT } from '@/constants/date'
@@ -103,11 +119,20 @@ import {
   SET_ANNOTATION_OPTIONS,
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
-import { SET_SAMPLING, SET_MID_MODE } from '@/store/tiltmeter/mutations'
+import {
+  SET_SAMPLING,
+  SET_MID_MODE,
+  SET_FILTER_DATA_TYPE,
+  SET_AUTO_UPDATE,
+} from '@/store/tiltmeter/mutations'
 import { UPDATE_TILTMETER } from '@/store/tiltmeter/actions'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import MoreMenu from '@/components/more-menu'
 import { saveAs } from '@/lib/file-saver'
+import { DataTypes } from '../../constants/tiltmeter'
+import { FilterDataType } from '../../store/tiltmeter'
+import DNote from '@/components/base/note/DNote'
+import TimeAgo from '@/components/time-ago'
 
 export default {
   name: 'TiltmeterChart',
@@ -121,9 +146,13 @@ export default {
     EventAnnotation,
     MoreMenu,
     RangeSelector,
+    DNote,
+    TimeAgo,
+    BFormCheckbox,
   },
   directives: {
     'b-hover': VBHover,
+    'b-tooltip': VBTooltip,
   },
   mixins: [chartMixin],
   props: {
@@ -138,15 +167,27 @@ export default {
   },
   data() {
     return {
-      sampling: SamplingTypes.DAY,
+      interval: null,
       samplingOptions: [
         { value: SamplingTypes.DAY, text: 'Daily' },
         { value: SamplingTypes.MINUTE, text: 'Minutely' },
       ],
+      filterDataTypes: [
+        { value: FilterDataType.FILTERED, text: 'Filtered' },
+        { value: FilterDataType.RAW, text: 'Raw' },
+      ],
+    }
+  },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
     }
   },
   computed: {
     ...mapState({
+      lastUpdated(state) {
+        return state.tiltmeter[this.type][this.station].lastUpdated
+      },
       data(state) {
         return state.tiltmeter[this.type][this.station].data
       },
@@ -171,6 +212,15 @@ export default {
       mid(state) {
         return state.tiltmeter[this.type][this.station].mid
       },
+      dataType(state) {
+        return state.tiltmeter[this.type][this.station].dataType
+      },
+      autoUpdate(state) {
+        return state.tiltmeter[this.type][this.station].autoUpdate
+      },
+      sampling(state) {
+        return state.tiltmeter[this.type][this.station].sampling
+      },
     }),
     namespace() {
       return `tiltmeter/${this.type}/${this.station}`
@@ -188,12 +238,39 @@ export default {
     isTiltmeterBorehole() {
       return this.type === 'borehole'
     },
+    isTiltmeterPlatform() {
+      return this.type === DataTypes.PLATFORM
+    },
     midMode: {
       get: function () {
         return this.mid
       },
       set: function (value) {
         return this.setMidMode(value)
+      },
+    },
+    filterDataType: {
+      get: function () {
+        return this.dataType
+      },
+      set: function (value) {
+        return this.setFilterDataType(value)
+      },
+    },
+    useAutoUpdate: {
+      get: function () {
+        return this.autoUpdate
+      },
+      set: function (value) {
+        return this.setAutoUpdate(value)
+      },
+    },
+    samplingType: {
+      get: function () {
+        return this.sampling
+      },
+      set: function (value) {
+        this.setSampling(value)
       },
     },
     chartTitle() {
@@ -245,9 +322,8 @@ export default {
     },
   },
   watch: {
-    sampling(value) {
+    sampling(_value) {
       const period = this.rangeSelector[0]
-      this.setSampling(value)
       this.setPeriod(period)
       this.$refs['range-selector'].setSelectedPeriod(period)
       this.update()
@@ -255,9 +331,23 @@ export default {
     mid(_value) {
       this.update()
     },
+    filterDataType(_value) {
+      this.update()
+    },
+    useAutoUpdate(value) {
+      if (value) {
+        this.registerAutoUpdate()
+      } else {
+        this.clearAutoUpdate()
+      }
+    },
   },
   mounted() {
     this.update()
+
+    if (this.useAutoUpdate) {
+      this.registerAutoUpdate()
+    }
   },
   methods: {
     ...mapMutations({
@@ -279,6 +369,12 @@ export default {
       setMidMode(commit, value) {
         return commit(this.namespace + '/' + SET_MID_MODE, value)
       },
+      setFilterDataType(commit, value) {
+        return commit(this.namespace + '/' + SET_FILTER_DATA_TYPE, value)
+      },
+      setAutoUpdate(commit, value) {
+        return commit(this.namespace + '/' + SET_AUTO_UPDATE, value)
+      },
     }),
     ...mapActions({
       fetchData(dispatch) {
@@ -298,6 +394,16 @@ export default {
           this.sampling
         }-${createShortNameFromPeriod(this.period)}.csv`
       )
+    },
+    registerAutoUpdate() {
+      this.interval = setInterval(() => {
+        this.update()
+      }, 1000 * 30)
+    },
+    clearAutoUpdate() {
+      if (this.interval) {
+        clearInterval(this.interval)
+      }
     },
   },
 }

@@ -175,7 +175,7 @@ export const tooltipFormatter = (sampling) => {
             `${
               sampling === SamplingTypes.DAY
                 ? moment(value[0]).format('YYYY-MM-DD')
-                : moment(value[0]).format('YYYY-MM-DD HH:mm:00')
+                : moment(value[0]).format('YYYY-MM-DD HH:mm:ss')
             }<br />`
           )
         }
@@ -197,7 +197,7 @@ export const tooltipFormatter = (sampling) => {
         return `${
           sampling === SamplingTypes.DAY
             ? moment(value[0]).format('YYYY-MM-DD')
-            : moment(value[0]).format('YYYY-MM-DD HH:mm:00')
+            : moment(value[0]).format('YYYY-MM-DD HH:mm:ss')
         }<br />
         ${createCircleTemplate(color)} 
         ${seriesName}: ${

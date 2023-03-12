@@ -20,21 +20,39 @@ import {
   SET_CANCEL_TOKEN,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
-import { SET_SAMPLING, SET_TYPE, SET_STATION, SET_MID_MODE } from './mutations'
+import {
+  SET_SAMPLING,
+  SET_TYPE,
+  SET_STATION,
+  SET_MID_MODE,
+  SET_FILTER_DATA_TYPE,
+  SET_AUTO_UPDATE,
+} from './mutations'
 import { FETCH_TILTMETER, UPDATE_TILTMETER } from './actions'
-import rangeSelector from './range-selector-day'
+import rangeSelectorDay from './range-selector-day'
+import rangeSelectorMinute from './range-selector-minute'
 
 // Submodules.
 import overview from './overview'
 
+export const FilterDataType = {
+  FILTERED: 'filtered',
+  RAW: 'raw',
+}
+
+const defaultSampling = SamplingTypes.MINUTE
+
 export const initialState = {
   ...baseState,
   annotationOptions: annotations,
-  sampling: SamplingTypes.DAY,
+  sampling: defaultSampling,
   station: '',
   type: '',
   // Use custom range hour daily aggregation for tiltmeter borehole.
   mid: true,
+  // Use raw data, for the need of most recent data.
+  dataType: FilterDataType.RAW,
+  autoUpdate: true,
 }
 
 export const initState = (type, station, period) => {
@@ -75,6 +93,12 @@ export const mutations = {
   [SET_MID_MODE](state, value) {
     state.mid = Boolean(value)
   },
+  [SET_FILTER_DATA_TYPE](state, value) {
+    state.dataType = value
+  },
+  [SET_AUTO_UPDATE](state, value) {
+    state.autoUpdate = value
+  },
 }
 
 export const actions = {
@@ -95,7 +119,13 @@ export const actions = {
 
     let url = ''
     let params = {}
-    switch (state.type) {
+
+    let type = state.type
+    if (type === DataTypes.PLATFORM && state.dataType === FilterDataType.RAW) {
+      type = DataTypes.PLATFORM_RAW
+    }
+
+    switch (type) {
       case DataTypes.PLATFORM:
         url = `/tiltmeter/${state.station}/`
         break
@@ -170,7 +200,10 @@ export const actions = {
   },
 }
 
-const defaultPeriod = rangeSelector[2]
+let defaultPeriod = rangeSelectorDay[2]
+if (defaultSampling === SamplingTypes.MINUTE) {
+  defaultPeriod = rangeSelectorMinute[0]
+}
 
 export const initModule = (type, station, period = defaultPeriod) => {
   return {

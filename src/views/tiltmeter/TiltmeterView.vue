@@ -86,9 +86,7 @@
           </BFormSelect>
         </BFormGroup>
       </div>
-      <keep-alive>
-        <router-view :key="$route.path"></router-view>
-      </keep-alive>
+      <router-view :key="$route.path"></router-view>
       <div class="bot-panel mt-3 mb-3">
         <BCard title="Statistics" title-tag="h6">
           <router-view name="stats"></router-view>
