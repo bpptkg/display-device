@@ -2,7 +2,7 @@ import Axios from 'axios'
 import moment from 'moment'
 import client from '@/utils/client'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
-import { calculatePeriod } from '@/utils/datetime'
+import { calculatePeriod as calcPeriod } from '@/utils/datetime'
 
 import { UPDATE_DATA, FETCH_DATA } from '../../store/base/actions'
 import {
@@ -33,6 +33,16 @@ export const EVENTS_MAP = EVENTS.reduce(
   (o, i) => ({ ...o, [i.value]: { text: i.text } }),
   {}
 )
+
+/**
+ * Intercept period calculation to remove time from moment object.
+ */
+export const calculatePeriod = (period) => {
+  const { startTime, endTime } = calcPeriod(period)
+  startTime.startOf('day')
+  endTime.startOf('day')
+  return { startTime, endTime }
+}
 
 export const initialState = {
   isFetching: false,
