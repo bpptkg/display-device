@@ -12,8 +12,8 @@
     <BCard v-show="!error">
       <template #header>
         <div class="d-flex justify-content-between">
-          <h6>GPS Baseline Pasarbubar</h6>
-          <router-link to="/gps/baseline/pasarbubar">
+          <h6>GPS Baseline Labuhan</h6>
+          <router-link to="/gps/baseline/labuhan">
             <small>See more</small>
           </router-link>
         </div>
