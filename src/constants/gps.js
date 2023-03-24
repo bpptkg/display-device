@@ -11,6 +11,7 @@ export const GPSStations = Object.freeze({
   pasarbubar: 'pasarbubar',
   plawangan: 'plawangan',
   selo: 'selo',
+  puncak: 'puncak',
 })
 
 export const gpsStations = Object.values(GPSStations)
@@ -28,6 +29,7 @@ export const gpsStationCodes = {
   pasarbubar: 'PASB',
   plawangan: 'PLAW',
   selo: 'SELO',
+  puncak: 'PNCK',
 }
 
 export const gpsLabels = {
@@ -43,6 +45,7 @@ export const gpsLabels = {
   pasarbubar: 'Pasarbubar',
   plawangan: 'Plawangan',
   selo: 'Selo',
+  puncak: 'Puncak',
 }
 
 export const FIELDS = Object.freeze({

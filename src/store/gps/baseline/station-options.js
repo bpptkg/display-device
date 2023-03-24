@@ -71,4 +71,10 @@ export default [
     code: 'SELO',
     chartTitle: 'GPS Baseline Selo',
   },
+  {
+    value: 'puncak',
+    text: 'Puncak',
+    code: 'PCK',
+    chartTitle: 'GPS Baseline Puncak',
+  },
 ]
