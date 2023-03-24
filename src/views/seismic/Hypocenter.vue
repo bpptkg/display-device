@@ -73,7 +73,6 @@
           content-title="RMS"
           title="RMS Filter"
           size="sm"
-          :disabled="!settings.useBtbbHypo"
           @change="handleRMSFilter"
         />
 

@@ -138,4 +138,25 @@ export default {
       return moment(v).format(DATETIME_FORMAT)
     },
   },
+  seiscomp: {
+    label: 'Standard Error',
+    formatter: (v) => {
+      return v ? v.EventParameters.origin.quality.standardError : '-'
+    },
+  },
+  btbbLon: {
+    label: 'Btbb Longitude (\u00B0)',
+    useField: 'btbb',
+    formatter: (v) => (v ? v.lon : '-'),
+  },
+  btbbLat: {
+    label: 'Btbb Latitude (\u00B0)',
+    useField: 'btbb',
+    formatter: (v) => (v ? v.lat : '-'),
+  },
+  btbbDepth: {
+    label: 'Btbb Depth (km)',
+    useField: 'btbb',
+    formatter: (v) => (v ? v.z : '-'),
+  },
 }

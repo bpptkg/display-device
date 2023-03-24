@@ -176,6 +176,7 @@ export const actions = {
       'cluster',
       'corr_coef',
       'btbb',
+      'seiscomp',
     ]
 
     const params = {

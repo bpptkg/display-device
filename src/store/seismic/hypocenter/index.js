@@ -77,21 +77,66 @@ export const state = () => {
   return { ...initialState }
 }
 
+export const filterRms = (events, rmsFilter) => {
+  if (Array.isArray(rmsFilter)) {
+    if (rmsFilter.length !== 2) {
+      return events
+    } else {
+      return isFinite(rmsFilter[0]) && isFinite(rmsFilter[1])
+        ? events.filter((e) => {
+            return e.rmsp >= rmsFilter[0] && e.rmsp <= rmsFilter[1]
+          })
+        : events
+    }
+  } else {
+    return events
+  }
+}
+
 export const getters = {
   /**
    * Filter events whose longitude, latitude, depth, and magnitude only. We also
    * filter magnitude because the hypocenter chart categorizes magnitude values.
    */
-  plottableEvents({ data }) {
-    return data.filter((event) => {
-      return event.longitude && event.latitude && event.depth && event.magnitude
-    })
-  },
-  locatableEvents({ data }) {
-    return data
+  plottableEvents({ data, rmsFilter }) {
+    const events = data
+      .map((event) => {
+        return {
+          ...event,
+          rmsp: event.seiscomp
+            ? event.seiscomp.EventParameters.origin.quality.standardError
+            : null,
+        }
+      })
       .filter((event) => {
         return (
-          event.longitude && event.latitude && event.depth && event.magnitude
+          event.longitude &&
+          event.latitude &&
+          event.depth &&
+          event.magnitude &&
+          event.rsmp
+        )
+      })
+
+    return filterRms(events, rmsFilter)
+  },
+  locatableEvents({ data, rmsFilter }) {
+    const events = data
+      .map((event) => {
+        return {
+          ...event,
+          rmsp: event.seiscomp
+            ? event.seiscomp.EventParameters.origin.quality.standardError
+            : null,
+        }
+      })
+      .filter((event) => {
+        return (
+          event.longitude &&
+          event.latitude &&
+          event.depth &&
+          event.magnitude &&
+          event.rmsp
         )
       })
       .filter((event) => {
@@ -100,6 +145,8 @@ export const getters = {
           !event.location_type
         )
       })
+
+    return filterRms(events, rmsFilter)
   },
   /**
    * BackTrackBB events with RMS filter applied (if any).
@@ -128,19 +175,7 @@ export const getters = {
         }
       })
 
-    if (Array.isArray(rmsFilter)) {
-      if (rmsFilter.length !== 2) {
-        return events
-      } else {
-        return isFinite(rmsFilter[0]) && isFinite(rmsFilter[1])
-          ? events.filter((e) => {
-              return e.rmsp >= rmsFilter[0] && e.rmsp <= rmsFilter[1]
-            })
-          : events
-      }
-    } else {
-      return events
-    }
+    return filterRms(events, rmsFilter)
   },
   /**
    * BackTrackBB events without RMS filter.
@@ -168,10 +203,19 @@ export const getters = {
 
     return events
   },
-  rmsRange({ data }) {
-    const rmsp = data
-      .filter((event) => event.btbb && event.btbb.rmsp)
-      .map((event) => event.btbb.rmsp)
+  rmsRange({ data, settings }) {
+    let rmsp
+    if (settings.useBtbbHypo) {
+      rmsp = data
+        .filter((event) => event.btbb && event.btbb.rmsp)
+        .map((event) => event.btbb.rmsp)
+    } else {
+      rmsp = data
+        .filter((event) => event.seiscomp)
+        .map(
+          (event) => event.seiscomp.EventParameters.origin.quality.standardError
+        )
+    }
     return [min(rmsp), max(rmsp)]
   },
 }

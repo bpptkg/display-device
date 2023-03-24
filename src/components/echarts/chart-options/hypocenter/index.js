@@ -79,6 +79,7 @@ export const createSeries = (
           v.location_mode, // 10
           v.seiscompid, // 11
           v.btbb, // 12
+          v.rmsp, // 13
 
           // ECharts strangely show last item label in the tooltip. So, we keep
           // eventtype always in the last order.
@@ -333,13 +334,9 @@ export const baseChartOptions = ({
       Event type: ${value[6]}<br />
       Magnitude: ${Number.isFinite(value[4]) ? value[4].toFixed(2) : '-'}<br />
       ${createDividerTemplate()}
-      East: ${(value[0] / 1000).toFixed(1)} km / ${value[8].toFixed(
-          3
-        )}\u00B0<br />
-      North: ${(value[1] / 1000).toFixed(1)} km / ${value[9].toFixed(
-          3
-        )}\u00B0<br />
-      Elevation: ${(value[2] / 1000).toFixed(1)} km<br />
+      East: ${value[0].toFixed(1)} m / ${value[8].toFixed(3)}\u00B0<br />
+      North: ${value[1].toFixed(1)} m / ${value[9].toFixed(3)}\u00B0<br />
+      Elevation: ${value[2].toFixed(1)} m<br />
       `
 
         if (useBtbbHypo) {
@@ -363,9 +360,10 @@ export const baseChartOptions = ({
         } else {
           const locInfo = `
       ${createDividerTemplate()}
-      Location mode: ${value[10]}<br />
-      Location type: ${value[7]}<br />
+      Location mode: ${value[10] ? value[10] : '-'}<br />
+      Location type: ${value[7] ? value[7] : '-'}<br />
       SeisComP ID: ${value[11]}<br />
+      RMS: ${value[13] ? value[13] : '-'}<br />
           `
           template += locInfo
         }
