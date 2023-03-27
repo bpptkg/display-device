@@ -142,9 +142,7 @@
           </BFormCheckbox>
         </BFormGroup>
 
-        <BFormGroup
-          description="If checked, event with location type 'other event' and 'not locatable' will be excluded."
-        >
+        <BFormGroup :description="locatableDescription">
           <BFormCheckbox
             v-model="currentSettings.onlyLocatable"
             name="Plot only locatable events"
@@ -222,6 +220,11 @@ export default {
         { text: 'Light', value: THEMES.light },
         { text: 'Dark', value: THEMES.dark },
       ],
+      locatableDescription: `
+      If checked, event with location mode 'automatic' and location type 
+      'other event' and 'not locatable' will be excluded 
+      (only work for manual mode).
+      `,
     }
   },
   computed: {

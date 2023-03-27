@@ -35,6 +35,7 @@ export const NAMESPACE = 'seismic/hypocenter'
 
 // Events with the following types are not locatable.
 const excludeLocationTypes = ['other event', 'not locatable']
+const excludeLocationMode = ['automatic']
 
 const topoCacheKey = 'display-device:hypocenter/topo/v1'
 
@@ -141,8 +142,10 @@ export const getters = {
       })
       .filter((event) => {
         return (
-          !excludeLocationTypes.includes(event.location_type) ||
-          !event.location_type
+          (!excludeLocationTypes.includes(event.location_type) ||
+            !event.location_type) &&
+          (!excludeLocationMode.includes(event.location_mode) ||
+            !event.location_mode)
         )
       })
 
