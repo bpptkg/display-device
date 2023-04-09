@@ -34,7 +34,7 @@ import rangeSelector from './range-selector'
 export const NAMESPACE = 'seismic/hypocenter'
 
 // Events with the following types are not locatable.
-const excludeLocationTypes = ['other event', 'not locatable']
+const excludeLocationTypes = ['other event', 'not locatable', 'not existing']
 const excludeLocationMode = ['automatic']
 
 const topoCacheKey = 'display-device:hypocenter/topo/v1'
@@ -120,6 +120,13 @@ export const getters = {
       })
 
     return filterRms(events, rmsFilter)
+  },
+  plottableEventsUnfiltered({ data }) {
+    const events = data.filter((event) => {
+      return event.longitude && event.latitude && event.depth && event.magnitude
+    })
+
+    return events
   },
   locatableEvents({ data, rmsFilter }) {
     const events = data

@@ -229,6 +229,7 @@ export default {
     }),
     ...mapGetters(NAMESPACE, [
       'plottableEvents',
+      'plottableEventsUnfiltered',
       'locatableEvents',
       'btbbEvents',
       'btbbEventsUnfiltered',
@@ -245,7 +246,7 @@ export default {
       return {
         plottableEvents: this.settings.useBtbbHypo
           ? this.btbbEventsUnfiltered
-          : this.plottableEvents,
+          : this.plottableEventsUnfiltered,
         currentlyPlotted: this.eventData,
         startTime: this.startTime,
         endTime: this.endTime,
