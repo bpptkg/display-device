@@ -202,6 +202,14 @@ const puncak = {
   actions,
 }
 
+const p1 = {
+  namespaced: true,
+  state: initState('p1', defaultPeriod),
+  getters,
+  mutations,
+  actions,
+}
+
 export default {
   namespaced: true,
   modules: {
@@ -219,5 +227,6 @@ export default {
     plawangan,
     selo,
     puncak,
+    p1,
   },
 }

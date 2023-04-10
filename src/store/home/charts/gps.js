@@ -8,7 +8,7 @@ const period = {
 
 export default {
   namespaced: true,
-  state: initState('labuhan', period),
+  state: initState('p1', period),
   getters,
   mutations,
   actions,
