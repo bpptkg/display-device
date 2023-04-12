@@ -57,7 +57,7 @@ const routes = [
   {
     path: '/gps/baseline',
     component: () => import('../views/gps/baseline/GPSBaselineView'),
-    redirect: '/gps/baseline/babadan',
+    redirect: '/gps/baseline/p1',
     children: [
       {
         path: '/gps/baseline/:station',

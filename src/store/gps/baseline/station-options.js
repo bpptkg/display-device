@@ -1,5 +1,11 @@
 export default [
   {
+    value: 'p1',
+    text: '2km Depth',
+    code: 'P1',
+    chartTitle: 'GPS Baseline 2km Depth',
+  },
+  {
     value: 'babadan',
     text: 'Babadan',
     code: 'BABA',
@@ -70,11 +76,5 @@ export default [
     text: 'Selo',
     code: 'SELO',
     chartTitle: 'GPS Baseline Selo',
-  },
-  {
-    value: 'p1',
-    text: '2km Depth',
-    code: 'P1',
-    chartTitle: 'GPS Baseline 2km Depth',
   },
 ]
