@@ -440,4 +440,9 @@ export default [
     name: 'Home',
     path: '/',
   },
+  // Modeling.
+  {
+    name: 'Modeling',
+    path: '/modeling',
+  },
 ]

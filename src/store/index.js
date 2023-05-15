@@ -26,6 +26,7 @@ import version from './version'
 import search from './search'
 
 import infographic from '@/lib/infographic/store'
+import modeling from '@/lib/modeling/store'
 
 Vue.use(Vuex)
 
@@ -39,6 +40,7 @@ export default new Vuex.Store({
     infographic,
     lavaDome,
     magnetic,
+    modeling,
     observation,
     rainfallStation,
     pageLoader,

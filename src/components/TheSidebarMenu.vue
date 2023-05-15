@@ -207,6 +207,11 @@ export default {
           href: '/infographic',
         },
         {
+          title: 'Modeling',
+          icon: InfographicIcon,
+          href: '/modeling',
+        },
+        {
           divider: true,
         },
         {
