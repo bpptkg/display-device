@@ -704,7 +704,7 @@ export default {
       this.iterationDisplacements = disp.map((v) => {
         return {
           station: v.station,
-          radius: v.radius,
+          radius: item.radius,
           ux: v.displacement.ux,
           uz: v.displacement.uz,
           res: v.displacement.res,
