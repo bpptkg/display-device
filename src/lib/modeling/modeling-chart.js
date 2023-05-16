@@ -17,10 +17,10 @@ export const SeriesName = Object.freeze({
   VOLUME: 'Volume',
 })
 
-const Y_MAX = 2824.7447935109003
-const Y_MIN = 950.1204896404302
-const DX = 13081.475451946999
-const DY = 2824.7447935109003 - 950.1204896404302
+export const Y_MAX = 2824.7447935109003
+export const Y_MIN = 950.1204896404302
+export const DX = 13081.475451946999
+export const DY = 2824.7447935109003 - 950.1204896404302
 
 export const createCircleData = (radius, depth) => {
   // Calculate the number of points to form the circle
@@ -87,22 +87,37 @@ export const createXAxis = () => {
   return options
 }
 
-export const createGridSpec = ({ depth, isMobile }) => {
-  const width = isMobile ? 250 : 800
+export const createGridSpec = ({ depth, sizing }) => {
+  let width = 250
+  switch (sizing) {
+    case 'sm':
+      width = 250
+      break
+    case 'md':
+      width = 600
+      break
+    case 'lg':
+      width = 800
+      break
+  }
   const margin = 30
   const elev = Y_MAX - depth
   const ymin = elev < 0 ? elev : 0
   const ratio = (Y_MAX - ymin) / DX
 
+  const finalWidth = width + 2 * margin
+  const finalHeight = ratio * width + 2 * margin
+
+  const centeringOffet = 450 - finalHeight
+
   return [
     {
       containLabel: true,
-      width: width + 2 * margin,
-      height: ratio * width + 2 * margin,
+      width: finalWidth,
+      height: finalHeight,
       left: margin,
       right: margin,
-      top: margin,
-      bottom: margin,
+      top: centeringOffet / 2,
     },
   ]
 }
@@ -114,7 +129,22 @@ export const mediaQuery = ({ depth }) => {
         maxWidth: 575.98,
       },
       option: {
-        grid: createGridSpec({ depth, isMobile: true }),
+        grid: createGridSpec({ depth, sizing: 'sm' }),
+        title: {
+          top: 25,
+          textStyle: {
+            fontSize: 13,
+          },
+        },
+      },
+    },
+    {
+      query: {
+        minWidth: 576,
+        maxWidth: 767.98,
+      },
+      option: {
+        grid: createGridSpec({ depth, sizing: 'md' }),
         title: {
           top: 25,
           textStyle: {
@@ -145,53 +175,9 @@ export const createYAxis = () => {
 export const baseChartOptions = ({ depth }) => {
   return {
     backgroundColor: '#fff',
-    grid: createGridSpec({ depth, isMobile: false }),
+    grid: createGridSpec({ depth, sizing: 'lg' }),
     toolbox: defaultToolbox,
     yAxis: createYAxis(),
-  }
-}
-export const tooltipFormatter = (sampling) => {
-  return (params) => {
-    if (Array.isArray(params) && params.length) {
-      const template = []
-
-      params.forEach((param, index) => {
-        const { seriesName, value, color } = param
-        if (index === 0) {
-          template.push(
-            `${
-              sampling === SamplingTypes.DAY
-                ? moment(value[0]).format('YYYY-MM-DD')
-                : moment(value[0]).format('YYYY-MM-DD HH:mm:ss')
-            }<br />`
-          )
-        }
-        template.push(`
-        ${createCircleTemplate(color)}
-        ${seriesName}: ${
-          isFinite(value[1]) ? value[1].toFixed(2) : NO_DATA_NOTATION
-        }<br />
-        `)
-      })
-      return template.join('')
-    } else {
-      const { seriesName, value, color, name, componentType } = params
-      if (componentType === 'markLine') {
-        return `${moment(value[0]).format('YYYY-MM-DD HH:mm:ss')}<br />
-        ${createCircleTemplate(color)}
-        ${name}`
-      } else {
-        return `${
-          sampling === SamplingTypes.DAY
-            ? moment(value[0]).format('YYYY-MM-DD')
-            : moment(value[0]).format('YYYY-MM-DD HH:mm:ss')
-        }<br />
-        ${createCircleTemplate(color)} 
-        ${seriesName}: ${
-          isFinite(value[1]) ? value[1].toFixed(2) : NO_DATA_NOTATION
-        }<br />`
-      }
-    }
   }
 }
 

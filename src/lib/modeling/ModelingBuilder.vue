@@ -172,7 +172,7 @@
       </BCard>
     </BCol>
 
-    <BCol md="6" lg="8">
+    <BCol md="6" lg="8" class="mb-4">
       <div>
         <BButton @click="runLinregress" variant="outline-primary"
           ><BSpinner
@@ -241,6 +241,12 @@
                 :options="modelingChartOptions"
                 class="chart"
               />
+              <DNote>
+                <div>
+                  &mdash; Topography data is obtained from Merapi DEM model 2010
+                  West-East profile cross section across the summit.
+                </div>
+              </DNote>
             </div>
           </div>
         </BTab>
