@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex flex-wrap">
     <BCol md="6" lg="4">
       <BCard :header="headerName">
         <BRow class="pt-3">
@@ -67,7 +67,14 @@
         <BRow>
           <BCol>
             <label><small>Stations:</small></label>
-            <BFormGroup>
+            <ErrorMessage v-if="stationError">
+              <p>Unable to load stations.</p>
+              <p>Error: {{ stationError.message }}</p>
+              <p>
+                <BLink @click="fetchStations"> Try again </BLink>
+              </p>
+            </ErrorMessage>
+            <BFormGroup v-show="!stationError">
               <table>
                 <tr>
                   <th><small>Name</small></th>
@@ -139,7 +146,7 @@
         </BRow>
       </BCard>
 
-      <BCard header="Result" class="mt-2">
+      <BCard header="Result" class="mt-2 mb-2">
         <div>
           Radius:
           {{ modeling.eps && modeling.eps.radius ? modeling.eps.radius : '-' }}
@@ -189,31 +196,52 @@
       <BTabs class="mt-2">
         <BTab title="Chart">
           <div class="mt-2">
-            <BCol md="3" class="pl-0 mb-2">
-              <BFormSelect
-                v-model="cstation"
-                :options="stations"
-                @change="handleStationChange"
-              ></BFormSelect>
-            </BCol>
-            <DChart
-              ref="chart"
-              :options="chartOptions"
-              manual-update
-              class="chart"
-            />
-            <DNote>
-              <div>{{ cRegressionText.x }}</div>
-              <div>{{ cRegressionText.z }}</div>
-            </DNote>
+            <div class="d-flex align-items-center flex-wrap">
+              <BCol md="3" class="pl-0 mb-2">
+                <BFormSelect
+                  v-model="cstation"
+                  :options="stations"
+                  @change="handleStationChange"
+                ></BFormSelect>
+              </BCol>
+              <BLink @click="updateData"> Update data </BLink>
+            </div>
+            <ErrorMessage v-if="dataError">
+              <p>Unable to load data.</p>
+              <p>Error: {{ dataError.message }}</p>
+              <p>
+                <BLink @click="updateData"> Try again </BLink>
+              </p>
+            </ErrorMessage>
+            <div v-show="!dataError">
+              <DChart
+                ref="chart"
+                :options="chartOptions"
+                manual-update
+                class="chart"
+              />
+              <DNote>
+                <div>{{ cRegressionText.x }}</div>
+                <div>{{ cRegressionText.z }}</div>
+              </DNote>
+            </div>
 
             <hr />
 
-            <DChart
-              ref="modelingChart"
-              :options="modelingChartOptions"
-              class="chart"
-            />
+            <ErrorMessage v-if="modelingError">
+              <p>Unable to load data.</p>
+              <p>Error: {{ modelingError.message }}</p>
+              <p>
+                <BLink @click="fetchTopo"> Try again </BLink>
+              </p>
+            </ErrorMessage>
+            <div v-show="!modelingError">
+              <DChart
+                ref="modelingChart"
+                :options="modelingChartOptions"
+                class="chart"
+              />
+            </div>
           </div>
         </BTab>
         <BTab title="Data">
@@ -263,6 +291,7 @@ import DNote from '../../components/base/note/DNote'
 import { createTiltChart } from './tilt-chart'
 import { createModelingChart } from './modeling-chart'
 import { getSeriesByIndex } from '../../utils/series'
+import ErrorMessage from '@/components/error-message'
 
 import {
   // Mutations.
@@ -295,23 +324,24 @@ import {
 export default {
   name: 'ModelingBuilder',
   components: {
-    BRow,
-    BCol,
-    BCard,
-    BFormInput,
     BButton,
-    BFormSelect,
-    DChart,
-    BTab,
-    BTabs,
+    BCard,
+    BCol,
     BFormCheckbox,
     BFormGroup,
-    RangeSelector,
-    BSpinner,
-    DNote,
-    BModal,
+    BFormInput,
+    BFormSelect,
     BLink,
+    BModal,
+    BRow,
+    BSpinner,
+    BTab,
     BTable,
+    BTabs,
+    DChart,
+    DNote,
+    ErrorMessage,
+    RangeSelector,
   },
   props: {
     type: String,
@@ -425,6 +455,15 @@ export default {
       },
       modeling(state) {
         return state.modeling[this.type].modeling
+      },
+      stationError(state) {
+        return state.modeling[this.type].stationError
+      },
+      dataError(state) {
+        return state.modeling[this.type].dataError
+      },
+      modelingError(state) {
+        return state.modeling[this.type].modelingError
       },
     }),
     cSelectedStations: {

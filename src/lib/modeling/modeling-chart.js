@@ -87,23 +87,44 @@ export const createXAxis = () => {
   return options
 }
 
-export const mediaQuery = [
-  {
-    query: {
-      maxWidth: 575.98,
+export const createGridSpec = ({ depth, isMobile }) => {
+  const width = isMobile ? 250 : 800
+  const margin = 30
+  const elev = Y_MAX - depth
+  const ymin = elev < 0 ? elev : 0
+  const ratio = (Y_MAX - ymin) / DX
+
+  return [
+    {
+      containLabel: true,
+      width: width + 2 * margin,
+      height: ratio * width + 2 * margin,
+      left: margin,
+      right: margin,
+      top: margin,
+      bottom: margin,
     },
-    option: {
-      grid: createRowGrid(2, { top: 15, bottom: 15, left: 22, right: 22 }),
-      title: {
-        top: 25,
-        textStyle: {
-          fontSize: 13,
+  ]
+}
+
+export const mediaQuery = ({ depth }) => {
+  return [
+    {
+      query: {
+        maxWidth: 575.98,
+      },
+      option: {
+        grid: createGridSpec({ depth, isMobile: true }),
+        title: {
+          top: 25,
+          textStyle: {
+            fontSize: 13,
+          },
         },
       },
     },
-  },
-]
-
+  ]
+}
 export const createYAxis = () => {
   const options = [
     {
@@ -122,25 +143,9 @@ export const createYAxis = () => {
 }
 
 export const baseChartOptions = ({ depth }) => {
-  const width = 800
-  const margin = 30
-  const elev = Y_MAX - depth
-  const ymin = elev < 0 ? elev : 0
-  const ratio = (Y_MAX - ymin) / DX
-
   return {
     backgroundColor: '#fff',
-    grid: [
-      {
-        containLabel: true,
-        width: width + 2 * margin,
-        height: ratio * width + 2 * margin,
-        left: margin,
-        right: margin,
-        top: margin,
-        bottom: margin,
-      },
-    ],
+    grid: createGridSpec({ depth, isMobile: false }),
     toolbox: defaultToolbox,
     yAxis: createYAxis(),
   }
@@ -192,18 +197,12 @@ export const tooltipFormatter = (sampling) => {
 
 export const createModelingChart = ({ topo, radius, depth }) => {
   const options = {
-    ...baseChartOptions({ depth }),
-    series: createSeries(topo, radius, depth),
-    // tooltip: {
-    //   trigger: 'axis',
-    //   axisPointer: {
-    //     type: 'cross',
-    //     lineStyle: {
-    //       type: 'dashed',
-    //     },
-    //   },
-    // },
-    xAxis: createXAxis(),
+    baseOption: {
+      ...baseChartOptions({ depth }),
+      series: createSeries(topo, radius, depth),
+      xAxis: createXAxis(),
+    },
+    media: mediaQuery({ depth, isMobile: true }),
   }
   return options
 }

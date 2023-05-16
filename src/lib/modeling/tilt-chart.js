@@ -216,5 +216,8 @@ export const createTiltChart = ({ data, xreg, zreg, startTime, endTime }) => {
       toUnixMiliSeconds(endTime)
     ),
   }
-  return options
+  return {
+    baseOption: options,
+    media: mediaQuery,
+  }
 }

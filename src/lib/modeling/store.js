@@ -13,8 +13,8 @@ import {
  */
 export const calculatePeriod = (period) => {
   const { startTime, endTime } = calcPeriod(period)
-  startTime.startOf('day')
-  endTime.startOf('day')
+  // startTime.startOf('day')
+  // endTime.startOf('day')
   return { startTime, endTime }
 }
 
@@ -44,7 +44,18 @@ export const periodArray = [
     type: 'month',
     text: '3 months',
   },
+  {
+    count: 6,
+    type: 'month',
+    text: '6 months',
+  },
+  {
+    count: 1,
+    type: 'year',
+    text: '1 year',
+  },
 ]
+
 const defaultPeriod = periodArray[0]
 
 export const initialState = {
@@ -56,6 +67,9 @@ export const initialState = {
   endTime: null,
   data: [],
   error: null,
+  stationError: null,
+  dataError: null,
+  modelingError: null,
   dataType: 'tilt',
   depth: 2000,
   initialRadius: 25,
@@ -111,6 +125,9 @@ export const SET_DATA = 'setData'
 export const SET_STATION_TO_PLOT = 'setStationToPlot'
 export const SET_TOPO = 'setTopo'
 export const SET_MODELING = 'setModeling'
+export const SET_STATION_ERROR = 'setStationError'
+export const SET_DATA_ERROR = 'setDataError'
+export const SET_MODELING_ERROR = 'setModelingError'
 
 function convertDispToObject(array) {
   const result = {}
@@ -222,6 +239,15 @@ export const mutations = {
   [SET_MODELING](state, value) {
     state.modeling = value
   },
+  [SET_STATION_ERROR](state, value) {
+    state.stationError = value
+  },
+  [SET_DATA_ERROR](state, value) {
+    state.setDataError = value
+  },
+  [SET_MODELING_ERROR](state, value) {
+    state.modelingError = value
+  },
 }
 
 // Action types.
@@ -243,23 +269,24 @@ export function addTimeInterval(intervalStart, intervalEnd) {
 
 export const actions = {
   async [FETCH_STATIONS]({ commit, state }) {
-    if (state.error) {
-      commit(SET_ERROR, null)
+    if (state.stationError) {
+      commit(SET_STATION_ERROR, null)
     }
 
     const data = await client
       .get(`/modeling/station/${state.dataType}/`)
       .then((response) => response.data)
       .catch((error) => {
-        commit(SET_ERROR, error)
+        commit(SET_STATION_ERROR, error)
         return []
       })
+
     commit(SET_STATIONS, data)
   },
 
   async [CALC_LINREGRESS]({ commit, state }) {
-    if (state.error) {
-      commit(SET_ERROR, null)
+    if (state.dataError) {
+      commit(SET_DATA_ERROR, null)
     }
 
     commit(SET_IS_FETCHING_LINREGRESS, true)
@@ -273,7 +300,7 @@ export const actions = {
       })
       .then((response) => response.data)
       .catch((error) => {
-        commit(SET_ERROR, error)
+        commit(SET_DATA_ERROR, error)
         return {}
       })
 
@@ -282,8 +309,8 @@ export const actions = {
   },
 
   async [FETCH_DATA]({ commit, state }) {
-    if (state.error) {
-      commit(SET_ERROR, null)
+    if (state.dataError) {
+      commit(SET_DATA_ERROR, null)
     }
 
     const { dataType } = state
@@ -354,7 +381,7 @@ export const actions = {
           return responses.map((response) => response.data)
         })
         .catch((error) => {
-          commit(SET_ERROR, error)
+          commit(SET_DATA_ERROR, error)
           return []
         })
 
@@ -364,8 +391,8 @@ export const actions = {
     }
   },
   async [FETCH_TOPO]({ commit, state }) {
-    if (state.error) {
-      commit(SET_ERROR, null)
+    if (state.modelingError) {
+      commit(SET_MODELING_ERROR, null)
     }
 
     const data = await client
@@ -376,13 +403,17 @@ export const actions = {
       })
       .then((response) => response.data)
       .catch((error) => {
-        commit(SET_ERROR, error)
+        commit(SET_MODELING_ERROR, error)
         return {}
       })
 
     commit(SET_TOPO, data)
   },
   async [CALC_MODELING]({ commit, state }) {
+    if (state.modelingError) {
+      commit(SET_MODELING_ERROR, null)
+    }
+
     commit(SET_IS_FETCHING_MODELING, true)
 
     const data = await client
@@ -407,8 +438,8 @@ export const actions = {
       })
       .then((response) => response.data)
       .catch((error) => {
-        commit(SET_ERROR, error)
-        return []
+        commit(SET_MODELING_ERROR, error)
+        return {}
       })
 
     commit(SET_IS_FETCHING_MODELING, false)
