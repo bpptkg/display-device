@@ -298,6 +298,18 @@ const routes = [
     component: () => import('@/lib/infographic/InfographicView'),
   },
   {
+    path: '/modeling',
+    redirect: '/modeling/tilt',
+    component: () => import('@/lib/modeling/ModelingView'),
+    children: [
+      {
+        path: ':type',
+        component: () => import('@/lib/modeling/ModelingBuilder'),
+        props: true,
+      },
+    ],
+  },
+  {
     path: '*',
     redirect: '/',
   },

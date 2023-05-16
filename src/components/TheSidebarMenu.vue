@@ -19,6 +19,7 @@ import {
   InfographicIcon,
   LavaDomeIcon,
   MagneticIcon,
+  ModelingIcon,
   ObservationIcon,
   SeismicIcon,
   ThermalIcon,
@@ -205,6 +206,11 @@ export default {
           title: 'Infographic',
           icon: InfographicIcon,
           href: '/infographic',
+        },
+        {
+          title: 'Modeling',
+          icon: ModelingIcon,
+          href: '/modeling',
         },
         {
           divider: true,
