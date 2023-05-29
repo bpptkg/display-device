@@ -8,8 +8,6 @@ import {
   toUnixMiliSeconds,
 } from '@/utils/series'
 import { createRowGrid } from '@/utils/echarts/grid'
-import { defaultToolbox } from '../../components/echarts/chart-options/common/toolbox'
-import { DATE_FORMAT } from '../../constants/date'
 
 export const SeriesName = Object.freeze({
   X: 'X',
@@ -99,7 +97,7 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(2, { top: 15, bottom: 15, left: 22, right: 22 }),
+      grid: createRowGrid(2, { top: 5, bottom: 15, left: 22, right: 22 }),
       title: {
         top: 25,
         textStyle: {
@@ -148,7 +146,6 @@ export const baseChartOptions = () => {
         bottom: 80,
       },
     ],
-    toolbox: defaultToolbox,
     yAxis: createYAxis(),
   }
 }

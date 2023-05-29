@@ -1,20 +1,15 @@
 import client from '@/utils/client'
 import { calculatePeriod as calcPeriod } from '@/utils/datetime'
 import moment from 'moment'
-import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
+import { DATETIME_FORMAT } from '@/constants/date'
 import {
   SamplingTypes,
   AggregationTypes,
   DataTypes,
 } from '@/constants/tiltmeter'
 
-/**
- * Intercept period calculation to remove time from moment object.
- */
 export const calculatePeriod = (period) => {
   const { startTime, endTime } = calcPeriod(period)
-  // startTime.startOf('day')
-  // endTime.startOf('day')
   return { startTime, endTime }
 }
 
@@ -69,6 +64,7 @@ export const initialState = {
   error: null,
   stationError: null,
   dataError: null,
+  linregressError: null,
   modelingError: null,
   dataType: 'tilt',
   depth: 2000,
@@ -128,6 +124,7 @@ export const SET_MODELING = 'setModeling'
 export const SET_STATION_ERROR = 'setStationError'
 export const SET_DATA_ERROR = 'setDataError'
 export const SET_MODELING_ERROR = 'setModelingError'
+export const SET_LINREGRESS_ERROR = 'setLinregressError'
 
 function convertDispToObject(array) {
   const result = {}
@@ -196,22 +193,22 @@ export const mutations = {
       }
     })
     state.selectedStations = stations.map((v) => v.id)
-    state.station = state.stations[0].id
+    state.station = stations[0] ? stations[0].id : null
   },
   [SET_SELECTED_STATIONS](state, stations) {
     state.selectedStations = stations
   },
   [SET_LINREGRESS](state, data) {
     state.linregress = data
-    const disp = convertDispToObject(data.regression)
+    const disp = convertDispToObject(data.regression || [])
     const stations = [...state.stations]
     stations.forEach((station, index) => {
       const stationId = station.id
       const obj = disp[stationId]
       const ux = obj && obj.displacement ? obj.displacement.ux : null
       const uz = obj && obj.displacement ? obj.displacement.uz : null
-      stations[index].ux = ux || 0
-      stations[index].uz = uz || 0
+      stations[index].ux = Number.isFinite(ux) ? ux.toFixed(4) : 0
+      stations[index].uz = Number.isFinite(uz) ? uz.toFixed(4) : 0
       stations[index].displacement =
         obj && obj.displacement ? obj.displacement : {}
       stations[index].linreg = obj && obj.linreg ? obj.linreg : {}
@@ -243,10 +240,13 @@ export const mutations = {
     state.stationError = value
   },
   [SET_DATA_ERROR](state, value) {
-    state.setDataError = value
+    state.dataError = value
   },
   [SET_MODELING_ERROR](state, value) {
     state.modelingError = value
+  },
+  [SET_LINREGRESS_ERROR](state, value) {
+    state.linregressError = value
   },
 }
 
@@ -285,14 +285,14 @@ export const actions = {
   },
 
   async [CALC_LINREGRESS]({ commit, state }) {
-    if (state.dataError) {
-      commit(SET_DATA_ERROR, null)
+    if (state.linregressError) {
+      commit(SET_LINREGRESS_ERROR, null)
     }
 
     commit(SET_IS_FETCHING_LINREGRESS, true)
 
     const data = await client
-      .post(`/modeling/linregress/`, {
+      .post('/modeling/linregress/', {
         data_type: state.dataType,
         start: state.startTime.format(DATETIME_FORMAT),
         end: state.endTime.format(DATETIME_FORMAT),
@@ -300,7 +300,7 @@ export const actions = {
       })
       .then((response) => response.data)
       .catch((error) => {
-        commit(SET_DATA_ERROR, error)
+        commit(SET_LINREGRESS_ERROR, error)
         return {}
       })
 
@@ -312,6 +312,8 @@ export const actions = {
     if (state.dataError) {
       commit(SET_DATA_ERROR, null)
     }
+
+    commit(SET_IS_FETCHING, true)
 
     const { dataType } = state
 
@@ -389,6 +391,8 @@ export const actions = {
     } else if (dataType == 'gps') {
       // TODO
     }
+
+    commit(SET_IS_FETCHING, false)
   },
   async [FETCH_TOPO]({ commit, state }) {
     if (state.modelingError) {
