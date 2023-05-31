@@ -31,7 +31,7 @@
           <TheSidebarMenu />
         </div>
         <div class="logo-container">
-          <BLink to="/" v-b-tooltip.hover title="Display Device Home">
+          <BLink to="/" class="logo-link">
             <LogoIcon />
           </BLink>
         </div>
@@ -142,5 +142,8 @@ export default {
 
 .logo-container {
   margin-left: 16px;
+}
+.logo-link {
+  text-decoration: none;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="app-info">
-    <h6>About Display Device</h6>
+    <h6>About Davis</h6>
     <BCard class="app-info-card mt-3" no-body>
       <BListGroup flush>
         <BListGroupItem>
@@ -8,7 +8,7 @@
         </BListGroupItem>
 
         <BListGroupItem>
-          Display Device is a web app that provides various charts and analytics
+          Davis is a web app that provides various charts and analytics
           information about Merapi Volcano monitoring data.
         </BListGroupItem>
 
