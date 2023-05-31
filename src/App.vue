@@ -81,6 +81,7 @@ export default {
 <style lang="scss">
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/bootstrap-vue/src/index.scss';
+@import 'bootstrap-vue/src/icons.scss';
 @import '@/scss/base';
 
 .custom-select {

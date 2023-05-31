@@ -1,22 +1,30 @@
 <template>
   <div class="d-flex flex-wrap">
-    <BCol md="6" lg="4">
+    <BCol md="4" lg="3">
       <BCard :header="headerName">
         <BRow class="pt-3">
           <BCol sm="4">
             <label><small>Period:</small></label>
           </BCol>
           <BCol>
-            <RangeSelector
-              ref="range-selector"
-              size="sm"
-              custom-enabled
-              hide-period-label
-              :selected="period"
-              :items="periods"
-              :max-custom-duration="maxCustomDuration"
-              @period-selected="onPeriodChange"
-            />
+            <div class="d-flex flex-wrap align-items-center">
+              <RangeSelector
+                ref="range-selector"
+                size="sm"
+                custom-enabled
+                hide-period-label
+                :selected="period"
+                :items="periods"
+                :max-custom-duration="maxCustomDuration"
+                @period-selected="onPeriodChange"
+              />
+              <BIcon
+                v-b-tooltip.hover
+                class="ml-2"
+                :title="createIntervalText(startTime, endTime)"
+                icon="info-circle"
+              ></BIcon>
+            </div>
           </BCol>
         </BRow>
 
@@ -26,7 +34,7 @@
           <BCol sm="4">
             <label><small>Depth:</small></label>
           </BCol>
-          <BCol>
+          <BCol sm="6">
             <BFormInput v-model="cdepth" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>m</small></BCol>
@@ -36,7 +44,7 @@
           <BCol sm="4">
             <label><small>Radius:</small></label>
           </BCol>
-          <BCol>
+          <BCol sm="6">
             <BFormInput v-model="cradius" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>m</small></BCol>
@@ -46,7 +54,7 @@
           <BCol sm="4">
             <label><small>Step:</small></label>
           </BCol>
-          <BCol>
+          <BCol sm="6">
             <BFormInput v-model="cstep" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>m</small></BCol>
@@ -56,7 +64,7 @@
           <BCol sm="4">
             <label><small>Max iteration:</small></label>
           </BCol>
-          <BCol>
+          <BCol sm="6">
             <BFormInput v-model="cmaxIteration" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small></small></BCol>
@@ -88,7 +96,7 @@
                       :value="station.id"
                       :name="station.name"
                       inline
-                      >{{ station.name }}</BFormCheckbox
+                      ><small>{{ station.name }}</small></BFormCheckbox
                     >
                   </td>
                   <td>
@@ -113,13 +121,36 @@
           </BCol>
         </BRow>
 
+        <BRow>
+          <BCol>
+            <div class="d-flex h-100 justify-content-end">
+              <BButton @click="runLinregress" variant="outline-primary"
+                ><BSpinner
+                  v-if="isFetchingLinregress"
+                  small
+                  label="Loading..."
+                  class="mr-1"
+                ></BSpinner
+                >Run Linregress</BButton
+              >
+            </div>
+          </BCol>
+        </BRow>
+
         <hr />
 
         <BRow class="my-1">
           <BCol sm="4">
-            <label><small>G (Shear modulus):</small></label>
+            <label class="mr-1"><small>G </small></label>
+            <small>
+              <BIcon
+                v-b-tooltip.hover
+                title="Shear modulus"
+                icon="info-circle"
+              ></BIcon>
+            </small>
           </BCol>
-          <BCol>
+          <BCol sm="6">
             <BFormInput v-model="cG" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>GPa</small></BCol>
@@ -127,9 +158,16 @@
 
         <BRow class="my-1">
           <BCol sm="4">
-            <label><small>&Delta;P (Source overpressure):</small></label>
+            <label class="mr-1"><small>&Delta;P </small></label>
+            <small>
+              <BIcon
+                v-b-tooltip.hover
+                title="Source overpressure"
+                icon="info-circle"
+              ></BIcon>
+            </small>
           </BCol>
-          <BCol>
+          <BCol sm="6">
             <BFormInput v-model="cdP" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>GPa</small></BCol>
@@ -137,12 +175,38 @@
 
         <BRow class="my-1">
           <BCol sm="4">
-            <label><small>&nu; (Poisson ratio):</small></label>
+            <label class="mr-1"><small>&nu;</small></label>
+            <small>
+              <BIcon
+                v-b-tooltip.hover
+                title="Possion's ratio"
+                icon="info-circle"
+              ></BIcon>
+            </small>
           </BCol>
-          <BCol>
+          <BCol sm="6">
             <BFormInput v-model="cv" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small></small></BCol>
+        </BRow>
+
+        <BRow class="mt-3">
+          <BCol>
+            <div class="d-flex h-100 justify-content-end">
+              <BButton
+                @click="runModeling"
+                variant="outline-primary"
+                class="ml-2"
+                ><BSpinner
+                  v-if="isFetchingModeling"
+                  small
+                  label="Loading..."
+                  class="mr-1"
+                ></BSpinner
+                >Run Modeling</BButton
+              >
+            </div>
+          </BCol>
         </BRow>
       </BCard>
 
@@ -172,81 +236,58 @@
       </BCard>
     </BCol>
 
-    <BCol md="6" lg="8" class="mb-4">
-      <div>
-        <BButton @click="runLinregress" variant="outline-primary"
-          ><BSpinner
-            v-if="isFetchingLinregress"
-            small
-            label="Loading..."
-            class="mr-1"
-          ></BSpinner
-          >Run Linregress</BButton
-        >
-        <BButton @click="runModeling" variant="outline-primary" class="ml-2"
-          ><BSpinner
-            v-if="isFetchingModeling"
-            small
-            label="Loading..."
-            class="mr-1"
-          ></BSpinner
-          >Run Modeling</BButton
-        >
-      </div>
+    <BCol class="mb-4">
       <BTabs class="mt-2">
         <BTab title="Chart">
           <div class="mt-2">
-            <div class="d-flex align-items-center flex-wrap">
-              <BCol md="3" class="pl-0 mb-2">
-                <BFormSelect
-                  v-model="cstation"
-                  :options="stations"
-                  @change="handleStationChange"
-                ></BFormSelect>
-              </BCol>
-              <BLink @click="updateData"> Update data </BLink>
-            </div>
-            <ErrorMessage v-if="dataError">
-              <p>Unable to load data.</p>
-              <p>Error: {{ dataError.message }}</p>
-              <p>
-                <BLink @click="updateData"> Try again </BLink>
-              </p>
-            </ErrorMessage>
-            <div v-show="!dataError">
-              <DChart
-                ref="chart"
-                :options="chartOptions"
-                manual-update
-                class="chart"
-              />
-              <DNote>
-                <div>{{ cRegressionText.x }}</div>
-                <div>{{ cRegressionText.z }}</div>
-              </DNote>
+            <div>
+              <ErrorMessage v-if="dataError">
+                <p>Unable to load data.</p>
+                <p>Error: {{ dataError.message }}</p>
+                <p>
+                  <BLink @click="updateData"> Try again </BLink>
+                </p>
+              </ErrorMessage>
+              <div v-show="!dataError" class="grid-container">
+                <div
+                  class="grid-item"
+                  v-for="(station, index) in stations"
+                  :key="station.id"
+                >
+                  <ModelingChart
+                    :index="index"
+                    :station="station"
+                    :is-loading="isFetching"
+                    :options="createChartOptions(index)"
+                    :regression-text="createRegressionText(index)"
+                  />
+                </div>
+              </div>
             </div>
 
             <hr />
 
-            <ErrorMessage v-if="modelingError">
-              <p>Unable to load data.</p>
-              <p>Error: {{ modelingError.message }}</p>
-              <p>
-                <BLink @click="fetchTopo"> Try again </BLink>
-              </p>
-            </ErrorMessage>
-            <div v-show="!modelingError">
-              <DChart
-                ref="modelingChart"
-                :options="modelingChartOptions"
-                class="chart"
-              />
-              <DNote>
-                <div>
-                  &mdash; Topography data is obtained from Merapi DEM model 2010
-                  West-East profile cross section across the summit.
-                </div>
-              </DNote>
+            <div class="h-100">
+              <ErrorMessage v-if="modelingError">
+                <p>Unable to load data.</p>
+                <p>Error: {{ modelingError.message }}</p>
+                <p>
+                  <BLink @click="fetchTopo"> Try again </BLink>
+                </p>
+              </ErrorMessage>
+              <div v-show="!modelingError">
+                <DChart
+                  ref="modelingChart"
+                  :options="modelingChartOptions"
+                  class="modeling-chart"
+                />
+                <DNote>
+                  <div>
+                    &mdash; Topography data is obtained from Merapi DEM model
+                    2010 West-East profile cross section across the summit.
+                  </div>
+                </DNote>
+              </div>
             </div>
           </div>
         </BTab>
@@ -281,7 +322,6 @@ import {
   BRow,
   BFormInput,
   BButton,
-  BFormSelect,
   BTab,
   BTabs,
   BLink,
@@ -290,7 +330,9 @@ import {
   BSpinner,
   BModal,
   BTable,
+  BIcon,
 } from 'bootstrap-vue'
+import { VBTooltip } from 'bootstrap-vue'
 import DChart from '../../components/echarts/chart/DChart'
 import RangeSelector from '../../components/range-selector'
 import DNote from '../../components/base/note/DNote'
@@ -298,6 +340,7 @@ import { createTiltChart } from './tilt-chart'
 import { createModelingChart } from './modeling-chart'
 import { getSeriesByIndex } from '../../utils/series'
 import ErrorMessage from '@/components/error-message'
+import ModelingChart from './ModelingChart'
 
 import {
   // Mutations.
@@ -336,7 +379,7 @@ export default {
     BFormCheckbox,
     BFormGroup,
     BFormInput,
-    BFormSelect,
+    BIcon,
     BLink,
     BModal,
     BRow,
@@ -347,10 +390,14 @@ export default {
     DChart,
     DNote,
     ErrorMessage,
+    ModelingChart,
     RangeSelector,
   },
   props: {
     type: String,
+  },
+  directives: {
+    'b-tooltip': VBTooltip,
   },
   data() {
     return {
@@ -404,6 +451,9 @@ export default {
       },
       isFetchingModeling(state) {
         return state.modeling[this.type].isFetchingModeling
+      },
+      isFetching(state) {
+        return state.modeling[this.type].isFetching
       },
       period(state) {
         return state.modeling[this.type].period
@@ -470,6 +520,9 @@ export default {
       },
       modelingError(state) {
         return state.modeling[this.type].modelingError
+      },
+      linregressError(state) {
+        return state.modeling[this.type].linregressError
       },
     }),
     cSelectedStations: {
@@ -623,12 +676,32 @@ export default {
     iteration() {
       return this.modeling.iteration ? this.modeling.iteration : []
     },
+    visibleStations() {
+      const selectedStations = this.selectedStations
+      return this.stations.filter((station) => {
+        return selectedStations.includes(station.id)
+      })
+    },
   },
-  watch: {},
+  watch: {
+    linregressError(error) {
+      if (error) {
+        this.$bvToast.toast(error.message, {
+          title: 'Error',
+          variant: 'default',
+          solid: true,
+        })
+      }
+    },
+  },
+  created() {},
   mounted() {
     this.fetchStations().then(() => {
-      this.updateData()
+      this.$nextTick(() => {
+        this.updateData()
+      })
     })
+
     this.fetchTopo()
   },
   methods: {
@@ -721,14 +794,7 @@ export default {
       this.updateData()
     },
     updateData() {
-      const chart = this.$refs.chart.$refs.chart
-      chart.clear()
-      chart.showLoading()
-
-      this.fetchData().finally(() => {
-        chart.hideLoading()
-        chart.mergeOptions(this.chartOptions)
-      })
+      this.fetchData()
     },
     runLinregress() {
       this.calcLinregress().then(() => {
@@ -757,12 +823,79 @@ export default {
       })
       this.$refs.dialog.show()
     },
+    createChartOptions(index) {
+      const station = this.stations[index]
+      const { start, end } = addTimeInterval(this.startTime, this.endTime)
+
+      return createTiltChart({
+        data: getSeriesByIndex(this.data, index),
+        xreg: station
+          ? station.linreg_point
+            ? station.linreg_point.x
+              ? station.linreg_point.x
+              : []
+            : []
+          : [],
+        zreg: station
+          ? station.linreg_point
+            ? station.linreg_point.z
+              ? station.linreg_point.z
+              : []
+            : []
+          : [],
+        startTime: start,
+        endTime: end,
+      })
+    },
+    createRegressionText(index) {
+      const format = (value) => {
+        return Number.isFinite(value) ? value.toFixed(4) : '-'
+      }
+
+      const reg = this.linregress.regression
+        ? this.linregress.regression[index]
+        : null
+
+      const r = reg ? reg.linreg : null
+
+      let x, z
+      if (r) {
+        x = `
+        X: m=${format(r.x.m)} c=${format(r.x.c)} r_value=${format(
+          r.x.r_value
+        )} std_err=${format(r.x.std_err)}`
+
+        z = `Z: m=${format(r.z.m)} c=${format(r.z.c)} r_value=${format(
+          r.z.r_value
+        )} std_err=${format(r.z.std_err)}`
+      } else {
+        x = ''
+        z = ''
+      }
+
+      return { x, z }
+    },
+    createIntervalText(startTime, endTime) {
+      return `${startTime.format('YYYY-MM-DD HH:mm:ss')} ~ ${endTime.format(
+        'YYYY-MM-DD HH:mm:ss'
+      )}`
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.chart {
-  min-height: 450px;
+.modeling-chart {
+  min-height: 400px;
+}
+
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.grid-item {
+  flex: 0 0 auto;
 }
 </style>

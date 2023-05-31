@@ -6,6 +6,7 @@ import ProgressBar from './components/progressbar'
 import router from './router'
 import store from './store'
 import './registerServiceWorker'
+import { BootstrapVueIcons } from 'bootstrap-vue'
 
 import { NAMESPACE as PAGE_LOADER_NAMESPACE } from './store/loader'
 import { SHOW_PAGE_LOADER, HIDE_PAGE_LOADER } from './store/loader/actions'
@@ -19,6 +20,7 @@ Vue.prototype.$baseUrl = process.env.BASE_URL
 Vue.use(DisplayDevicePlugins)
 Vue.use(ProgressBar)
 Vue.use(ToastPlugin)
+Vue.use(BootstrapVueIcons)
 
 const initApp = () => {
   new Vue({
