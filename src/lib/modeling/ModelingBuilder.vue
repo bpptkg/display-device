@@ -34,7 +34,7 @@
           <BCol sm="4">
             <label><small>Depth:</small></label>
           </BCol>
-          <BCol sm="6">
+          <BCol>
             <BFormInput v-model="cdepth" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>m</small></BCol>
@@ -44,7 +44,7 @@
           <BCol sm="4">
             <label><small>Radius:</small></label>
           </BCol>
-          <BCol sm="6">
+          <BCol>
             <BFormInput v-model="cradius" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>m</small></BCol>
@@ -54,7 +54,7 @@
           <BCol sm="4">
             <label><small>Step:</small></label>
           </BCol>
-          <BCol sm="6">
+          <BCol>
             <BFormInput v-model="cstep" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>m</small></BCol>
@@ -64,7 +64,7 @@
           <BCol sm="4">
             <label><small>Max iteration:</small></label>
           </BCol>
-          <BCol sm="6">
+          <BCol>
             <BFormInput v-model="cmaxIteration" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small></small></BCol>
@@ -74,7 +74,7 @@
 
         <BRow>
           <BCol>
-            <label><small>Stations:</small></label>
+            <label class="mb-0"><small>Stations:</small></label>
             <ErrorMessage v-if="stationError">
               <p>Unable to load stations.</p>
               <p>Error: {{ stationError.message }}</p>
@@ -150,7 +150,7 @@
               ></BIcon>
             </small>
           </BCol>
-          <BCol sm="6">
+          <BCol>
             <BFormInput v-model="cG" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>GPa</small></BCol>
@@ -167,7 +167,7 @@
               ></BIcon>
             </small>
           </BCol>
-          <BCol sm="6">
+          <BCol>
             <BFormInput v-model="cdP" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small>GPa</small></BCol>
@@ -184,7 +184,7 @@
               ></BIcon>
             </small>
           </BCol>
-          <BCol sm="6">
+          <BCol>
             <BFormInput v-model="cv" type="number" size="sm" />
           </BCol>
           <BCol class="px-0"><small></small></BCol>

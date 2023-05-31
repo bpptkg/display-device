@@ -70,4 +70,10 @@ export default {
   min-height: 400px;
   width: 450px;
 }
+
+@media (max-width: 991.98px) {
+  .chart {
+    width: 350px;
+  }
+}
 </style>

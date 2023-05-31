@@ -1,13 +1,10 @@
 <template>
-  <div class="mx-2" style="margin-top: 60px">
-    <b-nav tabs class="mb-2">
-      <b-nav-item exact-active-class="active" to="/modeling/tilt"
-        >Tiltmeter</b-nav-item
-      >
-      <!-- <b-nav-item exact-active-class="active" to="/modeling/gps"
-        >GPS</b-nav-item
-      > -->
-    </b-nav>
+  <div class="mx-1" style="margin-top: 60px">
+    <BNav tabs class="mb-2">
+      <BNavItem exact-active-class="active" to="/modeling/tilt">
+        Tiltmeter
+      </BNavItem>
+    </BNav>
     <keep-alive>
       <router-view :key="$route.path"></router-view>
     </keep-alive>
