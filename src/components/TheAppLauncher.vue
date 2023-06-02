@@ -55,7 +55,7 @@ export default {
         {
           src: `${baseUrl}icon/launcher/display-device.svg`,
           href: '/display-device',
-          text: 'Display Device',
+          text: 'Data Visualization',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
@@ -67,7 +67,7 @@ export default {
         {
           src: `${baseUrl}icon/launcher/maintenance.svg`,
           href: '/maintenance',
-          text: 'Maintenance',
+          text: 'Monitoring Network',
           visible: ME_POSITION_NAMES.includes(this.userPositionName),
         },
         {
@@ -86,6 +86,12 @@ export default {
           src: `${baseUrl}icon/launcher/gallery.jpg`,
           href: '/gallery',
           text: 'Gallery',
+          visible: true,
+        },
+        {
+          src: `${baseUrl}icon/launcher/layanan-umum.png`,
+          href: '/layananumum',
+          text: 'Layanan Umum',
           visible: true,
         },
       ]

@@ -1,10 +1,10 @@
 /**
- * Range selector for WebObs GPS graphs are quite different from the rest of
- * Display Device used. For GPS graphs, WebObs used relative range selector.
- * While DD uses `now` time offset, WebObs time offset can be changed to `now`
- * or specific date. So, range selector below is only used to conforms
- * RangeSelector component props, and we need to handle the relative range
- * selector in the event handler.
+ * Range selector for WebObs GPS graphs are quite different from the rest of app
+ * used. For GPS graphs, WebObs used relative range selector. While DD uses
+ * `now` time offset, WebObs time offset can be changed to `now` or specific
+ * date. So, range selector below is only used to conforms RangeSelector
+ * component props, and we need to handle the relative range selector in the
+ * event handler.
  */
 const rangeSelector = [
   {

@@ -51,14 +51,14 @@
     </BCard>
 
     <BCard class="app-info-card mt-3">
-      <div class="secondary">BPPTKG Display Device</div>
+      <div class="secondary">BPPTKG Davis</div>
 
       <div class="secondary">
         Copyright &copy; 2020-{{ thisYear }} BPPTKG. All rights reserved.
       </div>
 
       <div class="secondary mt-2">
-        Display Device App is made possible by BPPTKG with much open source
+        Data Visualization App is made possible by BPPTKG with much open source
         software by developer community.
       </div>
     </BCard>

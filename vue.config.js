@@ -31,7 +31,7 @@ module.exports = {
     ],
   },
   pwa: {
-    name: 'Display Device',
+    name: 'Data Visualization',
     themeColor: '#fff',
     msTileColor: '#000',
     appleMobileWebAppCapable: 'yes',
