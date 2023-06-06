@@ -275,7 +275,7 @@
                   <BLink @click="fetchTopo"> Try again </BLink>
                 </p>
               </ErrorMessage>
-              <div v-show="!modelingError">
+              <div v-show="!modelingError" class="h-100">
                 <DChart
                   ref="modelingChart"
                   :options="modelingChartOptions"
@@ -284,7 +284,7 @@
                 <DNote>
                   <div>
                     &mdash; Topography data is obtained from Merapi DEM model
-                    2010 West-East profile cross section across the summit.
+                    2010.
                   </div>
                 </DNote>
               </div>
@@ -337,7 +337,7 @@ import DChart from '../../components/echarts/chart/DChart'
 import RangeSelector from '../../components/range-selector'
 import DNote from '../../components/base/note/DNote'
 import { createTiltChart } from './tilt-chart'
-import { createModelingChart } from './modeling-chart'
+import { createModelingChart } from './modeling3d-chart'
 import { getSeriesByIndex } from '../../utils/series'
 import ErrorMessage from '@/components/error-message'
 import ModelingChart from './ModelingChart'
@@ -886,7 +886,8 @@ export default {
 
 <style lang="scss" scoped>
 .modeling-chart {
-  min-height: 400px;
+  min-height: 450px;
+  width: 100%;
 }
 
 .grid-container {

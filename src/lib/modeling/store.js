@@ -7,11 +7,14 @@ import {
   AggregationTypes,
   DataTypes,
 } from '@/constants/tiltmeter'
+import { isLocalStorageAvailable } from '@/utils/localstorage'
 
 export const calculatePeriod = (period) => {
   const { startTime, endTime } = calcPeriod(period)
   return { startTime, endTime }
 }
+
+const topoCacheKey = 'display-device:modeling/topo/v1'
 
 export const FilterDataType = {
   FILTERED: 'filtered',
@@ -79,7 +82,7 @@ export const initialState = {
   periods: periodArray,
   linregress: {},
   station: null,
-  topo: {},
+  topo: [],
   modeling: {},
 }
 
@@ -255,6 +258,8 @@ export const FETCH_STATIONS = 'fetchStations'
 export const FETCH_DATA = 'fetchData'
 export const CALC_LINREGRESS = 'calcLinregress'
 export const FETCH_TOPO = 'fetchTopo'
+export const FETCH_TOPO2D = 'fetchTopo2D'
+export const FETCH_TOPO3D = 'fetchTopo3D'
 export const CALC_MODELING = 'calcModeling'
 
 export function addTimeInterval(intervalStart, intervalEnd) {
@@ -395,6 +400,51 @@ export const actions = {
     commit(SET_IS_FETCHING, false)
   },
   async [FETCH_TOPO]({ commit, state }) {
+    if (state.modelingError) {
+      commit(SET_MODELING_ERROR, null)
+    }
+
+    if (isLocalStorageAvailable()) {
+      const cachedTopo = JSON.parse(localStorage.getItem(topoCacheKey))
+      if (
+        cachedTopo !== null &&
+        Array.isArray(cachedTopo) &&
+        cachedTopo.length
+      ) {
+        commit(SET_TOPO, cachedTopo)
+      } else {
+        const data = await client
+          .get('topo/', {
+            params: {
+              model: 'm1000',
+            },
+          })
+          .then((response) => response.data.data)
+          .catch((error) => {
+            commit(SET_MODELING_ERROR, error)
+            return []
+          })
+
+        localStorage.setItem(topoCacheKey, JSON.stringify(data))
+        commit(SET_TOPO, data)
+      }
+    } else {
+      const data = await client
+        .get('topo/', {
+          params: {
+            model: 'm1000',
+          },
+        })
+        .then((response) => response.data.data)
+        .catch((error) => {
+          commit(SET_MODELING_ERROR, error)
+          return []
+        })
+
+      commit(SET_TOPO, data)
+    }
+  },
+  async [FETCH_TOPO2D]({ commit, state }) {
     if (state.modelingError) {
       commit(SET_MODELING_ERROR, null)
     }
