@@ -15,7 +15,38 @@ export const SeriesName = Object.freeze({
   TEMPERATURE: 'Temperature',
 })
 
-export const createSeries = (data, xreg, zreg) => {
+export const createMarkPointOption = (data, text) => {
+  let coords = []
+  if (Array.isArray(data) && data.length >= 2) {
+    const point = data[Math.floor(data.length / 2)]
+    coords = [
+      {
+        coord: [toUnixMiliSeconds(point.timestamp), point.value],
+      },
+    ]
+  }
+
+  const opt = {
+    itemStyle: {
+      color: 'transparent',
+    },
+    label: {
+      show: true,
+      position: 'inside',
+      formatter: text,
+      color: 'black',
+      fontSize: 13,
+    },
+    tooltip: {
+      formatter: text,
+    },
+    data: coords,
+  }
+
+  return opt
+}
+
+export const createSeries = (data, xreg, zreg, xtext, ztext) => {
   const options = [
     {
       data: mapFieldColumns(data, 'timestamp', 'x'),
@@ -25,7 +56,6 @@ export const createSeries = (data, xreg, zreg) => {
       xAxisIndex: 0,
       yAxisIndex: 0,
     },
-
     {
       data: mapFieldColumns(data, 'timestamp', 'y'),
       name: SeriesName.Y,
@@ -47,6 +77,7 @@ export const createSeries = (data, xreg, zreg) => {
       type: 'line',
       xAxisIndex: 0,
       yAxisIndex: 0,
+      markPoint: createMarkPointOption(xreg, xtext),
     },
     {
       data: mapFieldColumns(zreg, 'timestamp', 'value'),
@@ -57,10 +88,11 @@ export const createSeries = (data, xreg, zreg) => {
       itemStyle: {
         color: 'red',
       },
-      name: 'Reg. Z',
+      name: 'Reg. Y',
       type: 'line',
       xAxisIndex: 1,
       yAxisIndex: 1,
+      markPoint: createMarkPointOption(zreg, ztext),
     },
   ]
 
@@ -97,7 +129,7 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(2, { top: 5, bottom: 15, left: 22, right: 22 }),
+      grid: createRowGrid(2, { top: 5, bottom: 13, left: 18, right: 5 }),
       title: {
         top: 25,
         textStyle: {
@@ -194,10 +226,18 @@ export const tooltipFormatter = (sampling) => {
   }
 }
 
-export const createTiltChart = ({ data, xreg, zreg, startTime, endTime }) => {
+export const createTiltChart = ({
+  data,
+  xreg,
+  zreg,
+  xtext,
+  ztext,
+  startTime,
+  endTime,
+}) => {
   const options = {
     ...baseChartOptions(),
-    series: createSeries(data, xreg, zreg),
+    series: createSeries(data, xreg, zreg, xtext, ztext),
     tooltip: {
       trigger: 'axis',
       axisPointer: {

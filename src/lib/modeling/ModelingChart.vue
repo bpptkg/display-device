@@ -1,25 +1,18 @@
 <template>
-  <BCard no-body>
+  <BCard no-body header-class="p-1">
     <template #header>
-      <div class="d-flex justify-content-between">
-        <h6>{{ station.name }}</h6>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="font-weight-bold">{{ station.name }}</span>
         <BSpinner v-if="isLoading" small label="Loading..."></BSpinner>
       </div>
     </template>
     <DChart ref="chart" :options="options" class="chart" />
-    <template #footer>
-      <DNote>
-        <div>{{ regressionText.x || '' }}</div>
-        <div>{{ regressionText.z || '' }}</div>
-      </DNote>
-    </template>
   </BCard>
 </template>
 
 <script>
 import { BCard, BSpinner } from 'bootstrap-vue'
 import DChart from '../../components/echarts/chart/DChart'
-import DNote from '../../components/base/note/DNote'
 
 export default {
   name: 'ModelingChart',
@@ -27,7 +20,6 @@ export default {
     DChart,
     BCard,
     BSpinner,
-    DNote,
   },
   props: {
     index: Number,
@@ -67,7 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .chart {
-  min-height: 400px;
+  height: 250px !important;
   width: 450px;
 }
 

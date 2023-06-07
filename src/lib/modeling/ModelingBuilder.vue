@@ -20,7 +20,7 @@
               />
               <BIcon
                 v-b-tooltip.hover
-                class="ml-2"
+                class="ml-2 hand-cursor"
                 :title="createIntervalText(startTime, endTime)"
                 icon="info-circle"
               ></BIcon>
@@ -147,6 +147,7 @@
                 v-b-tooltip.hover
                 title="Shear modulus"
                 icon="info-circle"
+                class="hand-cursor"
               ></BIcon>
             </small>
           </BCol>
@@ -164,6 +165,7 @@
                 v-b-tooltip.hover
                 title="Source overpressure"
                 icon="info-circle"
+                class="hand-cursor"
               ></BIcon>
             </small>
           </BCol>
@@ -181,6 +183,7 @@
                 v-b-tooltip.hover
                 title="Possion's ratio"
                 icon="info-circle"
+                class="hand-cursor"
               ></BIcon>
             </small>
           </BCol>
@@ -267,6 +270,18 @@
 
             <hr />
 
+            <div class="d-flex align-items-center mb-1">
+              <span class="mr-2 small">Radius scale:</span>
+              <div style="width: 72px">
+                <BFormInput
+                  v-model="radiusScale"
+                  type="number"
+                  size="sm"
+                  step="1"
+                />
+              </div>
+            </div>
+
             <div class="h-100">
               <ErrorMessage v-if="modelingError">
                 <p>Unable to load data.</p>
@@ -280,6 +295,7 @@
                   ref="modelingChart"
                   :options="modelingChartOptions"
                   class="modeling-chart"
+                  manual-update
                 />
                 <DNote>
                   <div>
@@ -315,6 +331,7 @@
 </template>
 
 <script>
+import { debounce } from 'lodash'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import {
   BCol,
@@ -442,6 +459,7 @@ export default {
           label: 'Residual',
         },
       ],
+      radiusScale: 1,
     }
   },
   computed: {
@@ -668,7 +686,7 @@ export default {
     modelingChartOptions() {
       const opt = createModelingChart({
         topo: this.topo,
-        radius: this.matchedRadius,
+        radius: this.matchedRadius * this.radiusScale,
         depth: this.depth,
       })
       return opt
@@ -692,6 +710,9 @@ export default {
           solid: true,
         })
       }
+    },
+    radiusScale(_value) {
+      debounce(this.refreshModelingChart, 200)()
     },
   },
   created() {},
@@ -810,6 +831,13 @@ export default {
         chart.hideLoading()
       })
     },
+    refreshModelingChart() {
+      const chart = this.$refs.modelingChart.$refs.chart
+      chart.clear()
+      chart.showLoading()
+      chart.mergeOptions(this.modelingChartOptions)
+      chart.hideLoading()
+    },
     showIterationDetails(item) {
       const disp = item.displacements
       this.iterationDisplacements = disp.map((v) => {
@@ -826,6 +854,7 @@ export default {
     createChartOptions(index) {
       const station = this.stations[index]
       const { start, end } = addTimeInterval(this.startTime, this.endTime)
+      const regText = this.createRegressionText(index)
 
       return createTiltChart({
         data: getSeriesByIndex(this.data, index),
@@ -843,13 +872,15 @@ export default {
               : []
             : []
           : [],
+        xtext: regText.x,
+        ztext: regText.z,
         startTime: start,
         endTime: end,
       })
     },
     createRegressionText(index) {
       const format = (value) => {
-        return Number.isFinite(value) ? value.toFixed(4) : '-'
+        return Number.isFinite(value) ? value.toFixed(2) : '-'
       }
 
       const reg = this.linregress.regression
@@ -860,14 +891,13 @@ export default {
 
       let x, z
       if (r) {
-        x = `
-        X: m=${format(r.x.m)} c=${format(r.x.c)} r_value=${format(
-          r.x.r_value
-        )} std_err=${format(r.x.std_err)}`
+        x = `m=${format(r.x.m)} r=${format(r.x.r_value)} err=${format(
+          r.x.std_err
+        )}`
 
-        z = `Z: m=${format(r.z.m)} c=${format(r.z.c)} r_value=${format(
-          r.z.r_value
-        )} std_err=${format(r.z.std_err)}`
+        z = `m=${format(r.z.m)} r=${format(r.z.r_value)} err=${format(
+          r.z.std_err
+        )}`
       } else {
         x = ''
         z = ''
@@ -898,5 +928,9 @@ export default {
 }
 .grid-item {
   flex: 0 0 auto;
+}
+
+.hand-cursor {
+  cursor: pointer;
 }
 </style>

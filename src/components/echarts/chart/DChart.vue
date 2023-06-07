@@ -76,6 +76,6 @@ export default {
 <style lang="scss" scoped>
 .chart {
   width: 100%;
-  min-height: 400px;
+  min-height: 150px;
 }
 </style>
