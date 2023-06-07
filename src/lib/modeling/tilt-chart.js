@@ -129,7 +129,7 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(2, { top: 5, bottom: 13, left: 18, right: 5 }),
+      grid: createRowGrid(2, { top: 5, bottom: 15, left: 20, right: 8 }),
       title: {
         top: 25,
         textStyle: {
