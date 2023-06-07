@@ -1,5 +1,5 @@
 <template>
-  <li class="item">
+  <li class="item" v-b-tooltip.hover :title="item.text">
     <a
       class="item-link"
       :href="item.href"
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { VBTooltip } from 'bootstrap-vue'
+
 export default {
   name: 'AppLauncherItem',
   props: {
@@ -24,6 +26,9 @@ export default {
         return {}
       },
     },
+  },
+  directives: {
+    'b-tooltip': VBTooltip,
   },
 }
 </script>
