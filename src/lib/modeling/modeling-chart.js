@@ -1,16 +1,5 @@
-import moment from 'moment'
-import { isFinite } from 'lodash'
-import { SamplingTypes } from '@/constants/tiltmeter'
-import { NO_DATA_NOTATION } from '@/constants/stats'
-import {
-  createCircleTemplate,
-  mapFieldColumns,
-  getFieldColumns,
-  toUnixMiliSeconds,
-} from '@/utils/series'
-import { createRowGrid } from '@/utils/echarts/grid'
+import { getFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../../components/echarts/chart-options/common/toolbox'
-import { DATE_FORMAT } from '../../constants/date'
 
 export const SeriesName = Object.freeze({
   TOPO: 'Topo',
