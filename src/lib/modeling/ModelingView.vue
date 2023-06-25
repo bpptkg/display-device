@@ -9,6 +9,5 @@
 <script>
 export default {
   name: 'ModelingView',
-  components: {},
 }
 </script>
