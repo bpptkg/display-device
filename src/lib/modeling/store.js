@@ -84,6 +84,8 @@ export const initialState = {
   station: null,
   topo: [],
   modeling: {},
+  vectorError: null,
+  vector: {},
 }
 
 export const initState = (options = {}) => {
@@ -128,6 +130,8 @@ export const SET_STATION_ERROR = 'setStationError'
 export const SET_DATA_ERROR = 'setDataError'
 export const SET_MODELING_ERROR = 'setModelingError'
 export const SET_LINREGRESS_ERROR = 'setLinregressError'
+export const SET_VECTOR_ERROR = 'setVectorError'
+export const SET_VECTOR = 'setVector'
 
 function convertDispToObject(array) {
   const result = {}
@@ -251,6 +255,12 @@ export const mutations = {
   [SET_LINREGRESS_ERROR](state, value) {
     state.linregressError = value
   },
+  [SET_VECTOR_ERROR](state, value) {
+    state.vectorError = value
+  },
+  [SET_VECTOR](state, value) {
+    state.vector = value
+  },
 }
 
 // Action types.
@@ -261,10 +271,13 @@ export const FETCH_TOPO = 'fetchTopo'
 export const FETCH_TOPO2D = 'fetchTopo2D'
 export const FETCH_TOPO3D = 'fetchTopo3D'
 export const CALC_MODELING = 'calcModeling'
+export const CALC_VECTOR = 'calcVector'
 
 export function addTimeInterval(intervalStart, intervalEnd) {
-  var newIntervalStart = moment(intervalStart).subtract(2, 'days')
-  var newIntervalEnd = moment(intervalEnd).add(2, 'days')
+  const daysDifference = intervalEnd.diff(intervalStart, 'days')
+  const offset = Math.ceil(daysDifference * 0.1)
+  var newIntervalStart = moment(intervalStart).subtract(offset, 'days')
+  var newIntervalEnd = moment(intervalEnd).add(offset, 'days')
 
   return {
     start: newIntervalStart,
@@ -399,7 +412,8 @@ export const actions = {
 
     commit(SET_IS_FETCHING, false)
   },
-  async [FETCH_TOPO]({ commit, state }) {
+
+  async [FETCH_TOPO3D]({ commit, state }) {
     if (state.modelingError) {
       commit(SET_MODELING_ERROR, null)
     }
@@ -444,7 +458,8 @@ export const actions = {
       commit(SET_TOPO, data)
     }
   },
-  async [FETCH_TOPO2D]({ commit, state }) {
+
+  async [FETCH_TOPO]({ commit, state }) {
     if (state.modelingError) {
       commit(SET_MODELING_ERROR, null)
     }
@@ -463,6 +478,7 @@ export const actions = {
 
     commit(SET_TOPO, data)
   },
+
   async [CALC_MODELING]({ commit, state }) {
     if (state.modelingError) {
       commit(SET_MODELING_ERROR, null)
@@ -498,6 +514,28 @@ export const actions = {
 
     commit(SET_IS_FETCHING_MODELING, false)
     commit(SET_MODELING, data)
+  },
+
+  async [CALC_VECTOR]({ commit, state }, { width = 400, height = 400 } = {}) {
+    if (state.vectorError) {
+      commit(SET_VECTOR_ERROR, null)
+    }
+
+    const data = await client
+      .post('/modeling/tilt-vector/gen-image/', {
+        start: state.startTime.format(DATETIME_FORMAT),
+        end: state.endTime.format(DATETIME_FORMAT),
+        stations: state.selectedStations,
+        width,
+        height,
+      })
+      .then((response) => response.data)
+      .catch((error) => {
+        commit(SET_VECTOR_ERROR, error)
+        return {}
+      })
+
+    commit(SET_VECTOR, data)
   },
 }
 

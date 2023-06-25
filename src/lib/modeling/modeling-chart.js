@@ -1,11 +1,11 @@
 import { getFieldColumns } from '@/utils/series'
-import { defaultToolbox } from '../../components/echarts/chart-options/common/toolbox'
 
 export const SeriesName = Object.freeze({
   TOPO: 'Topo',
   VOLUME: 'Volume',
 })
 
+// Topo limit values. Source: https://bma.cendana15.com/docs/apis/monitoring/topo_profile.html
 export const Y_MAX = 2824.7447935109003
 export const Y_MIN = 950.1204896404302
 export const DX = 13081.475451946999
@@ -50,6 +50,7 @@ export const createSeries = (topo, radius, depth) => {
       symbol: 'none',
       type: 'line',
       lineStyle: { color: 'red' },
+      areaStyle: { color: 'red' },
       xAxisIndex: 0,
       yAxisIndex: 0,
     },
@@ -70,6 +71,8 @@ export const createXAxis = () => {
       name: 'Distance (m)',
       nameLocation: 'center',
       nameGap: 30,
+      min: 0,
+      max: 13100, // Max topo distance (m).
     },
   ]
 
@@ -78,9 +81,14 @@ export const createXAxis = () => {
 
 export const createGridSpec = ({ depth, sizing }) => {
   let width = 250
+  let rightMargin = 5
   switch (sizing) {
+    case 'xs':
+      width = 260
+      rightMargin = 10
+      break
     case 'sm':
-      width = 250
+      width = 400
       break
     case 'md':
       width = 600
@@ -89,13 +97,14 @@ export const createGridSpec = ({ depth, sizing }) => {
       width = 800
       break
   }
-  const margin = 30
+  const leftMargin = 30
+  const margin = leftMargin + rightMargin
   const elev = Y_MAX - depth
   const ymin = elev < 0 ? elev : 0
   const ratio = (Y_MAX - ymin) / DX
 
-  const finalWidth = width + 2 * margin
-  const finalHeight = ratio * width + 2 * margin
+  const finalWidth = width + margin
+  const finalHeight = ratio * width + margin
 
   const centeringOffet = 450 - finalHeight
 
@@ -104,8 +113,8 @@ export const createGridSpec = ({ depth, sizing }) => {
       containLabel: true,
       width: finalWidth,
       height: finalHeight,
-      left: margin,
-      right: margin,
+      left: leftMargin,
+      right: rightMargin,
       top: centeringOffet / 2,
     },
   ]
@@ -115,6 +124,21 @@ export const mediaQuery = ({ depth }) => {
   return [
     {
       query: {
+        maxWidth: 389.98,
+      },
+      option: {
+        grid: createGridSpec({ depth, sizing: 'xs' }),
+        title: {
+          top: 25,
+          textStyle: {
+            fontSize: 13,
+          },
+        },
+      },
+    },
+    {
+      query: {
+        minWidth: 390,
         maxWidth: 575.98,
       },
       option: {
@@ -142,38 +166,53 @@ export const mediaQuery = ({ depth }) => {
         },
       },
     },
+    {
+      query: {
+        minWidth: 768,
+        maxWidth: 991.98,
+      },
+      option: {
+        grid: createGridSpec({ depth, sizing: 'lg' }),
+        title: {
+          top: 25,
+          textStyle: {
+            fontSize: 13,
+          },
+        },
+      },
+    },
   ]
 }
 export const createYAxis = () => {
   const options = [
     {
       gridIndex: 0,
-      name: 'Elevation (m)',
-      nameGap: 50,
+      name: 'Elevation (km)',
+      nameGap: 33,
       nameLocation: 'center',
       scale: false,
       splitLine: { show: false },
       type: 'value',
-      axisLabel: { interval: 0 },
+      axisLabel: { formatter: (v) => (v / 1000).toFixed(1) },
     },
   ]
 
   return options
 }
 
-export const baseChartOptions = ({ depth }) => {
-  return {
-    backgroundColor: '#fff',
-    grid: createGridSpec({ depth, sizing: 'lg' }),
-    toolbox: defaultToolbox,
-    yAxis: createYAxis(),
-  }
-}
-
 export const createModelingChart = ({ topo, radius, depth }) => {
   const options = {
     baseOption: {
-      ...baseChartOptions({ depth }),
+      title: {
+        text: 'Pressure Source Model',
+        left: 'center',
+        textStyle: {
+          fontWeight: 'normal',
+        },
+      },
+      backgroundColor: '#fff',
+      grid: createGridSpec({ depth }),
+      yAxis: createYAxis(),
       series: createSeries(topo, radius, depth),
       xAxis: createXAxis(),
     },
