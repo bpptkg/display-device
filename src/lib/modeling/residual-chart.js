@@ -14,7 +14,31 @@ export const mediaQuery = [
   },
 ]
 
-export const createResidualChart = ({ data }) => {
+export const createResidualChart = ({ modeling }) => {
+  const stations = Object.values(modeling.station || {})
+  const iteration = modeling.iteration || []
+
+  const resData = {}
+  const stationSeries = []
+  stations.forEach((station) => {
+    resData[station.id] = []
+  })
+
+  stations.forEach((station) => {
+    iteration.forEach((item) => {
+      item.displacements.forEach((d) => {
+        resData[d.station].push([item.radius, d.displacement.res])
+      })
+    })
+
+    stationSeries.push({
+      symbol: 'none',
+      type: 'line',
+      name: station.name,
+      data: resData[station.id],
+    })
+  })
+
   const option = {
     title: {
       text: 'Tiltmeter Model',
@@ -42,15 +66,25 @@ export const createResidualChart = ({ data }) => {
     },
     grid: {
       left: '20%',
+      bottom: '20%',
     },
     series: [
       {
-        data: data.map((v) => [v.radius, v.res_total]),
+        data: iteration.map((v) => [v.radius, v.res_total]),
         symbol: 'none',
         type: 'line',
+        name: 'Residual Total',
       },
+      ...stationSeries,
     ],
+    legend: {
+      type: 'scroll',
+      bottom: 0,
+      textStyle: { fontSize: 10 },
+      itemStyle: { symbol: 'none' },
+    },
   }
+
   return {
     baseOption: option,
     media: mediaQuery,
