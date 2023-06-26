@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex flex-wrap">
-    <BCol md="4" lg="3">
+    <BCol md="4" lg="3" class="mb-4">
       <BCard :header="headerName">
-        <BRow class="pt-3">
+        <BRow>
           <BCol sm="4">
             <label><small>Period:</small></label>
           </BCol>
@@ -74,7 +74,9 @@
 
         <BRow>
           <BCol>
-            <label class="mb-0"><small>Stations:</small></label>
+            <div>
+              <small><span class="font-weight-bold">Stations:</span></small>
+            </div>
             <ErrorMessage v-if="stationError">
               <p>Unable to load stations.</p>
               <p>Error: {{ stationError.message }}</p>
@@ -211,39 +213,65 @@
             </div>
           </BCol>
         </BRow>
-      </BCard>
 
-      <BCard header="Result" class="mt-2 mb-2">
-        <div>
-          Radius:
-          {{ modeling.eps && modeling.eps.radius ? modeling.eps.radius : '-' }}
-          m
-        </div>
-        <div>
-          Volume magma:
-          {{
-            Number.isFinite(modeling.volume_magma)
-              ? modeling.volume_magma.toFixed(4)
-              : '-'
-          }}
-          &#x33a5;
-        </div>
-        <div>
-          Residual total:
-          {{
-            modeling.eps && modeling.eps.res_total
-              ? modeling.eps.res_total.toFixed(4)
-              : '-'
-          }}
-        </div>
+        <hr />
+
+        <BRow>
+          <BCol>
+            <div>
+              <small><span class="font-weight-bold">Results:</span></small>
+            </div>
+            <div>
+              <small>
+                Radius:
+                {{
+                  modeling.eps && modeling.eps.radius
+                    ? modeling.eps.radius
+                    : '-'
+                }}
+                m
+              </small>
+            </div>
+            <div>
+              <small>
+                Volume magma:
+                {{
+                  Number.isFinite(modeling.volume_magma)
+                    ? modeling.volume_magma.toFixed(4)
+                    : '-'
+                }}
+                &#x33a5;
+              </small>
+            </div>
+            <div>
+              <small>
+                Residual total:
+                {{
+                  modeling.eps && modeling.eps.res_total
+                    ? modeling.eps.res_total.toFixed(4)
+                    : '-'
+                }}
+              </small>
+            </div>
+          </BCol>
+        </BRow>
       </BCard>
     </BCol>
 
     <BCol class="mb-4">
       <BTabs class="mt-2">
         <BTab title="Chart">
-          <div class="mt-2">
-            <div>
+          <div class="d-flex align-items-center flex-wrap">
+            <BCol md="3" class="pl-0 mb-1 mt-2">
+              <BFormSelect
+                v-model="cstation"
+                :options="stations"
+                @change="handleStationChange"
+              ></BFormSelect>
+            </BCol>
+          </div>
+          <BRow>
+            <BCol ref="tiltContainer" lg="6" class="px-0">
               <ErrorMessage v-if="dataError">
                 <p>Unable to load data.</p>
                 <p>Error: {{ dataError.message }}</p>
@@ -251,38 +279,33 @@
                   <BLink @click="updateData"> Try again </BLink>
                 </p>
               </ErrorMessage>
-              <div v-show="!dataError" class="grid-container">
-                <div
-                  class="grid-item"
-                  v-for="(station, index) in stations"
-                  :key="station.id"
-                >
-                  <ModelingChart
-                    :index="index"
-                    :station="station"
-                    :is-loading="isFetching"
-                    :options="createChartOptions(index)"
-                    :regression-text="createRegressionText(index)"
-                  />
-                </div>
+              <div v-show="!dataError">
+                <DChart ref="chart" :options="chartOptions" class="chart" />
               </div>
-            </div>
+            </BCol>
 
-            <hr />
-
-            <div class="d-flex align-items-center mb-1">
-              <span class="mr-2 small">Radius scale:</span>
-              <div style="width: 72px">
-                <BFormInput
-                  v-model="radiusScale"
-                  type="number"
-                  size="sm"
-                  step="1"
+            <BCol ref="vectorContainer" lg="6" class="px-0">
+              <ErrorMessage v-if="vectorError">
+                <p>Unable to load data.</p>
+                <p>Error: {{ vectorError.message }}</p>
+                <p>
+                  <BLink @click="updateVectorChart"> Try again </BLink>
+                </p>
+              </ErrorMessage>
+              <div v-show="!vectorError">
+                <div v-if="isVectorImageAvailable" v-html="vectorImage"></div>
+                <DChart
+                  v-else
+                  ref="vectorChart"
+                  :options="vectorChartOptions"
+                  class="chart"
                 />
               </div>
-            </div>
+            </BCol>
+          </BRow>
 
-            <div class="h-100">
+          <BRow>
+            <BCol ref="residualContainer" lg="6" class="px-0">
               <ErrorMessage v-if="modelingError">
                 <p>Unable to load data.</p>
                 <p>Error: {{ modelingError.message }}</p>
@@ -290,25 +313,42 @@
                   <BLink @click="fetchTopo"> Try again </BLink>
                 </p>
               </ErrorMessage>
-              <div v-show="!modelingError" class="h-100">
+              <div v-show="!modelingError">
+                <DChart
+                  ref="residualChart"
+                  :options="residualChartOptions"
+                  class="chart"
+                />
+              </div>
+            </BCol>
+
+            <BCol ref="modelingContainer" lg="6" class="px-0">
+              <ErrorMessage v-if="modelingError">
+                <p>Unable to load data.</p>
+                <p>Error: {{ modelingError.message }}</p>
+                <p>
+                  <BLink @click="fetchTopo"> Try again </BLink>
+                </p>
+              </ErrorMessage>
+              <div v-show="!modelingError">
                 <DChart
                   ref="modelingChart"
                   :options="modelingChartOptions"
-                  class="modeling-chart"
-                  manual-update
+                  class="chart"
                 />
-                <DNote>
-                  <div>
-                    &mdash; Topography data is obtained from Merapi DEM model
-                    2010.
-                  </div>
-                </DNote>
               </div>
-            </div>
-          </div>
+            </BCol>
+          </BRow>
         </BTab>
         <BTab title="Data">
-          <BTable striped hover small :fields="dataFields" :items="iteration">
+          <BTable
+            striped
+            hover
+            small
+            responsive
+            :fields="dataFields"
+            :items="iteration"
+          >
             <template #cell(actions)="row">
               <BLink @click="showIterationDetails(row.item)"> Details </BLink>
             </template>
@@ -319,6 +359,7 @@
               striped
               hover
               small
+              responsive
               :fields="detailFields"
               :items="iterationDisplacements"
             >
@@ -344,6 +385,7 @@ import {
   BLink,
   BFormGroup,
   BFormCheckbox,
+  BFormSelect,
   BSpinner,
   BModal,
   BTable,
@@ -352,12 +394,12 @@ import {
 import { VBTooltip } from 'bootstrap-vue'
 import DChart from '../../components/echarts/chart/DChart'
 import RangeSelector from '../../components/range-selector'
-import DNote from '../../components/base/note/DNote'
 import { createTiltChart } from './tilt-chart'
-import { createModelingChart } from './modeling3d-chart'
+import { createModelingChart } from './modeling-chart'
 import { getSeriesByIndex } from '../../utils/series'
 import ErrorMessage from '@/components/error-message'
-import ModelingChart from './ModelingChart'
+import { createVectorChart } from './vector-chart'
+import { createResidualChart } from './residual-chart'
 
 import {
   // Mutations.
@@ -382,6 +424,7 @@ import {
   FETCH_TOPO,
   CALC_LINREGRESS,
   CALC_MODELING,
+  CALC_VECTOR,
   // Utils.
   calculatePeriod,
   addTimeInterval,
@@ -405,10 +448,9 @@ export default {
     BTable,
     BTabs,
     DChart,
-    DNote,
     ErrorMessage,
-    ModelingChart,
     RangeSelector,
+    BFormSelect,
   },
   props: {
     type: String,
@@ -542,6 +584,12 @@ export default {
       linregressError(state) {
         return state.modeling[this.type].linregressError
       },
+      vectorImage(state) {
+        return state.modeling[this.type].vector.image || ''
+      },
+      vectorError(state) {
+        return state.modeling[this.type].vectorError
+      },
     }),
     cSelectedStations: {
       get() {
@@ -616,34 +664,10 @@ export default {
       },
     },
     cRegressionText() {
-      const format = (value) => {
-        return Number.isFinite(value) ? value.toFixed(4) : '-'
-      }
       const index = this.stations.findIndex(
         (station) => station.id === this.station
       )
-      const reg = this.linregress.regression
-        ? this.linregress.regression[index]
-        : null
-
-      const r = reg ? reg.linreg : null
-
-      let x, z
-      if (r) {
-        x = `
-        X: m=${format(r.x.m)} c=${format(r.x.c)} r_value=${format(
-          r.x.r_value
-        )} std_err=${format(r.x.std_err)}`
-
-        z = `Z: m=${format(r.z.m)} c=${format(r.z.c)} r_value=${format(
-          r.z.r_value
-        )} std_err=${format(r.z.std_err)}`
-      } else {
-        x = ''
-        z = ''
-      }
-
-      return { x, z }
+      return this.createRegressionText(index)
     },
     namespace() {
       return `modeling/${this.type}`
@@ -657,6 +681,7 @@ export default {
       )
       const station = this.stations[index]
       const { start, end } = addTimeInterval(this.startTime, this.endTime)
+      const regtext = this.createRegressionText(index)
 
       return createTiltChart({
         data: getSeriesByIndex(this.data, index),
@@ -676,6 +701,8 @@ export default {
           : [],
         startTime: start,
         endTime: end,
+        xtext: regtext.x,
+        ztext: regtext.z,
       })
     },
     matchedRadius() {
@@ -699,6 +726,20 @@ export default {
       return this.stations.filter((station) => {
         return selectedStations.includes(station.id)
       })
+    },
+    vectorChartOptions() {
+      return createVectorChart()
+    },
+    residualChartOptions() {
+      return createResidualChart({
+        modeling: this.modeling,
+      })
+    },
+    isVectorImageAvailable() {
+      if (this.vectorImage) {
+        return true
+      }
+      return false
     },
   },
   watch: {
@@ -783,6 +824,9 @@ export default {
       calcModeling(dispatch) {
         return dispatch(this.namespace + '/' + CALC_MODELING)
       },
+      calcVector(dispatch, payload = {}) {
+        return dispatch(this.namespace + '/' + CALC_VECTOR, payload)
+      },
       fetchData(dispatch) {
         return dispatch(this.namespace + '/' + FETCH_DATA)
       },
@@ -817,10 +861,27 @@ export default {
     updateData() {
       this.fetchData()
     },
+    getVectorContainerSize() {
+      const width = this.$refs.vectorContainer.offsetWidth
+      const height = this.$refs.vectorContainer.offsetHeight
+      return {
+        width,
+        height,
+      }
+    },
+    getModelingContainerSize() {
+      const width = this.$refs.modelingContainer.offsetWidth
+      const height = this.$refs.modelingContainer.offsetHeight
+      return {
+        width,
+        height,
+      }
+    },
     runLinregress() {
       this.calcLinregress().then(() => {
         this.updateData()
       })
+      this.updateVectorChart()
     },
     runModeling() {
       this.calcModeling().finally(() => {
@@ -837,6 +898,10 @@ export default {
       chart.showLoading()
       chart.mergeOptions(this.modelingChartOptions)
       chart.hideLoading()
+    },
+    updateVectorChart() {
+      const size = this.getVectorContainerSize()
+      this.calcVector(size)
     },
     showIterationDetails(item) {
       const disp = item.displacements
@@ -891,11 +956,11 @@ export default {
 
       let x, z
       if (r) {
-        x = `m=${format(r.x.m)} r=${format(r.x.r_value)} err=${format(
+        x = `m=${format(r.x.m)} r2=${format(r.x.r_value)} err=${format(
           r.x.std_err
         )}`
 
-        z = `m=${format(r.z.m)} r=${format(r.z.r_value)} err=${format(
+        z = `m=${format(r.z.m)} r2=${format(r.z.r_value)} err=${format(
           r.z.std_err
         )}`
       } else {
@@ -923,11 +988,24 @@ export default {
 .grid-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
 }
+
+/* Create four equal columns */
 .grid-item {
-  flex: 0 0 auto;
+  flex: 25%;
+  padding: 10px;
+}
+
+@media screen and (max-width: 992px) {
+  .grid-item {
+    flex: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .grid-container {
+    flex-direction: column;
+  }
 }
 
 .hand-cursor {
