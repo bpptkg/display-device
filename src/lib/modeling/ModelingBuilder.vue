@@ -341,7 +341,14 @@
           </BRow>
         </BTab>
         <BTab title="Data">
-          <BTable striped hover small :fields="dataFields" :items="iteration">
+          <BTable
+            striped
+            hover
+            small
+            responsive
+            :fields="dataFields"
+            :items="iteration"
+          >
             <template #cell(actions)="row">
               <BLink @click="showIterationDetails(row.item)"> Details </BLink>
             </template>
@@ -352,6 +359,7 @@
               striped
               hover
               small
+              responsive
               :fields="detailFields"
               :items="iterationDisplacements"
             >
@@ -724,7 +732,7 @@ export default {
     },
     residualChartOptions() {
       return createResidualChart({
-        data: this.iteration,
+        modeling: this.modeling,
       })
     },
     isVectorImageAvailable() {
