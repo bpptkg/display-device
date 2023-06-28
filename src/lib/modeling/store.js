@@ -275,7 +275,8 @@ export const CALC_VECTOR = 'calcVector'
 
 export function addTimeInterval(intervalStart, intervalEnd) {
   const daysDifference = intervalEnd.diff(intervalStart, 'days')
-  const offset = Math.ceil(daysDifference * 0.1)
+  const offsetRound = Math.ceil(daysDifference * 0.1)
+  const offset = offsetRound > 1 ? offsetRound : offsetRound + 1
   var newIntervalStart = moment(intervalStart).subtract(offset, 'days')
   var newIntervalEnd = moment(intervalEnd).add(offset, 'days')
 
