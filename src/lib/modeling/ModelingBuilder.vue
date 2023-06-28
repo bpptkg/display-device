@@ -400,6 +400,7 @@ import { getSeriesByIndex } from '../../utils/series'
 import ErrorMessage from '@/components/error-message'
 import { createVectorChart } from './vector-chart'
 import { createResidualChart } from './residual-chart'
+import { DateRangeTypes } from '../../constants/date'
 
 import {
   // Mutations.
@@ -681,7 +682,11 @@ export default {
       )
       const station = this.stations[index]
       const { start, end } = addTimeInterval(this.startTime, this.endTime)
-      const regtext = this.createRegressionText(index)
+
+      const regIndex = this.selectedStations.findIndex(
+        (station_id) => station_id === this.station
+      )
+      const regtext = this.createRegressionText(regIndex)
 
       return createTiltChart({
         data: getSeriesByIndex(this.data, index),
@@ -834,11 +839,16 @@ export default {
         return dispatch(this.namespace + '/' + FETCH_TOPO)
       },
     }),
-    onPeriodChange(period) {
+    onPeriodChange(period, { startTime, endTime }) {
       this.setPeriod(period)
-      const { startTime, endTime } = calculatePeriod(period)
-      this.setStartTime(startTime)
-      this.setEndTime(endTime)
+      if (period.type === DateRangeTypes.CUSTOM) {
+        this.setStartTime(startTime)
+        this.setEndTime(endTime)
+      } else {
+        const { startTime, endTime } = calculatePeriod(period)
+        this.setStartTime(startTime)
+        this.setEndTime(endTime)
+      }
       this.updateData()
     },
     getUx(index) {
