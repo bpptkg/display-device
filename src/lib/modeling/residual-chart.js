@@ -14,7 +14,7 @@ export const mediaQuery = [
   },
 ]
 
-export const createResidualChart = ({ modeling }) => {
+export const createResidualChart = ({ modeling, field }) => {
   const stations = Object.values(modeling.station || {})
   const iteration = modeling.iteration || []
 
@@ -31,13 +31,27 @@ export const createResidualChart = ({ modeling }) => {
       })
     })
 
-    stationSeries.push({
-      symbol: 'none',
-      type: 'line',
-      name: station.name,
-      data: resData[station.id],
-    })
+    if (field === station.id) {
+      stationSeries.push({
+        symbol: 'none',
+        type: 'line',
+        name: station.name,
+        data: resData[station.id],
+      })
+    }
   })
+
+  let totalSeries = []
+  if (field === 'total') {
+    totalSeries = [
+      {
+        data: iteration.map((v) => [v.radius, v.res_total]),
+        symbol: 'none',
+        type: 'line',
+        name: 'Residual Total',
+      },
+    ]
+  }
 
   const option = {
     title: {
@@ -68,15 +82,7 @@ export const createResidualChart = ({ modeling }) => {
       left: '20%',
       bottom: '20%',
     },
-    series: [
-      {
-        data: iteration.map((v) => [v.radius, v.res_total]),
-        symbol: 'none',
-        type: 'line',
-        name: 'Residual Total',
-      },
-      ...stationSeries,
-    ],
+    series: [...totalSeries, ...stationSeries],
     legend: {
       type: 'scroll',
       bottom: 0,

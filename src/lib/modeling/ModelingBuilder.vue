@@ -1,275 +1,280 @@
 <template>
   <div class="d-flex flex-wrap">
     <BCol md="4" lg="3" class="mb-4">
-      <BCard :header="headerName">
-        <BRow>
-          <BCol sm="4">
-            <label><small>Period:</small></label>
-          </BCol>
-          <BCol>
-            <div class="d-flex flex-wrap align-items-center">
-              <RangeSelector
-                ref="range-selector"
-                size="sm"
-                custom-enabled
-                hide-period-label
-                :selected="period"
-                :items="periods"
-                :max-custom-duration="maxCustomDuration"
-                @period-selected="onPeriodChange"
-              />
-              <BIcon
-                v-b-tooltip.hover
-                class="ml-2 hand-cursor"
-                :title="createIntervalText(startTime, endTime)"
-                icon="info-circle"
-              ></BIcon>
-            </div>
-          </BCol>
-        </BRow>
+      <BCard :header="headerName" class="panel">
+        <ScrollWrapper>
+          <BRow>
+            <BCol sm="4">
+              <label><small>Period:</small></label>
+            </BCol>
+            <BCol>
+              <div class="d-flex flex-wrap align-items-center">
+                <RangeSelector
+                  ref="range-selector"
+                  size="sm"
+                  custom-enabled
+                  hide-period-label
+                  :selected="period"
+                  :items="periods"
+                  :max-custom-duration="maxCustomDuration"
+                  @period-selected="onPeriodChange"
+                />
+                <BIcon
+                  v-b-tooltip.hover
+                  class="ml-2 hand-cursor"
+                  :title="createIntervalText(startTime, endTime)"
+                  icon="info-circle"
+                ></BIcon>
+              </div>
+            </BCol>
+          </BRow>
 
-        <hr />
+          <hr />
 
-        <BRow class="my-1">
-          <BCol sm="4">
-            <label><small>Depth:</small></label>
-          </BCol>
-          <BCol>
-            <BFormInput v-model="cdepth" type="number" size="sm" />
-          </BCol>
-          <BCol class="px-0"><small>m</small></BCol>
-        </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Depth:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cdepth" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>m</small></BCol>
+          </BRow>
 
-        <BRow class="my-1">
-          <BCol sm="4">
-            <label><small>Radius:</small></label>
-          </BCol>
-          <BCol>
-            <BFormInput v-model="cradius" type="number" size="sm" />
-          </BCol>
-          <BCol class="px-0"><small>m</small></BCol>
-        </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Radius:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cradius" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>m</small></BCol>
+          </BRow>
 
-        <BRow class="my-1">
-          <BCol sm="4">
-            <label><small>Step:</small></label>
-          </BCol>
-          <BCol>
-            <BFormInput v-model="cstep" type="number" size="sm" />
-          </BCol>
-          <BCol class="px-0"><small>m</small></BCol>
-        </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Step:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cstep" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>m</small></BCol>
+          </BRow>
 
-        <BRow class="my-1">
-          <BCol sm="4">
-            <label><small>Max iteration:</small></label>
-          </BCol>
-          <BCol>
-            <BFormInput v-model="cmaxIteration" type="number" size="sm" />
-          </BCol>
-          <BCol class="px-0"><small></small></BCol>
-        </BRow>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Max iteration:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cmaxIteration" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small></small></BCol>
+          </BRow>
 
-        <hr />
+          <hr />
 
-        <BRow>
-          <BCol>
-            <div>
-              <small><span class="font-weight-bold">Stations:</span></small>
-            </div>
-            <ErrorMessage v-if="stationError">
-              <p>Unable to load stations.</p>
-              <p>Error: {{ stationError.message }}</p>
-              <p>
-                <BLink @click="fetchStations"> Try again </BLink>
-              </p>
-            </ErrorMessage>
-            <BFormGroup v-show="!stationError">
-              <table>
-                <tr>
-                  <th><small>Name</small></th>
-                  <th><small>Ux</small></th>
-                  <th><small>Uz</small></th>
-                </tr>
-                <tr v-for="(station, index) in stations" :key="index">
-                  <td>
-                    <BFormCheckbox
-                      v-model="cSelectedStations"
-                      :value="station.id"
-                      :name="station.name"
-                      inline
-                      ><small>{{ station.name }}</small></BFormCheckbox
-                    >
-                  </td>
-                  <td>
-                    <BFormInput
-                      :value="getUx(index)"
-                      @change="(value) => handleUxChange(value, index)"
-                      type="number"
-                      size="sm"
-                    />
-                  </td>
-                  <td>
-                    <BFormInput
-                      :value="getUz(index)"
-                      @change="(value) => handleUzChange(value, index)"
-                      type="number"
-                      size="sm"
-                    />
-                  </td>
-                </tr>
-              </table>
-            </BFormGroup>
-          </BCol>
-        </BRow>
+          <BRow>
+            <BCol>
+              <div>
+                <small><span class="font-weight-bold">Stations:</span></small>
+              </div>
+              <ErrorMessage v-if="stationError">
+                <p>Unable to load stations.</p>
+                <p>Error: {{ stationError.message }}</p>
+                <p>
+                  <BLink @click="fetchStations"> Try again </BLink>
+                </p>
+              </ErrorMessage>
+              <BFormGroup v-show="!stationError">
+                <table>
+                  <tr>
+                    <th><small>Name</small></th>
+                    <th><small>Ux</small></th>
+                    <th><small>Uz</small></th>
+                  </tr>
+                  <tr v-for="(station, index) in stations" :key="index">
+                    <td>
+                      <BFormCheckbox
+                        v-model="cSelectedStations"
+                        :value="station.id"
+                        :name="station.name"
+                        inline
+                        ><small>{{ station.name }}</small></BFormCheckbox
+                      >
+                    </td>
+                    <td>
+                      <BFormInput
+                        :value="getUx(index)"
+                        @change="(value) => handleUxChange(value, index)"
+                        type="number"
+                        size="sm"
+                      />
+                    </td>
+                    <td>
+                      <BFormInput
+                        :value="getUz(index)"
+                        @change="(value) => handleUzChange(value, index)"
+                        type="number"
+                        size="sm"
+                      />
+                    </td>
+                  </tr>
+                </table>
+              </BFormGroup>
+            </BCol>
+          </BRow>
 
-        <BRow>
-          <BCol>
-            <div class="d-flex h-100 justify-content-end">
-              <BButton @click="runLinregress" variant="outline-primary"
-                ><BSpinner
-                  v-if="isFetchingLinregress"
-                  small
-                  label="Loading..."
-                  class="mr-1"
-                ></BSpinner
-                >Run Linregress</BButton
-              >
-            </div>
-          </BCol>
-        </BRow>
+          <BRow>
+            <BCol>
+              <div class="d-flex h-100 justify-content-end">
+                <BButton @click="runLinregress" pill variant="outline-primary"
+                  ><BSpinner
+                    v-if="isFetchingLinregress"
+                    small
+                    label="Loading..."
+                    class="mr-1"
+                  ></BSpinner
+                  >Run Linregress</BButton
+                >
+              </div>
+            </BCol>
+          </BRow>
 
-        <hr />
+          <hr />
 
-        <BRow class="my-1">
-          <BCol sm="4">
-            <label class="mr-1"><small>G </small></label>
-            <small>
-              <BIcon
-                v-b-tooltip.hover
-                title="Shear modulus"
-                icon="info-circle"
-                class="hand-cursor"
-              ></BIcon>
-            </small>
-          </BCol>
-          <BCol>
-            <BFormInput v-model="cG" type="number" size="sm" />
-          </BCol>
-          <BCol class="px-0"><small>GPa</small></BCol>
-        </BRow>
-
-        <BRow class="my-1">
-          <BCol sm="4">
-            <label class="mr-1"><small>&Delta;P </small></label>
-            <small>
-              <BIcon
-                v-b-tooltip.hover
-                title="Source overpressure"
-                icon="info-circle"
-                class="hand-cursor"
-              ></BIcon>
-            </small>
-          </BCol>
-          <BCol>
-            <BFormInput v-model="cdP" type="number" size="sm" />
-          </BCol>
-          <BCol class="px-0"><small>GPa</small></BCol>
-        </BRow>
-
-        <BRow class="my-1">
-          <BCol sm="4">
-            <label class="mr-1"><small>&nu;</small></label>
-            <small>
-              <BIcon
-                v-b-tooltip.hover
-                title="Possion's ratio"
-                icon="info-circle"
-                class="hand-cursor"
-              ></BIcon>
-            </small>
-          </BCol>
-          <BCol>
-            <BFormInput v-model="cv" type="number" size="sm" />
-          </BCol>
-          <BCol class="px-0"><small></small></BCol>
-        </BRow>
-
-        <BRow class="mt-3">
-          <BCol>
-            <div class="d-flex h-100 justify-content-end">
-              <BButton
-                @click="runModeling"
-                variant="outline-primary"
-                class="ml-2"
-                ><BSpinner
-                  v-if="isFetchingModeling"
-                  small
-                  label="Loading..."
-                  class="mr-1"
-                ></BSpinner
-                >Run Modeling</BButton
-              >
-            </div>
-          </BCol>
-        </BRow>
-
-        <hr />
-
-        <BRow>
-          <BCol>
-            <div>
-              <small><span class="font-weight-bold">Results:</span></small>
-            </div>
-            <div>
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label class="mr-1"><small>G </small></label>
               <small>
-                Radius:
-                {{
-                  modeling.eps && modeling.eps.radius
-                    ? modeling.eps.radius
-                    : '-'
-                }}
-                m
+                <BIcon
+                  v-b-tooltip.hover
+                  title="Shear modulus"
+                  icon="info-circle"
+                  class="hand-cursor"
+                ></BIcon>
               </small>
-            </div>
-            <div>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cG" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>GPa</small></BCol>
+          </BRow>
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label class="mr-1"><small>&Delta;P </small></label>
               <small>
-                Volume magma:
-                {{
-                  Number.isFinite(modeling.volume_magma)
-                    ? modeling.volume_magma.toFixed(4)
-                    : '-'
-                }}
-                &#x33a5;
+                <BIcon
+                  v-b-tooltip.hover
+                  title="Source overpressure"
+                  icon="info-circle"
+                  class="hand-cursor"
+                ></BIcon>
               </small>
-            </div>
-            <div>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cdP" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>GPa</small></BCol>
+          </BRow>
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label class="mr-1"><small>&nu;</small></label>
               <small>
-                Residual total:
-                {{
-                  modeling.eps && modeling.eps.res_total
-                    ? modeling.eps.res_total.toFixed(4)
-                    : '-'
-                }}
+                <BIcon
+                  v-b-tooltip.hover
+                  title="Possion's ratio"
+                  icon="info-circle"
+                  class="hand-cursor"
+                ></BIcon>
               </small>
-            </div>
-          </BCol>
-        </BRow>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cv" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small></small></BCol>
+          </BRow>
+
+          <BRow class="mt-3">
+            <BCol>
+              <div class="d-flex h-100 justify-content-end">
+                <BButton
+                  @click="runModeling"
+                  pill
+                  variant="outline-primary"
+                  class="ml-2"
+                  ><BSpinner
+                    v-if="isFetchingModeling"
+                    small
+                    label="Loading..."
+                    class="mr-1"
+                  ></BSpinner
+                  >Run Modeling</BButton
+                >
+              </div>
+            </BCol>
+          </BRow>
+
+          <hr />
+
+          <BRow>
+            <BCol>
+              <div>
+                <small><span class="font-weight-bold">Results:</span></small>
+              </div>
+              <div>
+                <small>
+                  Radius:
+                  {{
+                    modeling.eps && modeling.eps.radius
+                      ? modeling.eps.radius
+                      : '-'
+                  }}
+                  m
+                </small>
+              </div>
+              <div>
+                <small>
+                  Volume magma:
+                  {{
+                    Number.isFinite(modeling.volume_magma)
+                      ? modeling.volume_magma.toFixed(4)
+                      : '-'
+                  }}
+                  &#x33a5;
+                </small>
+              </div>
+              <div>
+                <small>
+                  Residual total:
+                  {{
+                    modeling.eps && modeling.eps.res_total
+                      ? modeling.eps.res_total.toFixed(4)
+                      : '-'
+                  }}
+                </small>
+              </div>
+            </BCol>
+          </BRow>
+        </ScrollWrapper>
       </BCard>
     </BCol>
 
     <BCol class="mb-4">
-      <BTabs class="mt-2">
+      <BTabs>
         <BTab title="Chart">
-          <div class="d-flex align-items-center flex-wrap">
-            <BCol md="3" class="pl-0 mb-1 mt-2">
+          <BRow class="my-2">
+            <BCol sm="3">
               <BFormSelect
+                size="sm"
                 v-model="cstation"
                 :options="stations"
                 @change="handleStationChange"
               ></BFormSelect>
             </BCol>
-          </div>
+          </BRow>
+
           <BRow>
             <BCol ref="tiltContainer" lg="6" class="px-0">
               <ErrorMessage v-if="dataError">
@@ -293,7 +298,11 @@
                 </p>
               </ErrorMessage>
               <div v-show="!vectorError">
-                <div v-if="isVectorImageAvailable" v-html="vectorImage"></div>
+                <div
+                  v-if="isVectorImageAvailable"
+                  class="d-flex justify-content-center"
+                  v-html="vectorImage"
+                ></div>
                 <DChart
                   v-else
                   ref="vectorChart"
@@ -301,6 +310,16 @@
                   class="chart"
                 />
               </div>
+            </BCol>
+          </BRow>
+
+          <BRow>
+            <BCol sm="3">
+              <BFormSelect
+                size="sm"
+                v-model="residualField"
+                :options="residualOptions"
+              ></BFormSelect>
             </BCol>
           </BRow>
 
@@ -339,7 +358,25 @@
               </div>
             </BCol>
           </BRow>
+
+          <hr />
+
+          <BRow>
+            <BCol>
+              <DNote
+                >&mdash; Topography profile data is obtained from Merapi DEM
+                model 2010. Modeling API documentation and list of stations
+                reference can be found in
+                <a
+                  href="https://bma.cendana15.com/docs/apis/modeling/index.html"
+                  target="_blank"
+                  >here</a
+                >.
+              </DNote>
+            </BCol>
+          </BRow>
         </BTab>
+
         <BTab title="Data">
           <BTable
             striped
@@ -375,32 +412,34 @@
 import { debounce } from 'lodash'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import {
-  BCol,
-  BCard,
-  BRow,
-  BFormInput,
   BButton,
-  BTab,
-  BTabs,
-  BLink,
-  BFormGroup,
+  BCard,
+  BCol,
   BFormCheckbox,
+  BFormGroup,
+  BFormInput,
   BFormSelect,
-  BSpinner,
-  BModal,
-  BTable,
   BIcon,
+  BLink,
+  BModal,
+  BRow,
+  BSpinner,
+  BTab,
+  BTable,
+  BTabs,
 } from 'bootstrap-vue'
 import { VBTooltip } from 'bootstrap-vue'
-import DChart from '../../components/echarts/chart/DChart'
-import RangeSelector from '../../components/range-selector'
-import { createTiltChart } from './tilt-chart'
 import { createModelingChart } from './modeling-chart'
-import { getSeriesByIndex } from '../../utils/series'
-import ErrorMessage from '@/components/error-message'
-import { createVectorChart } from './vector-chart'
 import { createResidualChart } from './residual-chart'
+import { createTiltChart } from './tilt-chart'
+import { createVectorChart } from './vector-chart'
 import { DateRangeTypes } from '../../constants/date'
+import { getSeriesByIndex } from '../../utils/series'
+import DChart from '../../components/echarts/chart/DChart'
+import DNote from '../../components/base/note/DNote'
+import ErrorMessage from '@/components/error-message'
+import RangeSelector from '../../components/range-selector'
+import ScrollWrapper from './ScrollWrapper'
 
 import {
   // Mutations.
@@ -440,6 +479,7 @@ export default {
     BFormCheckbox,
     BFormGroup,
     BFormInput,
+    BFormSelect,
     BIcon,
     BLink,
     BModal,
@@ -449,11 +489,13 @@ export default {
     BTable,
     BTabs,
     DChart,
+    DNote,
     ErrorMessage,
     RangeSelector,
-    BFormSelect,
+    ScrollWrapper,
   },
   props: {
+    // Modeling data type.
     type: String,
   },
   directives: {
@@ -461,6 +503,7 @@ export default {
   },
   data() {
     return {
+      residualField: 'total',
       maxCustomDuration: {
         count: 5,
         type: 'years',
@@ -664,12 +707,6 @@ export default {
         this.setStationToPlot(value)
       },
     },
-    cRegressionText() {
-      const index = this.stations.findIndex(
-        (station) => station.id === this.station
-      )
-      return this.createRegressionText(index)
-    },
     namespace() {
       return `modeling/${this.type}`
     },
@@ -738,6 +775,7 @@ export default {
     residualChartOptions() {
       return createResidualChart({
         modeling: this.modeling,
+        field: this.residualField,
       })
     },
     isVectorImageAvailable() {
@@ -745,6 +783,9 @@ export default {
         return true
       }
       return false
+    },
+    residualOptions() {
+      return [{ value: 'total', text: 'Residual Total' }, ...this.stations]
     },
   },
   watch: {
@@ -761,7 +802,6 @@ export default {
       debounce(this.refreshModelingChart, 200)()
     },
   },
-  created() {},
   mounted() {
     this.fetchStations().then(() => {
       this.$nextTick(() => {
@@ -879,14 +919,6 @@ export default {
         height,
       }
     },
-    getModelingContainerSize() {
-      const width = this.$refs.modelingContainer.offsetWidth
-      const height = this.$refs.modelingContainer.offsetHeight
-      return {
-        width,
-        height,
-      }
-    },
     runLinregress() {
       this.calcLinregress().then(() => {
         this.updateData()
@@ -925,33 +957,6 @@ export default {
         }
       })
       this.$refs.dialog.show()
-    },
-    createChartOptions(index) {
-      const station = this.stations[index]
-      const { start, end } = addTimeInterval(this.startTime, this.endTime)
-      const regText = this.createRegressionText(index)
-
-      return createTiltChart({
-        data: getSeriesByIndex(this.data, index),
-        xreg: station
-          ? station.linreg_point
-            ? station.linreg_point.x
-              ? station.linreg_point.x
-              : []
-            : []
-          : [],
-        zreg: station
-          ? station.linreg_point
-            ? station.linreg_point.z
-              ? station.linreg_point.z
-              : []
-            : []
-          : [],
-        xtext: regText.x,
-        ztext: regText.z,
-        startTime: start,
-        endTime: end,
-      })
     },
     createRegressionText(index) {
       const format = (value) => {
@@ -995,30 +1000,19 @@ export default {
   width: 100%;
 }
 
-.grid-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Create four equal columns */
-.grid-item {
-  flex: 25%;
-  padding: 10px;
-}
-
-@media screen and (max-width: 992px) {
-  .grid-item {
-    flex: 50%;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .grid-container {
-    flex-direction: column;
-  }
-}
-
 .hand-cursor {
   cursor: pointer;
+}
+
+.panel {
+  height: 600px;
+  position: sticky;
+  top: 60px;
+}
+
+@media (max-width: 767.98px) {
+  .panel {
+    position: static;
+  }
 }
 </style>
