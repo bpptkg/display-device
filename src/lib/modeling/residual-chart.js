@@ -40,13 +40,15 @@ export const createResidualChart = ({ modeling, field }) => {
       })
     })
 
-    const station = modeling.station[field]
-    stationSeries.push({
-      symbol: 'none',
-      type: 'line',
-      name: station.name,
-      data: resData[station.id],
-    })
+    if (field in modeling.station) {
+      const station = modeling.station[field]
+      stationSeries.push({
+        symbol: 'none',
+        type: 'line',
+        name: station.name,
+        data: resData[station.id],
+      })
+    }
   }
 
   const option = {
