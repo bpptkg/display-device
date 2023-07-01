@@ -18,39 +18,35 @@ export const createResidualChart = ({ modeling, field }) => {
   const stations = Object.values(modeling.station || {})
   const iteration = modeling.iteration || []
 
-  const resData = {}
   const stationSeries = []
-  stations.forEach((station) => {
-    resData[station.id] = []
-  })
+  const totalSeries = []
 
-  stations.forEach((station) => {
+  if (field === 'total') {
+    totalSeries.push({
+      data: iteration.map((v) => [v.radius, v.res_total]),
+      symbol: 'none',
+      type: 'line',
+      name: 'Residual Total',
+    })
+  } else {
+    const resData = {}
+    stations.forEach((station) => {
+      resData[station.id] = []
+    })
+
     iteration.forEach((item) => {
       item.displacements.forEach((d) => {
         resData[d.station].push([item.radius, d.displacement.res])
       })
     })
 
-    if (field === station.id) {
-      stationSeries.push({
-        symbol: 'none',
-        type: 'line',
-        name: station.name,
-        data: resData[station.id],
-      })
-    }
-  })
-
-  let totalSeries = []
-  if (field === 'total') {
-    totalSeries = [
-      {
-        data: iteration.map((v) => [v.radius, v.res_total]),
-        symbol: 'none',
-        type: 'line',
-        name: 'Residual Total',
-      },
-    ]
+    const station = modeling.station[field]
+    stationSeries.push({
+      symbol: 'none',
+      type: 'line',
+      name: station.name,
+      data: resData[station.id],
+    })
   }
 
   const option = {
