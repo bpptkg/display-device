@@ -1,3 +1,5 @@
+import { createCircleTemplate } from '@/utils/series'
+
 export const mediaQuery = [
   {
     query: {
@@ -61,7 +63,7 @@ export const createResidualChart = ({ modeling, field }) => {
       },
     },
     xAxis: {
-      type: 'value',
+      type: 'log',
       scale: true,
       name: 'Radius (m)',
       nameLocation: 'center',
@@ -69,8 +71,8 @@ export const createResidualChart = ({ modeling, field }) => {
       splitLine: { show: false },
     },
     yAxis: {
-      type: 'value',
-      scale: false,
+      type: 'log',
+      scale: true,
       name: 'Residual',
       nameLocation: 'center',
       nameGap: 50,
@@ -86,6 +88,27 @@ export const createResidualChart = ({ modeling, field }) => {
       bottom: 0,
       textStyle: { fontSize: 10 },
       itemStyle: { symbol: 'none' },
+    },
+    tooltip: {
+      trigger: 'axis',
+      formatter: (params) => {
+        const template = []
+
+        params.forEach((param, index) => {
+          const { seriesName, value, color } = param
+
+          if (index === 0) {
+            template.push(`<div>Radius: ${value[0]} m</div>`)
+          }
+
+          const valueFormatted = value[1].toFixed(4)
+          template.push(`
+          <div>${createCircleTemplate(color)}
+          ${seriesName}: ${valueFormatted}</div>`)
+        })
+
+        return template.join('')
+      },
     },
   }
 

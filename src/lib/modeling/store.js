@@ -71,9 +71,9 @@ export const initialState = {
   modelingError: null,
   dataType: 'tilt',
   depth: 2000,
-  initialRadius: 25,
-  step: 25,
-  maxIteration: 100,
+  initialRadius: 1,
+  step: 1,
+  maxIteration: 1000,
   stations: [],
   selectedStations: [],
   G: 1, // Shear modulus (GPa)
@@ -272,6 +272,8 @@ export const FETCH_TOPO2D = 'fetchTopo2D'
 export const FETCH_TOPO3D = 'fetchTopo3D'
 export const CALC_MODELING = 'calcModeling'
 export const CALC_VECTOR = 'calcVector'
+export const SELECT_ALL_STATIONS = 'selectAllStations'
+export const UNSELECT_ALL_STATIONS = 'unselectAllStations'
 
 export function addTimeInterval(intervalStart, intervalEnd) {
   const daysDifference = intervalEnd.diff(intervalStart, 'days')
@@ -537,6 +539,17 @@ export const actions = {
       })
 
     commit(SET_VECTOR, data)
+  },
+
+  async [SELECT_ALL_STATIONS]({ commit, state }) {
+    commit(
+      SET_SELECTED_STATIONS,
+      state.stations.map((station) => station.id)
+    )
+  },
+
+  async [UNSELECT_ALL_STATIONS]({ commit }) {
+    commit(SET_SELECTED_STATIONS, [])
   },
 }
 

@@ -4,76 +4,6 @@
       <BCard :header="headerName" class="panel">
         <ScrollWrapper>
           <BRow>
-            <BCol sm="4">
-              <label><small>Period:</small></label>
-            </BCol>
-            <BCol>
-              <div class="d-flex flex-wrap align-items-center">
-                <RangeSelector
-                  ref="range-selector"
-                  size="sm"
-                  custom-enabled
-                  hide-period-label
-                  :selected="period"
-                  :items="periods"
-                  :max-custom-duration="maxCustomDuration"
-                  @period-selected="onPeriodChange"
-                />
-                <BIcon
-                  v-b-tooltip.hover
-                  class="ml-2 hand-cursor"
-                  :title="createIntervalText(startTime, endTime)"
-                  icon="info-circle"
-                ></BIcon>
-              </div>
-            </BCol>
-          </BRow>
-
-          <hr />
-
-          <BRow class="my-1">
-            <BCol sm="4">
-              <label><small>Depth:</small></label>
-            </BCol>
-            <BCol>
-              <BFormInput v-model="cdepth" type="number" size="sm" />
-            </BCol>
-            <BCol class="px-0"><small>m</small></BCol>
-          </BRow>
-
-          <BRow class="my-1">
-            <BCol sm="4">
-              <label><small>Radius:</small></label>
-            </BCol>
-            <BCol>
-              <BFormInput v-model="cradius" type="number" size="sm" />
-            </BCol>
-            <BCol class="px-0"><small>m</small></BCol>
-          </BRow>
-
-          <BRow class="my-1">
-            <BCol sm="4">
-              <label><small>Step:</small></label>
-            </BCol>
-            <BCol>
-              <BFormInput v-model="cstep" type="number" size="sm" />
-            </BCol>
-            <BCol class="px-0"><small>m</small></BCol>
-          </BRow>
-
-          <BRow class="my-1">
-            <BCol sm="4">
-              <label><small>Max iteration:</small></label>
-            </BCol>
-            <BCol>
-              <BFormInput v-model="cmaxIteration" type="number" size="sm" />
-            </BCol>
-            <BCol class="px-0"><small></small></BCol>
-          </BRow>
-
-          <hr />
-
-          <BRow>
             <BCol>
               <div>
                 <small><span class="font-weight-bold">Stations:</span></small>
@@ -125,6 +55,46 @@
           </BRow>
 
           <BRow>
+            <BCol>
+              <div class="d-flex flex-wrap align-items-center"></div>
+              <BLink @click="selectAllStations"
+                ><small>Select all</small></BLink
+              >
+              <BLink @click="unselectAllStations" class="ml-3"
+                ><small>Unselect all</small></BLink
+              >
+            </BCol>
+          </BRow>
+
+          <hr />
+
+          <BRow>
+            <BCol sm="4">
+              <label><small>Period:</small></label>
+            </BCol>
+            <BCol>
+              <div class="d-flex flex-wrap align-items-center">
+                <RangeSelector
+                  ref="range-selector"
+                  size="sm"
+                  custom-enabled
+                  hide-period-label
+                  :selected="period"
+                  :items="periods"
+                  :max-custom-duration="maxCustomDuration"
+                  @period-selected="onPeriodChange"
+                />
+                <BIcon
+                  v-b-tooltip.hover
+                  class="ml-2 hand-cursor"
+                  :title="createIntervalText(startTime, endTime)"
+                  icon="info-circle"
+                ></BIcon>
+              </div>
+            </BCol>
+          </BRow>
+
+          <BRow class="mt-4">
             <BCol>
               <div class="d-flex h-100 justify-content-end">
                 <BButton @click="runLinregress" pill variant="outline-primary"
@@ -192,6 +162,46 @@
             </BCol>
             <BCol>
               <BFormInput v-model="cv" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small></small></BCol>
+          </BRow>
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Depth:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cdepth" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>m</small></BCol>
+          </BRow>
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Radius:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cradius" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>m</small></BCol>
+          </BRow>
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Step:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cstep" type="number" size="sm" />
+            </BCol>
+            <BCol class="px-0"><small>m</small></BCol>
+          </BRow>
+
+          <BRow class="my-1">
+            <BCol sm="4">
+              <label><small>Max iteration:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cmaxIteration" type="number" size="sm" />
             </BCol>
             <BCol class="px-0"><small></small></BCol>
           </BRow>
@@ -465,6 +475,8 @@ import {
   CALC_LINREGRESS,
   CALC_MODELING,
   CALC_VECTOR,
+  SELECT_ALL_STATIONS,
+  UNSELECT_ALL_STATIONS,
   // Utils.
   calculatePeriod,
   addTimeInterval,
@@ -877,6 +889,12 @@ export default {
       },
       fetchTopo(dispatch) {
         return dispatch(this.namespace + '/' + FETCH_TOPO)
+      },
+      selectAllStations(dispatch) {
+        return dispatch(this.namespace + '/' + SELECT_ALL_STATIONS)
+      },
+      unselectAllStations(dispatch) {
+        return dispatch(this.namespace + '/' + UNSELECT_ALL_STATIONS)
       },
     }),
     onPeriodChange(period, { startTime, endTime }) {
