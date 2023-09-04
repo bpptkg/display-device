@@ -28,6 +28,9 @@
           <SidepanelMenuItem round="left" to="/seismic/helicorder">
             Helicorder
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/seismic/redpy">
+            REDPy
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>

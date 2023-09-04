@@ -259,6 +259,10 @@ const routes = [
     component: HelicorderView,
   },
   {
+    path: '/seismic/redpy',
+    component: () => import('../views/seismic/RedpyView'),
+  },
+  {
     path: '/observation',
     component: () => import('../views/observation/ObservationView'),
     redirect: '/observation/rfap-distance',

@@ -89,6 +89,10 @@ export default {
               title: 'Helicorder',
               href: '/seismic/helicorder',
             },
+            {
+              title: 'REDPy',
+              href: '/seismic/redpy',
+            },
           ],
         },
         {
