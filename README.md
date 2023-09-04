@@ -7,7 +7,7 @@ It provides various charts and analytics information about BPPTKG monitoring
 data. See example screenshots [here](./resources/screenshot.png).
 
 For current version, Davis only supports Vue.js version 2, Bootstrap version 4,
-and ECharts version 4.
+and ECharts version 4. Currenty, the project only runs on Node.js version 16.x.
 
 ## Environment Variables Settings
 
