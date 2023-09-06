@@ -52,6 +52,11 @@ export default [
     name: 'Hypocenter',
     path: '/seismic/hypocenter',
   },
+  // REDPy.
+  {
+    name: 'REDPy',
+    path: '/seismic/redpy',
+  },
   // Event cluster.
   {
     name: 'Event Cluster',
