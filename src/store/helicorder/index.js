@@ -9,7 +9,16 @@ import {
   SET_ERROR,
   SET_LAST_UPDATED,
 } from '../base/mutations'
-import { SET_SETTLED, SET_IMAGE, SET_CODE, SET_OPTIONS } from './mutations'
+import {
+  SET_SETTLED,
+  SET_IMAGE,
+  SET_CODE,
+  SET_OPTIONS,
+  SET_CODE1,
+  SET_CODE2,
+  SET_CODE1_VISIBILITY,
+  SET_CODE2_VISIBILITY,
+} from './mutations'
 import { UPDATE_IMAGE } from './actions'
 import rangeSelector from './range-selector'
 
@@ -28,7 +37,6 @@ export const HelicorderChannel = Object.freeze({
   MEJRO_HHZ_VG_00: 'MJRO_HHZ_VG_00',
   MEDEL_HHZ_VG_00: 'MDEL_HHZ_VG_00',
   MEPAS_HHZ_VG_00: 'MPAS_HHZ_VG_00',
-  MEIMO_HHZ_VG_00: 'MIMO_HHZ_VG_00',
   MEDEL_EHZ_VG_00: 'MDEL_EHZ_VG_00',
   MEPUS_EHZ_VG_00: 'MPUS_EHZ_VG_00',
   MEKLA_EHZ_VG_00: 'MKLA_EHZ_VG_00',
@@ -76,12 +84,20 @@ export const initialState = {
    * Period info.
    */
   period: defaultPeriod,
+  /**
+   * Is this helicorder visible.
+   */
+  visible: true,
 }
 
-export const initState = ({ period = defaultPeriod, options = {} } = {}) => {
+export const initState = (
+  code,
+  { period = defaultPeriod, options = {} } = {}
+) => {
   const { startTime, endTime } = calculatePeriod(period)
   return {
     ...initialState,
+    code,
     period,
     startTime,
     endTime,
@@ -232,35 +248,52 @@ export const initModule = (args = {}) => {
  */
 export const defaultChannel = HelicorderChannel.MEPAS_HHZ_VG_00
 
+// Alias.
+const HC = HelicorderChannel
+
 export default {
   namespaced: true,
   state: () => {
     return {
-      /**
-       * Helicorder channel list. For now, it only supports 2 channels.
-       */
-      channels: [
-        HelicorderChannel.MEPAS_HHZ_VG_00,
-        HelicorderChannel.MELAB_HHZ_VG_00,
-      ],
+      helicorderChannels: Object.values(HelicorderChannel).map((v) => ({
+        value: v,
+        text: v,
+      })),
+      code1: HelicorderChannel.MEPAS_HHZ_VG_00,
+      code2: HelicorderChannel.MELAB_HHZ_VG_00,
+      code1Visible: true,
+      code2Visible: true,
     }
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    [SET_CODE1](state, code) {
+      state.code1 = code
+    },
+    [SET_CODE2](state, code) {
+      state.code2 = code
+    },
+    [SET_CODE1_VISIBILITY](state, value) {
+      state.code1Visible = value
+    },
+    [SET_CODE2_VISIBILITY](state, value) {
+      state.code2Visible = value
+    },
+  },
   actions: {},
   modules: {
     namespaced: true,
-    [HelicorderChannel.MEPET_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEIJO_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEGEM_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MELAB_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEJRO_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEDEL_EHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEPAS_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEIMO_HHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEDEL_EHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEPUS_EHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEKLA_EHZ_VG_00]: initModule(),
-    [HelicorderChannel.MEPLA_EHZ_VG_00]: initModule(),
+    [HelicorderChannel.MEPET_HHZ_VG_00]: initModule(HC.MEPET_HHZ_VG_00),
+    [HelicorderChannel.MEIJO_HHZ_VG_00]: initModule(HC.MEIJO_HHZ_VG_00),
+    [HelicorderChannel.MEGEM_HHZ_VG_00]: initModule(HC.MEGEM_HHZ_VG_00),
+    [HelicorderChannel.MELAB_HHZ_VG_00]: initModule(HC.MELAB_HHZ_VG_00),
+    [HelicorderChannel.MEJRO_HHZ_VG_00]: initModule(HC.MEJRO_HHZ_VG_00),
+    [HelicorderChannel.MEDEL_HHZ_VG_00]: initModule(HC.MEDEL_HHZ_VG_00),
+    [HelicorderChannel.MEPAS_HHZ_VG_00]: initModule(HC.MEPAS_HHZ_VG_00),
+    [HelicorderChannel.MEIMO_HHZ_VG_00]: initModule(HC.MEIMO_HHZ_VG_00),
+    [HelicorderChannel.MEDEL_EHZ_VG_00]: initModule(HC.MEDEL_EHZ_VG_00),
+    [HelicorderChannel.MEPUS_EHZ_VG_00]: initModule(HC.MEPUS_EHZ_VG_00),
+    [HelicorderChannel.MEKLA_EHZ_VG_00]: initModule(HC.MEKLA_EHZ_VG_00),
+    [HelicorderChannel.MEPLA_EHZ_VG_00]: initModule(HC.MEPLA_EHZ_VG_00),
   },
 }
