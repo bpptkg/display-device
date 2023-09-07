@@ -19,6 +19,8 @@ import TemplateIcon from './TemplateIcon'
 import ThermalIcon from './ThermalIcon'
 import TiltmeterIcon from './TiltmeterIcon'
 import WeatherIcon from './WeatherIcon'
+import SidebarLeftIcon from './SidebarLeftIcon'
+import SidebarRightIcon from './SidebarRightIcon'
 
 export {
   DefaultIcon,
@@ -42,4 +44,6 @@ export {
   ThermalIcon,
   TiltmeterIcon,
   WeatherIcon,
+  SidebarLeftIcon,
+  SidebarRightIcon,
 }

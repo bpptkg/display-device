@@ -1,7 +1,7 @@
 <template>
   <div ref="helicorder" class="helicorder">
     <ErrorMessage v-if="error">
-      <p>Unable to load the image.</p>
+      <p>Unable to load the helicorder.</p>
       <p>Error: {{ error.message }}</p>
       <p>
         <BLink @click="update"> Try again </BLink>
@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       interval: null,
+      resizeObserver: null,
     }
   },
   computed: {
@@ -74,8 +75,10 @@ export default {
       endTime(state) {
         return state.helicorder[this.code].endTime
       },
+      channel(state) {
+        return state.helicorder[this.code].code
+      },
     }),
-
     namespace() {
       return `${NAMESPACE}/${this.code}`
     },
@@ -87,6 +90,18 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.onWindowResize)
+  },
+  watch: {
+    code(value) {
+      if (this.interval) {
+        clearInterval(this.interval)
+      }
+      this.interval = setInterval(
+        this.updateImage,
+        calculateInterval(this.startTime, this.endTime)
+      )
+      this.updateImage()
+    },
   },
   mounted() {
     this.setCode(this.code)
@@ -100,6 +115,10 @@ export default {
           calculateInterval(this.startTime, this.endTime)
         )
       }
+
+      this.resizeObserver = new ResizeObserver(() => {
+        this.onWindowResize()
+      }).observe(this.$refs.helicorder)
     })
 
     EventBus.$on(EVENT_PERIOD_UPDATED, () => {
@@ -141,6 +160,10 @@ export default {
       this.updateImage()
     },
     resizeAndUpdate() {
+      if (this.$refs.helicorder === undefined) {
+        return
+      }
+
       const width = this.$refs.helicorder.offsetWidth
       const height = this.$refs.helicorder.offsetHeight
       const options = {
