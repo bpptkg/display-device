@@ -86,7 +86,7 @@
     <DNote v-if="chartView !== CHART_VIEWS.slope_distance" class="mt-3">
       &mdash; EDM slope distance rate is calculated using moving linear
       least-squares regression with 3 data samples per window. <br />
-      &mdash; CSD stands for Change of Slope Distance (CSD).
+      &mdash; CSD stands for Change of Slope Distance.
     </DNote>
   </div>
 </template>
