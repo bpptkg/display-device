@@ -213,6 +213,7 @@ export const actions = {
           code: state.code,
           ...state.options,
           ...periodParams,
+          fc: 1, // Force trace to center.
         },
       })
       .then((response) => {
