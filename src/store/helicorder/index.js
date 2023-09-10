@@ -42,6 +42,7 @@ export const HelicorderChannel = Object.freeze({
   MEKLA_EHZ_VG_00: 'MKLA_EHZ_VG_00',
   MEPLA_EHZ_VG_00: 'MPLA_EHZ_VG_00',
   MEIMO_HHZ_VG_00: 'MIMO_HHZ_VG_00',
+  MEMBB_HHZ_VG_00: 'MMBB_HHZ_VG_00',
 })
 
 export const initialState = {
@@ -297,5 +298,6 @@ export default {
     [HelicorderChannel.MEPUS_EHZ_VG_00]: initModule(HC.MEPUS_EHZ_VG_00),
     [HelicorderChannel.MEKLA_EHZ_VG_00]: initModule(HC.MEKLA_EHZ_VG_00),
     [HelicorderChannel.MEPLA_EHZ_VG_00]: initModule(HC.MEPLA_EHZ_VG_00),
+    [HelicorderChannel.MEMBB_HHZ_VG_00]: initModule(HC.MEMBB_HHZ_VG_00),
   },
 }
