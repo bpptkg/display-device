@@ -300,6 +300,11 @@ export const baseChartOptions = ({
   autoRotate = false,
   autoRotateSpeed = 10,
   useBtbbHypo = false,
+  alpha = 20, // Vertical view angle.
+  beta = 40, // Horizontal view angle.
+  minAlpha = -360,
+  maxAlpha = 360,
+  distance = 200,
 } = {}) => {
   return {
     grid3D: {
@@ -314,7 +319,11 @@ export const baseChartOptions = ({
       viewControl: {
         autoRotate: autoRotate,
         autoRotateSpeed: autoRotateSpeed,
-        distance: 200,
+        distance,
+        alpha,
+        beta,
+        minAlpha,
+        maxAlpha,
         panSensitivity: 2,
         rotateSensitivity: 2,
         zoomSensitivity: 2,

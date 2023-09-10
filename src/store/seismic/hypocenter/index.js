@@ -27,6 +27,8 @@ import {
   SET_SETTINGS,
   SET_TOPO,
   USE_HYPO_MODE,
+  SET_ALPHA_ANGLE,
+  SET_BETA_ANGLE,
 } from './mutations'
 import { FETCH_HYPO, UPDATE_HYPO, FETCH_TOPO } from './actions'
 import rangeSelector from './range-selector'
@@ -55,6 +57,31 @@ export const initialState = {
   // Setting the value to null will force DD to calculate min and max of rms
   // error.
   rmsFilter: [...DEFAULT_RMS_RANGE],
+  alpha: '20\u00B0', // Vertical view angle.
+  beta: '40\u00B0', // Horizontal view angle.
+  alphaAngles: [
+    { value: '0\u00B0', text: 'North' },
+    { value: '180\u00B0', text: 'South' },
+    { value: '270\u00B0', text: 'East' },
+    { value: '90\u00B0', text: 'West' },
+    { divider: true },
+    { value: '0\u00B0', text: '0\u00B0' },
+    { value: '45\u00B0', text: '45\u00B0' },
+    { value: '90\u00B0', text: '90\u00B0' },
+    { value: '180\u00B0', text: '180\u00B0' },
+    { value: '-90\u00B0', text: '-90\u00B0' },
+    { value: '-45\u00B0', text: '-45\u00B0' },
+  ],
+  betaAngles: [
+    { value: '90\u00B0', text: 'Top' },
+    { value: '-90\u00B0', text: 'Bottom' },
+    { divider: true },
+    { value: '0\u00B0', text: '0\u00B0' },
+    { value: '45\u00B0', text: '45\u00B0' },
+    { value: '90\u00B0', text: '90\u00B0' },
+    { value: '-90\u00B0', text: '-90\u00B0' },
+    { value: '-45\u00B0', text: '-45\u00B0' },
+  ],
 }
 
 export const initState = (period, customSettings = {}) => {
@@ -259,6 +286,12 @@ export const mutations = {
   },
   [SET_EVENT_FILTER](state, value) {
     state.eventFilter = value
+  },
+  [SET_ALPHA_ANGLE](state, value) {
+    state.alpha = value
+  },
+  [SET_BETA_ANGLE](state, value) {
+    state.beta = value
   },
 }
 

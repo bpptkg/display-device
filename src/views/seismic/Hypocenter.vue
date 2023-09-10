@@ -82,6 +82,22 @@
           @change="handleEventFilter"
         />
       </div>
+
+      <div class="d-flex mb-1 mx-1">
+        <EditableDropdown
+          v-model="horzAngle"
+          :options="alphaAngles"
+          v-b-tooltip.hover
+          title="Horizontal View Angle"
+        ></EditableDropdown>
+        <EditableDropdown
+          v-model="vertAngle"
+          :options="betaAngles"
+          v-b-tooltip.hover
+          title="Vertical View Angle"
+          class="ml-1"
+        ></EditableDropdown>
+      </div>
     </div>
 
     <div v-show="view === VIEWS.table" class="table-view">
@@ -123,7 +139,15 @@
 </template>
 
 <script>
-import { BLink, VBTooltip, BFormSelect } from 'bootstrap-vue'
+import {
+  BLink,
+  VBTooltip,
+  BFormSelect,
+  BFormSpinbutton,
+  BDropdown,
+  BDropdownItem,
+  BFormInput,
+} from 'bootstrap-vue'
 import { mapMutations, mapActions, mapState, mapGetters } from 'vuex'
 
 import { DateRangeTypes } from '@/constants/date'
@@ -140,6 +164,7 @@ import EventTableViewer from '@/components/viewer/EventTableViewer'
 import RangeSelector from '@/components/range-selector'
 import RangeFilter from '@/components/range-filter'
 import EventFilter from '@/components/event-filter'
+import EditableDropdown from '@/components/editable-dropdown'
 
 import {
   baseChartOptions,
@@ -163,6 +188,8 @@ import {
   SET_RMS_FILTER,
   RESET_RMS_FILTER,
   SET_EVENT_FILTER,
+  SET_ALPHA_ANGLE,
+  SET_BETA_ANGLE,
 } from '@/store/seismic/hypocenter/mutations'
 import { UPDATE_HYPO, FETCH_TOPO } from '@/store/seismic/hypocenter/actions'
 
@@ -181,6 +208,11 @@ export default {
   components: {
     BFormSelect,
     BLink,
+    // BFormSpinbutton,
+    // BDropdown,
+    // BDropdownItem,
+    // BFormInput,
+    EditableDropdown,
     DButtonIcon,
     DGLChart,
     ErrorMessage,
@@ -226,6 +258,10 @@ export default {
       topo: (state) => state.topo,
       rmsFilter: (state) => state.rmsFilter,
       eventFilter: (state) => state.eventFilter,
+      alpha: (state) => state.alpha,
+      beta: (state) => state.beta,
+      alphaAngles: (state) => state.alphaAngles,
+      betaAngles: (state) => state.betaAngles,
     }),
     ...mapGetters(NAMESPACE, [
       'plottableEvents',
@@ -254,7 +290,11 @@ export default {
     },
     chartOptions() {
       const baseOptions = {
-        ...baseChartOptions(this.settings),
+        ...baseChartOptions({
+          ...this.settings,
+          alpha: parseFloat(this.alpha),
+          beta: parseFloat(this.beta),
+        }),
         series: createSeries(
           this.topo,
           this.settings.useBtbbHypo
@@ -315,6 +355,24 @@ export default {
         return 0.01
       }
     },
+    vertAngle: {
+      get() {
+        return this.alpha
+      },
+      set(value) {
+        this.setAlphaAngle(this.validateAngle(value))
+        this.mergeOptions()
+      },
+    },
+    horzAngle: {
+      get() {
+        return this.beta
+      },
+      set(value) {
+        this.setBetaAngle(this.validateAngle(value))
+        this.mergeOptions()
+      },
+    },
   },
   watch: {
     hypocenterMode() {
@@ -349,6 +407,12 @@ export default {
       },
       setEventFilter(commit, value) {
         return commit(NAMESPACE + '/' + SET_EVENT_FILTER, value)
+      },
+      setAlphaAngle(commit, value) {
+        return commit(NAMESPACE + '/' + SET_ALPHA_ANGLE, value)
+      },
+      setBetaAngle(commit, value) {
+        return commit(NAMESPACE + '/' + SET_BETA_ANGLE, value)
       },
     }),
     ...mapActions({
@@ -461,6 +525,16 @@ export default {
         this.update()
       })()
     },
+    validateAngle(text) {
+      const symbol = '\u00B0'
+      const defaultValue = `0${symbol}`
+      let value = parseFloat(text)
+      if (Number.isNaN(value)) {
+        return defaultValue
+      } else {
+        return value < -360 || value > 360 ? defaultValue : `${value}${symbol}`
+      }
+    },
   },
 }
 </script>
@@ -497,7 +571,7 @@ export default {
 
 @media (max-width: 991.98px) {
   .hypo-view {
-    margin: 160px 0 0 0;
+    margin: 165px 0 0 0;
   }
 }
 
