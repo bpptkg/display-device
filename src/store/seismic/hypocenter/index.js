@@ -57,8 +57,8 @@ export const initialState = {
   // Setting the value to null will force DD to calculate min and max of rms
   // error.
   rmsFilter: [...DEFAULT_RMS_RANGE],
-  alpha: '20\u00B0', // Vertical view angle.
-  beta: '40\u00B0', // Horizontal view angle.
+  alpha: '0\u00B0', // Vertical view angle.
+  beta: '45\u00B0', // Horizontal view angle.
   alphaAngles: [
     { value: '0\u00B0', text: 'North' },
     { value: '180\u00B0', text: 'South' },
