@@ -139,15 +139,7 @@
 </template>
 
 <script>
-import {
-  BLink,
-  VBTooltip,
-  BFormSelect,
-  BFormSpinbutton,
-  BDropdown,
-  BDropdownItem,
-  BFormInput,
-} from 'bootstrap-vue'
+import { BLink, VBTooltip, BFormSelect } from 'bootstrap-vue'
 import { mapMutations, mapActions, mapState, mapGetters } from 'vuex'
 
 import { DateRangeTypes } from '@/constants/date'
@@ -208,10 +200,6 @@ export default {
   components: {
     BFormSelect,
     BLink,
-    // BFormSpinbutton,
-    // BDropdown,
-    // BDropdownItem,
-    // BFormInput,
     EditableDropdown,
     DButtonIcon,
     DGLChart,
