@@ -255,7 +255,10 @@ import {
   SET_PERIOD,
   SET_START_TIME,
 } from '@/store/base/mutations'
-import { UPDATE_BULLETIN } from '@/store/seismic/bulletin/actions'
+import {
+  UPDATE_BULLETIN,
+  FETCH_CSV_EVENTS,
+} from '@/store/seismic/bulletin/actions'
 import { SET_EVENT_TYPE } from '@/store/seismic/bulletin/mutations'
 import ClusterMediaImageViewer from './ClusterMediaImageViewer'
 import ClusterMediaStream from './ClusterMediaStream'
@@ -450,6 +453,9 @@ export default {
       fetchData(dispatch) {
         return dispatch(NAMESPACE + '/' + UPDATE_BULLETIN)
       },
+      fetchCSVEvents(dispatch) {
+        return dispatch(NAMESPACE + '/' + FETCH_CSV_EVENTS)
+      },
     }),
     async update() {
       this.busy = true
@@ -508,35 +514,53 @@ export default {
       const exportFilename = createFilenameFromEventDate(item.eventdate)
       this.doDownload(blob, exportFilename)
     },
+    createCSVBlob(content) {
+      return new Blob([content], {
+        type: 'text/csv;charset=utf-8;',
+      })
+    },
     downloadEventsCSV() {
-      this.isDownloading = true
+      if (this.filterStart && this.filterStart.length) {
+        this.isDownloading = true
 
-      const downloadTableAsync = (data) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              resolve(createCSVContent(data))
-            } catch (e) {
-              reject(e)
-            }
-          }, 300)
-        })
-      }
-
-      downloadTableAsync(this.data.map((e) => this.reformatEvent(e)))
-        .then((content) => {
-          const exportFilename = 'bulletin.csv'
-          const blob = new Blob([content], {
-            type: 'text/csv;charset=utf-8;',
+        this.fetchCSVEvents()
+          .then((response) => {
+            this.doDownload(this.createCSVBlob(response.data), 'bulletin.csv')
           })
-          this.doDownload(blob, exportFilename)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-        .finally(() => {
-          this.isDownloading = false
-        })
+          .catch((error) => {
+            console.error(error)
+            alert('Download failed. Please try again.')
+          })
+          .finally(() => {
+            this.isDownloading = false
+          })
+      } else {
+        const downloadTableAsync = (data) => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              try {
+                resolve(createCSVContent(data))
+              } catch (e) {
+                reject(e)
+              }
+            }, 300)
+          })
+        }
+
+        this.isDownloading = true
+
+        downloadTableAsync(this.data.map((e) => this.reformatEvent(e)))
+          .then((content) => {
+            this.doDownload(this.createCSVBlob(content), 'bulletin.csv')
+          })
+          .catch((error) => {
+            console.error(error)
+            alert('Download failed. Please try again.')
+          })
+          .finally(() => {
+            this.isDownloading = false
+          })
+      }
     },
     onPeriodChange(period, { startTime, endTime }) {
       if (period.type === DateRangeTypes.CUSTOM) {

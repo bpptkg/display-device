@@ -14,7 +14,7 @@ import {
   SET_CANCEL_TOKEN,
 } from '../../base/mutations'
 import { baseState, baseMutations } from '../../base'
-import { FETCH_BULLETIN, UPDATE_BULLETIN } from './actions'
+import { FETCH_BULLETIN, UPDATE_BULLETIN, FETCH_CSV_EVENTS } from './actions'
 import {
   RESET_EVENT_TYPE,
   RESET_FILTER_OPTIONS,
@@ -132,6 +132,57 @@ export const mutations = {
   },
 }
 
+// Fetch for selected fields to speed up query.
+const fields = [
+  'eventid',
+  'eventdate',
+  'eventdate_microsecond',
+  'duration',
+  'amplitude',
+  'magnitude',
+  'longitude',
+  'latitude',
+  'depth',
+  'eventtype',
+  'seiscompid',
+  'validated',
+  'projection',
+  'operator',
+  'last_modified',
+  'ml_deles',
+  'ml_labuhan',
+  'ml_pasarbubar',
+  'ml_pusunglondon',
+  'location_type',
+  'location_mode',
+  'cluster',
+  'corr_coef',
+  'btbb',
+  'seiscomp',
+]
+
+const buildFilterParams = (state) => {
+  const params = {}
+  if (
+    state.filterOptions.eventType &&
+    state.filterOptions.eventType !== 'ALL'
+  ) {
+    params.eventtype = state.filterOptions.eventType
+  }
+  if (state.filterOptions.start) {
+    params.eventdate__gte = state.filterOptions.start
+  }
+  if (state.filterOptions.end) {
+    params.eventdate__lt = state.filterOptions.end
+  }
+  if (state.filterOptions.eventDateSortMode === 'desc') {
+    params.ordering = '-eventdate'
+  } else {
+    params.ordering = 'eventdate'
+  }
+  return params
+}
+
 export const actions = {
   async [FETCH_BULLETIN]({ commit, state }) {
     if (state.cancelToken !== null) {
@@ -150,59 +201,12 @@ export const actions = {
       cancelToken: state.cancelToken.token,
     })
 
-    // Fetch for selected fields to speed up query.
-    const fields = [
-      'eventid',
-      'eventdate',
-      'eventdate_microsecond',
-      'duration',
-      'amplitude',
-      'magnitude',
-      'longitude',
-      'latitude',
-      'depth',
-      'eventtype',
-      'seiscompid',
-      'validated',
-      'projection',
-      'operator',
-      'last_modified',
-      'ml_deles',
-      'ml_labuhan',
-      'ml_pasarbubar',
-      'ml_pusunglondon',
-      'location_type',
-      'location_mode',
-      'cluster',
-      'corr_coef',
-      'btbb',
-      'seiscomp',
-    ]
-
     const params = {
       page: state.page,
       page_size: state.pageSize,
       eventtype__isnull: false,
       fields: fields.join(','),
-    }
-
-    // Apply filter options.
-    if (
-      state.filterOptions.eventType &&
-      state.filterOptions.eventType !== 'ALL'
-    ) {
-      params.eventtype = state.filterOptions.eventType
-    }
-    if (state.filterOptions.start) {
-      params.eventdate__gte = state.filterOptions.start
-    }
-    if (state.filterOptions.end) {
-      params.eventdate__lt = state.filterOptions.end
-    }
-    if (state.filterOptions.eventDateSortMode === 'desc') {
-      params.ordering = '-eventdate'
-    } else {
-      params.ordering = 'eventdate'
+      ...buildFilterParams(state),
     }
 
     const bulletinRequest = client.get('/bulletin/', {
@@ -250,6 +254,21 @@ export const actions = {
       commit(SET_END_TIME, endTime)
       return dispatch(FETCH_BULLETIN)
     }
+  },
+
+  async [FETCH_CSV_EVENTS]({ state }) {
+    const params = {
+      eventtype__isnull: false,
+      fields: fields.join(','),
+      dl: 'csv',
+      nolimit: true,
+      ...buildFilterParams(state),
+    }
+
+    return client.get('/bulletin/', {
+      params,
+      cancelToken: state.cancelToken.token,
+    })
   },
 }
 
