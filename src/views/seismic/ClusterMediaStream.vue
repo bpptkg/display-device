@@ -33,6 +33,10 @@ export default {
       type: String,
       default: '',
     },
+    filename: {
+      type: String,
+      default: 'stream.msd',
+    },
   },
   data() {
     return {
@@ -68,7 +72,7 @@ export default {
     },
     async download() {
       this.isBusy = true
-      saveAs(window.URL.createObjectURL(this.stream), 'stream.msd')
+      saveAs(window.URL.createObjectURL(this.stream), this.filename)
       this.isBusy = false
     },
   },

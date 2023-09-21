@@ -144,7 +144,11 @@
 
           <BTab title="Cluster">
             <ClusterMediaImageViewer :event-id="event.eventid" />
-            <ClusterMediaStream class="mt-2" :event-id="event.eventid" />
+            <ClusterMediaStream
+              class="mt-2"
+              :event-id="event.eventid"
+              :filename="getStreamDownloadFilename(event.eventdate)"
+            />
           </BTab>
         </BTabs>
       </BModal>
@@ -592,6 +596,10 @@ export default {
         ...item,
         eventdate,
       }
+    },
+
+    getStreamDownloadFilename(eventdate) {
+      return moment(eventdate).format('YYYYMMDDTHHmmss[.msd]')
     },
   },
 }
