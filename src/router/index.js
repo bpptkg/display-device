@@ -314,6 +314,10 @@ const routes = [
     ],
   },
   {
+    path: '/doas-scan',
+    component: () => import('@/views/doas/DoasScan'),
+  },
+  {
     path: '*',
     redirect: '/',
   },
