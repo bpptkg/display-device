@@ -22,6 +22,30 @@
 </template>
 
 <script>
+/*
+- Import RangeSelector components: import RangeSelector from '@/components/range-selector'
+- Register components: {
+    DChart,
+    RangeSelector,
+}
+
+- Import moment js: import moment from 'moment'
+- Di data(), add variable start: moment().substract(7, 'days), end: moment()
+- At fetch data, change:
+  start: this.start.format('YYYY-MM-DD HH:mm:ss')
+  end: this.end.format('YYYY-MM-DD HH:mm:ss')
+
+- At data(), add variables period: {}, rangeSelector: [], maxCustomDuration: {} at data() (copy from github)
+- At methods:
+onPeriodChange(period, { startTime, endTime }) {
+     this.start = startTime
+     this.end = endTime
+     this.fetchData()
+}
+
+https://github.com/bpptkg/display-device/blob/main/src/components/range-selector/RangeSelector.md
+ */
+
 import { BFormSelect } from 'bootstrap-vue'
 import DChart from '@/components/echarts/chart/DChart'
 import client from '@/utils/client'
