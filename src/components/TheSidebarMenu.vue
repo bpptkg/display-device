@@ -153,6 +153,10 @@ export default {
               title: 'DOAS',
               href: '/geochemistry/doas/babadan',
             },
+            {
+              title: 'DOAS-Scan',
+              href: '/doas-scan',
+            },
           ],
         },
         {

@@ -10,6 +10,9 @@
           <SidepanelMenuItem round="left" to="/geochemistry/doas/babadan">
             DOAS
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/doas-scan">
+            DOAS-Scan
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
@@ -20,6 +23,7 @@
       <BNavItem to="/geochemistry/doas/babadan" active-class="active">
         DOAS
       </BNavItem>
+      <BNavItem to="/doas-scan" active-class="active"> DOAS-Scan </BNavItem>
     </BNav>
     <div class="content">
       <keep-alive>
