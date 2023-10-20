@@ -103,6 +103,10 @@ export default {
   box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 4px 2px rgb(60 64 67 / 15%);
   background: #fff;
   border-radius: 10px;
+
+  img {
+    aspect-ratio: 1/1;
+  }
 }
 
 .collection-item-title {
