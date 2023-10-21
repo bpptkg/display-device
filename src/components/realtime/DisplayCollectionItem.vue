@@ -1,5 +1,22 @@
 <template>
-  <BLink :to="to">
+  <a v-if="to.includes('http')" :href="to">
+    <BCard
+      :img-src="imgSrc"
+      :img-alt="title"
+      :img-top="isImagePositionTo(ImagePosition.TOP)"
+      :img-bottom="isImagePositionTo(ImagePosition.BOTTOM)"
+      :img-left="isImagePositionTo(ImagePosition.LEFT)"
+      :img-right="isImagePositionTo(ImagePosition.RIGHT)"
+      :class="itemClassNames"
+    >
+      <template #header>
+        <component :is="titleTag" :class="titleClassNames">
+          {{ title }}
+        </component>
+      </template>
+    </BCard>
+  </a>
+  <BLink v-else :to="to">
     <BCard
       :img-src="imgSrc"
       :img-alt="title"
