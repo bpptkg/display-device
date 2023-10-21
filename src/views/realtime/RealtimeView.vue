@@ -27,7 +27,7 @@ export default {
           imgSrc: `${this.$baseUrl}img/realtime/seismic2.png`,
         },
         {
-          to: 'https://cendana15.com/display-device-external/deformation',
+          to: 'https://cendana15.com/external-display-device/deformation',
           title: 'Deformasi',
           imgSrc: `${this.$baseUrl}img/realtime/deformasi.png`,
         },
