@@ -105,7 +105,7 @@ const routes = [
   {
     path: '/geochemistry',
     component: () => import('../views/geochemistry/GeochemistryView'),
-    redirect: '/geochemistry/vogamos',
+    redirect: '/geochemistry/doas-scan',
     children: [
       {
         path: 'vogamos',
@@ -115,6 +115,10 @@ const routes = [
         path: 'doas/:station',
         component: () => import('../views/geochemistry/doas/DOASView'),
         props: true,
+      },
+      {
+        path: 'doas-scan',
+        component: () => import('../views/doas/DoasScan'),
       },
     ],
   },
@@ -312,10 +316,6 @@ const routes = [
         props: true,
       },
     ],
-  },
-  {
-    path: '/doas-scan',
-    component: () => import('@/views/doas/DoasScan'),
   },
   {
     path: '*',

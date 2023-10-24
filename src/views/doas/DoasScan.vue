@@ -1,89 +1,130 @@
 <template>
-  <div class="geochemistry-app">
-    <!-- Left Side Menu -->
-    <div class="left-menu">
-      <div class="menu-title">GEOCHEMISTRY</div>
-      <ul class="menu-list">
-        <router-link to="/geochemistry/vogamos">
-          <li>Vogamos</li>
-        </router-link>
-        <router-link to="/geochemistry/doas/babadan">
-          <li>DOAS</li>
-        </router-link>
-        <router-link to="/doas-scan">
-          <li>DOAS-Scan</li>
-        </router-link>
-      </ul>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-      <div style="margin-top: 60px">
-        <div class="d-flex align-items-center ml-3">
-          <div
-            class="form-group mr-3 d-flex align-items-center"
-            style="margin-top: 10px"
+  <!-- Main Content -->
+  <div class="main-content">
+    <div style="margin-top: 10px">
+      <div class="d-flex align-items-center ml-3">
+        <div
+          class="form-group mr-3 d-flex align-items-center"
+          style="margin-top: 10px"
+        >
+          <label for="plumeCompleteness" class="mr-2 form-label label-adjust"
+            >Min. Plume Completeness:</label
           >
-            <label for="plumeCompleteness" class="mr-2 form-label label-adjust"
-              >Min. Plume Completeness:</label
+          <select
+            id="plumeCompleteness"
+            v-model="selectedValue"
+            @change="applyFilter"
+            class="form-control adjustable-box"
+            style="margin: 0; padding: 5px; margin-top: 4px"
+          >
+            <option
+              v-for="value in rangeValues"
+              :key="value"
+              :value="value"
+              class="form-option"
             >
-            <select
-              id="plumeCompleteness"
-              v-model="selectedValue"
-              @change="applyFilter"
-              class="form-control adjustable-box"
-              style="margin: 0; padding: 5px; margin-top: 4px"
-            >
-              <option
-                v-for="value in rangeValues"
-                :key="value"
-                :value="value"
-                class="form-option"
-              >
-                {{ value }}%
-              </option>
-            </select>
-          </div>
-          <RangeSelector
-            ref="range-selector"
-            size="sm"
-            custom-enabled
-            :selected="period"
-            :items="rangeSelector"
-            :max-custom-duration="maxCustomDuration"
-            @period-selected="onPeriodChange"
-            class="form-label"
-          />
-          <BFormSelect
-            class="col-2 ml-3"
-            size="sm"
-            v-model="station"
-            :options="stationOptions"
-          ></BFormSelect>
+              {{ value }}%
+            </option>
+          </select>
         </div>
-        <DChart ref="chart" :options="option" class="chart"></DChart>
+        <RangeSelector
+          ref="range-selector"
+          size="sm"
+          custom-enabled
+          :selected="period"
+          :items="rangeSelector"
+          :max-custom-duration="maxCustomDuration"
+          @period-selected="onPeriodChange"
+          class="form-label"
+        />
+        <BFormSelect
+          class="col-2 ml-3"
+          size="sm"
+          v-model="station"
+          :options="stationOptions"
+        ></BFormSelect>
+        <BButton
+          @click="downloadData"
+          style="
+            background-color: transparent;
+            border: 1px solid rgb(207, 207, 207);
+            margin-left: 80px;
+          "
+          size="sm"
+          class="ml3"
+        >
+          <span class="custom-dropdown-item-text">Download Data</span>
+        </BButton>
       </div>
+      <DChart ref="chart" :options="option" class="chart"></DChart>
     </div>
+    <div class="bot-panel mt-3">
+      <BCard title="Statistics" title-tag="h6">
+        <StatsPanelPeriod :start="start" :end="end" />
+        <SidepanelListDivider />
+        <StatsPanelTable
+          :fields="fieldOptions"
+          :items="statsInfo"
+          scrollable
+          show-no-data-label
+        />
+      </BCard>
+    </div>
+    <SidepanelTabs sidepanel-class="secondary-nav">
+      <SidepanelTab title="Statistics" :icon="TimelineIcon" active no-body>
+        <StatsPanelPeriod :start="start" :end="end" />
+        <SidepanelListDivider />
+        <StatsPanelTable
+          :fields="fieldOptions"
+          :items="statsInfo"
+          scrollable
+          show-no-data-label
+        />
+      </SidepanelTab>
+    </SidepanelTabs>
   </div>
 </template>
 
 <script>
 import { BFormSelect } from 'bootstrap-vue'
+import { BCard, BLink, BDropdownItem, BButton } from 'bootstrap-vue'
 import DChart from '@/components/echarts/chart/DChart'
 import client from '@/utils/client'
 import { toUnixMiliSeconds } from '@/utils/series'
 import RangeSelector from '@/components/range-selector'
 import moment from 'moment'
+import {
+  SidepanelListDivider,
+  SidepanelTab,
+  SidepanelTabs,
+} from '@/components/sidepanel'
+import {
+  StatsPanelPeriod,
+  StatsPanelTable,
+} from '@/components/sidepanel/panel/stats'
+import fieldOptions from '@/store/geochemistry/doas/field-options'
+import { getStatsInfo } from '@/components/echarts/chart-options/doas/utils'
+import { defaultToolbox } from '@/components/echarts/chart-options/common/toolbox'
+import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
+import { saveAs } from '@/lib/file-saver'
 
 export default {
   components: {
+    BButton,
+    BCard,
     DChart,
     BFormSelect,
     RangeSelector,
+    SidepanelListDivider,
+    SidepanelTab,
+    SidepanelTabs,
+    StatsPanelPeriod,
+    StatsPanelTable,
   },
   data() {
     return {
-      start: moment().subtract(7, 'days'),
+      fieldOptions,
+      start: moment().subtract(1, 'month'),
       end: moment(),
       data: [],
       originalData: [], // To store the original unfiltered data
@@ -103,9 +144,9 @@ export default {
         },
       ],
       period: {
-        count: 7,
-        type: 'day',
-        text: '7 days',
+        count: 1,
+        type: 'month',
+        text: '1 month',
       },
       rangeSelector: [
         {
@@ -138,6 +179,7 @@ export default {
         count: 4,
         type: 'years',
       },
+      showDefaultText: true,
       rangeValues: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
       selectedValue: 0,
     }
@@ -145,13 +187,16 @@ export default {
   computed: {
     option() {
       return {
+        title: {
+          text: 'DOAS-Scan',
+          textStyle: {
+            fontWeight: 'bold',
+            fontSize: 16, // You can adjust the font size as needed
+          },
+          left: 'center', // Center the title horizontally
+        },
         xAxis: {
           type: 'time',
-          name: 'Timestamp',
-          nameTextStyle: {
-            fontSize: '14', // Set the font size for the y-axis name
-            fontFamily: 'sans-serif',
-          },
           axisPointer: {
             show: true, // Show axis pointers
             label: {
@@ -163,7 +208,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: 'Flux (Ton/Day)',
+          name: 'SO\u2082 flux (ton/day)',
           nameTextStyle: {
             fontSize: '14', // Set the font size for the y-axis name
             fontFamily: 'sans-serif',
@@ -171,6 +216,13 @@ export default {
           axisPointer: {
             show: true, // Show axis pointers
           },
+        },
+        grid: {
+          top: 70,
+          bottom: 80,
+        },
+        toolbox: {
+          ...defaultToolbox,
         },
         tooltip: {
           trigger: 'axis', // Trigger on mouse hover
@@ -211,6 +263,9 @@ export default {
         ],
       }
     },
+    statsInfo() {
+      return getStatsInfo(this.data)
+    },
   },
 
   methods: {
@@ -235,6 +290,22 @@ export default {
       } finally {
         chart.hideLoading()
       }
+    },
+    async downloadData() {
+      const blob = new Blob([createCSVContent(this.data)], {
+        type: 'text/csv;charset=utf-8',
+      })
+      saveAs(
+        blob,
+        `doasscan-${this.station}-${createShortNameFromPeriod(this.period)}.csv`
+      )
+    },
+    calculateAverage(data) {
+      // Calculate the average of an array of numbers
+      if (data.length === 0) return 0
+
+      const sum = data.reduce((acc, value) => acc + value, 0)
+      return sum / data.length
     },
     onPeriodChange(period, { startTime, endTime }) {
       this.start = startTime
@@ -263,17 +334,18 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .chart {
-  height: 400px;
+  height: 500px;
+  width: 100%;
 }
 .form-group {
   display: flex;
   align-items: center;
-  margin-right: 3px; /* Adjust the spacing between boxes */
+  margin-right: 1px; /* Adjust the spacing between boxes */
 }
 .ml-3 {
-  margin-left: 3px; /* Adjust the spacing between boxes */
+  margin-left: 1px; /* Adjust the spacing between boxes */
 }
 .form-label,
 .form-option,
@@ -296,52 +368,23 @@ export default {
   margin-right: 0.5rem; /* Adjust as needed to center the label */
   color: rgb(94, 94, 94);
 }
-.geochemistry-app {
-  display: flex;
-}
-
-.left-menu {
-  width: 150px;
-  background-color: white; /* Set background color to white */
-  padding: 10px;
-  position: fixed;
-  height: 100%;
-  overflow-y: auto;
-  top: 50px; /* Adjust the top position to avoid overlap */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a box shadow for a nice effect */
-  z-index: 1; /* Ensure the menu is above other content */
-}
-
-.menu-title {
-  font-weight: 400;
-  font-family: Verdana;
-  margin-bottom: 10px;
+.custom-dropdown-item-text {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 14px;
-  color: rgb(67, 67, 67);
-}
-
-.menu-list {
+  color: rgb(94, 94, 94);
   list-style-type: none;
-  padding: 3px;
-  padding-left: 10px;
-}
-
-.menu-list li {
-  margin: 15px 0;
-  color: rgb(67, 67, 67);
-  font-family: Verdana;
-  font-size: 14px;
-  cursor: pointer; /* Add cursor effect */
-}
-
-.menu-list li:hover {
-  text-decoration: none !important; /* Add underline on hover */
 }
 
 .main-content {
-  margin-left: 200px;
+  margin-left: 0px;
   flex: 1;
-  padding: 20px;
-  margin-top: 60px;
+}
+@import '@/scss/layout-monkey';
+
+@media (min-width: 991.98px) {
+  .bot-panel {
+    display: none;
+  }
 }
 </style>

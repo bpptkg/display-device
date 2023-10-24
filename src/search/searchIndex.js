@@ -354,6 +354,8 @@ export default [
     name: 'DOAS Babadan',
     path: '/geochemistry/doas/babadan',
   },
+  // DOAS-Scan.
+  { name: 'DOAS Scan', path: '/geochemistry/doas-scan' },
   // Lava Domes.
   {
     name: 'Lava Domes',

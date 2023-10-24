@@ -155,7 +155,7 @@ export default {
             },
             {
               title: 'DOAS-Scan',
-              href: '/doas-scan',
+              href: '/geochemistry/doas-scan',
             },
           ],
         },
