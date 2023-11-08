@@ -177,6 +177,10 @@ export default {
               href: '/weather/babadan',
             },
             {
+              title: 'Jurang Jero',
+              href: '/weather/jurangjero',
+            },
+            {
               title: 'Rainfall Station',
               href: '/weather/rainfall-station',
             },

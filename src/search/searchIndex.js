@@ -383,6 +383,10 @@ export default [
     path: '/weather/babadan',
   },
   {
+    name: 'Weather Jurang Jero',
+    path: '/weather/jurangjero',
+  },
+  {
     name: 'Rainfall Station',
     path: '/weather/rainfall-station',
   },

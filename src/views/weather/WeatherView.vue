@@ -10,6 +10,9 @@
           <SidepanelMenuItem round="left" to="/weather/babadan">
             Babadan
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/jurangjero">
+            Jurang Jero
+          </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/weather/rainfall-station">
             Rainfall Station
           </SidepanelMenuItem>
