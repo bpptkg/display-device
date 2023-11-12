@@ -12,6 +12,10 @@ export default [
     name: 'Realtime Seismic2',
     path: '/realtime/seismic2',
   },
+  {
+    name: 'Realtime Deformation',
+    path: '/realtime/deformation',
+  },
   // Seismicity.
   {
     name: 'Seismicity',

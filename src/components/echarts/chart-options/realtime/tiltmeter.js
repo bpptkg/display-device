@@ -1,10 +1,10 @@
-import { mapFieldColumns, makeIndex, getSeriesByIndex } from '@/utils/series'
+import { mapFieldColumns, getSeriesByIndex } from '@/utils/series'
 import { createRowGrid } from '@/utils/echarts/grid'
 import { scaledFormatter } from '@/utils/formatter'
 
-import { defaultToolbox } from '../../common/toolbox'
-import { SeriesName } from '../index'
-import { tooltipFormatter } from '../index'
+import { defaultToolbox } from '../common/toolbox'
+import { SeriesName } from '../tiltmeter/index'
+import { tooltipFormatter } from '../tiltmeter/index'
 
 /**
  * Simple fuzzy label formatter.
@@ -120,17 +120,12 @@ export const mediaQuery = (tiltOptions) => {
       },
       option: {
         grid: createRowGrid(tiltOptions.length, {
-          top: 5,
-          bottom: 5,
+          top: 18,
+          bottom: 10,
           left: 15,
           right: 15,
+          margin: 5,
         }),
-        title: {
-          top: 15,
-          textStyle: {
-            fontSize: 13,
-          },
-        },
       },
     },
   ]
@@ -139,16 +134,12 @@ export const mediaQuery = (tiltOptions) => {
 export const baseChartOptions = (tiltOptions) => {
   return {
     backgroundColor: '#fff',
-    dataZoom: [
-      {
-        type: 'slider',
-        xAxisIndex: makeIndex(tiltOptions.length),
-        realtime: false,
-      },
-    ],
-    grid: createRowGrid(tiltOptions.length, { bottom: 5, top: 5 }),
+    grid: createRowGrid(tiltOptions.length, {
+      bottom: 10,
+      top: 10,
+      margin: 5,
+    }),
     yAxis: createYAxis(tiltOptions),
-    toolbox: defaultToolbox,
   }
 }
 
@@ -174,6 +165,19 @@ export const createChartOptions = ({
         formatter: tooltipFormatter(sampling),
       },
       xAxis: createXAxis(min, max, tiltOptions),
+      title: {
+        text: 'Tiltmeter',
+        left: 'center',
+        align: 'right',
+        textStyle: {
+          fontSize: 16,
+          fontWeight: 'bold',
+        },
+        subtext: '',
+        subtextStyle: {
+          color: '#363636',
+        },
+      },
     },
     media: mediaQuery(tiltOptions),
   }
