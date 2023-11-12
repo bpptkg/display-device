@@ -13,42 +13,85 @@ import moment from 'moment'
 export const createSeries = (allData, stations) => {
   return stations
     .map((station, index) => {
-      const res = getSeriesByIndex(allData, index, {
-        defaultData: Object.create(null),
-      })
-      const data = get(res, 'data', [])
-      const events = get(res, 'events.data', [])
+      if (station.isVaisala) {
+        const data = getSeriesByIndex(allData, index, {
+          defaultData: [],
+        })
+        return [
+          {
+            areaStyle: {
+              color: '#37A2DA',
+            },
+            lineStyle: {
+              color: '#37A2DA',
+              width: 1,
+            },
+            data: mapFieldColumns(data, 'timestamp', 'rain_acc'),
+            name: `${station.stationName} Rainfall`,
+            symbol: 'none',
+            type: 'line',
+            xAxisIndex: index,
+            yAxisIndex: index,
+          },
+          {
+            data: mapFieldColumns(
+              data,
+              'timestamp', // Data index: 0
+              'rain_intensity', // 1
+              'rain_acc', // 2
+              'rain_duration', // 3
+              'rain_peak_intensity' // 4
+            ),
+            lineStyle: {
+              color: '#32C5E9',
+              width: 2,
+              type: 'solid',
+            },
+            name: `${station.stationName} Rate`,
+            symbol: 'none',
+            type: 'line',
+            xAxisIndex: index,
+            yAxisIndex: index,
+          },
+        ]
+      } else {
+        const res = getSeriesByIndex(allData, index, {
+          defaultData: Object.create(null),
+        })
+        const data = get(res, 'data', [])
+        const events = get(res, 'events.data', [])
 
-      return [
-        {
-          data: mapFieldColumns(data, 'timestamp', 'cumulative_rainfall'),
-          areaStyle: {
-            color: '#37A2DA',
+        return [
+          {
+            data: mapFieldColumns(data, 'timestamp', 'cumulative_rainfall'),
+            areaStyle: {
+              color: '#37A2DA',
+            },
+            lineStyle: {
+              color: '#37A2DA',
+              width: 1,
+            },
+            name: `${station.stationName} Rainfall`,
+            symbol: 'none',
+            type: 'line',
+            xAxisIndex: index,
+            yAxisIndex: index,
           },
-          lineStyle: {
-            color: '#37A2DA',
-            width: 1,
+          {
+            data: calculateRate(data, events),
+            lineStyle: {
+              color: '#32C5E9',
+              width: 2,
+              type: 'solid',
+            },
+            name: `${station.stationName} Rate`,
+            symbol: 'none',
+            type: 'line',
+            xAxisIndex: index,
+            yAxisIndex: index,
           },
-          name: `${station.stationName} Rainfall`,
-          symbol: 'none',
-          type: 'line',
-          xAxisIndex: index,
-          yAxisIndex: index,
-        },
-        {
-          data: calculateRate(data, events),
-          lineStyle: {
-            color: '#32C5E9',
-            width: 2,
-            type: 'solid',
-          },
-          name: `${station.stationName} Rate`,
-          symbol: 'none',
-          type: 'line',
-          xAxisIndex: index,
-          yAxisIndex: index,
-        },
-      ]
+        ]
+      }
     })
     .flat(1)
 }
@@ -147,6 +190,7 @@ export const getEvents = (allData, stations, seriesName) => {
 }
 
 export function createTooltipFormatter(allData, stations) {
+  const vaisalaStations = stations.filter((station) => station.isVaisala)
   return (params) => {
     const template = []
 
@@ -164,22 +208,41 @@ export function createTooltipFormatter(allData, stations) {
           ` Rainfall: ${value ? value.toFixed(2) : value} mm <br />`
         )
       } else if (param.seriesName.includes('Rate')) {
-        template.push(createCircleTemplate('#32C5E9'))
-        template.push(` Rate: ${value ? value.toFixed(2) : value} mm/h<br />`)
+        // Create tooltip for vaisala station.
+        if (param.seriesName.split(' ')[0].includes(vaisalaStations)) {
+          template.push(` Rate: ${value ? value.toFixed(2) : 0} mm/h<br />`)
+          const rainAcc = param.value[2]
+          const rainDuration = param.value[3]
+          const rainPeakIntensity = param.value[4]
+          const duration = moment.duration(rainDuration, 'seconds')
+          if (rainAcc > 0) {
+            template.push(
+              `${createDividerTemplate()}
+                  Total: ${rainAcc ? rainAcc.toFixed(2) : 0} mm<br />
+                  Duration: ${humanizeDuration(duration)}<br />
+                  Intensity: ${
+                    rainPeakIntensity ? rainPeakIntensity.toFixed(2) : 0
+                  } mm/h<br />
+                  `
+            )
+          }
+        } else {
+          template.push(createCircleTemplate('#32C5E9'))
+          template.push(` Rate: ${value ? value.toFixed(2) : value} mm/h<br />`)
 
-        // Add rainfall information if current timestamp is in particular
-        // rainfall event. Note that we add the code here so that this
-        // information will be rendered below rate info in the tooltip.
-        const res = getEvents(allData, stations, param.seriesName)
-        const events = get(res, 'events.data', [])
-        const event = events.find((e) => {
-          const ts = moment(timestampUnix)
-          return ts >= moment(e.start) && ts <= moment(e.end)
-        })
-        if (event !== undefined) {
-          const duration = moment.duration(event.duration, 'seconds')
-          template.push(
-            `${createDividerTemplate()}
+          // Add rainfall information if current timestamp is in particular
+          // rainfall event. Note that we add the code here so that this
+          // information will be rendered below rate info in the tooltip.
+          const res = getEvents(allData, stations, param.seriesName)
+          const events = get(res, 'events.data', [])
+          const event = events.find((e) => {
+            const ts = moment(timestampUnix)
+            return ts >= moment(e.start) && ts <= moment(e.end)
+          })
+          if (event !== undefined) {
+            const duration = moment.duration(event.duration, 'seconds')
+            template.push(
+              `${createDividerTemplate()}
               Start: ${formatDate(event.start)}<br />
               Total: ${event.total === 0 ? 0 : event.total.toFixed(2)} mm<br />
               Duration: ${humanizeDuration(duration)}<br />
@@ -187,7 +250,8 @@ export function createTooltipFormatter(allData, stations) {
                 event.intensity === 0 ? 0 : event.intensity.toFixed(2)
               } mm/h<br />
               `
-          )
+            )
+          }
         }
       } else {
         template.push(`${param.seriesName}: ${value}`)
