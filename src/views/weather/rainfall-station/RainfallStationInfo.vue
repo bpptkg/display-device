@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="station in stations" :key="station.stationId">
+    <div v-for="station in rainfallStations" :key="station.stationId">
       <SidepanelListHeader> {{ station.stationName }} </SidepanelListHeader>
       <StatsPanelTable
         :title="`Rainfall Events (${getRainfallEventsCount(station)})`"
@@ -41,6 +41,9 @@ export default {
       data: (state) => state.data,
       stations: (state) => state.stations,
     }),
+    rainfallStations() {
+      return this.stations.filter((station) => !station.isVaisala)
+    },
   },
   methods: {
     getRainfallEventsCount(station) {

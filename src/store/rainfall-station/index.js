@@ -21,6 +21,10 @@ export const NAMESPACE = 'rainfallStation'
 
 export const STATIONS = [
   {
+    stationId: 'pasarbubar',
+    stationName: 'Pasarbubar',
+  },
+  {
     stationId: 'gunungijo',
     stationName: 'Gunung Ijo',
   },
@@ -33,8 +37,24 @@ export const STATIONS = [
     stationName: 'Labuhan',
   },
   {
-    stationId: 'pasarbubar',
-    stationName: 'Pasarbubar',
+    stationId: 'jurangjero',
+    stationName: 'Jurang Jero',
+    isVaisala: true,
+    url: '/meteorology/jurangjero/',
+    params: {
+      fields:
+        'timestamp,rain_acc,rain_intensity,rain_duration,rain_peak_intensity',
+    },
+  },
+  {
+    stationId: 'babadan',
+    stationName: 'Babadan',
+    isVaisala: true,
+    url: '/meteorology/babadan/',
+    params: {
+      fields:
+        'timestamp,rain_acc,rain_intensity,rain_duration,rain_peak_intensity',
+    },
   },
 ]
 
@@ -72,12 +92,24 @@ export const actions = {
     }
 
     const requests = state.stations.map((station) => {
-      return client.get(`/rainfall-station/${station.stationId}/`, {
-        params: {
-          timestamp__gte: state.startTime.format(DATETIME_FORMAT),
-          timestamp__lt: state.endTime.format(DATETIME_FORMAT),
-          nolimit: true,
-        },
+      let url = ''
+      const baseParams = {
+        timestamp__gte: state.startTime.format(DATETIME_FORMAT),
+        timestamp__lt: state.endTime.format(DATETIME_FORMAT),
+        nolimit: true,
+      }
+      let params = {}
+      if (station.isVaisala) {
+        url = station.url
+        params = {
+          ...baseParams,
+          ...station.params,
+        }
+      } else {
+        url = `/rainfall-station/${station.stationId}/`
+      }
+      return client.get(url, {
+        params,
         cancelToken: state.cancelToken.token,
       })
     })
