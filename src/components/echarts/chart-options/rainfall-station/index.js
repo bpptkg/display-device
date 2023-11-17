@@ -204,9 +204,7 @@ export function createTooltipFormatter(allData, stations) {
 
       if (param.seriesName.includes('Rainfall')) {
         template.push(createCircleTemplate('#37A2DA'))
-        template.push(
-          ` Rainfall: ${value ? value.toFixed(2) : value} mm <br />`
-        )
+        template.push(` Rainfall: ${value ? value.toFixed(2) : 0} mm <br />`)
       } else if (param.seriesName.includes('Rate')) {
         // Create tooltip for vaisala station.
         if (param.seriesName.split(' ')[0].includes(vaisalaStations)) {
@@ -228,7 +226,7 @@ export function createTooltipFormatter(allData, stations) {
           }
         } else {
           template.push(createCircleTemplate('#32C5E9'))
-          template.push(` Rate: ${value ? value.toFixed(2) : value} mm/h<br />`)
+          template.push(` Rate: ${value ? value.toFixed(2) : 0} mm/h<br />`)
 
           // Add rainfall information if current timestamp is in particular
           // rainfall event. Note that we add the code here so that this
