@@ -86,6 +86,7 @@ export const initialState = {
   modeling: {},
   vectorError: null,
   vector: {},
+  useVector: true,
 }
 
 export const initState = (options = {}) => {
@@ -132,6 +133,7 @@ export const SET_MODELING_ERROR = 'setModelingError'
 export const SET_LINREGRESS_ERROR = 'setLinregressError'
 export const SET_VECTOR_ERROR = 'setVectorError'
 export const SET_VECTOR = 'setVector'
+export const SET_USE_VECTOR = 'setUseVector'
 
 function convertDispToObject(array) {
   const result = {}
@@ -261,6 +263,9 @@ export const mutations = {
   [SET_VECTOR](state, value) {
     state.vector = value
   },
+  [SET_USE_VECTOR](state, value) {
+    state.useVector = value
+  },
 }
 
 // Action types.
@@ -318,6 +323,7 @@ export const actions = {
         start: state.startTime.format(DATETIME_FORMAT),
         end: state.endTime.format(DATETIME_FORMAT),
         stations: state.selectedStations,
+        use_vector: state.useVector,
       })
       .then((response) => response.data)
       .catch((error) => {

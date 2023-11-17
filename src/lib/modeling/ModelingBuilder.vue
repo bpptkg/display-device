@@ -94,6 +94,20 @@
             </BCol>
           </BRow>
 
+          <BRow class="mt-3">
+            <BCol>
+              <BFormCheckbox v-model="cUseVector"
+                ><small>Use vector</small>
+                <BIcon
+                  v-b-tooltip.hover
+                  class="ml-2 hand-cursor"
+                  title="Use vector method to calculate Ux & Uz"
+                  icon="info-circle"
+                ></BIcon>
+              </BFormCheckbox>
+            </BCol>
+          </BRow>
+
           <BRow class="mt-4">
             <BCol>
               <div class="d-flex h-100 justify-content-end">
@@ -468,6 +482,7 @@ import {
   SET_DISP_UX,
   SET_DISP_UZ,
   SET_STATION_TO_PLOT,
+  SET_USE_VECTOR,
   // Actions.
   FETCH_STATIONS,
   FETCH_DATA,
@@ -646,6 +661,9 @@ export default {
       vectorError(state) {
         return state.modeling[this.type].vectorError
       },
+      useVector(state) {
+        return state.modeling[this.type].useVector
+      },
     }),
     cSelectedStations: {
       get() {
@@ -717,6 +735,14 @@ export default {
       },
       set(value) {
         this.setStationToPlot(value)
+      },
+    },
+    cUseVector: {
+      get() {
+        return this.useVector
+      },
+      set(value) {
+        this.setUseVector(value)
       },
     },
     namespace() {
@@ -869,6 +895,9 @@ export default {
       },
       setStationToPlot(commit, value) {
         return commit(this.namespace + '/' + SET_STATION_TO_PLOT, value)
+      },
+      setUseVector(commit, value) {
+        return commit(this.namespace + '/' + SET_USE_VECTOR, value)
       },
     }),
     ...mapActions({
