@@ -107,6 +107,9 @@ export const actions = {
         }
       } else {
         url = `/rainfall-station/${station.stationId}/`
+        params = {
+          ...baseParams,
+        }
       }
       return client.get(url, {
         params,
