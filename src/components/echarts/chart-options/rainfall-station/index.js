@@ -26,7 +26,10 @@ export const createSeries = (allData, stations) => {
               color: '#37A2DA',
               width: 1,
             },
-            data: mapFieldColumns(data, 'timestamp', 'rain_acc'),
+            data: mapFieldColumns(data, 'timestamp', [
+              'rain_acc',
+              (rain_acc) => (typeof rain_acc === 'number' ? rain_acc : 0),
+            ]),
             name: `${station.stationName} Rainfall`,
             symbol: 'none',
             type: 'line',

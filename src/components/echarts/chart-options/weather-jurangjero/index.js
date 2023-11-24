@@ -93,7 +93,10 @@ export const createSeries = (data, { annotations = [] } = {}) => {
   return [
     {
       areaStyle: {},
-      data: mapFieldColumns(data, 'timestamp', 'rain_acc'),
+      data: mapFieldColumns(data, 'timestamp', [
+        'rain_acc',
+        (rain_acc) => (typeof rain_acc === 'number' ? rain_acc : 0),
+      ]),
       lineStyle: {
         width: 1,
       },
