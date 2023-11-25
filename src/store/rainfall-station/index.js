@@ -40,20 +40,18 @@ export const STATIONS = [
     stationId: 'jurangjero',
     stationName: 'Jurang Jero',
     isVaisala: true,
-    url: '/meteorology/jurangjero/',
+    url: '/meteorology/jurangjero/rainfall/',
     params: {
-      fields:
-        'timestamp,rain_acc,rain_intensity,rain_duration,rain_peak_intensity',
+      fields: 'timestamp,cumulative_rainfall,rate',
     },
   },
   {
     stationId: 'babadan',
     stationName: 'Babadan',
     isVaisala: true,
-    url: '/meteorology/babadan/',
+    url: '/meteorology/babadan/rainfall/',
     params: {
-      fields:
-        'timestamp,rain_acc,rain_intensity,rain_duration,rain_peak_intensity',
+      fields: 'timestamp,cumulative_rainfall,rate',
     },
   },
 ]

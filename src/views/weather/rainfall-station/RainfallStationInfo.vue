@@ -42,7 +42,7 @@ export default {
       stations: (state) => state.stations,
     }),
     rainfallStations() {
-      return this.stations.filter((station) => !station.isVaisala)
+      return this.stations
     },
   },
   methods: {

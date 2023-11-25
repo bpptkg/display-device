@@ -1,5 +1,6 @@
 import moment from 'moment'
 import axios from 'axios'
+import { get } from 'lodash'
 
 import client from '@/utils/client'
 import { calculatePeriod } from '@/utils/datetime'
@@ -36,7 +37,17 @@ export const initState = (period) => {
   }
 }
 
-export const getters = {}
+export const getters = {
+  rainfallEvents(state) {
+    return get(state.data, 'events.data', [])
+  },
+  rainfallEventsCount(state) {
+    return get(state.data, 'events.count', 0)
+  },
+  rainfallData(state) {
+    return get(state.data, 'data', [])
+  },
+}
 
 export const mutations = {
   ...baseMutations,
@@ -56,7 +67,7 @@ export const actions = {
     }
 
     const data = await client
-      .get('/meteorology/babadan/', {
+      .get('/meteorology/babadan/rainfall/', {
         params: {
           timestamp__gte: state.startTime.format(DATETIME_FORMAT),
           timestamp__lt: state.endTime.format(DATETIME_FORMAT),
