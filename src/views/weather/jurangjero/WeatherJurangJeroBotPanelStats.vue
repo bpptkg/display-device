@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { BCard } from 'bootstrap-vue'
 import {
   StatsPanelPeriod,
@@ -42,8 +42,9 @@ export default {
       endTime: (state) => state.endTime,
       data: (state) => state.data,
     }),
+    ...mapGetters(NAMESPACE, ['rainfallData']),
     statsInfo() {
-      return getStatsInfo(this.data)
+      return getStatsInfo(this.rainfallData)
     },
   },
 }

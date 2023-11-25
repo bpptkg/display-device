@@ -10,6 +10,7 @@ import {
 import { humanizeDuration } from '@/utils/datetime'
 import { createRowGrid } from '@/utils/echarts/grid'
 import { defaultToolbox } from '../common/toolbox'
+import { calculateRate } from '../weather-pasarbubar'
 
 export const FIELDS = [
   'Rainfall (mm)',
@@ -89,14 +90,11 @@ const formatDate = (date) => {
   return moment(date).format(DATETIME_FORMAT)
 }
 
-export const createSeries = (data, { annotations = [] } = {}) => {
+export const createSeries = (data, events, { annotations = [] } = {}) => {
   return [
     {
       areaStyle: {},
-      data: mapFieldColumns(data, 'timestamp', [
-        'rain_acc',
-        (rain_acc) => (typeof rain_acc === 'number' ? rain_acc : 0),
-      ]),
+      data: mapFieldColumns(data, 'timestamp', 'cumulative_rainfall'),
       lineStyle: {
         width: 1,
       },
@@ -112,14 +110,7 @@ export const createSeries = (data, { annotations = [] } = {}) => {
       yAxisIndex: 0,
     },
     {
-      data: mapFieldColumns(
-        data,
-        'timestamp', // Data index: 0
-        'rain_intensity', // 1
-        'rain_acc', // 2
-        'rain_duration', // 3
-        'rain_peak_intensity' // 4
-      ),
+      data: calculateRate(data, events),
       lineStyle: {
         color: '#65e0e0',
         width: 2,
@@ -344,15 +335,5 @@ export const baseChartOptions = ({ title = {} } = {}) => {
       ...title,
     },
     toolbox: defaultToolbox,
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'line',
-        lineStyle: {
-          type: 'dashed',
-        },
-      },
-      formatter: createTooltipFormatter(),
-    },
   }
 }

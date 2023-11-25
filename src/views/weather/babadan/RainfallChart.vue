@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { BCard, BLink, BDropdownItem } from 'bootstrap-vue'
 import ErrorMessage from '@/components/error-message'
 import DChart from '@/components/echarts/chart/DChart'
@@ -31,6 +31,7 @@ import {
   createSeries,
   mediaQuery,
 } from '@/components/echarts/chart-options/weather-babadan'
+import { createTooltip } from '@/components/echarts/chart-options/weather-pasarbubar'
 import { NAMESPACE } from '@/store/weather/babadan/rainfall'
 import { UPDATE_METEOROLOGY } from '@/store/weather/babadan/rainfall/actions'
 import MoreMenu from '@/components/more-menu'
@@ -53,11 +54,13 @@ export default {
       data: (state) => state.data,
       period: (state) => state.period,
     }),
+    ...mapGetters(NAMESPACE, ['rainfallData', 'rainfallEvents']),
     chartOptions() {
       const options = {
         baseOption: {
           ...baseChartOptions(),
-          series: createSeries(this.data),
+          series: createSeries(this.rainfallData, this.rainfallEvents),
+          tooltip: createTooltip(this.rainfallEvents),
         },
         media: mediaQuery,
       }

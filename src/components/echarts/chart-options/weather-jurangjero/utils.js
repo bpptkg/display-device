@@ -14,13 +14,13 @@ const FieldTypes = Object.freeze({
 const fields = [
   {
     type: FieldTypes.RAINFALL,
-    name: 'rain_acc',
+    name: 'cumulative_rainfall',
     label: 'Rainfall',
     valueSuffix: 'mm',
   },
   {
     type: FieldTypes.RATE,
-    name: 'rain_intensity',
+    name: 'rate',
     label: 'Rate',
     valueSuffix: 'mm/h',
   },

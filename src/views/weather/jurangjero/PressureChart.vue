@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { BCard, BLink } from 'bootstrap-vue'
 import ErrorMessage from '@/components/error-message'
 import DChart from '@/components/echarts/chart/DChart'
@@ -45,13 +45,14 @@ export default {
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
     }),
+    ...mapGetters(NAMESPACE, ['rainfallData']),
     chartOptions() {
       const options = {
         baseOption: {
           ...baseChartOptions({
             title: { subtext: createPeriodText(this.startTime, this.endTime) },
           }),
-          series: createSeries(this.data),
+          series: createSeries(this.rainfallData),
         },
         media: mediaQuery,
       }
