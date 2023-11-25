@@ -13,51 +13,6 @@ import moment from 'moment'
 export const createSeries = (allData, stations) => {
   return stations
     .map((station, index) => {
-      // if (station.isVaisala) {
-      //   const data = getSeriesByIndex(allData, index, {
-      //     defaultData: [],
-      //   })
-      //   return [
-      //     {
-      //       areaStyle: {
-      //         color: '#37A2DA',
-      //       },
-      //       lineStyle: {
-      //         color: '#37A2DA',
-      //         width: 1,
-      //       },
-      //       data: mapFieldColumns(data, 'timestamp', [
-      //         'rain_acc',
-      //         (rain_acc) => (typeof rain_acc === 'number' ? rain_acc : 0),
-      //       ]),
-      //       name: `${station.stationName} Rainfall`,
-      //       symbol: 'none',
-      //       type: 'line',
-      //       xAxisIndex: index,
-      //       yAxisIndex: index,
-      //     },
-      //     {
-      //       data: mapFieldColumns(
-      //         data,
-      //         'timestamp', // Data index: 0
-      //         'rain_intensity', // 1
-      //         'rain_acc', // 2
-      //         'rain_duration', // 3
-      //         'rain_peak_intensity' // 4
-      //       ),
-      //       lineStyle: {
-      //         color: '#32C5E9',
-      //         width: 2,
-      //         type: 'solid',
-      //       },
-      //       name: `${station.stationName} Rate`,
-      //       symbol: 'none',
-      //       type: 'line',
-      //       xAxisIndex: index,
-      //       yAxisIndex: index,
-      //     },
-      //   ]
-      // } else {
       const res = getSeriesByIndex(allData, index, {
         defaultData: Object.create(null),
       })
@@ -94,7 +49,6 @@ export const createSeries = (allData, stations) => {
           yAxisIndex: index,
         },
       ]
-      // }
     })
     .flat(1)
 }
