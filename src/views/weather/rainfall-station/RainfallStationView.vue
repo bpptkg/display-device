@@ -31,6 +31,10 @@
         <DChart ref="chart" :options="chartOptions" class="chart" />
       </BCard>
 
+      <BFormCheckbox v-model="useAutoUpdate" class="mb-2">
+        <small>Auto update</small>
+      </BFormCheckbox>
+
       <DNote>
         &mdash; Rainfall event may be clipped if rainfall duration greater than
         time period selected. Using longer time period is recommended to avoid
@@ -67,7 +71,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BLink, BDropdownItem } from 'bootstrap-vue'
+import { BCard, BLink, BDropdownItem, BFormCheckbox } from 'bootstrap-vue'
 
 import { InfoIcon } from '@/components/icons/content'
 import { SidepanelTabs, SidepanelTab } from '@/components/sidepanel'
@@ -100,6 +104,7 @@ import {
   SET_END_TIME,
 } from '@/store/base/mutations'
 import { UPDATE_RAINFALL } from '@/store/rainfall-station/actions'
+import { SET_AUTO_UPDATE } from '@/store/rainfall-station/mutations'
 
 import RainfallStationInfo from './RainfallStationInfo'
 import RainfallStationInfoBotPanel from './RainfallStationInfoBotPanel'
@@ -123,6 +128,7 @@ export default {
     RainfallStationInfo,
     RainfallStationInfoBotPanel,
     DNote,
+    BFormCheckbox,
   },
   data() {
     return {
@@ -130,6 +136,7 @@ export default {
       maxCustomDuration,
       rangeSelector,
       tabIndex: 0,
+      interval: null,
     }
   },
   computed: {
@@ -138,6 +145,7 @@ export default {
       error: (state) => state.error,
       data: (state) => state.data,
       stations: (state) => state.stations,
+      autoUpdate: (state) => state.autoUpdate,
     }),
 
     chartOptions() {
@@ -152,9 +160,29 @@ export default {
 
       return options
     },
+
+    useAutoUpdate: {
+      get: function () {
+        return this.autoUpdate
+      },
+      set: function (value) {
+        return this.setAutoUpdate(value)
+      },
+    },
+  },
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
   },
   mounted() {
     this.update()
+
+    if (this.autoUpdate) {
+      this.interval = setInterval(() => {
+        this.update()
+      }, 1000 * 60)
+    }
   },
   methods: {
     ...mapMutations({
@@ -166,6 +194,9 @@ export default {
       },
       setEndTime(commit, value) {
         return commit(NAMESPACE + '/' + SET_END_TIME, value)
+      },
+      setAutoUpdate(commit, value) {
+        return commit(NAMESPACE + '/' + SET_AUTO_UPDATE, value)
       },
     }),
     ...mapActions({

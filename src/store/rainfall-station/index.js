@@ -16,6 +16,7 @@ import { baseState, baseMutations } from '../base'
 import { FETCH_RAINFALL, UPDATE_RAINFALL } from './actions'
 import rangeSelector from './range-selector'
 import axios from 'axios'
+import { SET_AUTO_UPDATE } from './mutations'
 
 export const NAMESPACE = 'rainfallStation'
 
@@ -59,6 +60,7 @@ export const STATIONS = [
 export const initialState = {
   ...baseState,
   stations: STATIONS,
+  autoUpdate: true,
 }
 
 export const initState = (period) => {
@@ -75,6 +77,9 @@ export const getters = {}
 
 export const mutations = {
   ...baseMutations,
+  [SET_AUTO_UPDATE](state, value) {
+    state.autoUpdate = value
+  },
 }
 
 export const actions = {
