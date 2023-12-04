@@ -33,7 +33,7 @@ export const createSeries = (allData, stations) => {
           symbol: 'none',
           type: 'line',
           xAxisIndex: index,
-          yAxisIndex: index,
+          yAxisIndex: index * 2, // Map Y axis index to grid index.
         },
         {
           data: calculateRate(data, events),
@@ -46,7 +46,7 @@ export const createSeries = (allData, stations) => {
           symbol: 'none',
           type: 'line',
           xAxisIndex: index,
-          yAxisIndex: index,
+          yAxisIndex: index * 2 + 1, // Map Y axis index to grid index in the secondary axis.
         },
       ]
     })
@@ -74,21 +74,38 @@ export const createXAxis = (nrows) => {
 }
 
 export const createYAxis = (stations) => {
-  return stations.map((station, index) => {
-    return {
-      axisTick: { interval: 4 },
-      gridIndex: index,
-      name: `${station.stationName} (mm)`,
-      nameLocation: 'end',
-      nameTextStyle: {
-        align: 'left',
-      },
-      nameGap: 7,
-      scale: index !== 0,
-      splitLine: { show: true },
-      type: 'value',
-    }
-  })
+  return stations
+    .map((station, index) => {
+      return [
+        {
+          axisTick: { interval: 4 },
+          gridIndex: index,
+          name: `${station.stationName} (mm)`,
+          nameLocation: 'end',
+          nameTextStyle: {
+            align: 'left',
+          },
+          nameGap: 7,
+          scale: false,
+          splitLine: { show: true },
+          type: 'value',
+        },
+        {
+          gridIndex: index,
+          name: 'Rate (mm/h)',
+          nameLocation: 'end',
+          nameTextStyle: {
+            align: 'right',
+          },
+          position: 'right',
+          nameGap: 7,
+          scale: false,
+          splitLine: { show: false },
+          type: 'value',
+        },
+      ]
+    })
+    .flat(1)
 }
 
 export const mediaQuery = (stations) => {
@@ -98,7 +115,12 @@ export const mediaQuery = (stations) => {
         maxWidth: 575.98,
       },
       option: {
-        grid: createRowGrid(stations.length, { left: 15, bottom: 8, top: 12 }),
+        grid: createRowGrid(stations.length, {
+          left: 13,
+          right: 13,
+          bottom: 9,
+          top: 12,
+        }),
         title: { top: 25, textStyle: { fontSize: 13 } },
       },
     },
@@ -115,7 +137,7 @@ export const baseChartOptions = (stations, { title = {} } = {}) => {
         realtime: false,
       },
     ],
-    grid: createRowGrid(stations.length, { bottom: 10, right: 5, top: 8 }),
+    grid: createRowGrid(stations.length, { bottom: 10, top: 8, right: 8 }),
     xAxis: createXAxis(stations.length),
     yAxis: createYAxis(stations),
     title: {
