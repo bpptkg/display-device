@@ -1,16 +1,24 @@
 <template>
   <div>
     <div class="chart-container">
-      <RangeSelector
-        ref="range-selector"
-        class="mb-3"
-        size="sm"
-        custom-enabled
-        :selected="period"
-        :items="rangeSelector"
-        :max-custom-duration="maxCustomDuration"
-        @period-selected="onPeriodChange"
-      />
+      <div class="d-flex align-items-top">
+        <RangeSelector
+          ref="range-selector"
+          class="mb-3"
+          size="sm"
+          custom-enabled
+          :selected="period"
+          :items="rangeSelector"
+          :max-custom-duration="maxCustomDuration"
+          @period-selected="onPeriodChange"
+        />
+
+        <RainfallStationFilter
+          class="ml-2"
+          :items="stations"
+          @change="handleFilterChange"
+        />
+      </div>
 
       <BCard v-if="error">
         <ErrorMessage>
@@ -86,12 +94,7 @@ import JSZip from 'jszip'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import { saveAs } from '@/lib/file-saver'
 
-import {
-  baseChartOptions,
-  createSeries,
-  mediaQuery,
-  createTooltip,
-} from '@/components/echarts/chart-options/rainfall-station'
+import { createChartOptions } from '@/components/echarts/chart-options/rainfall-station'
 
 import rangeSelector, {
   maxCustomDuration,
@@ -104,7 +107,10 @@ import {
   SET_END_TIME,
 } from '@/store/base/mutations'
 import { UPDATE_RAINFALL } from '@/store/rainfall-station/actions'
-import { SET_AUTO_UPDATE } from '@/store/rainfall-station/mutations'
+import {
+  SET_AUTO_UPDATE,
+  SET_IS_VISIBLE,
+} from '@/store/rainfall-station/mutations'
 
 import RainfallStationInfo from './RainfallStationInfo'
 import RainfallStationInfoBotPanel from './RainfallStationInfoBotPanel'
@@ -112,6 +118,7 @@ import RainfallStationInfoBotPanel from './RainfallStationInfoBotPanel'
 import { DateRangeTypes } from '@/constants/date'
 
 import DNote from '@/components/base/note/DNote'
+import RainfallStationFilter from './RainfallStationFilter.vue'
 
 export default {
   name: 'RainfallStationView',
@@ -129,6 +136,7 @@ export default {
     RainfallStationInfoBotPanel,
     DNote,
     BFormCheckbox,
+    RainfallStationFilter,
   },
   data() {
     return {
@@ -149,16 +157,7 @@ export default {
     }),
 
     chartOptions() {
-      const options = {
-        baseOption: {
-          ...baseChartOptions(this.stations),
-          series: createSeries(this.data, this.stations),
-          tooltip: createTooltip(this.data, this.stations),
-        },
-        media: mediaQuery(this.stations),
-      }
-
-      return options
+      return createChartOptions({ data: this.data, stations: this.stations })
     },
 
     useAutoUpdate: {
@@ -197,6 +196,9 @@ export default {
       },
       setAutoUpdate(commit, value) {
         return commit(NAMESPACE + '/' + SET_AUTO_UPDATE, value)
+      },
+      setIsVisible(commit, value) {
+        return commit(NAMESPACE + '/' + SET_IS_VISIBLE, value)
       },
     }),
     ...mapActions({
@@ -249,6 +251,9 @@ export default {
           `rainfall-station-${createShortNameFromPeriod(this.period)}.zip`
         )
       })
+    },
+    handleFilterChange({ index, isVisible }) {
+      this.setIsVisible({ index, isVisible })
     },
   },
 }
