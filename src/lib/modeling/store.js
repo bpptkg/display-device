@@ -69,7 +69,7 @@ export const initialState = {
   dataError: null,
   linregressError: null,
   modelingError: null,
-  dataType: 'tilt',
+  dataType: 'tilt', // tilt or gps
   depth: 2000,
   initialRadius: 1,
   step: 1,
@@ -115,8 +115,9 @@ export const SET_MAX_ITERATION = 'setMaxIteration'
 export const SET_SHEAR_MODULUS = 'setShearModulus'
 export const SET_SOURCE_OVERPRESSURE = 'setSourceOverpressure'
 export const SET_POISSON_RATIO = 'setPoissonRatio'
-export const SET_DISP_UX = 'setDispUx'
-export const SET_DISP_UZ = 'setDispUz'
+export const SET_DISP_U = 'setDispU'
+export const SET_DISP_V = 'setDispV'
+export const SET_DISP_Z = 'setDispZ'
 export const SET_PERIOD = 'setPeriod'
 export const SET_START_TIME = 'setStartTime'
 export const SET_END_TIME = 'setEndTime'
@@ -211,13 +212,18 @@ export const mutations = {
     state.linregress = data
     const disp = convertDispToObject(data.regression || [])
     const stations = [...state.stations]
+
     stations.forEach((station, index) => {
       const stationId = station.id
       const obj = disp[stationId]
-      const ux = obj && obj.displacement ? obj.displacement.ux : null
-      const uz = obj && obj.displacement ? obj.displacement.uz : null
-      stations[index].ux = Number.isFinite(ux) ? ux.toFixed(4) : 0
-      stations[index].uz = Number.isFinite(uz) ? uz.toFixed(4) : 0
+      const u = obj && obj.displacement ? obj.displacement.u : null
+      const v = obj && obj.displacement ? obj.displacement.v : null
+      const z = obj && obj.displacement ? obj.displacement.z : null
+
+      stations[index].u = Number.isFinite(u) ? u.toFixed(4) : 0
+      stations[index].v = Number.isFinite(v) ? v.toFixed(4) : 0
+      stations[index].z = Number.isFinite(z) ? v.toFixed(4) : 0
+
       stations[index].displacement =
         obj && obj.displacement ? obj.displacement : {}
       stations[index].linreg = obj && obj.linreg ? obj.linreg : {}
@@ -227,11 +233,14 @@ export const mutations = {
 
     state.stations = [...stations]
   },
-  [SET_DISP_UX](state, { index, value }) {
-    state.stations[index].ux = value
+  [SET_DISP_U](state, { index, value }) {
+    state.stations[index].u = value
   },
-  [SET_DISP_UZ](state, { index, value }) {
-    state.stations[index].uz = value
+  [SET_DISP_V](state, { index, value }) {
+    state.stations[index].v = value
+  },
+  [SET_DISP_Z](state, { index, value }) {
+    state.stations[index].z = value
   },
   [SET_DATA](state, data) {
     state.data = data
@@ -416,7 +425,26 @@ export const actions = {
 
       commit(SET_DATA, data)
     } else if (dataType == 'gps') {
-      // TODO
+      const requests = state.stations.map((item) => {
+        return client.get(`/gps/position/${item.id}/`, {
+          params: {
+            timestamp__gte: start.format(DATETIME_FORMAT),
+            timestamp__lt: end.format(DATETIME_FORMAT),
+            nolimit: true,
+          },
+        })
+      })
+
+      const data = await Promise.all(requests)
+        .then((responses) => {
+          return responses.map((response) => response.data)
+        })
+        .catch((error) => {
+          commit(SET_DATA_ERROR, error)
+          return []
+        })
+
+      commit(SET_DATA, data)
     }
 
     commit(SET_IS_FETCHING, false)
@@ -510,8 +538,9 @@ export const actions = {
           .map((s) => {
             return {
               station: s.id,
-              ux: s.ux || 0,
-              uz: s.uz || 0,
+              u: s.u || 0,
+              v: s.v || 0,
+              z: s.z || 0,
             }
           }),
       })
@@ -530,8 +559,11 @@ export const actions = {
       commit(SET_VECTOR_ERROR, null)
     }
 
+    const { dataType } = state
+
     const data = await client
-      .post('/modeling/tilt-vector/gen-image/', {
+      .post('/modeling/vector/gen-image/', {
+        data_type: dataType,
         start: state.startTime.format(DATETIME_FORMAT),
         end: state.endTime.format(DATETIME_FORMAT),
         stations: state.selectedStations,

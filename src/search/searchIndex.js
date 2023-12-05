@@ -460,4 +460,12 @@ export default [
     name: 'Modeling',
     path: '/modeling',
   },
+  {
+    name: 'Tiltmeter Modeling',
+    path: '/modeling/tilt',
+  },
+  {
+    name: 'GPS Modeling',
+    path: '/modeling/gps',
+  },
 ]

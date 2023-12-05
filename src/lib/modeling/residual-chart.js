@@ -55,7 +55,7 @@ export const createResidualChart = ({ modeling, field }) => {
 
   const option = {
     title: {
-      text: 'Tiltmeter Model',
+      text: 'Residual',
       left: 'center',
       textStyle: {
         fontWeight: 'normal',
