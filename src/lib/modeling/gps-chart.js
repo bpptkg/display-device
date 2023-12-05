@@ -10,9 +10,9 @@ import {
 import { createRowGrid } from '@/utils/echarts/grid'
 
 export const SeriesName = Object.freeze({
-  X: 'X',
-  Y: 'Y',
-  TEMPERATURE: 'Temperature',
+  NORTHING: 'Northing',
+  EASTING: 'Easting',
+  ELEVATION: 'Elevation',
 })
 
 export const createMarkPointOption = (data, text) => {
@@ -46,23 +46,34 @@ export const createMarkPointOption = (data, text) => {
   return opt
 }
 
-export const createSeries = (data, xreg, yreg, xtext, ytext) => {
+export const createSeries = (data, xreg, yreg, zreg, xtext, ytext, ztext) => {
   const options = [
     {
-      data: mapFieldColumns(data, 'timestamp', 'x'),
-      name: SeriesName.X,
-      symbol: 'none',
-      type: 'line',
+      data: mapFieldColumns(data, 'timestamp', 'east'),
+      name: SeriesName.EASTING,
+      symbol: 'circle',
+      symbolSize: 7,
+      type: 'scatter',
       xAxisIndex: 0,
       yAxisIndex: 0,
     },
     {
-      data: mapFieldColumns(data, 'timestamp', 'y'),
-      name: SeriesName.Y,
-      symbol: 'none',
-      type: 'line',
+      data: mapFieldColumns(data, 'timestamp', 'north'),
+      name: SeriesName.NORTHING,
+      symbol: 'circle',
+      symbolSize: 7,
+      type: 'scatter',
       xAxisIndex: 1,
       yAxisIndex: 1,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'up'),
+      name: SeriesName.ELEVATION,
+      symbol: 'circle',
+      symbolSize: 7,
+      type: 'scatter',
+      xAxisIndex: 2,
+      yAxisIndex: 2,
     },
     {
       data: mapFieldColumns(xreg, 'timestamp', 'value'),
@@ -94,15 +105,30 @@ export const createSeries = (data, xreg, yreg, xtext, ytext) => {
       yAxisIndex: 1,
       markPoint: createMarkPointOption(yreg, ytext),
     },
+    {
+      data: mapFieldColumns(zreg, 'timestamp', 'value'),
+      symbol: 'none',
+      lineStyle: {
+        color: 'red',
+      },
+      itemStyle: {
+        color: 'red',
+      },
+      name: 'Reg. Z',
+      type: 'line',
+      xAxisIndex: 2,
+      yAxisIndex: 2,
+      markPoint: createMarkPointOption(zreg, ztext),
+    },
   ]
 
   return options
 }
 
-export const createXAxis = (min, max, { omitTemperature = false } = {}) => {
+export const createXAxis = (min, max) => {
   const options = [
     {
-      axisLabel: { show: omitTemperature ? true : false },
+      axisLabel: { show: false },
       gridIndex: 0,
       min,
       max,
@@ -111,7 +137,16 @@ export const createXAxis = (min, max, { omitTemperature = false } = {}) => {
       type: 'time',
     },
     {
+      axisLabel: { show: false },
       gridIndex: 1,
+      min,
+      max,
+      splitLine: { show: false },
+      position: 'bottom',
+      type: 'time',
+    },
+    {
+      gridIndex: 2,
       min,
       max,
       splitLine: { show: false },
@@ -129,7 +164,13 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(2, { top: 15, bottom: 15, left: 20, right: 8 }),
+      grid: createRowGrid(3, {
+        top: 15,
+        bottom: 10,
+        left: 20,
+        right: 5,
+        margin: 3,
+      }),
       title: {
         top: 25,
         textStyle: {
@@ -144,20 +185,41 @@ export const createYAxis = () => {
   const options = [
     {
       gridIndex: 0,
-      name: 'X (\u00B5rad)',
-      nameGap: 50,
-      nameLocation: 'center',
+      name: 'Easting (m)',
+      nameGap: 2,
+      nameLocation: 'end',
+      nameTextStyle: {
+        align: 'left',
+      },
       scale: true,
       splitLine: { show: false },
+      axisLabel: { formatter: (v) => v.toFixed(3) },
       type: 'value',
     },
     {
       gridIndex: 1,
-      name: 'Y (\u00B5rad)',
-      nameGap: 50,
-      nameLocation: 'center',
+      name: 'Northing (m)',
+      nameGap: 2,
+      nameLocation: 'end',
+      nameTextStyle: {
+        align: 'left',
+      },
       scale: true,
       splitLine: { show: false },
+      axisLabel: { formatter: (v) => v.toFixed(3) },
+      type: 'value',
+    },
+    {
+      gridIndex: 2,
+      name: 'Elevation (m)',
+      nameGap: 2,
+      nameLocation: 'end',
+      nameTextStyle: {
+        align: 'left',
+      },
+      scale: true,
+      splitLine: { show: false },
+      axisLabel: { formatter: (v) => v.toFixed(3) },
       type: 'value',
     },
   ]
@@ -168,23 +230,14 @@ export const createYAxis = () => {
 export const baseChartOptions = () => {
   return {
     title: {
-      text: 'Tiltmeter Data',
+      text: 'GPS Data',
       left: 'center',
       textStyle: {
         fontWeight: 'normal',
       },
     },
     backgroundColor: '#fff',
-    grid: [
-      {
-        top: '10%',
-        height: '35%',
-      },
-      {
-        top: '50%',
-        bottom: 80,
-      },
-    ],
+    grid: createRowGrid(3, { margin: 5, right: 5 }),
     yAxis: createYAxis(),
   }
 }
@@ -234,18 +287,20 @@ export const tooltipFormatter = (sampling) => {
   }
 }
 
-export const createTiltChart = ({
+export const createGpsChart = ({
   data,
   xreg,
   yreg,
+  zreg,
   xtext,
   ytext,
+  ztext,
   startTime,
   endTime,
 }) => {
   const options = {
     ...baseChartOptions(),
-    series: createSeries(data, xreg, yreg, xtext, ytext),
+    series: createSeries(data, xreg, yreg, zreg, xtext, ytext, ztext),
     tooltip: {
       trigger: 'axis',
       axisPointer: {

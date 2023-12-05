@@ -222,7 +222,16 @@ export default {
         {
           title: 'Modeling',
           icon: ModelingIcon,
-          href: '/modeling',
+          child: [
+            {
+              title: 'Tiltmeter Modeling',
+              href: '/modeling/tilt',
+            },
+            {
+              title: 'GPS Modeling',
+              href: '/modeling/gps',
+            },
+          ],
         },
         {
           divider: true,

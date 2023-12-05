@@ -1,7 +1,14 @@
-export const createVectorChart = () => {
+export const createVectorChart = ({ dataType = 'tilt' } = {}) => {
+  let title
+  if (dataType == 'tilt') {
+    title = 'Tiltmeter Vector'
+  } else if (dataType == 'gps') {
+    title = 'GPS Vector'
+  }
+
   const option = {
     title: {
-      text: 'Tiltmeter Vector',
+      text: title,
       left: 'center',
       textStyle: {
         fontWeight: 'normal',

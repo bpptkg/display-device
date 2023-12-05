@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-wrap">
-    <BCol md="4" lg="3" class="mb-4">
+    <BCol md="5" lg="3" class="mb-4">
       <BCard :header="headerName" class="panel">
         <ScrollWrapper>
           <BRow>
@@ -19,8 +19,12 @@
                 <table>
                   <tr>
                     <th><small>Name</small></th>
-                    <th><small>Ux</small></th>
-                    <th><small>Uz</small></th>
+                    <th>
+                      <small>{{ disp1Name }}</small>
+                    </th>
+                    <th>
+                      <small>{{ disp2Name }}</small>
+                    </th>
                   </tr>
                   <tr v-for="(station, index) in stations" :key="index">
                     <td>
@@ -34,16 +38,16 @@
                     </td>
                     <td>
                       <BFormInput
-                        :value="getUx(index)"
-                        @change="(value) => handleUxChange(value, index)"
+                        :value="getDisp1(index)"
+                        @change="(value) => handleDisp1Change(value, index)"
                         type="number"
                         size="sm"
                       />
                     </td>
                     <td>
                       <BFormInput
-                        :value="getUz(index)"
-                        @change="(value) => handleUzChange(value, index)"
+                        :value="getDisp2(index)"
+                        @change="(value) => handleDisp2Change(value, index)"
                         type="number"
                         size="sm"
                       />
@@ -94,7 +98,7 @@
             </BCol>
           </BRow>
 
-          <BRow class="mt-3">
+          <BRow v-show="type == 'tilt'" class="mt-3">
             <BCol>
               <BFormCheckbox v-model="cUseVector"
                 ><small>Use vector</small>
@@ -300,7 +304,7 @@
           </BRow>
 
           <BRow>
-            <BCol ref="tiltContainer" lg="6" class="px-0">
+            <BCol lg="6" class="px-0">
               <ErrorMessage v-if="dataError">
                 <p>Unable to load data.</p>
                 <p>Error: {{ dataError.message }}</p>
@@ -456,6 +460,7 @@ import { VBTooltip } from 'bootstrap-vue'
 import { createModelingChart } from './modeling-chart'
 import { createResidualChart } from './residual-chart'
 import { createTiltChart } from './tilt-chart'
+import { createGpsChart } from './gps-chart'
 import { createVectorChart } from './vector-chart'
 import { DateRangeTypes } from '../../constants/date'
 import { getSeriesByIndex } from '../../utils/series'
@@ -479,8 +484,8 @@ import {
   SET_SHEAR_MODULUS,
   SET_SOURCE_OVERPRESSURE,
   SET_POISSON_RATIO,
-  SET_DISP_UX,
-  SET_DISP_UZ,
+  SET_DISP_U,
+  SET_DISP_V,
   SET_STATION_TO_PLOT,
   SET_USE_VECTOR,
   // Actions.
@@ -495,6 +500,7 @@ import {
   // Utils.
   calculatePeriod,
   addTimeInterval,
+  SET_DISP_Z,
 } from './store'
 
 export default {
@@ -560,11 +566,11 @@ export default {
           label: 'Station',
         },
         {
-          key: 'ux',
+          key: 'u1',
           label: 'Ux',
         },
         {
-          key: 'uz',
+          key: 'u2',
           label: 'Uz',
         },
         {
@@ -624,9 +630,6 @@ export default {
       },
       v(state) {
         return state.modeling[this.type].v
-      },
-      ux(state, index) {
-        return state.modeling[this.type].stations[index].ux
       },
       station(state) {
         return state.modeling[this.type].station
@@ -745,12 +748,15 @@ export default {
         this.setUseVector(value)
       },
     },
+
     namespace() {
       return `modeling/${this.type}`
     },
+
     headerName() {
       return this.type == 'tilt' ? 'Tilt Modeling' : 'GPS Modeling'
     },
+
     chartOptions() {
       const index = this.stations.findIndex(
         (station) => station.id === this.station
@@ -763,33 +769,69 @@ export default {
       )
       const regtext = this.createRegressionText(regIndex)
 
-      return createTiltChart({
-        data: getSeriesByIndex(this.data, index),
-        xreg: station
-          ? station.linreg_point
-            ? station.linreg_point.x
-              ? station.linreg_point.x
+      if (this.type == 'tilt') {
+        return createTiltChart({
+          data: getSeriesByIndex(this.data, index),
+          xreg: station
+            ? station.linreg_point
+              ? station.linreg_point.u
+                ? station.linreg_point.u
+                : []
               : []
-            : []
-          : [],
-        zreg: station
-          ? station.linreg_point
-            ? station.linreg_point.z
+            : [],
+          yreg: station
+            ? station.linreg_point
+              ? station.linreg_point.v
+                ? station.linreg_point.v
+                : []
+              : []
+            : [],
+          startTime: start,
+          endTime: end,
+          xtext: regtext.u,
+          ytext: regtext.v,
+        })
+      } else if (this.type == 'gps') {
+        return createGpsChart({
+          data: getSeriesByIndex(this.data, index),
+          xreg: station
+            ? station.linreg_point
+              ? station.linreg_point.u
+                ? station.linreg_point.u
+                : []
+              : []
+            : [],
+          yreg: station
+            ? station.linreg_point
+              ? station.linreg_point.v
+                ? station.linreg_point.v
+                : []
+              : []
+            : [],
+          zreg: station
+            ? station.linreg_point
               ? station.linreg_point.z
+                ? station.linreg_point.z
+                : []
               : []
-            : []
-          : [],
-        startTime: start,
-        endTime: end,
-        xtext: regtext.x,
-        ztext: regtext.z,
-      })
+            : [],
+          startTime: start,
+          endTime: end,
+          xtext: regtext.u,
+          ytext: regtext.v,
+          ztext: regtext.z,
+        })
+      } else {
+        return {}
+      }
     },
+
     matchedRadius() {
       return this.modeling.eps && this.modeling.eps.radius
         ? this.modeling.eps.radius
         : 0
     },
+
     modelingChartOptions() {
       const opt = createModelingChart({
         topo: this.topo,
@@ -798,32 +840,58 @@ export default {
       })
       return opt
     },
+
     iteration() {
       return this.modeling.iteration ? this.modeling.iteration : []
     },
+
     visibleStations() {
       const selectedStations = this.selectedStations
       return this.stations.filter((station) => {
         return selectedStations.includes(station.id)
       })
     },
+
     vectorChartOptions() {
-      return createVectorChart()
+      return createVectorChart({ dataType: this.type })
     },
+
     residualChartOptions() {
       return createResidualChart({
         modeling: this.modeling,
         field: this.residualField,
       })
     },
+
     isVectorImageAvailable() {
       if (this.vectorImage) {
         return true
       }
       return false
     },
+
     residualOptions() {
       return [{ value: 'total', text: 'Residual Total' }, ...this.stations]
+    },
+
+    disp1Name() {
+      if (this.type === 'tilt') {
+        return this.useVector ? 'Ux' : 'Ur'
+      } else if (this.type === 'gps') {
+        return 'Ur'
+      } else {
+        return 'Ux'
+      }
+    },
+
+    disp2Name() {
+      if (this.type === 'tilt') {
+        return this.useVector ? 'Uy' : 'Uz'
+      } else if (this.type === 'gps') {
+        return 'Uz'
+      } else {
+        return 'Uz'
+      }
     },
   },
   watch: {
@@ -887,11 +955,14 @@ export default {
       setPoissonRatio(commit, value) {
         return commit(this.namespace + '/' + SET_POISSON_RATIO, value)
       },
-      setDispUx(commit, value) {
-        return commit(this.namespace + '/' + SET_DISP_UX, value)
+      setDispU(commit, value) {
+        return commit(this.namespace + '/' + SET_DISP_U, value)
       },
-      setDispUz(commit, value) {
-        return commit(this.namespace + '/' + SET_DISP_UZ, value)
+      setDispV(commit, value) {
+        return commit(this.namespace + '/' + SET_DISP_V, value)
+      },
+      setDispZ(commit, value) {
+        return commit(this.namespace + '/' + SET_DISP_Z, value)
       },
       setStationToPlot(commit, value) {
         return commit(this.namespace + '/' + SET_STATION_TO_PLOT, value)
@@ -938,22 +1009,35 @@ export default {
       }
       this.updateData()
     },
-    getUx(index) {
+    // Get 1st displacement value.
+    getDisp1(index) {
       const station = this.stations[index]
-      return station ? station.ux : null
+      return station ? station.u : null
     },
-    getUz(index) {
-      const station = this.stations[index]
-      return station ? station.uz : null
+    // Get 2nd displacement value.
+    getDisp2(index) {
+      if (this.type == 'tilt') {
+        const station = this.stations[index]
+        return station ? station.v : null
+      } else if (this.type == 'gps') {
+        const station = this.stations[index]
+        return station ? station.z : null
+      } else {
+        return null
+      }
     },
-    handleUxChange(value, index) {
-      this.setDispUx({ value: Number(value), index })
+    handleDisp1Change(value, index) {
+      this.setDispU({ value: Number(value), index })
     },
-    handleUzChange(value, index) {
-      this.setDispUz({ value: Number(value), index })
+    handleDisp2Change(value, index) {
+      if (this.type == 'tilt') {
+        this.setDispV({ value: Number(value), index })
+      } else if (this.type == 'gps') {
+        this.setDispZ({ value: Number(value), index })
+      }
     },
     handleStationChange() {
-      this.updateData()
+      this.refreshDataChart()
     },
     updateData() {
       this.fetchData()
@@ -968,18 +1052,21 @@ export default {
     },
     runLinregress() {
       this.calcLinregress().then(() => {
-        this.updateData()
+        this.refreshDataChart()
       })
       this.updateVectorChart()
     },
     runModeling() {
       this.calcModeling().finally(() => {
-        const chart = this.$refs.modelingChart.$refs.chart
-        chart.clear()
-        chart.showLoading()
-        chart.mergeOptions(this.modelingChartOptions)
-        chart.hideLoading()
+        this.refreshModelingChart()
       })
+    },
+    refreshDataChart() {
+      const chart = this.$refs.chart.$refs.chart
+      chart.clear()
+      chart.showLoading()
+      chart.mergeOptions(this.chartOptions)
+      chart.hideLoading()
     },
     refreshModelingChart() {
       const chart = this.$refs.modelingChart.$refs.chart
@@ -998,8 +1085,13 @@ export default {
         return {
           station: v.station,
           radius: item.radius,
-          ux: v.displacement.ux,
-          uz: v.displacement.uz,
+          u1: v.displacement.u,
+          u2:
+            this.type == 'tilt'
+              ? v.displacement.v
+              : this.type == 'gps'
+              ? v.displacement.z
+              : 0,
           res: v.displacement.res,
         }
       })
@@ -1007,7 +1099,7 @@ export default {
     },
     createRegressionText(index) {
       const format = (value) => {
-        return Number.isFinite(value) ? value.toFixed(2) : '-'
+        return Number.isFinite(value) ? value.toExponential(2) : '-'
       }
 
       const reg = this.linregress.regression
@@ -1016,21 +1108,26 @@ export default {
 
       const r = reg ? reg.linreg : null
 
-      let x, z
+      let u, v, z
       if (r) {
-        x = `m=${format(r.x.m)} r2=${format(r.x.r_value)} err=${format(
-          r.x.std_err
+        u = `m=${format(r.u.m)} r2=${format(r.u.r_value)} err=${format(
+          r.u.std_err
+        )}`
+
+        v = `m=${format(r.v.m)} r2=${format(r.v.r_value)} err=${format(
+          r.v.std_err
         )}`
 
         z = `m=${format(r.z.m)} r2=${format(r.z.r_value)} err=${format(
           r.z.std_err
         )}`
       } else {
-        x = ''
+        u = ''
+        v = ''
         z = ''
       }
 
-      return { x, z }
+      return { u, v, z }
     },
     createIntervalText(startTime, endTime) {
       return `${startTime.format('YYYY-MM-DD HH:mm:ss')} ~ ${endTime.format(
@@ -1042,7 +1139,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modeling-chart {
+.chart {
   min-height: 450px;
   width: 100%;
 }
