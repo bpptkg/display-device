@@ -16,7 +16,7 @@ import { baseState, baseMutations } from '../base'
 import { FETCH_RAINFALL, UPDATE_RAINFALL } from './actions'
 import rangeSelector from './range-selector'
 import axios from 'axios'
-import { SET_AUTO_UPDATE } from './mutations'
+import { SET_AUTO_UPDATE, SET_IS_VISIBLE } from './mutations'
 
 export const NAMESPACE = 'rainfallStation'
 
@@ -24,18 +24,22 @@ export const STATIONS = [
   {
     stationId: 'pasarbubar',
     stationName: 'Pasarbubar',
+    isVisible: true,
   },
   {
     stationId: 'gunungijo',
     stationName: 'Gunung Ijo',
+    isVisible: false,
   },
   {
     stationId: 'klatakan',
     stationName: 'Klatakan',
+    isVisible: false,
   },
   {
     stationId: 'labuhan',
     stationName: 'Labuhan',
+    isVisible: true,
   },
   {
     stationId: 'jurangjero',
@@ -45,6 +49,7 @@ export const STATIONS = [
     params: {
       fields: 'timestamp,cumulative_rainfall,rate',
     },
+    isVisible: true,
   },
   {
     stationId: 'babadan',
@@ -54,6 +59,7 @@ export const STATIONS = [
     params: {
       fields: 'timestamp,cumulative_rainfall,rate',
     },
+    isVisible: true,
   },
 ]
 
@@ -79,6 +85,9 @@ export const mutations = {
   ...baseMutations,
   [SET_AUTO_UPDATE](state, value) {
     state.autoUpdate = value
+  },
+  [SET_IS_VISIBLE](state, { index, isVisible }) {
+    state.stations[index].isVisible = isVisible
   },
 }
 

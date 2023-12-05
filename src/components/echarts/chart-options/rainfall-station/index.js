@@ -10,10 +10,16 @@ import { get } from 'lodash'
 import { createCircleTemplate, createDividerTemplate } from '@/utils/series'
 import moment from 'moment'
 
+const findOriginalIndex = (stations, stationId) => {
+  return stations.findIndex((v) => v.stationId === stationId)
+}
+
 export const createSeries = (allData, stations) => {
   return stations
+    .filter((station) => station.isVisible)
     .map((station, index) => {
-      const res = getSeriesByIndex(allData, index, {
+      const dataIndex = findOriginalIndex(stations, station.stationId) // Find original data index of visible station.
+      const res = getSeriesByIndex(allData, dataIndex, {
         defaultData: Object.create(null),
       })
       const data = get(res, 'data', [])
@@ -115,19 +121,23 @@ export const mediaQuery = (stations) => {
         maxWidth: 575.98,
       },
       option: {
-        grid: createRowGrid(stations.length, {
-          left: 13,
-          right: 13,
-          bottom: 9,
-          top: 12,
-        }),
+        grid: createRowGrid(
+          stations.filter((station) => station.isVisible).length,
+          {
+            left: 13,
+            right: 13,
+            bottom: 9,
+            top: 12,
+          }
+        ),
         title: { top: 25, textStyle: { fontSize: 13 } },
       },
     },
   ]
 }
 
-export const baseChartOptions = (stations, { title = {} } = {}) => {
+export const baseChartOptions = (originalStations, { title = {} } = {}) => {
+  const stations = originalStations.filter((station) => station.isVisible)
   return {
     backgroundColor: '#fff',
     dataZoom: [
@@ -255,4 +265,17 @@ export function createTooltip(allData, stations) {
     },
     formatter: createTooltipFormatter(allData, stations),
   }
+}
+
+export const createChartOptions = ({ stations, data }) => {
+  const options = {
+    baseOption: {
+      ...baseChartOptions(stations),
+      series: createSeries(data, stations),
+      tooltip: createTooltip(data, stations),
+    },
+    media: mediaQuery(stations),
+  }
+
+  return options
 }
