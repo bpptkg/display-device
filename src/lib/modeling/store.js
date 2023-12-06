@@ -87,6 +87,7 @@ export const initialState = {
   vectorError: null,
   vector: {},
   useVector: true,
+  scale: 1,
 }
 
 export const initState = (options = {}) => {
@@ -135,6 +136,7 @@ export const SET_LINREGRESS_ERROR = 'setLinregressError'
 export const SET_VECTOR_ERROR = 'setVectorError'
 export const SET_VECTOR = 'setVector'
 export const SET_USE_VECTOR = 'setUseVector'
+export const SET_SCALE = 'setScale'
 
 function convertDispToObject(array) {
   const result = {}
@@ -222,7 +224,7 @@ export const mutations = {
 
       stations[index].u = Number.isFinite(u) ? u.toFixed(4) : 0
       stations[index].v = Number.isFinite(v) ? v.toFixed(4) : 0
-      stations[index].z = Number.isFinite(z) ? v.toFixed(4) : 0
+      stations[index].z = Number.isFinite(z) ? z.toFixed(4) : 0
 
       stations[index].displacement =
         obj && obj.displacement ? obj.displacement : {}
@@ -274,6 +276,9 @@ export const mutations = {
   },
   [SET_USE_VECTOR](state, value) {
     state.useVector = value
+  },
+  [SET_SCALE](state, value) {
+    state.scale = value
   },
 }
 
@@ -569,6 +574,7 @@ export const actions = {
         stations: state.selectedStations,
         width,
         height,
+        scale: state.scale,
       })
       .then((response) => response.data)
       .catch((error) => {
@@ -593,7 +599,7 @@ export const actions = {
 
 const tilt = {
   namespaced: true,
-  state: initState({ dataType: 'tilt' }),
+  state: initState({ dataType: 'tilt', scale: 1000 }),
   getters,
   mutations,
   actions,
@@ -601,7 +607,7 @@ const tilt = {
 
 const gps = {
   namespaced: true,
-  state: initState({ dataType: 'gps' }),
+  state: initState({ dataType: 'gps', scale: 100000 }),
   getters,
   mutations,
   actions,

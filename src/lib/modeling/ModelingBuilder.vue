@@ -73,7 +73,7 @@
           <hr />
 
           <BRow>
-            <BCol sm="4">
+            <BCol>
               <label><small>Period:</small></label>
             </BCol>
             <BCol>
@@ -98,7 +98,16 @@
             </BCol>
           </BRow>
 
-          <BRow v-show="type == 'tilt'" class="mt-3">
+          <BRow class="mt-1">
+            <BCol>
+              <label><small>Vector scale:</small></label>
+            </BCol>
+            <BCol>
+              <BFormInput v-model="cScale" type="number" size="sm" />
+            </BCol>
+          </BRow>
+
+          <BRow v-show="type == 'tilt'" class="mt-1">
             <BCol>
               <BFormCheckbox v-model="cUseVector"
                 ><small>Use vector</small>
@@ -488,6 +497,7 @@ import {
   SET_DISP_V,
   SET_STATION_TO_PLOT,
   SET_USE_VECTOR,
+  SET_SCALE,
   // Actions.
   FETCH_STATIONS,
   FETCH_DATA,
@@ -667,6 +677,9 @@ export default {
       useVector(state) {
         return state.modeling[this.type].useVector
       },
+      scale(state) {
+        return state.modeling[this.type].scale
+      },
     }),
     cSelectedStations: {
       get() {
@@ -746,6 +759,15 @@ export default {
       },
       set(value) {
         this.setUseVector(value)
+      },
+    },
+
+    cScale: {
+      get() {
+        return this.scale
+      },
+      set(value) {
+        this.setScale(value)
       },
     },
 
@@ -969,6 +991,9 @@ export default {
       },
       setUseVector(commit, value) {
         return commit(this.namespace + '/' + SET_USE_VECTOR, value)
+      },
+      setScale(commit, value) {
+        return commit(this.namespace + '/' + SET_SCALE, value)
       },
     }),
     ...mapActions({
