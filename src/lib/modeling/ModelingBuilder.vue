@@ -233,6 +233,22 @@
             <BCol class="px-0"><small></small></BCol>
           </BRow>
 
+          <BRow class="my-1">
+            <BCol>
+              <BFormGroup label="Use Displacement" label-size="sm">
+                <BFormRadio v-model="cUseDisplacement" value="both"
+                  ><small>Both</small></BFormRadio
+                >
+                <BFormRadio v-model="cUseDisplacement" value="radial"
+                  ><small>Radial only</small></BFormRadio
+                >
+                <BFormRadio v-model="cUseDisplacement" value="vertical"
+                  ><small>Vertical only</small></BFormRadio
+                >
+              </BFormGroup>
+            </BCol>
+          </BRow>
+
           <BRow class="mt-3">
             <BCol>
               <div class="d-flex h-100 justify-content-end">
@@ -456,6 +472,7 @@ import {
   BFormGroup,
   BFormInput,
   BFormSelect,
+  BFormRadio,
   BIcon,
   BLink,
   BModal,
@@ -498,6 +515,7 @@ import {
   SET_STATION_TO_PLOT,
   SET_USE_VECTOR,
   SET_SCALE,
+  SET_USE_DISPLACEMENT,
   // Actions.
   FETCH_STATIONS,
   FETCH_DATA,
@@ -536,6 +554,7 @@ export default {
     ErrorMessage,
     RangeSelector,
     ScrollWrapper,
+    BFormRadio,
   },
   props: {
     // Modeling data type.
@@ -680,6 +699,9 @@ export default {
       scale(state) {
         return state.modeling[this.type].scale
       },
+      useDisplacement(state) {
+        return state.modeling[this.type].useDisplacement
+      },
     }),
     cSelectedStations: {
       get() {
@@ -768,6 +790,15 @@ export default {
       },
       set(value) {
         this.setScale(value)
+      },
+    },
+
+    cUseDisplacement: {
+      get() {
+        return this.useDisplacement
+      },
+      set(value) {
+        this.setUseDisplacement(value)
       },
     },
 
@@ -994,6 +1025,9 @@ export default {
       },
       setScale(commit, value) {
         return commit(this.namespace + '/' + SET_SCALE, value)
+      },
+      setUseDisplacement(commit, value) {
+        return commit(this.namespace + '/' + SET_USE_DISPLACEMENT, value)
       },
     }),
     ...mapActions({

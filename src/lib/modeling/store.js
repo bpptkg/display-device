@@ -88,6 +88,7 @@ export const initialState = {
   vector: {},
   useVector: true,
   scale: 1,
+  useDisplacement: 'both',
 }
 
 export const initState = (options = {}) => {
@@ -137,6 +138,7 @@ export const SET_VECTOR_ERROR = 'setVectorError'
 export const SET_VECTOR = 'setVector'
 export const SET_USE_VECTOR = 'setUseVector'
 export const SET_SCALE = 'setScale'
+export const SET_USE_DISPLACEMENT = 'setUseDisplacement'
 
 function convertDispToObject(array) {
   const result = {}
@@ -279,6 +281,9 @@ export const mutations = {
   },
   [SET_SCALE](state, value) {
     state.scale = value
+  },
+  [SET_USE_DISPLACEMENT](state, value) {
+    state.useDisplacement = value
   },
 }
 
@@ -548,6 +553,7 @@ export const actions = {
               z: s.z || 0,
             }
           }),
+        use_displacement: state.useDisplacement,
       })
       .then((response) => response.data)
       .catch((error) => {
