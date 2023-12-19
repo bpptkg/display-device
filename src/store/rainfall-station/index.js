@@ -29,12 +29,12 @@ export const STATIONS = [
   {
     stationId: 'gunungijo',
     stationName: 'Gunung Ijo',
-    isVisible: false,
+    isVisible: true,
   },
   {
     stationId: 'klatakan',
     stationName: 'Klatakan',
-    isVisible: false,
+    isVisible: true,
   },
   {
     stationId: 'labuhan',
