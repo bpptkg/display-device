@@ -186,9 +186,12 @@ export default {
   },
   computed: {
     option() {
+      const stationText =
+        this.stationOptions.find((opt) => opt.value === this.station)?.text ||
+        ''
       return {
         title: {
-          text: 'DOAS-Scan',
+          text: 'DOAS-Scan ' + stationText,
           textStyle: {
             fontWeight: 'bold',
             fontSize: 16, // You can adjust the font size as needed
