@@ -108,6 +108,21 @@ const routes = [
     ],
   },
   {
+    path: '/gbinsar',
+    redirect: '/gbinsar/babadanarea',
+    component: () => import('../views/gbinsar/GBInsarView'),
+    children: [
+      {
+        path: 'babadanpoint',
+        component: () => import('../views/gbinsar/GBInsarBabadanPointView'),
+      },
+      {
+        path: 'babadanarea',
+        component: () => import('../views/gbinsar/GBInsarBabadanAreaView'),
+      },
+    ],
+  },
+  {
     path: '/geochemistry',
     component: () => import('../views/geochemistry/GeochemistryView'),
     redirect: '/geochemistry/doas-scan',

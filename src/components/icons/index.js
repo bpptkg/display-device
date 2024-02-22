@@ -2,6 +2,7 @@ import DefaultIcon from './DefaultIcon'
 import EdmIcon from './EdmIcon'
 import FogIcon from './FogIcon'
 import GasIcon from './GasIcon'
+import GBInsarIcon from './GBInsarIcon'
 import GpsIcon from './GpsIcon'
 import HomeIcon from './HomeIcon'
 import InfographicIcon from './InfographicIcon'
@@ -28,6 +29,7 @@ export {
   FogIcon,
   GasIcon,
   GpsIcon,
+  GBInsarIcon,
   HomeIcon,
   InfographicIcon,
   LavaDomeIcon,

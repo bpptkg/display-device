@@ -15,6 +15,7 @@ import {
   EdmIcon,
   GasIcon,
   GpsIcon,
+  GBInsarIcon,
   HomeIcon,
   InfographicIcon,
   LavaDomeIcon,
@@ -156,6 +157,20 @@ export default {
             {
               title: 'DOAS-Scan',
               href: '/geochemistry/doas-scan',
+            },
+          ],
+        },
+        {
+          title: 'GBInsar',
+          icon: GBInsarIcon,
+          child: [
+            {
+              title: 'Babadan Area',
+              href: '/gbinsar/babadanarea',
+            },
+            {
+              title: 'Babadan Point',
+              href: '/gbinsar/babadanpoint',
             },
           ],
         },

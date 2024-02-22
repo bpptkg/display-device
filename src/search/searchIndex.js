@@ -51,6 +51,16 @@ export default [
     name: 'Seismic Bulletin',
     path: '/seismic/bulletin',
   },
+  // GB-Insar Point.
+  {
+    name: 'GB-Insar Point',
+    path: '/gbinsar/babadanpoint',
+  },
+  // GB-Insar Area.
+  {
+    name: 'GB-Insar Area',
+    path: '/gbinsar/babadanarea',
+  },
   // Hypocenter.
   {
     name: 'Hypocenter',
