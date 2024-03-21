@@ -33,6 +33,7 @@ export const SeriesNames = Object.freeze({
   WIND_DIRECTION: 'Wind direction',
   WIND_SPEED: 'Wind speed',
   BATTERY: 'Battery',
+  SUPPLY_VOLTAGE: 'Supply voltage',
 })
 
 const entries = new Map([
@@ -80,6 +81,12 @@ const entries = new Map([
   ],
   [
     SeriesNames.BATTERY,
+    {
+      valueSuffix: ' V',
+    },
+  ],
+  [
+    SeriesNames.SUPPLY_VOLTAGE,
     {
       valueSuffix: ' V',
     },
@@ -400,14 +407,16 @@ export function createTooltipFormatter(events) {
       if (seriesName === SeriesNames.PRESSURE) {
         return `${formatDate(value[0])}<br />
             ${createCircleTemplate(color)}
-            ${seriesName}: ${value[1] ? value[1].toFixed(2) : '-'}${
-          seriesProps[seriesName].valueSuffix
-        } (${value[1] ? (value[1] * HPA_TO_MMHG).toFixed(2) : '-'} mmHg)`
+            ${seriesName}: ${
+          Number.isFinite(value[1]) ? value[1].toFixed(2) : '-'
+        }${seriesProps[seriesName].valueSuffix} (${
+          value[1] ? (value[1] * HPA_TO_MMHG).toFixed(2) : '-'
+        } mmHg)`
       }
 
       return `${formatDate(value[0])}<br />
       ${createCircleTemplate(color)}
-      ${seriesName}: ${value[1] ? value[1].toFixed(2) : value[1]}${
+      ${seriesName}: ${Number.isFinite(value[1]) ? value[1].toFixed(2) : '-'}${
         seriesProps[seriesName].valueSuffix
       }`
     }
