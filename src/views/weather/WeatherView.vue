@@ -7,6 +7,12 @@
           <SidepanelMenuItem round="left" to="/weather/pasarbubar">
             Pasarbubar
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/klatakan">
+            Klatakan
+          </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/labuhan">
+            Labuhan
+          </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/weather/babadan">
             Babadan
           </SidepanelMenuItem>

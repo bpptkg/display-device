@@ -48,18 +48,6 @@
         time period selected. Using longer time period is recommended to avoid
         this clipping issue.
       </DNote>
-      <DNote>
-        &mdash; Pasarbubar, Gunung Ijo, Klatakan, and Labuhan in this chart
-        refers to tipping bucket device. To see Pasarbubar weather station that
-        uses Vaisala device, see
-        <BLink to="/weather/pasarbubar">here</BLink>.
-      </DNote>
-      <DNote>
-        &mdash; Jurang Jero and Babadan station use Vaisala sensors. For more
-        complete information these weather data, see
-        <BLink to="/weather/jurangjero">Jurang Jero</BLink> and
-        <BLink to="/weather/babadan">Babadan</BLink> charts.
-      </DNote>
     </div>
 
     <SidepanelTabs v-model="tabIndex" sidepanel-class="secondary-nav">

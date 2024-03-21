@@ -20,30 +20,76 @@ import { SET_AUTO_UPDATE, SET_IS_VISIBLE } from './mutations'
 
 export const NAMESPACE = 'rainfallStation'
 
+/**
+ * tb: Tipping Bucket
+ * vs: Vaisala
+ */
 export const STATIONS = [
   {
-    stationId: 'pasarbubar',
+    stationId: 'tb:pasarbubar',
     stationName: 'Pasarbubar',
+    stationLabel: 'Pasarbubar (Tipping Bucket)',
+    url: `/rainfall-station/pasarbubar/`,
+    isVisible: false,
+  },
+  {
+    stationId: 'vs:pasarbubar',
+    stationName: 'Pasarbubar',
+    stationLabel: 'Pasarbubar (Vaisala)',
+    isVaisala: true,
+    url: '/meteorology/pasarbubar/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
     isVisible: true,
   },
   {
-    stationId: 'gunungijo',
+    stationId: 'tb:gunungijo',
     stationName: 'Gunung Ijo',
-    isVisible: true,
+    stationLabel: 'Gunung Ijo (Tipping Bucket)',
+    url: `/rainfall-station/gunungijo/`,
+    isVisible: false,
   },
   {
-    stationId: 'klatakan',
+    stationId: 'tb:klatakan',
     stationName: 'Klatakan',
+    stationLabel: 'Klatakan (Tipping Bucket)',
+    url: `/rainfall-station/klatakan/`,
+    isVisible: false,
+  },
+  {
+    stationId: 'vs:klatakan',
+    stationName: 'Klatakan',
+    stationLabel: 'Klatakan (Vaisala)',
+    isVaisala: true,
+    url: '/meteorology/klatakan/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
     isVisible: true,
   },
   {
-    stationId: 'labuhan',
+    stationId: 'tb:labuhan',
     stationName: 'Labuhan',
+    stationLabel: 'Labuhan (Tipping Bucket)',
+    url: `/rainfall-station/labuhan/`,
+    isVisible: false,
+  },
+  {
+    stationId: 'vs:labuhan',
+    stationName: 'Labuhan',
+    stationLabel: 'Labuhan (Vaisala)',
+    isVaisala: true,
+    url: '/meteorology/labuhan/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
     isVisible: true,
   },
   {
-    stationId: 'jurangjero',
+    stationId: 'vs:jurangjero',
     stationName: 'Jurang Jero',
+    stationLabel: 'Jurang Jero (Vaisala)',
     isVaisala: true,
     url: '/meteorology/jurangjero/rainfall/',
     params: {
@@ -52,8 +98,9 @@ export const STATIONS = [
     isVisible: true,
   },
   {
-    stationId: 'babadan',
+    stationId: 'vs:babadan',
     stationName: 'Babadan',
+    stationLabel: 'Babadan (Vaisala)',
     isVaisala: true,
     url: '/meteorology/babadan/rainfall/',
     params: {
@@ -118,7 +165,7 @@ export const actions = {
           ...station.params,
         }
       } else {
-        url = `/rainfall-station/${station.stationId}/`
+        url = station.url
         params = {
           ...baseParams,
         }

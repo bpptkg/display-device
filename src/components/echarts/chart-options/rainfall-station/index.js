@@ -35,7 +35,7 @@ export const createSeries = (allData, stations) => {
             color: '#37A2DA',
             width: 1,
           },
-          name: `${station.stationName} Rainfall`,
+          name: `${station.stationLabel} Rainfall`,
           symbol: 'none',
           type: 'line',
           xAxisIndex: index,
@@ -48,7 +48,7 @@ export const createSeries = (allData, stations) => {
             width: 2,
             type: 'solid',
           },
-          name: `${station.stationName} Rate`,
+          name: `${station.stationLabel} Rate`,
           symbol: 'none',
           type: 'line',
           xAxisIndex: index,
@@ -166,10 +166,7 @@ export const baseChartOptions = (originalStations, { title = {} } = {}) => {
 
 export const getEvents = (allData, stations, seriesName) => {
   const index = stations.findIndex((station) => {
-    return (
-      seriesName.includes(station.stationId) ||
-      seriesName.includes(station.stationName)
-    )
+    return seriesName.includes(station.stationLabel)
   })
   if (index !== -1) {
     return allData[index]
@@ -195,41 +192,22 @@ export function createTooltipFormatter(allData, stations) {
         template.push(createCircleTemplate('#37A2DA'))
         template.push(` Rainfall: ${value ? value.toFixed(2) : 0} mm <br />`)
       } else if (param.seriesName.includes('Rate')) {
-        // Create tooltip for vaisala station.
-        if (param.seriesName.split(' ')[0].includes(vaisalaStations)) {
-          template.push(` Rate: ${value ? value.toFixed(2) : 0} mm/h<br />`)
-          const rainAcc = param.value[2]
-          const rainDuration = param.value[3]
-          const rainPeakIntensity = param.value[4]
-          const duration = moment.duration(rainDuration, 'seconds')
-          if (rainAcc > 0) {
-            template.push(
-              `${createDividerTemplate()}
-                  Total: ${rainAcc ? rainAcc.toFixed(2) : 0} mm<br />
-                  Duration: ${humanizeDuration(duration)}<br />
-                  Intensity: ${
-                    rainPeakIntensity ? rainPeakIntensity.toFixed(2) : 0
-                  } mm/h<br />
-                  `
-            )
-          }
-        } else {
-          template.push(createCircleTemplate('#32C5E9'))
-          template.push(` Rate: ${value ? value.toFixed(2) : 0} mm/h<br />`)
+        template.push(createCircleTemplate('#32C5E9'))
+        template.push(` Rate: ${value ? value.toFixed(2) : 0} mm/h<br />`)
 
-          // Add rainfall information if current timestamp is in particular
-          // rainfall event. Note that we add the code here so that this
-          // information will be rendered below rate info in the tooltip.
-          const res = getEvents(allData, stations, param.seriesName)
-          const events = get(res, 'events.data', [])
-          const event = events.find((e) => {
-            const ts = moment(timestampUnix)
-            return ts >= moment(e.start) && ts <= moment(e.end)
-          })
-          if (event !== undefined) {
-            const duration = moment.duration(event.duration, 'seconds')
-            template.push(
-              `${createDividerTemplate()}
+        // Add rainfall information if current timestamp is in particular
+        // rainfall event. Note that we add the code here so that this
+        // information will be rendered below rate info in the tooltip.
+        const res = getEvents(allData, stations, param.seriesName)
+        const events = get(res, 'events.data', [])
+        const event = events.find((e) => {
+          const ts = moment(timestampUnix)
+          return ts >= moment(e.start) && ts <= moment(e.end)
+        })
+        if (event !== undefined) {
+          const duration = moment.duration(event.duration, 'seconds')
+          template.push(
+            `${createDividerTemplate()}
               Start: ${formatDate(event.start)}<br />
               Total: ${event.total === 0 ? 0 : event.total.toFixed(2)} mm<br />
               Duration: ${humanizeDuration(duration)}<br />
@@ -237,8 +215,7 @@ export function createTooltipFormatter(allData, stations) {
                 event.intensity === 0 ? 0 : event.intensity.toFixed(2)
               } mm/h<br />
               `
-            )
-          }
+          )
         }
       } else {
         template.push(`${param.seriesName}: ${value}`)

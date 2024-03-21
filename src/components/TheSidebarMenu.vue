@@ -188,6 +188,14 @@ export default {
               href: '/weather/pasarbubar',
             },
             {
+              title: 'Klatakan',
+              href: '/weather/klatakan',
+            },
+            {
+              title: 'Labuhan',
+              href: '/weather/labuhan',
+            },
+            {
               title: 'Babadan',
               href: '/weather/babadan',
             },

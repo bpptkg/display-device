@@ -23,7 +23,7 @@
         <BFormCheckbox
           v-model="filter.isVisible"
           @change="(value) => handleChange(value, index)"
-          >{{ filter.stationName }}</BFormCheckbox
+          >{{ filter.stationLabel }}</BFormCheckbox
         >
       </div>
     </div>
@@ -134,6 +134,9 @@ export default {
 .dropdown-body {
   padding-left: 10px;
   padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
 }
 
 .filter-body {

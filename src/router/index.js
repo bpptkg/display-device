@@ -162,6 +162,15 @@ const routes = [
           import('../views/weather/jurangjero/WeatherJurangJeroView'),
       },
       {
+        path: 'klatakan',
+        component: () =>
+          import('../views/weather/klatakan/WeatherKlatakanView'),
+      },
+      {
+        path: 'labuhan',
+        component: () => import('../views/weather/labuhan/WeatherLabuhanView'),
+      },
+      {
         path: 'rainfall-station',
         component: () =>
           import('../views/weather/rainfall-station/RainfallStationView'),
