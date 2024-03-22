@@ -31,7 +31,7 @@ module.exports = {
     ],
   },
   pwa: {
-    name: 'Data Visualization',
+    name: 'Davis',
     themeColor: '#fff',
     msTileColor: '#000',
     appleMobileWebAppCapable: 'yes',
