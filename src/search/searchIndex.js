@@ -393,6 +393,14 @@ export default [
     path: '/weather/pasarbubar',
   },
   {
+    name: 'Weather Klatakan',
+    path: '/weather/klatakan',
+  },
+  {
+    name: 'Weather Labuhan',
+    path: '/weather/labuhan',
+  },
+  {
     name: 'Weather Babadan',
     path: '/weather/babadan',
   },
