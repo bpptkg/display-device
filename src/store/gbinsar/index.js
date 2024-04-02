@@ -11,7 +11,7 @@ import {
   SET_START_TIME,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
-import rangeSelectorDay from './range-selector-day'
+import rangeSelector from './range-selector-minute'
 
 // Mutations.
 export const SET_SAMPLING = 'SET_SAMPLING'
@@ -25,7 +25,7 @@ export const UPDATE_GBINSAR = 'UPDATE_GBINSAR'
 export const initialState = {
   ...baseState,
   annotationOptions: annotations,
-  sampling: 'day',
+  sampling: 'minute',
   type: 'babadanarea',
 }
 
@@ -103,7 +103,7 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    babadanarea: initModule('babadanarea', rangeSelectorDay[2]),
-    babadanpoint: initModule('babadanpoint', rangeSelectorDay[2]),
+    babadanarea: initModule('babadanarea', rangeSelector[0]),
+    babadanpoint: initModule('babadanpoint', rangeSelector[0]),
   },
 }
