@@ -120,6 +120,18 @@ const routes = [
     ],
   },
   {
+    path: '/thermal-axis',
+    redirect: '/thermal-axis/kaliurang',
+    component: () => import('../views/thermal-axis/ThermalAxisView'),
+    children: [
+      {
+        path: ':station',
+        component: () => import('../views/thermal-axis/ThermalAxisChart'),
+        props: true,
+      },
+    ],
+  },
+  {
     path: '/geochemistry',
     component: () => import('../views/geochemistry/GeochemistryView'),
     redirect: '/geochemistry/doas-scan',

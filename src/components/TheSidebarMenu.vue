@@ -236,6 +236,16 @@ export default {
           title: 'Thermal',
           icon: ThermalIcon,
           href: '/thermal',
+          child: [
+            {
+              title: 'Thermal Station',
+              href: '/thermal/kaliurang',
+            },
+            {
+              title: 'Thermal Axis',
+              href: '/thermal-axis/kaliurang',
+            },
+          ],
         },
         {
           title: 'Infographic',

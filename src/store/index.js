@@ -21,6 +21,7 @@ import search from './search'
 import seismic from './seismic'
 import sidebarMenu from './sidebar-menu'
 import thermal from './thermal'
+import thermalAxis from './thermal-axis'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import version from './version'
@@ -55,6 +56,7 @@ export default new Vuex.Store({
     seismic,
     sidebarMenu,
     thermal,
+    thermalAxis,
     tiltmeter,
     user,
     version,
