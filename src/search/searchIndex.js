@@ -486,4 +486,17 @@ export default [
     name: 'GPS Modeling',
     path: '/modeling/gps',
   },
+  // GB Insar.
+  {
+    name: 'GB-Insar',
+    path: '/gbinsar',
+  },
+  {
+    name: 'GB-Insar Point',
+    path: '/gbinsar/babadanpoint',
+  },
+  {
+    name: 'GB-Insar Area',
+    path: '/gbinsar/babadanarea',
+  },
 ]
