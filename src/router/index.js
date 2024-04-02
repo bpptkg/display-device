@@ -113,12 +113,9 @@ const routes = [
     component: () => import('../views/gbinsar/GBInsarView'),
     children: [
       {
-        path: 'babadanpoint',
-        component: () => import('../views/gbinsar/GBInsarBabadanPointView'),
-      },
-      {
-        path: 'babadanarea',
-        component: () => import('../views/gbinsar/GBInsarBabadanAreaView'),
+        path: ':type',
+        component: () => import('../views/gbinsar/GBInsarChart'),
+        props: true,
       },
     ],
   },

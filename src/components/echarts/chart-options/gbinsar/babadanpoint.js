@@ -1,0 +1,280 @@
+import moment from 'moment'
+import { isFinite } from 'lodash'
+import { SamplingTypes } from '@/constants/tiltmeter'
+import { NO_DATA_NOTATION } from '@/constants/stats'
+import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
+import { defaultToolbox } from '../common/toolbox'
+
+export const SeriesName = Object.freeze({
+  RB1: 'RB1',
+  RB2: 'RB2',
+  RB3: 'RB3',
+  TITIKSTABIL: 'T.Stabil',
+  KUBAHLAVA2021TUMBUH: '2021Tumbuh',
+  LAVA92: 'Lava 92',
+  LAVA98: 'Lava 98',
+})
+
+export const createSeries = (data, { annotations = [] } = {}) => {
+  const options = [
+    {
+      data: mapFieldColumns(data, 'timestamp', 'rb1'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.RB1,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'rb2'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.RB2,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'rb3'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.RB3,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'titikstabil'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.TITIKSTABIL,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'kubahlava2021tumbuh'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.KUBAHLAVA2021TUMBUH,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'lava92'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.LAVA92,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    },
+    {
+      data: mapFieldColumns(data, 'timestamp', 'lava98'),
+      markLine: {
+        symbol: 'none',
+        data: annotations,
+        animation: false,
+      },
+      name: SeriesName.LAVA98,
+      symbol: 'none',
+      type: 'line',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    },
+  ]
+
+  return options
+}
+
+export const createXAxis = (min, max) => {
+  const options = [
+    {
+      axisLabel: { show: true },
+      gridIndex: 0,
+      min,
+      max,
+      position: 'bottom',
+      splitLine: { show: false },
+      type: 'time',
+    },
+  ]
+
+  return options
+}
+
+export const mediaQuery = [
+  {
+    query: {
+      maxWidth: 575.98,
+    },
+    option: {
+      grid: {
+        top: 60,
+        bottom: 95,
+        left: 50,
+        right: 10,
+      },
+      title: {
+        top: 30,
+        textStyle: {
+          fontSize: 12,
+        },
+      },
+      yAxis: {
+        nameLocation: 'end',
+        nameGap: 15,
+      },
+    },
+  },
+]
+
+export const createYAxis = () => {
+  const options = [
+    {
+      gridIndex: 0,
+      name: 'Δx (mm)',
+      nameGap: 50,
+      nameLocation: 'center',
+      scale: true,
+      splitLine: { show: false },
+      type: 'value',
+      axisLabel: {
+        show: true,
+        formatter: (value) => {
+          return value.toFixed(0)
+        },
+      },
+    },
+  ]
+
+  return options
+}
+
+export const baseChartOptions = {
+  backgroundColor: '#fff',
+  title: {
+    text: 'GBInsar Point Displacement',
+    textStyle: {
+      fontWeight: 'bold',
+      fontSize: 16,
+    },
+    left: 'center',
+  },
+  dataZoom: {
+    type: 'slider',
+    realtime: false,
+    bottom: 30,
+  },
+  grid: {
+    top: 50,
+    bottom: 95,
+  },
+  legend: {
+    type: 'scroll',
+    bottom: 0,
+    itemWidth: 15,
+    itemHeight: 10,
+    textStyle: { fontSize: 10 },
+  },
+  toolbox: defaultToolbox,
+  yAxis: createYAxis(),
+}
+
+export const tooltipFormatter = (sampling) => {
+  return (params) => {
+    if (Array.isArray(params) && params.length) {
+      const template = []
+
+      params.forEach((param, index) => {
+        const { seriesName, value, color } = param
+        if (index === 0) {
+          template.push(
+            `${
+              sampling === SamplingTypes.DAY
+                ? moment(value[0]).format('YYYY-MM-DD')
+                : moment(value[0]).format('YYYY-MM-DD HH:mm:ss')
+            }<br />`
+          )
+        }
+        template.push(`
+        ${createCircleTemplate(color)}
+        ${seriesName}: ${
+          isFinite(value[1]) ? value[1].toFixed(2) : NO_DATA_NOTATION
+        }<br />
+        `)
+      })
+      return template.join('')
+    } else {
+      const { seriesName, value, color, name, componentType } = params
+      if (componentType === 'markLine') {
+        return `${moment(value[0]).format('YYYY-MM-DD HH:mm:ss')}<br />
+        ${createCircleTemplate(color)}
+        ${name}`
+      } else {
+        return `${
+          sampling === SamplingTypes.DAY
+            ? moment(value[0]).format('YYYY-MM-DD')
+            : moment(value[0]).format('YYYY-MM-DD HH:mm:ss')
+        }<br />
+        ${createCircleTemplate(color)} 
+        ${seriesName}: ${
+          isFinite(value[1]) ? value[1].toFixed(2) : NO_DATA_NOTATION
+        }<br />`
+      }
+    }
+  }
+}
+
+export const createBabadanPointChartOptions = (
+  data,
+  annotations,
+  min,
+  max,
+  sampling
+) => {
+  return {
+    baseOption: {
+      ...baseChartOptions,
+      series: createSeries(data, { annotations }),
+      xAxis: createXAxis(min, max),
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          lineStyle: {
+            type: 'dashed',
+          },
+        },
+        formatter: tooltipFormatter(sampling),
+      },
+    },
+    media: mediaQuery,
+  }
+}
