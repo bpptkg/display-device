@@ -178,6 +178,16 @@ export default {
           title: 'Lava Domes',
           icon: LavaDomeIcon,
           href: '/lava-domes',
+          child: [
+            {
+              title: 'Barat Daya',
+              href: '/lava-domes/barat-daya',
+            },
+            {
+              title: 'Tengah Kawah',
+              href: '/lava-domes/tengah-kawah',
+            },
+          ],
         },
         {
           title: 'Weather',
@@ -231,6 +241,16 @@ export default {
           title: 'Magnetic',
           icon: MagneticIcon,
           href: '/magnetic',
+          child: [
+            {
+              title: 'Magnetic Babadan',
+              href: '/magnetic/babadan',
+            },
+            {
+              title: 'Magnetic Imogiri',
+              href: '/magnetic/imogiri',
+            },
+          ],
         },
         {
           title: 'Thermal',
@@ -248,11 +268,6 @@ export default {
           ],
         },
         {
-          title: 'Infographic',
-          icon: InfographicIcon,
-          href: '/infographic',
-        },
-        {
           title: 'Modeling',
           icon: ModelingIcon,
           child: [
@@ -265,6 +280,11 @@ export default {
               href: '/modeling/gps',
             },
           ],
+        },
+        {
+          title: 'Infographic',
+          icon: InfographicIcon,
+          href: '/infographic',
         },
         {
           divider: true,
