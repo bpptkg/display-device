@@ -499,4 +499,14 @@ export default [
     name: 'GB-Insar Area',
     path: '/gbinsar/babadanarea',
   },
+  // Thermal Axis.
+  {
+    name: 'Thermal Axis',
+    path: '/thermal-axis',
+  },
+
+  {
+    name: 'Thermal Axis Kaliurang',
+    path: '/thermal-axis/kaliurang',
+  },
 ]
