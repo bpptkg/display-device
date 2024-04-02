@@ -14,7 +14,7 @@ import {
   SET_CANCEL_TOKEN,
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
-import rangeSelector from './range-selector-day'
+import rangeSelector from './range-selector-minute'
 
 // Mutations.
 export const SET_SAMPLING = 'SET_SAMPLING'
@@ -28,7 +28,7 @@ export const UPDATE_THERMAL_AXIS = 'UPDATE_THERMAL_AXIS'
 export const initialState = {
   ...baseState,
   annotationOptions: annotations,
-  sampling: 'day',
+  sampling: 'minute',
   station: 'kaliurang',
 }
 
@@ -59,13 +59,14 @@ export const AREAS = [
   },
 ]
 
-export const initState = (areas, period) => {
+export const initState = (station, areas, period) => {
   const { startTime, endTime } = calculatePeriod(period)
   return {
     ...initialState,
     period,
     startTime,
     endTime,
+    station,
     areas,
   }
 }
@@ -136,7 +137,7 @@ export const actions = {
 export const initModule = (station, period) => {
   return {
     namespaced: true,
-    state: initState(AREAS, period),
+    state: initState(station, AREAS, period),
     getters,
     mutations,
     actions,
@@ -147,6 +148,6 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    kaliurang: initModule('kaliurang', rangeSelector[1]),
+    kaliurang: initModule('kaliurang', rangeSelector[0]),
   },
 }

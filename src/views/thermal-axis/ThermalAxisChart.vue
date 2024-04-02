@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import JSZip from 'jszip'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import DChart from '@/components/echarts/chart/DChart'
 import RangeSelector from '@/components/range-selector'
@@ -260,7 +261,19 @@ export default {
     }),
 
     async downloadData() {
-      console.log('Download data')
+      const zip = new JSZip()
+      this.data.forEach((array, index) => {
+        zip.file(`${this.areas[index].name}.csv`, createCSVContent(array))
+      })
+
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        saveAs(
+          content,
+          `thermal-axis-${this.station}-${createShortNameFromPeriod(
+            this.period
+          )}.zip`
+        )
+      })
     },
 
     update() {
