@@ -28,6 +28,11 @@
             :annotations="annotationOptions"
             @change="handleUpdateAnnotations"
           />
+          <ThermalAxisFilter
+            class="ml-2"
+            :items="areas"
+            @change="handleFilterChange"
+          />
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
           <BFormSelect
@@ -102,7 +107,12 @@ import {
   SET_ANNOTATION_OPTIONS,
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
-import { SET_SAMPLING, UPDATE_THERMAL_AXIS } from '@/store/thermal-axis'
+import {
+  SET_SAMPLING,
+  SET_AREAS,
+  SET_VISIBLE,
+  UPDATE_THERMAL_AXIS,
+} from '@/store/thermal-axis'
 import rangeSelectorDay, {
   maxCustomDuration as maxCustomDurationDay,
 } from '@/store/thermal-axis/range-selector-day'
@@ -117,6 +127,7 @@ import { getStatsInfo } from '@/components/echarts/chart-options/thermal-axis/ut
 import ErrorMessage from '@/components/error-message'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { DateRangeTypes } from '@/constants/date'
+import ThermalAxisFilter from './ThermalAxisFilter'
 
 export default {
   components: {
@@ -134,6 +145,7 @@ export default {
     SidepanelTabs,
     StatsPanelPeriod,
     StatsPanelTable,
+    ThermalAxisFilter,
   },
   props: {
     station: {
@@ -212,9 +224,18 @@ export default {
       }
     },
     chartOptions() {
+      const visibleIndices = this.areas
+        .map((area, index) => (area.isVisible ? index : null))
+        .filter((index) => index !== null)
+      const data = this.data.filter((_, index) =>
+        visibleIndices.includes(index)
+      )
+      const areas = this.areas.filter((_, index) =>
+        visibleIndices.includes(index)
+      )
       return createThermalAxisChartOptions(
-        this.data,
-        this.areas,
+        data,
+        areas,
         this.annotations,
         toUnixMiliSeconds(this.startTime),
         toUnixMiliSeconds(this.endTime),
@@ -222,7 +243,16 @@ export default {
       )
     },
     statsInfo() {
-      return getStatsInfo(this.data, this.areas)
+      const visibleIndices = this.areas
+        .map((area, index) => (area.isVisible ? index : null))
+        .filter((index) => index !== null)
+      const data = this.data.filter((_, index) =>
+        visibleIndices.includes(index)
+      )
+      const areas = this.areas.filter((_, index) =>
+        visibleIndices.includes(index)
+      )
+      return getStatsInfo(data, areas)
     },
   },
   watch: {
@@ -250,7 +280,14 @@ export default {
       setAnnotationOptions(commit, options) {
         return commit(this.namespace + '/' + SET_ANNOTATION_OPTIONS, options)
       },
+      setAreas(commit, areas) {
+        return commit(this.namespace + '/' + SET_AREAS, areas)
+      },
+      setVisible(commit, { index, isVisible }) {
+        return commit(this.namespace + '/' + SET_VISIBLE, { index, isVisible })
+      },
     }),
+
     ...mapActions({
       fetchData(dispatch) {
         return dispatch(this.namespace + '/' + UPDATE_THERMAL_AXIS)
@@ -309,6 +346,14 @@ export default {
         chart.hideLoading()
         chart.mergeOptions(this.chartOptions)
       })
+    },
+
+    handleFilterChange({ index, isVisible }) {
+      if (index === -1) {
+        this.areas.forEach((area) => (area.isVisible = isVisible))
+      } else {
+        this.setVisible({ index, isVisible })
+      }
     },
   },
 

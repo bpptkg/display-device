@@ -18,7 +18,9 @@ import rangeSelector from './range-selector-minute'
 
 // Mutations.
 export const SET_SAMPLING = 'SET_SAMPLING'
-export const SET_TYPE = 'SET_TYPE'
+export const SET_STATION = 'SET_STATION'
+export const SET_AREAS = 'SET_AREAS'
+export const SET_VISIBLE = 'SET_VISIBLE'
 
 // Actions.
 export const FETCH_THERMAL_AXIS = 'FETCH_THERMAL_AXIS'
@@ -30,32 +32,39 @@ export const initialState = {
   annotationOptions: annotations,
   sampling: 'minute',
   station: 'kaliurang',
+  areas: [],
 }
 
 export const AREAS = [
   {
     id: 'asap',
     name: 'Asap',
+    isVisible: true,
   },
   {
     id: 'bebeng',
     name: 'Bebeng',
+    isVisible: true,
   },
   {
     id: 'boyong',
     name: 'Boyong',
+    isVisible: true,
   },
   {
     id: 'krasak',
     name: 'Krasak',
+    isVisible: true,
   },
   {
     id: 'kubah-bd',
     name: 'Kubah BD',
+    isVisible: true,
   },
   {
     id: 'kubah-bd-1',
     name: 'Kubah BD 1',
+    isVisible: true,
   },
 ]
 
@@ -81,6 +90,15 @@ export const mutations = {
   ...baseMutations,
   [SET_SAMPLING](state, sampling) {
     state.sampling = sampling
+  },
+  [SET_STATION](state, station) {
+    state.station = station
+  },
+  [SET_AREAS](state, areas) {
+    state.areas = areas
+  },
+  [SET_VISIBLE](state, { index, isVisible }) {
+    state.areas[index].isVisible = isVisible
   },
 }
 
