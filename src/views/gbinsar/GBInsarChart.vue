@@ -290,7 +290,6 @@ export default {
     },
 
     update() {
-      console.log(this.$refs.chart, 'xxxx')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()
