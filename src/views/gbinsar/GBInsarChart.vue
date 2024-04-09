@@ -10,7 +10,7 @@
       </ErrorMessage>
     </BCard>
 
-    <div v-else>
+    <div v-show="!error">
       <div class="d-flex justify-content-between flex-wrap mb-3">
         <div class="d-flex align-items-center">
           <RangeSelector
@@ -290,6 +290,7 @@ export default {
     },
 
     update() {
+      console.log(this.$refs.chart, 'xxxx')
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.showLoading()

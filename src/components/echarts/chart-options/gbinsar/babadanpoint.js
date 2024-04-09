@@ -5,110 +5,57 @@ import { NO_DATA_NOTATION } from '@/constants/stats'
 import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
-export const SeriesName = Object.freeze({
-  RB1: 'RB1',
-  RB2: 'RB2',
-  RB3: 'RB3',
-  TITIKSTABIL: 'T.Stabil',
-  KUBAHLAVA2021TUMBUH: '2021Tumbuh',
-  LAVA92: 'Lava 92',
-  LAVA98: 'Lava 98',
-})
+export const Points = Object.freeze([
+  {
+    name: 'RB1',
+    field: 'rb1',
+  },
+  {
+    name: 'T1992',
+    field: 't1992',
+  },
+  {
+    name: 'RB2-RTS',
+    field: 'rb2_rts',
+  },
+  {
+    name: 'RB3-RTS',
+    field: 'rb3_rts',
+  },
+  {
+    name: 'Titik Stabil',
+    field: 'titik_stabil',
+  },
+  {
+    name: '1998 Bawah',
+    field: 'bawah1998',
+  },
+  {
+    name: 'Bawah RB2',
+    field: 'bawah_rb2',
+  },
+  {
+    name: '1998',
+    field: 't1998',
+  },
+])
 
 export const createSeries = (data, { annotations = [] } = {}) => {
-  const options = [
-    {
-      data: mapFieldColumns(data, 'timestamp', 'rb1'),
+  const options = Points.map((point) => {
+    return {
+      data: mapFieldColumns(data, 'timestamp', point.field),
       markLine: {
         symbol: 'none',
         data: annotations,
         animation: false,
       },
-      name: SeriesName.RB1,
+      name: point.name,
       symbol: 'none',
       type: 'line',
       xAxisIndex: 0,
       yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'rb2'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.RB2,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'rb3'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.RB3,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'titikstabil'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.TITIKSTABIL,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'kubahlava2021tumbuh'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.KUBAHLAVA2021TUMBUH,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'lava92'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.LAVA92,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'lava98'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.LAVA98,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-  ]
+    }
+  })
 
   return options
 }

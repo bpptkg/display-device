@@ -5,68 +5,65 @@ import { NO_DATA_NOTATION } from '@/constants/stats'
 import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
-export const SeriesName = Object.freeze({
-  AREA1888: 'Area 1888',
-  ATAS1888: 'Atas 1888',
-  TENGAH1888: 'Tengah 1888',
-  BAWAH1888: 'Bawah 1888',
-})
+export const Areas = Object.freeze([
+  {
+    name: 'Kubah Lava',
+    field: 'kubahlava',
+  },
+  {
+    name: 'Area 1888',
+    field: 'area1888',
+  },
+  {
+    name: '1888 Atas',
+    field: 'atas1888',
+  },
+  {
+    name: '1888 Tengah',
+    field: 'tengah1888',
+  },
+  {
+    name: '1888 Bawah',
+    field: 'bawah1888',
+  },
+  {
+    name: '1998',
+    field: 'a1998',
+  },
+  {
+    name: '1956',
+    field: 'a1956',
+  },
+  {
+    name: '1992',
+    field: 'a1992',
+  },
+  {
+    name: 'Stabil',
+    field: 'stabil',
+  },
+  {
+    name: '1998 Bawah',
+    field: 'bawah1998',
+  },
+])
 
 export const createSeries = (data, { annotations = [] } = {}) => {
-  const options = [
-    {
-      data: mapFieldColumns(data, 'timestamp', 'area1888'),
+  const options = Areas.map((area) => {
+    return {
+      data: mapFieldColumns(data, 'timestamp', area.field),
       markLine: {
         symbol: 'none',
         data: annotations,
         animation: false,
       },
-      name: SeriesName.AREA1888,
+      name: area.name,
       symbol: 'none',
       type: 'line',
       xAxisIndex: 0,
       yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'atas1888'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.ATAS1888,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'tengah1888'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.TENGAH1888,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-    {
-      data: mapFieldColumns(data, 'timestamp', 'bawah1888'),
-      markLine: {
-        symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: SeriesName.BAWAH1888,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    },
-  ]
+    }
+  })
 
   return options
 }
