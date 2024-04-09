@@ -5,7 +5,7 @@ import { NO_DATA_NOTATION } from '@/constants/stats'
 import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
-export const Points = Object.freeze([
+export const Points = [
   {
     name: 'RB1',
     field: 'rb1',
@@ -38,24 +38,26 @@ export const Points = Object.freeze([
     name: '1998',
     field: 't1998',
   },
-])
+]
 
-export const createSeries = (data, { annotations = [] } = {}) => {
-  const options = Points.map((point) => {
-    return {
-      data: mapFieldColumns(data, 'timestamp', point.field),
-      markLine: {
+export const createSeries = (data, points, { annotations = [] } = {}) => {
+  const options = points
+    .filter((point) => point.isVisible)
+    .map((point) => {
+      return {
+        data: mapFieldColumns(data, 'timestamp', point.field),
+        markLine: {
+          symbol: 'none',
+          data: annotations,
+          animation: false,
+        },
+        name: point.name,
         symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: point.name,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    }
-  })
+        type: 'line',
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+      }
+    })
 
   return options
 }
@@ -201,6 +203,7 @@ export const tooltipFormatter = (sampling) => {
 
 export const createBabadanPointChartOptions = (
   data,
+  points,
   annotations,
   min,
   max,
@@ -209,7 +212,7 @@ export const createBabadanPointChartOptions = (
   return {
     baseOption: {
       ...baseChartOptions,
-      series: createSeries(data, { annotations }),
+      series: createSeries(data, points, { annotations }),
       xAxis: createXAxis(min, max),
       tooltip: {
         trigger: 'axis',

@@ -5,7 +5,7 @@ import { NO_DATA_NOTATION } from '@/constants/stats'
 import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
-export const Areas = Object.freeze([
+export const Areas = [
   {
     name: 'Kubah Lava',
     field: 'kubahlava',
@@ -46,24 +46,26 @@ export const Areas = Object.freeze([
     name: '1998 Bawah',
     field: 'bawah1998',
   },
-])
+]
 
-export const createSeries = (data, { annotations = [] } = {}) => {
-  const options = Areas.map((area) => {
-    return {
-      data: mapFieldColumns(data, 'timestamp', area.field),
-      markLine: {
+export const createSeries = (data, areas, { annotations = [] } = {}) => {
+  const options = areas
+    .filter((area) => area.isVisible)
+    .map((area) => {
+      return {
+        data: mapFieldColumns(data, 'timestamp', area.field),
+        markLine: {
+          symbol: 'none',
+          data: annotations,
+          animation: false,
+        },
+        name: area.name,
         symbol: 'none',
-        data: annotations,
-        animation: false,
-      },
-      name: area.name,
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-    }
-  })
+        type: 'line',
+        xAxisIndex: 0,
+        yAxisIndex: 0,
+      }
+    })
 
   return options
 }
@@ -209,6 +211,7 @@ export const tooltipFormatter = (sampling) => {
 
 export const createBabadanAreaChartOptions = (
   data,
+  areas,
   annotations,
   min,
   max,
@@ -217,7 +220,7 @@ export const createBabadanAreaChartOptions = (
   return {
     baseOption: {
       ...baseChartOptions,
-      series: createSeries(data, { annotations }),
+      series: createSeries(data, areas, { annotations }),
       xAxis: createXAxis(min, max),
       tooltip: {
         trigger: 'axis',

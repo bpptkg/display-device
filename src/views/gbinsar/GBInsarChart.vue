@@ -28,6 +28,11 @@
             :annotations="annotationOptions"
             @change="handleUpdateAnnotations"
           />
+          <GBInsarAxisFilter
+            class="ml-2"
+            :items="series"
+            @change="handleFilterChange"
+          />
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
           <BFormSelect
@@ -104,7 +109,7 @@ import {
   SET_ANNOTATION_OPTIONS,
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
-import { SET_SAMPLING, UPDATE_GBINSAR } from '@/store/gbinsar'
+import { SET_SAMPLING, SET_VISIBLE, UPDATE_GBINSAR } from '@/store/gbinsar'
 import rangeSelectorDay, {
   maxCustomDuration as maxCustomDurationDay,
 } from '@/store/gbinsar/range-selector-day'
@@ -119,6 +124,7 @@ import { createBabadanPointChartOptions } from '@/components/echarts/chart-optio
 import ErrorMessage from '@/components/error-message'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { DateRangeTypes } from '@/constants/date'
+import GBInsarAxisFilter from './GBInsarAxisFilter.vue'
 
 export default {
   components: {
@@ -129,6 +135,7 @@ export default {
     DChart,
     ErrorMessage,
     EventAnnotation,
+    GBInsarAxisFilter,
     MoreMenu,
     RangeSelector,
     SidepanelListDivider,
@@ -180,6 +187,9 @@ export default {
       annotations(state) {
         return state.gbinsar[this.type].annotations
       },
+      series(state) {
+        return state.gbinsar[this.type].series
+      },
     }),
     namespace() {
       return `gbinsar/${this.type}`
@@ -214,6 +224,7 @@ export default {
       if (this.type === 'babadanarea') {
         return createBabadanAreaChartOptions(
           this.data,
+          this.series,
           this.annotations,
           toUnixMiliSeconds(this.startTime),
           toUnixMiliSeconds(this.endTime),
@@ -222,6 +233,7 @@ export default {
       } else if (this.type === 'babadanpoint') {
         return createBabadanPointChartOptions(
           this.data,
+          this.series,
           this.annotations,
           toUnixMiliSeconds(this.startTime),
           toUnixMiliSeconds(this.endTime),
@@ -261,6 +273,9 @@ export default {
       },
       setAnnotationOptions(commit, options) {
         return commit(this.namespace + '/' + SET_ANNOTATION_OPTIONS, options)
+      },
+      setVisible(commit, { index, isVisible }) {
+        return commit(this.namespace + '/' + SET_VISIBLE, { index, isVisible })
       },
     }),
     ...mapActions({
@@ -322,6 +337,14 @@ export default {
         chart.hideLoading()
         chart.mergeOptions(this.chartOptions)
       })
+    },
+
+    handleFilterChange({ index, isVisible }) {
+      if (index === -1) {
+        this.series.forEach((series) => (series.isVisible = isVisible))
+      } else {
+        this.setVisible({ index, isVisible })
+      }
     },
   },
 

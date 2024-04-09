@@ -163,6 +163,7 @@ export default {
         {
           title: 'GBInsar',
           icon: GBInsarIcon,
+          href: '/gbinsar',
           child: [
             {
               title: 'Babadan Area',

@@ -12,10 +12,13 @@ import {
 } from '../base/mutations'
 import { baseState, baseMutations, baseActions } from '../base'
 import rangeSelector from './range-selector-minute'
+import { Points } from '../../components/echarts/chart-options/gbinsar/babadanpoint'
+import { Areas } from '../../components/echarts/chart-options/gbinsar/babadanarea'
 
 // Mutations.
 export const SET_SAMPLING = 'SET_SAMPLING'
 export const SET_TYPE = 'SET_TYPE'
+export const SET_VISIBLE = 'SET_VISIBLE'
 
 // Actions.
 export const FETCH_GBINSAR = 'FETCH_GBINSAR'
@@ -26,15 +29,17 @@ export const initialState = {
   ...baseState,
   annotationOptions: annotations,
   sampling: 'minute',
+  series: [],
   type: 'babadanarea',
 }
 
-export const initState = (type, period) => {
+export const initState = (type, series, period) => {
   const { startTime, endTime } = calculatePeriod(period)
 
   return {
     ...initialState,
     type,
+    series: series.map((item) => ({ ...item, isVisible: true })),
     period,
     startTime,
     endTime,
@@ -52,6 +57,9 @@ const mutations = {
   },
   [SET_TYPE](state, type) {
     state.type = type
+  },
+  [SET_VISIBLE](state, { index, isVisible }) {
+    state.series[index].isVisible = isVisible
   },
 }
 
@@ -89,10 +97,10 @@ const actions = {
   },
 }
 
-export const initModule = (type, period) => {
+export const initModule = (type, series, period) => {
   return {
     namespaced: true,
-    state: initState(type, period),
+    state: initState(type, series, period),
     getters,
     mutations,
     actions,
@@ -103,7 +111,7 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    babadanarea: initModule('babadanarea', rangeSelector[0]),
-    babadanpoint: initModule('babadanpoint', rangeSelector[0]),
+    babadanarea: initModule('babadanarea', Areas, rangeSelector[0]),
+    babadanpoint: initModule('babadanpoint', Points, rangeSelector[0]),
   },
 }
