@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <DChart ref="chart" :options="chartOptions" class="chart" />
+      <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
 
       <div class="bot-panel mt-3">
         <BCard title="Statistics" title-tag="h6">
