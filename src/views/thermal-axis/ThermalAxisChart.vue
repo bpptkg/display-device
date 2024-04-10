@@ -348,12 +348,20 @@ export default {
       })
     },
 
+    refresh() {
+      const chart = this.$refs.chart.$refs.chart
+      chart.clear()
+      chart.mergeOptions(this.chartOptions)
+    },
+
     handleFilterChange({ index, isVisible }) {
       if (index === -1) {
         this.areas.forEach((area) => (area.isVisible = isVisible))
       } else {
         this.setVisible({ index, isVisible })
       }
+
+      this.refresh()
     },
   },
 
