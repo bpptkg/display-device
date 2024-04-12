@@ -1,61 +1,61 @@
 <template>
   <BContainer class="content">
-    <h5>Rainfall Catalog {{ stationLabel }}</h5>
+    <BCard v-if="error">
+      <ErrorMessage>
+        <p>Unable to load data.</p>
+        <p>Error: {{ error.message }}</p>
+        <p>
+          <BLink @click="update"> Try again </BLink>
+        </p>
+      </ErrorMessage>
+    </BCard>
 
-    <ErrorMessage v-if="error">
-      <p>Unable to load data.</p>
-      <p>Error: {{ error.message }}</p>
-      <p>
-        <BLink @click="update"> Try again </BLink>
-      </p>
-    </ErrorMessage>
-
-    <div class="d-flex flex-wrap justify-content-between">
-      <div class="d-flex flex-wrap">
-        <RangeSelector
-          ref="range-selector"
-          size="sm"
-          :custom-enabled="true"
-          :selected="period"
-          :items="rangeSelector"
-          :max-custom-duration="maxCustomDuration"
-          @period-selected="onPeriodChange"
-          class="form-label"
-        />
-
-        <BFormGroup class="ml-2">
-          <BFormSelect
-            v-model="selectedStation"
+    <BCard v-show="!error" :title="title">
+      <div class="d-flex flex-wrap justify-content-between">
+        <div class="d-flex flex-wrap">
+          <RangeSelector
+            ref="range-selector"
             size="sm"
-            :options="stationOptions"
+            :custom-enabled="true"
+            :selected="period"
+            :items="rangeSelector"
+            :max-custom-duration="maxCustomDuration"
+            @period-selected="onPeriodChange"
+            class="form-label"
           />
-        </BFormGroup>
 
-        <BFormGroup class="ml-2">
-          <DButtonIcon
-            v-b-tooltip.hover
-            :busy="isRefreshing"
-            :icon="RefreshIcon"
-            no-shadow
-            title="Refresh table"
-            @click.native="update"
-          />
-        </BFormGroup>
+          <BFormGroup class="ml-2">
+            <BFormSelect
+              v-model="selectedStation"
+              size="sm"
+              :options="stationOptions"
+            />
+          </BFormGroup>
 
-        <BFormGroup class="ml-2">
-          <DButtonIcon
-            v-b-tooltip.hover
-            :busy="isDownloading"
-            :icon="SaveAltIcon"
-            no-shadow
-            title="Download table"
-            @click.native="downloadData"
-          />
-        </BFormGroup>
+          <BFormGroup class="ml-2">
+            <DButtonIcon
+              v-b-tooltip.hover
+              :busy="isRefreshing"
+              :icon="RefreshIcon"
+              no-shadow
+              title="Refresh table"
+              @click.native="update"
+            />
+          </BFormGroup>
+
+          <BFormGroup class="ml-2">
+            <DButtonIcon
+              v-b-tooltip.hover
+              :busy="isDownloading"
+              :icon="SaveAltIcon"
+              no-shadow
+              title="Download table"
+              @click.native="downloadData"
+            />
+          </BFormGroup>
+        </div>
       </div>
-    </div>
 
-    <div v-show="!error">
       <BTable
         small
         striped
@@ -69,17 +69,18 @@
       <div>
         <p class="text-muted">Number of records: {{ data.length }}</p>
       </div>
-    </div>
+    </BCard>
   </BContainer>
 </template>
 
 <script>
 import {
+  BCard,
+  BContainer,
   BFormGroup,
   BFormSelect,
   BLink,
   BTable,
-  BContainer,
   VBTooltip,
 } from 'bootstrap-vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
@@ -112,6 +113,8 @@ export default {
   name: 'RainfallCatalogView',
 
   components: {
+    BCard,
+    BContainer,
     BFormGroup,
     BFormSelect,
     BLink,
@@ -119,7 +122,6 @@ export default {
     DButtonIcon,
     ErrorMessage,
     RangeSelector,
-    BContainer,
   },
 
   directives: {
@@ -128,7 +130,6 @@ export default {
 
   data() {
     return {
-      error: null,
       busy: false,
       isDownloading: false,
       isRefreshing: false,
@@ -148,6 +149,7 @@ export default {
       period: (state) => state.period,
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
+      error: (state) => state.error,
     }),
 
     selectedStation: {
@@ -160,9 +162,12 @@ export default {
       },
     },
 
-    stationLabel() {
-      return this.stationOptions.find((item) => item.value === this.station)
-        .text
+    title() {
+      const station = this.stationOptions.find(
+        (item) => item.value === this.station
+      ).text
+
+      return `Rainfall Catalog ${station}`
     },
 
     namespace: () => 'rainfallCatalog',
