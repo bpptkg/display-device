@@ -11,6 +11,7 @@ import lavaDome from './lava-domes'
 import magnetic from './magnetic'
 import observation from './observation'
 import pageLoader from './loader'
+import rainfallCatalog from './rainfall-catalog'
 import rainfallStation from './rainfall-station'
 import realtime from './realtime'
 import rfapDirection from './rfap-direction'
@@ -46,6 +47,7 @@ export default new Vuex.Store({
     modeling,
     observation,
     pageLoader,
+    rainfallCatalog,
     rainfallStation,
     realtime,
     rfapDirection,

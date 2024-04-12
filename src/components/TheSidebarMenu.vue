@@ -218,6 +218,10 @@ export default {
               title: 'Rainfall Station',
               href: '/weather/rainfall-station',
             },
+            {
+              title: 'Rainfall Catalog',
+              href: '/rainfall-catalog',
+            },
           ],
         },
         {

@@ -187,6 +187,11 @@ const routes = [
     ],
   },
   {
+    path: '/rainfall-catalog',
+    component: () =>
+      import('../views/weather/rainfall-catalog/RainfallCatalogView'),
+  },
+  {
     path: '/lava-domes',
     redirect: '/lava-domes/barat-daya',
     component: () => import('../views/lava-domes/LavaDomeView'),
