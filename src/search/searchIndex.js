@@ -509,4 +509,9 @@ export default [
     name: 'Thermal Axis Kaliurang',
     path: '/thermal-axis/kaliurang',
   },
+  // Rainfall Catalog.
+  {
+    name: 'Rainfall Catalog',
+    path: '/rainfall-catalog',
+  },
 ]
