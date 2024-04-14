@@ -11,7 +11,7 @@ export const Points = [
     field: 'rb1',
   },
   {
-    name: 'T1992',
+    name: '1992',
     field: 't1992',
   },
   {
