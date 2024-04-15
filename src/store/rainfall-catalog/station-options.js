@@ -15,4 +15,8 @@ export default [
     value: 'babadan',
     text: 'Babadan',
   },
+  {
+    value: 'jurangjero',
+    text: 'Jurangjero',
+  },
 ]
