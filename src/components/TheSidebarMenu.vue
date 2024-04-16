@@ -14,8 +14,8 @@ import SidebarMenuHeader from './sidebar-menu/SidebarMenuHeader'
 import {
   EdmIcon,
   GasIcon,
-  GpsIcon,
   GBInsarIcon,
+  GpsIcon,
   HomeIcon,
   InfographicIcon,
   LavaDomeIcon,
@@ -25,6 +25,7 @@ import {
   SeismicIcon,
   ThermalIcon,
   TiltmeterIcon,
+  VisualIcon,
   WeatherIcon,
 } from './icons'
 import { EqualizerIcon } from './icons/av'
@@ -283,6 +284,32 @@ export default {
             {
               title: 'GPS Modeling',
               href: '/modeling/gps',
+            },
+          ],
+        },
+        {
+          title: 'Visual',
+          icon: VisualIcon,
+          child: [
+            {
+              title: 'Pos Kaliurang',
+              href: '/visual/kaliurang',
+            },
+            {
+              title: 'Pos Babadan',
+              href: '/visual/babadan',
+            },
+            {
+              title: 'Pos Jrakah',
+              href: '/visual/jrakah',
+            },
+            {
+              title: 'Pos Selo',
+              href: '/visual/selo',
+            },
+            {
+              title: 'Pos Ngepos',
+              href: '/visual/ngepos',
             },
           ],
         },

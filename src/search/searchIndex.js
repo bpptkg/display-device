@@ -514,4 +514,29 @@ export default [
     name: 'Rainfall Catalog',
     path: '/rainfall-catalog',
   },
+  // Visual.
+  {
+    name: 'Visual',
+    path: '/visual',
+  },
+  {
+    name: 'Visual Pos Kaliurang',
+    path: '/visual/kaliurang',
+  },
+  {
+    name: 'Visual Pos Babadan',
+    path: '/visual/babadan',
+  },
+  {
+    name: 'Visual Pos Jrakah',
+    path: '/visual/jrakah',
+  },
+  {
+    name: 'Visual Pos Selo',
+    path: '/visual/selo',
+  },
+  {
+    name: 'Visual Pos Ngepos',
+    path: '/visual/ngepos',
+  },
 ]

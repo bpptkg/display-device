@@ -120,6 +120,18 @@ const routes = [
     ],
   },
   {
+    path: '/visual',
+    redirect: '/visual/kaliurang',
+    component: () => import('../views/visual/VisualView'),
+    children: [
+      {
+        path: ':station',
+        component: () => import('../views/visual/VisualChart'),
+        props: true,
+      },
+    ],
+  },
+  {
     path: '/thermal-axis',
     redirect: '/thermal-axis/kaliurang',
     component: () => import('../views/thermal-axis/ThermalAxisView'),

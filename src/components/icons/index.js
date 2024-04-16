@@ -16,36 +16,38 @@ import ModelingIcon from './ModelingIcon'
 import ObservationIcon from './ObservationIcon'
 import RainfallIcon from './RainfallIcon'
 import SeismicIcon from './SeismicIcon'
+import SidebarLeftIcon from './SidebarLeftIcon'
+import SidebarRightIcon from './SidebarRightIcon'
 import TemplateIcon from './TemplateIcon'
 import ThermalIcon from './ThermalIcon'
 import TiltmeterIcon from './TiltmeterIcon'
+import VisualIcon from './VisualIcon'
 import WeatherIcon from './WeatherIcon'
-import SidebarLeftIcon from './SidebarLeftIcon'
-import SidebarRightIcon from './SidebarRightIcon'
 
 export {
   DefaultIcon,
   EdmIcon,
   FogIcon,
   GasIcon,
-  GpsIcon,
   GBInsarIcon,
+  GpsIcon,
   HomeIcon,
   InfographicIcon,
   LavaDomeIcon,
   LayoutIcon,
-  LogoIcon,
   LogoBetaIcon,
+  LogoIcon,
   MagneticIcon,
   MenuIcon,
   ModelingIcon,
   ObservationIcon,
   RainfallIcon,
   SeismicIcon,
+  SidebarLeftIcon,
+  SidebarRightIcon,
   TemplateIcon,
   ThermalIcon,
   TiltmeterIcon,
+  VisualIcon,
   WeatherIcon,
-  SidebarLeftIcon,
-  SidebarRightIcon,
 }

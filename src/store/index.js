@@ -27,6 +27,7 @@ import tiltmeter from './tiltmeter'
 import user from './user'
 import version from './version'
 import weather from './weather'
+import visual from './visual'
 
 import infographic from '@/lib/infographic/store'
 import modeling from '@/lib/modeling/store'
@@ -63,5 +64,6 @@ export default new Vuex.Store({
     user,
     version,
     weather,
+    visual,
   },
 })
