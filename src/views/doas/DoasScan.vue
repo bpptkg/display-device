@@ -1,8 +1,8 @@
 <template>
   <!-- Main Content -->
   <div class="main-content">
-    <div style="margin-top: 10px">
-      <div class="d-flex align-items-center ml-3">
+    <div>
+      <div class="d-flex flex-wrap justify-content-start align-items-center">
         <div
           class="form-group mr-3 d-flex align-items-center"
           style="margin-top: 10px"
@@ -87,7 +87,7 @@
 
 <script>
 import { BFormSelect } from 'bootstrap-vue'
-import { BCard, BLink, BDropdownItem, BButton } from 'bootstrap-vue'
+import { BCard, BButton } from 'bootstrap-vue'
 import DChart from '@/components/echarts/chart/DChart'
 import client from '@/utils/client'
 import { toUnixMiliSeconds } from '@/utils/series'
@@ -107,6 +107,7 @@ import { getStatsInfo } from '@/components/echarts/chart-options/doas/utils'
 import { defaultToolbox } from '@/components/echarts/chart-options/common/toolbox'
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 import { saveAs } from '@/lib/file-saver'
+import TimelineIcon from '@/components/icons/action/TimelineIcon'
 
 export default {
   components: {
@@ -182,6 +183,7 @@ export default {
       showDefaultText: true,
       rangeValues: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
       selectedValue: 0,
+      TimelineIcon,
     }
   },
   computed: {
