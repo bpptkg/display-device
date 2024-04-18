@@ -162,7 +162,7 @@ export default {
           ],
         },
         {
-          title: 'GBInsar',
+          title: 'GB-InSAR',
           icon: GBInsarIcon,
           href: '/gbinsar',
           child: [

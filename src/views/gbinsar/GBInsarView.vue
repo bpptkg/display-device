@@ -2,7 +2,7 @@
   <div class="view">
     <Sidepanel class="main-nav p-0">
       <SidepanelScrollContainer>
-        <SidepanelMenuHeader small bold> GB-INSAR </SidepanelMenuHeader>
+        <SidepanelMenuHeader small bold> GB-InSAR </SidepanelMenuHeader>
         <div class="ml-2">
           <SidepanelMenuItem key="1" round="left" to="/gbinsar/babadanarea">
             Babadan Area
