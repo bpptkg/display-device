@@ -37,10 +37,10 @@ export default [
     formatter: numberFormatterFactory(2),
   },
   {
-    key: 'state',
+    key: 'has_ended',
     label: 'State',
     formatter: (v) => {
-      return v === 0 ? 'Ended' : 'Ongoing'
+      return v ? 'Ended' : 'Ongoing'
     },
   },
 ]
