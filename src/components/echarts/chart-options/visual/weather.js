@@ -3,14 +3,14 @@ import { createCircleTemplate } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 import { get } from 'lodash'
 
-const Weather = {
+export const Weather = {
   CERAH: 'CERAH',
   BERAWAN: 'BERAWAN',
   MENDUNG: 'MENDUNG',
   HUJAN: 'HUJAN',
 }
 
-const weatherTextToValue = (text) => {
+export const weatherTextToValue = (text) => {
   switch (text) {
     case Weather.CERAH:
       return 4
@@ -25,7 +25,7 @@ const weatherTextToValue = (text) => {
   }
 }
 
-const weatherValueToText = (value, defaultValue = '') => {
+export const weatherValueToText = (value, defaultValue = '') => {
   switch (value) {
     case 4:
       return Weather.CERAH
@@ -37,6 +37,21 @@ const weatherValueToText = (value, defaultValue = '') => {
       return Weather.BERAWAN
     default:
       return defaultValue
+  }
+}
+
+export const weatherValueToColor = (value) => {
+  switch (value) {
+    case Weather.CERAH:
+      return 'blue'
+    case Weather.BERAWAN:
+      return 'yellow'
+    case Weather.MENDUNG:
+      return 'green'
+    case Weather.HUJAN:
+      return 'red'
+    default:
+      return '#ffffff'
   }
 }
 
@@ -52,19 +67,19 @@ export const createSeries = (rawData) => {
     const timestamp = `${item.readable_report_date}`
     morningData.push({
       timestamp,
-      status: weatherTextToValue(get(item, 'weather_morning.weather', '-')),
+      status: get(item, 'weather_morning.weather', '-'),
     })
     noonData.push({
       timestamp,
-      status: weatherTextToValue(get(item, 'weather_noon.weather', '-')),
+      status: get(item, 'weather_noon.weather', '-'),
     })
     afternoonData.push({
       timestamp,
-      status: weatherTextToValue(get(item, 'weather_afternoon.weather', '-')),
+      status: get(item, 'weather_afternoon.weather', '-'),
     })
     nightData.push({
       timestamp,
-      status: weatherTextToValue(get(item, 'weather_night.weather', '-')),
+      status: get(item, 'weather_night.weather', '-'),
     })
   })
 
@@ -72,7 +87,10 @@ export const createSeries = (rawData) => {
     {
       data: morningData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: weatherValueToColor(item.status),
+          },
         }
       }),
       name: '00-06',
@@ -85,7 +103,10 @@ export const createSeries = (rawData) => {
     {
       data: noonData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: weatherValueToColor(item.status),
+          },
         }
       }),
       name: '06-12',
@@ -97,7 +118,10 @@ export const createSeries = (rawData) => {
     {
       data: afternoonData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: weatherValueToColor(item.status),
+          },
         }
       }),
       name: '12-18',
@@ -109,7 +133,10 @@ export const createSeries = (rawData) => {
     {
       data: nightData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: weatherValueToColor(item.status),
+          },
         }
       }),
       name: '18-24',
@@ -148,7 +175,7 @@ export const mediaQuery = [
       grid: {
         top: 60,
         bottom: 95,
-        left: 80,
+        left: 15,
         right: 10,
       },
       title: {
@@ -174,12 +201,7 @@ export const createYAxis = () => {
       nameLocation: 'center',
       splitLine: { show: false },
       type: 'value',
-      axisLabel: {
-        show: true,
-        formatter: (value) => {
-          return weatherValueToText(value, '')
-        },
-      },
+      interval: 1,
     },
   ]
 
@@ -205,13 +227,6 @@ export const baseChartOptions = {
     top: 50,
     bottom: 95,
   },
-  legend: {
-    type: 'scroll',
-    bottom: 0,
-    itemWidth: 15,
-    itemHeight: 10,
-    textStyle: { fontSize: 10 },
-  },
   toolbox: defaultToolbox,
   yAxis: createYAxis(),
 }
@@ -228,7 +243,7 @@ export const tooltipFormatter = () => {
         }
         template.push(`
         ${createCircleTemplate(color)}
-        ${seriesName}: ${weatherValueToText(value[1], '-')}<br />
+        ${seriesName}: ${value[2]}<br />
         `)
       })
       return template.join('')

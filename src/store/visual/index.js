@@ -158,10 +158,10 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    kaliurang: initModule('kaliurang', rangeSelector[0]),
-    babadan: initModule('babadan', rangeSelector[0]),
-    jrakah: initModule('jrakah', rangeSelector[0]),
-    selo: initModule('selo', rangeSelector[0]),
-    ngepos: initModule('ngepos', rangeSelector[0]),
+    kaliurang: initModule('kaliurang', rangeSelector[1]),
+    babadan: initModule('babadan', rangeSelector[1]),
+    jrakah: initModule('jrakah', rangeSelector[1]),
+    selo: initModule('selo', rangeSelector[1]),
+    ngepos: initModule('ngepos', rangeSelector[1]),
   },
 }

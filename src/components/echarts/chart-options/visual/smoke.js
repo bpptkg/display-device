@@ -55,7 +55,7 @@ export const smokeColor = (value) => {
     case 'HITAM':
       return '#000000'
     default:
-      return '#000000'
+      return '#ffffff'
   }
 }
 
@@ -95,7 +95,7 @@ export const createSeries = (rawData) => {
 
         return {
           timestamp,
-          intensity: intensityTextToValue(smoke.intensity),
+          intensity: smoke.intensity,
           pressure: smoke.pressure,
           color: smoke.color,
           direction: smoke.direction,
@@ -111,7 +111,7 @@ export const createSeries = (rawData) => {
         return {
           value: [
             toUnixMiliSeconds(item.timestamp),
-            item.intensity,
+            item.height,
             item.pressure,
             item.color,
             item.direction,
@@ -122,7 +122,7 @@ export const createSeries = (rawData) => {
           },
         }
       }),
-      name: 'Intensitas',
+      name: 'Tinggi',
       symbol: 'none',
       type: 'bar',
       xAxisIndex: 0,
@@ -133,7 +133,7 @@ export const createSeries = (rawData) => {
         return {
           value: [
             toUnixMiliSeconds(item.timestamp),
-            item.height,
+            intensityTextToValue(item.intensity),
             item.pressure,
             item.color,
             item.direction,
@@ -141,11 +141,15 @@ export const createSeries = (rawData) => {
           ],
         }
       }),
-      name: 'Tinggi',
-      symbol: 'none',
-      type: 'line',
-      xAxisIndex: 1,
+      name: 'Intensitas',
+      type: 'scatter',
+      symbol: 'circle',
+      symbolSize: 7,
+      xAxisIndex: 0,
       yAxisIndex: 1,
+      itemStyle: {
+        color: 'blue',
+      },
     },
   ]
 
@@ -155,17 +159,8 @@ export const createSeries = (rawData) => {
 export const createXAxis = (min, max) => {
   const options = [
     {
-      axisLabel: { show: false },
-      gridIndex: 0,
-      min,
-      max,
-      position: 'bottom',
-      splitLine: { show: false },
-      type: 'time',
-    },
-    {
       axisLabel: { show: true },
-      gridIndex: 1,
+      gridIndex: 0,
       min,
       max,
       position: 'bottom',
@@ -183,20 +178,26 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
+      grid: {
+        top: 60,
+        bottom: 95,
+        left: 60,
+        right: 60,
+      },
       title: {
         top: 30,
         textStyle: {
           fontSize: 12,
         },
       },
-      grid: [
+      yAxis: [
         {
-          top: '15%',
-          left: 80,
+          nameLocation: 'end',
+          nameGap: 15,
         },
         {
-          top: '55%',
-          left: 80,
+          nameLocation: 'end',
+          nameGap: 15,
         },
       ],
     },
@@ -206,9 +207,16 @@ export const mediaQuery = [
 export const createYAxis = () => {
   const options = [
     {
-      gridIndex: 0,
-      name: '',
+      name: 'Tinggi (m)',
       nameGap: 50,
+      nameLocation: 'center',
+      splitLine: { show: false },
+      type: 'value',
+      scale: false,
+    },
+    {
+      name: 'Intensitas',
+      nameGap: 60,
       nameLocation: 'center',
       splitLine: { show: false },
       type: 'value',
@@ -217,14 +225,8 @@ export const createYAxis = () => {
           return intensityValueToText(value, '')
         },
       },
-    },
-    {
-      gridIndex: 1,
-      name: 'Tinggi (m)',
-      nameGap: 50,
-      nameLocation: 'center',
-      splitLine: { show: false },
-      type: 'value',
+      interval: 1,
+      scale: false,
     },
   ]
 
@@ -246,16 +248,10 @@ export const baseChartOptions = {
     realtime: false,
     bottom: 30,
   },
-  grid: [
-    {
-      top: '10%',
-      height: '35%',
-    },
-    {
-      top: '50%',
-      bottom: 95,
-    },
-  ],
+  grid: {
+    top: 50,
+    bottom: 95,
+  },
   toolbox: defaultToolbox,
   yAxis: createYAxis(),
 }
@@ -279,11 +275,15 @@ export const tooltipFormatter = () => {
             ? intensityValueToText(value[1])
             : value[1]
         }<br />
-        ${createDividerTemplate()}
+        `)
+
+        if (index === params.length - 1) {
+          template.push(`
         Tekanan: ${value[2]}<br />
         Warna: ${value[3]}<br />
         Arah: ${value[4]}<br />
         `)
+        }
       })
       return template.join('')
     } else {

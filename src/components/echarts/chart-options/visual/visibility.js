@@ -3,14 +3,14 @@ import { createCircleTemplate } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 import { get } from 'lodash'
 
-const Visibility = {
+export const Visibility = {
   TAMPAK: 'TAMPAK',
   KABUT01: 'KABUT 01',
   KABUT02: 'KABUT 02',
   KABUT03: 'KABUT 03',
 }
 
-const visibilityTextToValue = (text) => {
+export const visibilityTextToValue = (text) => {
   switch (text) {
     case Visibility.TAMPAK:
       return 4
@@ -25,7 +25,7 @@ const visibilityTextToValue = (text) => {
   }
 }
 
-const visibilityValueToText = (value, defaultValue = '') => {
+export const visibilityValueToText = (value, defaultValue = '') => {
   switch (value) {
     case 4:
       return Visibility.TAMPAK
@@ -37,6 +37,21 @@ const visibilityValueToText = (value, defaultValue = '') => {
       return Visibility.KABUT03
     default:
       return defaultValue
+  }
+}
+
+export const visibilityValueToColor = (value) => {
+  switch (value) {
+    case Visibility.TAMPAK:
+      return 'blue'
+    case Visibility.KABUT01:
+      return 'yellow'
+    case Visibility.KABUT02:
+      return 'green'
+    case Visibility.KABUT03:
+      return 'red'
+    default:
+      return '#ffffff'
   }
 }
 
@@ -52,23 +67,19 @@ export const createSeries = (rawData) => {
     const timestamp = `${item.readable_report_date}`
     morningData.push({
       timestamp,
-      status: visibilityTextToValue(
-        get(item, 'weather_morning.visibility', '-')
-      ),
+      status: get(item, 'weather_morning.visibility', '-'),
     })
     noonData.push({
       timestamp,
-      status: visibilityTextToValue(get(item, 'weather_noon.visibility', '-')),
+      status: get(item, 'weather_noon.visibility', '-'),
     })
     afternoonData.push({
       timestamp,
-      status: visibilityTextToValue(
-        get(item, 'weather_afternoon.visibility', '-')
-      ),
+      status: get(item, 'weather_afternoon.visibility', '-'),
     })
     nightData.push({
       timestamp,
-      status: visibilityTextToValue(get(item, 'weather_night.visibility', '-')),
+      status: get(item, 'weather_night.visibility', '-'),
     })
   })
 
@@ -76,7 +87,10 @@ export const createSeries = (rawData) => {
     {
       data: morningData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: visibilityValueToColor(item.status),
+          },
         }
       }),
       name: '00-06',
@@ -89,7 +103,10 @@ export const createSeries = (rawData) => {
     {
       data: noonData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: visibilityValueToColor(item.status),
+          },
         }
       }),
       name: '06-12',
@@ -101,7 +118,10 @@ export const createSeries = (rawData) => {
     {
       data: afternoonData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: visibilityValueToColor(item.status),
+          },
         }
       }),
       name: '12-18',
@@ -113,7 +133,10 @@ export const createSeries = (rawData) => {
     {
       data: nightData.map((item) => {
         return {
-          value: [item.timestamp, item.status],
+          value: [item.timestamp, 1, item.status],
+          itemStyle: {
+            color: visibilityValueToColor(item.status),
+          },
         }
       }),
       name: '18-24',
@@ -152,7 +175,7 @@ export const mediaQuery = [
       grid: {
         top: 60,
         bottom: 95,
-        left: 80,
+        left: 15,
         right: 10,
       },
       title: {
@@ -178,12 +201,7 @@ export const createYAxis = () => {
       nameLocation: 'center',
       splitLine: { show: false },
       type: 'value',
-      axisLabel: {
-        show: true,
-        formatter: (value) => {
-          return visibilityValueToText(value)
-        },
-      },
+      interval: 1,
     },
   ]
 
@@ -209,13 +227,6 @@ export const baseChartOptions = {
     top: 50,
     bottom: 95,
   },
-  legend: {
-    type: 'scroll',
-    bottom: 0,
-    itemWidth: 15,
-    itemHeight: 10,
-    textStyle: { fontSize: 10 },
-  },
   toolbox: defaultToolbox,
   yAxis: createYAxis(),
 }
@@ -232,7 +243,7 @@ export const tooltipFormatter = () => {
         }
         template.push(`
         ${createCircleTemplate(color)}
-        ${seriesName}: ${visibilityValueToText(value[1], '-')}<br />
+        ${seriesName}: ${value[2]}<br />
         `)
       })
       return template.join('')
