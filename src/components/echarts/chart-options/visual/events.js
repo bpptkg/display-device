@@ -264,7 +264,7 @@ export const tooltipFormatter = () => {
           Itensitas: ${value[3]}<br />
           Keterangan: ${value[4]}<br />`)
         } else if (seriesName === 'Gempa Terasa') {
-          template.push(`Skala: ${value[2]}<br />
+          template.push(`Skala MMI: ${value[2]}<br />
           Keterangan: ${value[3]}<br />`)
         } else if (seriesName === 'Lahar') {
           template.push(`Ukuran: ${value[2]}<br />
