@@ -21,6 +21,7 @@ export const SET_SAMPLING = 'SET_SAMPLING'
 export const SET_STATION = 'SET_STATION'
 export const SET_AREAS = 'SET_AREAS'
 export const SET_VISIBLE = 'SET_VISIBLE'
+export const SET_SKY_FILTER = 'SET_SKY_FILTER'
 
 // Actions.
 export const FETCH_THERMAL_AXIS = 'FETCH_THERMAL_AXIS'
@@ -33,6 +34,7 @@ export const initialState = {
   sampling: 'minute',
   station: 'kaliurang',
   areas: [],
+  use_sky_filter: true,
 }
 
 export const AREAS = [
@@ -100,6 +102,9 @@ export const mutations = {
   [SET_VISIBLE](state, { index, isVisible }) {
     state.areas[index].isVisible = isVisible
   },
+  [SET_SKY_FILTER](state, use_sky_filter) {
+    state.use_sky_filter = use_sky_filter
+  },
 }
 
 export const actions = {
@@ -122,6 +127,7 @@ export const actions = {
           end: state.endTime.format(DATETIME_FORMAT),
           sampling: state.sampling,
           area: area.id,
+          use_sky_filter: state.use_sky_filter,
         },
         cancelToken: state.cancelToken.token,
       })

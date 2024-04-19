@@ -33,6 +33,9 @@
             :items="areas"
             @change="handleFilterChange"
           />
+          <BFormCheckbox v-model="enable_sky_filter" class="ml-2" size="sm"
+            >Enable sky filter</BFormCheckbox
+          >
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
           <BFormSelect
@@ -84,7 +87,14 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import DChart from '@/components/echarts/chart/DChart'
 import RangeSelector from '@/components/range-selector'
 import fieldOptions from '@/store/thermal-axis/field-options'
-import { BCard, BDropdownItem, BFormSelect, BLink } from 'bootstrap-vue'
+import {
+  BCard,
+  BDropdownItem,
+  BFormSelect,
+  BLink,
+  BFormCheckbox,
+  BForm,
+} from 'bootstrap-vue'
 import {
   SidepanelListDivider,
   SidepanelTab,
@@ -111,6 +121,7 @@ import {
   SET_SAMPLING,
   SET_AREAS,
   SET_VISIBLE,
+  SET_SKY_FILTER,
   UPDATE_THERMAL_AXIS,
 } from '@/store/thermal-axis'
 import rangeSelectorDay, {
@@ -133,6 +144,7 @@ export default {
   components: {
     BCard,
     BDropdownItem,
+    BFormCheckbox,
     BFormSelect,
     BLink,
     DChart,
@@ -192,6 +204,9 @@ export default {
       },
       areas(state) {
         return state.thermalAxis[this.station].areas
+      },
+      use_sky_filter(state) {
+        return state.thermalAxis[this.station].use_sky_filter
       },
     }),
     namespace() {
@@ -254,6 +269,15 @@ export default {
       )
       return getStatsInfo(data, areas)
     },
+    enable_sky_filter: {
+      get() {
+        return this.use_sky_filter
+      },
+      set(value) {
+        this.setSkyFilter(value)
+        this.update()
+      },
+    },
   },
   watch: {
     sampling(_value) {
@@ -285,6 +309,9 @@ export default {
       },
       setVisible(commit, { index, isVisible }) {
         return commit(this.namespace + '/' + SET_VISIBLE, { index, isVisible })
+      },
+      setSkyFilter(commit, value) {
+        return commit(this.namespace + '/' + SET_SKY_FILTER, value)
       },
     }),
 
