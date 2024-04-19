@@ -24,6 +24,21 @@
         />
       </div>
 
+      <BCard class="mt-3">
+        <DChart
+          ref="smokeChart"
+          :options="smokeChartOptions"
+          class="chart"
+          manual-update
+        />
+        <div class="d-flex justify-content-center align-items-center flex-wrap">
+          <Bar label="Putih" color="#E3E3E3" />
+          <Bar class="ml-2" label="Coklat" color="#D2691E" />
+          <Bar class="ml-2" label="Kelabu" color="#808080" />
+          <Bar class="ml-2" label="Hitam" color="#000000" />
+        </div>
+      </BCard>
+
       <BCard>
         <DChart
           ref="visibilityChart"
@@ -51,21 +66,6 @@
           <Bar class="ml-2" label="Berawan" color="yellow" />
           <Bar class="ml-2" label="Mendung" color="green" />
           <Bar class="ml-2" label="Hujan" color="red" />
-        </div>
-      </BCard>
-
-      <BCard class="mt-3">
-        <DChart
-          ref="smokeChart"
-          :options="smokeChartOptions"
-          class="chart"
-          manual-update
-        />
-        <div class="d-flex justify-content-center align-items-center flex-wrap">
-          <Bar label="Putih" color="#E3E3E3" />
-          <Bar class="ml-2" label="Coklat" color="#D2691E" />
-          <Bar class="ml-2" label="Kelabu" color="#808080" />
-          <Bar class="ml-2" label="Hitam" color="#000000" />
         </div>
       </BCard>
 
