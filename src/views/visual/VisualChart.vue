@@ -24,7 +24,7 @@
         />
       </div>
 
-      <BCard class="mt-3">
+      <BCard>
         <DChart
           ref="smokeChart"
           :options="smokeChartOptions"
@@ -39,7 +39,7 @@
         </div>
       </BCard>
 
-      <BCard>
+      <BCard class="mt-3">
         <DChart
           ref="visibilityChart"
           :options="visibilityChartOptions"
@@ -71,35 +71,8 @@
 
       <BCard class="mt-3">
         <DChart
-          ref="soundChart"
-          :options="soundChartOptions"
-          class="chart"
-          manual-update
-        />
-      </BCard>
-
-      <BCard class="mt-3">
-        <DChart
-          ref="staticFireChart"
-          :options="staticFireChartOptions"
-          class="chart"
-          manual-update
-        />
-      </BCard>
-
-      <BCard class="mt-3">
-        <DChart
-          ref="shakeChart"
-          :options="shakeChartOptions"
-          class="chart"
-          manual-update
-        />
-      </BCard>
-
-      <BCard class="mt-3">
-        <DChart
-          ref="lavaChart"
-          :options="lavaChartOptions"
+          ref="eventsChart"
+          :options="eventsChartOptions"
           class="chart"
           manual-update
         />
@@ -136,10 +109,7 @@ import {
   createVisibilityChart,
   createWeatherChart,
   createSmokeChart,
-  createSoundChart,
-  createStaticFireChart,
-  createShakeChart,
-  createLavaChart,
+  createEventsChart,
 } from '../../components/echarts/chart-options/visual'
 import { getSeriesByIndex } from '../../utils/series'
 import Bar from '../../components/legend/Bar'
@@ -218,24 +188,20 @@ export default {
       return createSmokeChart(rawData)
     },
 
-    soundChartOptions() {
-      const rawData = getSeriesByIndex(this.data, DataIndex.SOUND)
-      return createSoundChart(rawData)
-    },
-
-    staticFireChartOptions() {
-      const rawData = getSeriesByIndex(this.data, DataIndex.STATIC_FIRE)
-      return createStaticFireChart(rawData)
-    },
-
-    shakeChartOptions() {
-      const rawData = getSeriesByIndex(this.data, DataIndex.SHAKE)
-      return createShakeChart(rawData)
-    },
-
-    lavaChartOptions() {
-      const rawData = getSeriesByIndex(this.data, DataIndex.LAVA)
-      return createLavaChart(rawData)
+    eventsChartOptions() {
+      const soundRawData = getSeriesByIndex(this.data, DataIndex.SOUND)
+      const staticFireRawData = getSeriesByIndex(
+        this.data,
+        DataIndex.STATIC_FIRE
+      )
+      const shakeRawData = getSeriesByIndex(this.data, DataIndex.SHAKE)
+      const lavaRawData = getSeriesByIndex(this.data, DataIndex.LAVA)
+      return createEventsChart(
+        soundRawData,
+        staticFireRawData,
+        shakeRawData,
+        lavaRawData
+      )
     },
   },
 
@@ -274,21 +240,9 @@ export default {
       smokeChart.clear()
       smokeChart.showLoading()
 
-      const soundChart = this.$refs.soundChart.$refs.chart
-      soundChart.clear()
-      soundChart.showLoading()
-
-      const staticFireChart = this.$refs.staticFireChart.$refs.chart
-      staticFireChart.clear()
-      staticFireChart.showLoading()
-
-      const shakeChart = this.$refs.shakeChart.$refs.chart
-      shakeChart.clear()
-      shakeChart.showLoading()
-
-      const lavaChart = this.$refs.lavaChart.$refs.chart
-      lavaChart.clear()
-      lavaChart.showLoading()
+      const eventsChart = this.$refs.eventsChart.$refs.chart
+      eventsChart.clear()
+      eventsChart.showLoading()
 
       Promise.all([this.fetchData()]).finally(() => {
         visibilityChart.hideLoading()
@@ -300,17 +254,8 @@ export default {
         smokeChart.hideLoading()
         smokeChart.mergeOptions(this.smokeChartOptions)
 
-        soundChart.hideLoading()
-        soundChart.mergeOptions(this.soundChartOptions)
-
-        staticFireChart.hideLoading()
-        staticFireChart.mergeOptions(this.staticFireChartOptions)
-
-        shakeChart.hideLoading()
-        shakeChart.mergeOptions(this.shakeChartOptions)
-
-        lavaChart.hideLoading()
-        lavaChart.mergeOptions(this.lavaChartOptions)
+        eventsChart.hideLoading()
+        eventsChart.mergeOptions(this.eventsChartOptions)
       })
     },
 

@@ -5,6 +5,7 @@ import { createSoundChart } from './sound'
 import { createStaticFireChart } from './static-fire'
 import { createShakeChart } from './shake'
 import { createLavaChart } from './lava'
+import { createEventsChart } from './events'
 
 export {
   createVisibilityChart,
@@ -14,4 +15,5 @@ export {
   createStaticFireChart,
   createShakeChart,
   createLavaChart,
+  createEventsChart,
 }
