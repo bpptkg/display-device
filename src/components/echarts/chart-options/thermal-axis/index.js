@@ -29,8 +29,9 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
             data: annotations,
             animation: false,
           },
-          symbol: 'none',
-          type: 'line',
+          type: 'scatter',
+          symbol: 'circle',
+          symbolSize: 3,
         },
       ]
     })
