@@ -46,6 +46,10 @@ export const Areas = [
     name: '1998 Bawah',
     field: 'bawah1998',
   },
+  {
+    name: 'Puncak Kubah',
+    field: 'puncak_kubah',
+  },
 ]
 
 export const createSeries = (data, areas, { annotations = [] } = {}) => {
