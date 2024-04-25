@@ -103,11 +103,7 @@ import stationOptions from '../../../store/rainfall-catalog/station-options'
 import rangeSelector, {
   maxCustomDuration,
 } from '../../../store/rainfall-catalog/range-selector'
-import {
-  FETCH_DATA,
-  SET_STATION,
-  UPDATE_DATA,
-} from '../../../store/rainfall-catalog'
+import { SET_STATION, UPDATE_DATA } from '../../../store/rainfall-catalog'
 
 export default {
   name: 'RainfallCatalogView',
@@ -191,9 +187,6 @@ export default {
 
     ...mapActions({
       fetchData(dispatch) {
-        return dispatch(this.namespace + '/' + FETCH_DATA)
-      },
-      updateData(dispatch) {
         return dispatch(this.namespace + '/' + UPDATE_DATA)
       },
     }),
