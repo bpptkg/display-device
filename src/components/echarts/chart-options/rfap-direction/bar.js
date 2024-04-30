@@ -115,6 +115,9 @@ export const baseChartOptions = (
     },
     yAxis: {
       type: 'category',
+      axisLabel: {
+        interval: 0,
+      },
     },
     series: series,
     tooltip: {
