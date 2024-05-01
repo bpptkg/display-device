@@ -111,7 +111,7 @@ import {
   createSmokeChart,
   createEventsChart,
 } from '../../components/echarts/chart-options/visual'
-import { getSeriesByIndex } from '../../utils/series'
+import { getSeriesByIndex, toUnixMiliSeconds } from '../../utils/series'
 import Bar from '../../components/legend/Bar'
 
 export default {
@@ -175,17 +175,29 @@ export default {
 
     visibilityChartOptions() {
       const rawData = getSeriesByIndex(this.data, DataIndex.WEATHER)
-      return createVisibilityChart(rawData)
+      return createVisibilityChart(
+        rawData,
+        toUnixMiliSeconds(this.startTime),
+        toUnixMiliSeconds(this.endTime)
+      )
     },
 
     weatherChartOptions() {
       const rawData = getSeriesByIndex(this.data, DataIndex.WEATHER)
-      return createWeatherChart(rawData)
+      return createWeatherChart(
+        rawData,
+        toUnixMiliSeconds(this.startTime),
+        toUnixMiliSeconds(this.endTime)
+      )
     },
 
     smokeChartOptions() {
       const rawData = getSeriesByIndex(this.data, DataIndex.SMOKE)
-      return createSmokeChart(rawData)
+      return createSmokeChart(
+        rawData,
+        toUnixMiliSeconds(this.startTime),
+        toUnixMiliSeconds(this.endTime)
+      )
     },
 
     eventsChartOptions() {
@@ -196,11 +208,16 @@ export default {
       )
       const shakeRawData = getSeriesByIndex(this.data, DataIndex.SHAKE)
       const lavaRawData = getSeriesByIndex(this.data, DataIndex.LAVA)
+      const ashRainRawData = getSeriesByIndex(this.data, DataIndex.ASH_RAIN)
+
       return createEventsChart(
         soundRawData,
         staticFireRawData,
         shakeRawData,
-        lavaRawData
+        lavaRawData,
+        ashRainRawData,
+        toUnixMiliSeconds(this.startTime),
+        toUnixMiliSeconds(this.endTime)
       )
     },
   },

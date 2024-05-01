@@ -42,6 +42,7 @@ export const DataIndex = {
   STATIC_FIRE: 3,
   SHAKE: 4,
   LAVA: 5,
+  ASH_RAIN: 6,
 }
 
 export const initialState = {
@@ -114,6 +115,13 @@ export const actions = {
         },
       }),
       client.get('/api/analytics/lava', {
+        params: {
+          station_id: stationId,
+          start_at: state.startTime.format(DATETIME_FORMAT),
+          end_at: state.endTime.format(DATETIME_FORMAT),
+        },
+      }),
+      client.get('/api/analytics/ash-rain', {
         params: {
           station_id: stationId,
           start_at: state.startTime.format(DATETIME_FORMAT),

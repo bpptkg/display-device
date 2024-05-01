@@ -6,12 +6,14 @@ export const createSeries = (
   soundRawData,
   staticFireRawData,
   shakeRawData,
-  lavaRawData
+  lavaRawData,
+  ashRainRawData
 ) => {
   const soundData = soundRawData.data ? soundRawData.data : []
   const staticFireData = staticFireRawData.data ? staticFireRawData.data : []
   const shakeData = shakeRawData.data ? shakeRawData.data : []
   const lavaData = lavaRawData.data ? lavaRawData.data : []
+  const ashRainData = ashRainRawData.data ? ashRainRawData.data : []
 
   const soundSeries = soundData
     .map((item) => {
@@ -58,6 +60,23 @@ export const createSeries = (
           size: event.size,
           rainfall: event.rainfall,
           remark: event.remark,
+        }
+      })
+    })
+    .flat(2)
+
+  const ashRainSeries = ashRainData
+    .map((item) => {
+      return item.event_ash_rain.map((event) => {
+        return {
+          timestamp: `${item.readable_report_date} ${event.time}:00`,
+          color: event.color,
+          thickness: event.thickness,
+          dusun: event.dusun,
+          desa: event.desa,
+          kecamatan: event.kecamatan,
+          kabupaten: event.kabupaten,
+          additionalInfo: event.additional_info,
         }
       })
     })
@@ -143,6 +162,31 @@ export const createSeries = (
       yAxisIndex: 0,
       itemStyle: {
         color: 'blue',
+      },
+    },
+    {
+      data: ashRainSeries.map((item) => {
+        return {
+          value: [
+            item.timestamp, // Index 0
+            1, // 1
+            item.color, // 2
+            item.thickness, // 3
+            item.dusun, // 4
+            item.desa, // 5
+            item.kecamatan, // 6
+            item.kabupaten, // 7
+            item.additionalInfo, // 8
+          ],
+        }
+      }),
+      name: 'Hujan Abu',
+      symbol: 'none',
+      type: 'bar',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+      itemStyle: {
+        color: 'grey',
       },
     },
   ]
@@ -272,6 +316,14 @@ export const tooltipFormatter = () => {
               Number.isFinite(value[3]) ? value[3].toFixed(2) : '-'
             } mm<br />
             Keterangan: ${value[4]}<br />`)
+        } else if (seriesName === 'Hujan Abu') {
+          template.push(`Warna: ${value[2]}<br />
+          Ketebalan: ${value[3]}<br />
+          Dusun: ${value[4]}<br />
+          Desa: ${value[5]}<br />
+          Kecamatan: ${value[6]}<br />
+          Kabupaten: ${value[7]}<br />
+          Keterangan: ${value[7]}<br />`)
         }
       })
       return template.join('')
@@ -295,6 +347,7 @@ export const createEventsChart = (
   staticFireRawData,
   shakeRawData,
   lavaRawData,
+  ashRainRawData,
   min,
   max
 ) => {
@@ -305,7 +358,8 @@ export const createEventsChart = (
         soundRawData,
         staticFireRawData,
         shakeRawData,
-        lavaRawData
+        lavaRawData,
+        ashRainRawData
       ),
       xAxis: createXAxis(min, max),
       tooltip: {
