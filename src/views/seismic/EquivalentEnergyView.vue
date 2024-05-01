@@ -30,7 +30,7 @@
         </p>
       </ErrorMessage>
     </BCard>
-    <BCard v-else class="chart-container">
+    <BCard v-show="!error" class="chart-container">
       <div class="chart-wrapper">
         <DChart
           ref="chart"
