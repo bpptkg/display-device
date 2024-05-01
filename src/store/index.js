@@ -18,6 +18,7 @@ import rfapDirection from './rfap-direction'
 import rfapDistance from './rfap-distance'
 import rfapDistdir from './rfap-distdir'
 import rfapType from './rfap-type'
+import rsam from './rsam'
 import search from './search'
 import seismic from './seismic'
 import sidebarMenu from './sidebar-menu'
@@ -26,8 +27,8 @@ import thermalAxis from './thermal-axis'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import version from './version'
-import weather from './weather'
 import visual from './visual'
+import weather from './weather'
 
 import infographic from '@/lib/infographic/store'
 import modeling from '@/lib/modeling/store'
@@ -55,6 +56,7 @@ export default new Vuex.Store({
     rfapDistance,
     rfapDistdir,
     rfapType,
+    rsam,
     search,
     seismic,
     sidebarMenu,
@@ -63,7 +65,7 @@ export default new Vuex.Store({
     tiltmeter,
     user,
     version,
-    weather,
     visual,
+    weather,
   },
 })

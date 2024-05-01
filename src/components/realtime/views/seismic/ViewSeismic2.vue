@@ -1,10 +1,10 @@
 <template>
   <div class="g-container">
     <div class="g-item">
-      <div class="c-item">
+      <div class="c-item c-item--v">
         <SeismicityChart />
       </div>
-      <div class="c-item">
+      <div class="c-item c-item--v">
         <HypocenterChart
           :magnitude-visual-map-options="{
             right: 50,
@@ -18,11 +18,14 @@
       </div>
     </div>
     <div class="g-item">
-      <div class="c-item">
+      <div class="c-item c-item--x">
         <SeismicEnergyChart />
       </div>
-      <div class="c-item">
+      <div class="c-item c-item--x">
         <RfapEnergyChart />
+      </div>
+      <div class="c-item c-item--x">
+        <RSAMChart />
       </div>
     </div>
   </div>
@@ -33,6 +36,7 @@ import SeismicityChart from './SeismicityChart'
 import SeismicEnergyChart from './SeismicEnergyChart'
 import HypocenterChart from './HypocenterChart'
 import RfapEnergyChart from './RfapEnergyChart'
+import RSAMChart from './RSAMChart'
 
 export default {
   name: 'ViewSeismic2',
@@ -41,6 +45,7 @@ export default {
     SeismicEnergyChart,
     HypocenterChart,
     RfapEnergyChart,
+    RSAMChart,
   },
   data() {
     return {
@@ -73,9 +78,16 @@ export default {
 }
 
 .c-item {
-  height: 50%;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-collapse: collapse;
+
+  &--x {
+    height: calc(100% / 3);
+  }
+
+  &--v {
+    height: calc(100% / 2);
+  }
 }
 
 .g-item {
@@ -94,7 +106,7 @@ export default {
 
   .c-item {
     display: block;
-    height: 50%;
+    height: 300px;
   }
 }
 </style>
