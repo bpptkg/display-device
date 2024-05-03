@@ -399,6 +399,12 @@ export default {
     },
   },
 
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
+
   mounted() {
     this.update()
 
