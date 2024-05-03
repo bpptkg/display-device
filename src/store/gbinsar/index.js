@@ -19,6 +19,7 @@ import { Areas } from '../../components/echarts/chart-options/gbinsar/babadanare
 export const SET_SAMPLING = 'SET_SAMPLING'
 export const SET_TYPE = 'SET_TYPE'
 export const SET_VISIBLE = 'SET_VISIBLE'
+export const SET_AUTO_UPDATE = 'SET_AUTO_UPDATE'
 
 // Actions.
 export const FETCH_GBINSAR = 'FETCH_GBINSAR'
@@ -31,6 +32,7 @@ export const initialState = {
   sampling: 'minute',
   series: [],
   type: 'babadanarea',
+  autoUpdate: true,
 }
 
 export const initState = (type, series, period) => {
@@ -60,6 +62,9 @@ const mutations = {
   },
   [SET_VISIBLE](state, { index, isVisible }) {
     state.series[index].isVisible = isVisible
+  },
+  [SET_AUTO_UPDATE](state, autoUpdate) {
+    state.autoUpdate = autoUpdate
   },
 }
 

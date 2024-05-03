@@ -49,6 +49,10 @@
 
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
 
+      <BFormCheckbox v-model="useAutoUpdate" class="mb-2">
+        <small>Auto update</small>
+      </BFormCheckbox>
+
       <div class="bot-panel mt-3">
         <BCard title="Statistics" title-tag="h6">
           <StatsPanelPeriod :start="startTime" :end="endTime" />
@@ -83,7 +87,13 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import DChart from '@/components/echarts/chart/DChart'
 import RangeSelector from '@/components/range-selector'
 import fieldOptions from '@/store/gbinsar/field-options'
-import { BCard, BDropdownItem, BFormSelect, BLink } from 'bootstrap-vue'
+import {
+  BCard,
+  BDropdownItem,
+  BFormSelect,
+  BLink,
+  BFormCheckbox,
+} from 'bootstrap-vue'
 import {
   SidepanelListDivider,
   SidepanelTab,
@@ -109,7 +119,12 @@ import {
   SET_ANNOTATION_OPTIONS,
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
-import { SET_SAMPLING, SET_VISIBLE, UPDATE_GBINSAR } from '@/store/gbinsar'
+import {
+  SET_SAMPLING,
+  SET_VISIBLE,
+  SET_AUTO_UPDATE,
+  UPDATE_GBINSAR,
+} from '@/store/gbinsar'
 import rangeSelectorDay, {
   maxCustomDuration as maxCustomDurationDay,
 } from '@/store/gbinsar/range-selector-day'
@@ -131,6 +146,7 @@ export default {
     BCard,
     BDropdownItem,
     BFormSelect,
+    BFormCheckbox,
     BLink,
     DChart,
     ErrorMessage,
@@ -159,6 +175,7 @@ export default {
       ],
       fieldOptions,
       TimelineIcon,
+      interval: null,
     }
   },
   computed: {
@@ -190,6 +207,9 @@ export default {
       series(state) {
         return state.gbinsar[this.type].series
       },
+      autoUpdate(state) {
+        return state.gbinsar[this.type].autoUpdate
+      },
     }),
     namespace() {
       return `gbinsar/${this.type}`
@@ -200,6 +220,15 @@ export default {
       },
       set: function (value) {
         this.setSampling(value)
+      },
+    },
+    useAutoUpdate: {
+      get: function () {
+        return this.autoUpdate
+      },
+      set: function (value) {
+        this.handleAutoUpdate(value)
+        return this.setAutoUpdate(value)
       },
     },
     rangeSelector() {
@@ -277,6 +306,9 @@ export default {
       setVisible(commit, { index, isVisible }) {
         return commit(this.namespace + '/' + SET_VISIBLE, { index, isVisible })
       },
+      setAutoUpdate(commit, value) {
+        return commit(this.namespace + '/' + SET_AUTO_UPDATE, value)
+      },
     }),
     ...mapActions({
       fetchData(dispatch) {
@@ -353,10 +385,24 @@ export default {
       }
       this.refresh()
     },
+
+    handleAutoUpdate(value) {
+      if (value) {
+        this.interval = setInterval(() => {
+          this.update()
+        }, 60 * 1000)
+      } else {
+        if (this.interval) {
+          clearInterval(this.interval)
+        }
+      }
+    },
   },
 
   mounted() {
     this.update()
+
+    this.handleAutoUpdate(this.autoUpdate)
   },
 }
 </script>
