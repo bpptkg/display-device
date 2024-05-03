@@ -24,7 +24,7 @@
       <div class="c-item c-item--x">
         <RfapEnergyChart />
       </div>
-      <div class="c-item c-item--x">
+      <div class="c-item c-item--x rsam-chart">
         <RSAMChart />
       </div>
     </div>
@@ -108,5 +108,9 @@ export default {
     display: block;
     height: 300px;
   }
+}
+
+.rsam-chart {
+  background-color: #f7f7f7;
 }
 </style>

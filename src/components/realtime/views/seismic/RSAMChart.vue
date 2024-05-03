@@ -23,9 +23,7 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { BLink, BSpinner } from 'bootstrap-vue'
 import ErrorMessage from '@/components/error-message'
-import { HelicorderChannel } from '@/store/helicorder'
 import { SET_OPTIONS, SET_SETTLED, UPDATE_IMAGE } from '@/store/rsam'
-import { validateWidth, validateHeight } from '@/utils/helicorder'
 
 const NAMESPACE = `realtime/seismic/rsam`
 
@@ -84,8 +82,8 @@ export default {
       const width = this.$refs.rsam.offsetWidth
       const height = this.$refs.rsam.offsetHeight
       const options = {
-        w: validateWidth(width),
-        h: validateHeight(width, height),
+        w: width,
+        h: height,
       }
 
       this.setOptions(options)
@@ -100,12 +98,8 @@ export default {
 
 <style lang="scss" scoped>
 .rsam-container {
-  width: 100%;
   height: 100%;
-}
-
-.rsam {
-  width: 100%;
-  height: 100%;
+  margin-left: 20px;
+  margin-right: 125px;
 }
 </style>
