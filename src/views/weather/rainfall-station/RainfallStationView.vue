@@ -153,6 +153,7 @@ export default {
         return this.autoUpdate
       },
       set: function (value) {
+        this.handleAutoUpdate(value)
         return this.setAutoUpdate(value)
       },
     },
@@ -165,11 +166,7 @@ export default {
   mounted() {
     this.update()
 
-    if (this.autoUpdate) {
-      this.interval = setInterval(() => {
-        this.update()
-      }, 1000 * 60)
-    }
+    this.handleAutoUpdate(this.autoUpdate)
   },
   methods: {
     ...mapMutations({
@@ -242,6 +239,18 @@ export default {
     },
     handleFilterChange({ index, isVisible }) {
       this.setIsVisible({ index, isVisible })
+    },
+
+    handleAutoUpdate(value) {
+      if (value) {
+        this.interval = setInterval(() => {
+          this.update()
+        }, 1000 * 60)
+      } else {
+        if (this.interval) {
+          clearInterval(this.interval)
+        }
+      }
     },
   },
 }
