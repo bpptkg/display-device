@@ -373,7 +373,7 @@ export default {
 
 @media (max-width: 991.98px) {
   .dirview {
-    top: 50px;
+    top: 110px;
     margin-left: 10px;
     margin-right: 10px;
     position: absolute;

@@ -264,12 +264,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/scss/layout-monkey';
 
-@media (max-width: 991.98px) {
-  .chart-view {
-    margin-top: 60px;
-  }
-}
-
 @media (min-width: 991.98px) {
   .stats-panel {
     display: none;

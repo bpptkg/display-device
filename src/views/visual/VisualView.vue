@@ -26,22 +26,16 @@
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
-    <!-- 
+
     <BNav tabs class="tab-nav">
       <BNavItem to="/visual/kaliurang" active-class="active">
-        Pos Kaliurang
+        Kaliurang
       </BNavItem>
-      <BNavItem to="/visual/babadan" active-class="active">
-        Pos Babadan
-      </BNavItem>
-      <BNavItem to="/visual/jrakah" active-class="active">
-        Pos Jrakah
-      </BNavItem>
-      <BNavItem to="/visual/selo" active-class="active"> Pos Selo </BNavItem>
-      <BNavItem to="/visual/ngepos" active-class="active">
-        Pos Ngepos
-      </BNavItem>
-    </BNav> -->
+      <BNavItem to="/visual/babadan" active-class="active"> Babadan </BNavItem>
+      <BNavItem to="/visual/jrakah" active-class="active"> Jrakah </BNavItem>
+      <BNavItem to="/visual/selo" active-class="active"> Selo </BNavItem>
+      <BNavItem to="/visual/ngepos" active-class="active"> Ngepos </BNavItem>
+    </BNav>
 
     <div class="content">
       <keep-alive>
@@ -63,22 +57,16 @@ import {
 export default {
   name: 'VisualView',
   components: {
+    BNav,
+    BNavItem,
     Sidepanel,
     SidepanelMenuHeader,
     SidepanelMenuItem,
     SidepanelScrollContainer,
-    // BNav,
-    // BNavItem,
   },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/scss/layout-fish';
-
-@media (max-width: 991.98px) {
-  .content {
-    margin-top: 60px;
-  }
-}
 </style>

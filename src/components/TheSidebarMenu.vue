@@ -230,16 +230,12 @@ export default {
           icon: ObservationIcon,
           child: [
             {
-              title: 'RF & AP Distance',
-              href: '/observation/rfap-distance',
+              title: 'RF & AP',
+              href: '/observation',
             },
             {
-              title: 'RF & AP Direction',
-              href: '/observation/rfap-direction',
-            },
-            {
-              title: 'RF & AP Type',
-              href: '/observation/rfap-type',
+              title: 'Visual',
+              href: '/visual',
             },
           ],
         },
@@ -284,32 +280,6 @@ export default {
             {
               title: 'GPS Modeling',
               href: '/modeling/gps',
-            },
-          ],
-        },
-        {
-          title: 'Visual',
-          icon: VisualIcon,
-          child: [
-            {
-              title: 'Pos Kaliurang',
-              href: '/visual/kaliurang',
-            },
-            {
-              title: 'Pos Babadan',
-              href: '/visual/babadan',
-            },
-            {
-              title: 'Pos Jrakah',
-              href: '/visual/jrakah',
-            },
-            {
-              title: 'Pos Selo',
-              href: '/visual/selo',
-            },
-            {
-              title: 'Pos Ngepos',
-              href: '/visual/ngepos',
             },
           ],
         },
