@@ -137,9 +137,7 @@ export const actions = {
         params: {
           ...periodParams,
           code: state.code,
-          rsamP: 10,
-          rm: 1,
-          rmp: 600,
+          rsamP: 600,
           tz: 'Asia/Jakarta',
           ...state.options,
         },
