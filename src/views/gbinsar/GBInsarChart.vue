@@ -438,4 +438,11 @@ export default {
     display: none;
   }
 }
+
+@media (min-width: 2560px) {
+  .chart {
+    width: 100%;
+    height: calc(100vh - 200px);
+  }
+}
 </style>
