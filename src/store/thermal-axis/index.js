@@ -67,6 +67,7 @@ export const AREAS = [
     id: 'kubah-bd-1',
     name: 'Kubah BD 1',
     isVisible: true,
+    fieldType: 'avg_temp',
   },
 ]
 
@@ -128,6 +129,7 @@ export const actions = {
           sampling: state.sampling,
           area: area.id,
           use_sky_filter: state.use_sky_filter,
+          field_type: area.fieldType || 'max_temp',
         },
         cancelToken: state.cancelToken.token,
       })
