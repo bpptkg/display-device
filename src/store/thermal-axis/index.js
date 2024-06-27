@@ -34,7 +34,7 @@ export const initialState = {
   sampling: 'minute',
   station: 'kaliurang',
   areas: [],
-  use_sky_filter: true,
+  use_sky_filter: false,
 }
 
 export const AREAS = [
