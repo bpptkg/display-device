@@ -47,18 +47,6 @@ export default {
           visible: true,
         },
         {
-          src: `${baseUrl}icon/launcher/data-analysis.svg`,
-          href: '/data-analysis',
-          text: 'Data Analysis',
-          visible: ME_POSITION_NAMES.includes(this.userPositionName),
-        },
-        {
-          src: `${baseUrl}icon/launcher/display-device.svg`,
-          href: '/display-device',
-          text: 'Data Visualization',
-          visible: ME_POSITION_NAMES.includes(this.userPositionName),
-        },
-        {
           src: `${baseUrl}icon/launcher/chart-studio.svg`,
           href: '/chart-studio',
           text: 'Chart Studio',
