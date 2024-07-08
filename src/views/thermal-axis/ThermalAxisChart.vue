@@ -52,6 +52,12 @@
 
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
 
+      <div>
+        <BFormCheckbox v-model="enableAutoUpdate" class="ml-2" size="sm"
+          >Auto update</BFormCheckbox
+        >
+      </div>
+
       <div class="bot-panel mt-3">
         <BCard title="Statistics" title-tag="h6">
           <StatsPanelPeriod :start="startTime" :end="endTime" />
@@ -121,6 +127,7 @@ import {
   SET_AREAS,
   SET_VISIBLE,
   SET_SKY_FILTER,
+  SET_AUTO_UPDATE,
   UPDATE_THERMAL_AXIS,
 } from '@/store/thermal-axis'
 import rangeSelectorDay, {
@@ -173,6 +180,7 @@ export default {
       ],
       fieldOptions,
       TimelineIcon,
+      interval: null,
     }
   },
   computed: {
@@ -206,6 +214,9 @@ export default {
       },
       use_sky_filter(state) {
         return state.thermalAxis[this.station].use_sky_filter
+      },
+      autoUpdate(state) {
+        return state.thermalAxis[this.station].autoUpdate
       },
     }),
     namespace() {
@@ -277,6 +288,15 @@ export default {
         this.update()
       },
     },
+    enableAutoUpdate: {
+      get() {
+        return this.autoUpdate
+      },
+      set(value) {
+        this.setAutoUpdate(value)
+        this.handleAutoUpdate(value)
+      },
+    },
   },
   watch: {
     sampling(_value) {
@@ -311,6 +331,9 @@ export default {
       },
       setSkyFilter(commit, value) {
         return commit(this.namespace + '/' + SET_SKY_FILTER, value)
+      },
+      setAutoUpdate(commit, value) {
+        return commit(this.namespace + '/' + SET_AUTO_UPDATE, value)
       },
     }),
 
@@ -389,10 +412,24 @@ export default {
 
       this.refresh()
     },
+
+    handleAutoUpdate(value) {
+      if (value) {
+        this.interval = setInterval(() => {
+          this.update()
+        }, 1000 * 60)
+      } else {
+        if (this.interval) {
+          clearInterval(this.interval)
+        }
+      }
+    },
   },
 
   mounted() {
     this.update()
+
+    this.handleAutoUpdate(this.autoUpdate)
   },
 }
 </script>

@@ -22,6 +22,7 @@ export const SET_STATION = 'SET_STATION'
 export const SET_AREAS = 'SET_AREAS'
 export const SET_VISIBLE = 'SET_VISIBLE'
 export const SET_SKY_FILTER = 'SET_SKY_FILTER'
+export const SET_AUTO_UPDATE = 'SET_AUTO_UPDATE'
 
 // Actions.
 export const FETCH_THERMAL_AXIS = 'FETCH_THERMAL_AXIS'
@@ -35,6 +36,7 @@ export const initialState = {
   station: 'kaliurang',
   areas: [],
   use_sky_filter: false,
+  autoUpdate: true,
 }
 
 export const AREAS = [
@@ -110,6 +112,9 @@ export const mutations = {
   },
   [SET_SKY_FILTER](state, use_sky_filter) {
     state.use_sky_filter = use_sky_filter
+  },
+  [SET_AUTO_UPDATE](state, autoUpdate) {
+    state.autoUpdate = autoUpdate
   },
 }
 
