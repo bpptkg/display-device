@@ -13,6 +13,9 @@
           <SidepanelMenuItem round="left" to="/geochemistry/doas-scan">
             DOAS-Scan
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/geochemistry/uvcamera">
+            UV Camera
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
@@ -25,6 +28,9 @@
       </BNavItem>
       <BNavItem to="/geochemistry/doas-scan" active-class="active">
         DOAS-Scan
+      </BNavItem>
+      <BNavItem to="/geochemistry/uvcamera" active-class="active">
+        UV Camera
       </BNavItem>
     </BNav>
     <div class="content">

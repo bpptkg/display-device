@@ -161,6 +161,10 @@ const routes = [
         path: 'doas-scan',
         component: () => import('../views/doas/DoasScan'),
       },
+      {
+        path: 'uvcamera',
+        component: () => import('../views/uvcamera/UvCam'),
+      },
     ],
   },
   {

@@ -159,6 +159,10 @@ export default {
               title: 'DOAS-Scan',
               href: '/geochemistry/doas-scan',
             },
+            {
+              title: 'UV Camera',
+              href: '/geochemistry/uvcamera',
+            },
           ],
         },
         {
