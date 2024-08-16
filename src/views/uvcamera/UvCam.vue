@@ -24,7 +24,7 @@
           style="
             background-color: transparent;
             border: 1px solid rgb(207, 207, 207);
-            margin-left: 40px;
+            margin-left: 20px;
           "
           size="sm"
           class="ml3"
@@ -69,6 +69,7 @@ import client from '@/utils/client'
 import { toUnixMiliSeconds } from '@/utils/series'
 import RangeSelector from '@/components/range-selector'
 import moment from 'moment'
+
 import {
   SidepanelListDivider,
   SidepanelTab,
@@ -101,7 +102,7 @@ export default {
   data() {
     return {
       fieldOptions,
-      start: moment().subtract(1, 'month'),
+      start: moment().subtract(1, 'day'),
       end: moment(),
       data: [],
       originalData: [], // To store the original unfiltered data
@@ -114,10 +115,25 @@ export default {
       ],
       period: {
         count: 1,
-        type: 'month',
-        text: '1 month',
+        type: 'day',
+        text: '1 day',
       },
       rangeSelector: [
+        {
+          count: 1,
+          type: 'day',
+          text: '1 day',
+        },
+        {
+          count: 2,
+          type: 'day',
+          text: '2 days',
+        },
+        {
+          count: 3,
+          type: 'day',
+          text: '3 days',
+        },
         {
           count: 7,
           type: 'day',
@@ -137,11 +153,6 @@ export default {
           count: 6,
           type: 'month',
           text: '6 months',
-        },
-        {
-          count: 1,
-          type: 'year',
-          text: '1 year',
         },
       ],
       maxCustomDuration: {
