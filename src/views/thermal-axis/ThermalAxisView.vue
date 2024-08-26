@@ -7,6 +7,9 @@
           <SidepanelMenuItem key="1" round="left" to="/thermal-axis/kaliurang">
             Kaliurang
           </SidepanelMenuItem>
+          <SidepanelMenuItem key="2" round="left" to="/thermal-axis/jurangjero">
+            Jurang Jero
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
@@ -14,6 +17,9 @@
     <BNav tabs class="tab-nav">
       <BNavItem to="/thermal-axis/kaliurang" active-class="active">
         Kaliurang
+      </BNavItem>
+      <BNavItem to="/thermal-axis/jurangjero" active-class="active">
+        Jurangjero
       </BNavItem>
     </BNav>
 

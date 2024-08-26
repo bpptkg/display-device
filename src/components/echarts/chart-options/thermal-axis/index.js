@@ -185,8 +185,10 @@ export const createThermalAxisChartOptions = (
   annotations,
   min,
   max,
-  sampling
+  sampling,
+  options = {}
 ) => {
+  const { title } = options
   return {
     baseOption: {
       ...baseChartOptions,
@@ -201,6 +203,10 @@ export const createThermalAxisChartOptions = (
           },
         },
         formatter: tooltipFormatter(sampling),
+      },
+      title: {
+        ...baseChartOptions.title,
+        text: title,
       },
     },
     media: mediaQuery,

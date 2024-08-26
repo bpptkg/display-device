@@ -269,7 +269,7 @@ export default {
             },
             {
               title: 'Thermal Axis',
-              href: '/thermal-axis/kaliurang',
+              href: '/thermal-axis',
             },
           ],
         },

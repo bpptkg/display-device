@@ -504,10 +504,13 @@ export default [
     name: 'Thermal Axis',
     path: '/thermal-axis',
   },
-
   {
     name: 'Thermal Axis Kaliurang',
     path: '/thermal-axis/kaliurang',
+  },
+  {
+    name: 'Thermal Axis Jurang Jero',
+    path: '/thermal-axis/jurangjero',
   },
   // Rainfall Catalog.
   {
