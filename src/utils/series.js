@@ -160,6 +160,8 @@ export const getSeriesByIndex = (data, index, { defaultData = [] } = {}) => {
   }
 }
 
+export const isNumber = (n) => !isNaN(parseFloat(n)) && isFinite(n)
+
 /**
  * Calculate cumulative sum of time series data. Cumulative sum will be
  * calculated on the second column.
@@ -167,7 +169,7 @@ export const getSeriesByIndex = (data, index, { defaultData = [] } = {}) => {
  * @param {Array} data Array of two columns time series data.
  */
 export const cumulativeSum = (data) => {
-  const series = [...data]
+  const series = data.filter((v) => isNumber(v[1]))
   const arr = series.map((v) => v[1])
   arr.reduce((a, b, i) => (series[i][1] = a + b), 0)
   return series
