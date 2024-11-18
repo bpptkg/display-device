@@ -9,6 +9,11 @@ export const stationOptions = [
     text: 'Babadan',
     chartTitle: 'Thermal Babadan',
   },
+  {
+    value: 'deles5',
+    text: 'Deles5',
+    chartTitle: 'Thermal Deles5',
+  },
 ]
 
 export default stationOptions

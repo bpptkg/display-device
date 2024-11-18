@@ -68,9 +68,29 @@ export const BABADAN = [
   },
 ]
 
+export const DELES5 = [
+  {
+    id: 'deles5-asap',
+    name: 'Asap',
+  },
+  {
+    id: 'deles5-gendol',
+    name: 'Gendol',
+  },
+  {
+    id: 'deles5-kubah',
+    name: 'Kubah',
+  },
+  {
+    id: 'deles5-ref',
+    name: 'Referensi',
+  },
+]
+
 export const AREAS_STATION_MAP = {
   kaliurang: KALIURANG,
   babadan: BABADAN,
+  deles5: DELES5,
 }
 
 export const initState = (station, areas, period) => {
@@ -164,5 +184,6 @@ export default {
   modules: {
     kaliurang: initModule('kaliurang'),
     babadan: initModule('babadan'),
+    deles5: initModule('deles5'),
   },
 }
