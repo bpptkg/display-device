@@ -1,15 +1,10 @@
-import moment from 'moment'
 import { isNull } from 'lodash'
+import moment from 'moment'
 
 const fieldOptions = [
   {
     key: 'actions',
     label: '',
-  },
-  {
-    key: 'eventid',
-    label: 'Event ID',
-    sortable: true,
   },
   {
     key: 'eventdate',
@@ -30,7 +25,15 @@ const fieldOptions = [
   },
   {
     key: 'amplitude',
-    label: 'Amplitude',
+    label: 'Amplitude (mm)',
+    sortable: true,
+    formatter: (v) => {
+      const value = parseFloat(v.replace(/[^0-9.]/g, ''))
+      if (isFinite(value)) {
+        return value.toFixed(2)
+      }
+      return 0
+    },
   },
   {
     key: 'eventtype',
