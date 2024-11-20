@@ -1,5 +1,6 @@
 import { isNull } from 'lodash'
 import moment from 'moment'
+import formatter from '../../../components/observation/mixins/formatter'
 
 const fieldOptions = [
   {
@@ -24,6 +25,11 @@ const fieldOptions = [
     sortable: true,
   },
   {
+    key: 'eventtype',
+    label: 'Event Type',
+    sortable: true,
+  },
+  {
     key: 'amplitude',
     label: 'Amplitude (mm)',
     sortable: true,
@@ -36,9 +42,12 @@ const fieldOptions = [
     },
   },
   {
-    key: 'eventtype',
-    label: 'Event Type',
+    key: 'magnitude',
+    label: 'Magnitude',
     sortable: true,
+    formatter: (v) => {
+      return isFinite(v) ? v.toFixed(2) : 0
+    },
   },
   {
     key: 'cluster',
@@ -56,10 +65,6 @@ const fieldOptions = [
     key: 'clusterEvent',
     label: 'Cluster Event',
     sortable: true,
-  },
-  {
-    key: 'seiscompid',
-    label: 'SeisComP ID',
   },
   {
     key: 'location_mode',
