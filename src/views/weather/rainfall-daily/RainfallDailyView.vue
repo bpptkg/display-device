@@ -36,6 +36,10 @@
       <BFormCheckbox v-model="useAutoUpdate" class="mb-2">
         <small>Auto update</small>
       </BFormCheckbox>
+
+      <DNote>
+        &mdash; All rainfall stations above are using Vaisala sensors.
+      </DNote>
     </div>
 
     <SidepanelTabs v-model="tabIndex" sidepanel-class="secondary-nav">
@@ -88,21 +92,23 @@ import {
 
 import RainfallDailyInfo from './RainfallDailyInfo'
 import { DateRangeTypes } from '@/constants/date'
+import DNote from '@/components/base/note/DNote'
 
 export default {
   name: 'RainfallStationView',
   components: {
-    RangeSelector,
     BCard,
     BDropdownItem,
+    BFormCheckbox,
     BLink,
     DChart,
+    DNote,
     ErrorMessage,
     MoreMenu,
+    RainfallDailyInfo,
+    RangeSelector,
     SidepanelTab,
     SidepanelTabs,
-    RainfallDailyInfo,
-    BFormCheckbox,
   },
   data() {
     return {
