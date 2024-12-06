@@ -224,6 +224,10 @@ export default {
               href: '/weather/rainfall-station',
             },
             {
+              title: 'Rainfall Daily',
+              href: '/weather/rainfall-daily',
+            },
+            {
               title: 'Rainfall Catalog',
               href: '/rainfall-catalog',
             },

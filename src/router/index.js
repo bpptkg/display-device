@@ -200,6 +200,16 @@ const routes = [
         component: () =>
           import('../views/weather/rainfall-station/RainfallStationView'),
       },
+      {
+        path: 'rainfall-daily',
+        component: () =>
+          import('../views/weather/rainfall-daily/RainfallDailyView'),
+      },
+      {
+        path: 'rainfall-catalog',
+        component: () =>
+          import('../views/weather/rainfall-catalog/RainfallCatalogView'),
+      },
     ],
   },
   {

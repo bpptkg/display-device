@@ -22,6 +22,9 @@
           <SidepanelMenuItem round="left" to="/weather/rainfall-station">
             Rainfall Station
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/rainfall-daily">
+            Rainfall Daily
+          </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/rainfall-catalog">
             Rainfall Catalog
           </SidepanelMenuItem>
