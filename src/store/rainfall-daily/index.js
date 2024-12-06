@@ -139,7 +139,7 @@ export const actions = {
   },
 }
 
-export const defaultPeriod = rangeSelector[1]
+export const defaultPeriod = rangeSelector[0]
 
 export default {
   namespaced: true,
