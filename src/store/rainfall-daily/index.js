@@ -16,7 +16,7 @@ import { baseState, baseMutations } from '../base'
 import { FETCH_RAINFALL, UPDATE_RAINFALL } from './actions'
 import rangeSelector from './range-selector'
 import axios from 'axios'
-import { SET_AUTO_UPDATE, SET_IS_VISIBLE } from './mutations'
+import { SET_AUTO_UPDATE, SET_IS_VISIBLE, SET_SAMPLING } from './mutations'
 
 export const NAMESPACE = 'rainfallDaily'
 
@@ -62,10 +62,16 @@ export const STATIONS = [
   },
 ]
 
+export const SamplingTypes = Object.freeze({
+  DAY: 'day',
+  HOUR: 'hour',
+})
+
 export const initialState = {
   ...baseState,
   stations: STATIONS,
   autoUpdate: false,
+  sampling: 'day',
 }
 
 export const initState = (period) => {
@@ -88,6 +94,9 @@ export const mutations = {
   [SET_IS_VISIBLE](state, { index, isVisible }) {
     state.stations[index].isVisible = isVisible
   },
+  [SET_SAMPLING](state, value) {
+    state.sampling = value
+  },
 }
 
 export const actions = {
@@ -107,6 +116,7 @@ export const actions = {
         start: state.startTime.format(DATETIME_FORMAT),
         end: state.endTime.format(DATETIME_FORMAT),
         station: station.stationId,
+        sampling: state.sampling,
       }
       return client.get('/vaisala-rainfall/', {
         params,

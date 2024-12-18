@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="chart-container">
-      <div class="d-flex align-items-top">
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
         <RangeSelector
           ref="range-selector"
           class="mb-3"
@@ -12,6 +12,20 @@
           :max-custom-duration="maxCustomDuration"
           @period-selected="onPeriodChange"
         />
+
+        <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center">
+            <span class="sampling-label mr-1">Sampling:</span>
+            <BFormSelect
+              v-model="samplingValue"
+              size="sm"
+              :options="samplingOptions"
+            />
+          </div>
+          <MoreMenu right class="ml-1">
+            <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
+          </MoreMenu>
+        </div>
       </div>
 
       <BCard v-if="error">
@@ -25,11 +39,6 @@
       </BCard>
 
       <BCard v-show="!error" title-tag="h5">
-        <div class="d-flex justify-content-end">
-          <MoreMenu right>
-            <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
-          </MoreMenu>
-        </div>
         <DChart ref="chart" :options="chartOptions" class="chart" />
       </BCard>
 
@@ -57,7 +66,13 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BLink, BDropdownItem, BFormCheckbox } from 'bootstrap-vue'
+import {
+  BCard,
+  BLink,
+  BDropdownItem,
+  BFormCheckbox,
+  BFormSelect,
+} from 'bootstrap-vue'
 
 import { InfoIcon } from '@/components/icons/content'
 import { SidepanelTabs, SidepanelTab } from '@/components/sidepanel'
@@ -77,7 +92,10 @@ import { createChartOptions } from '@/components/echarts/chart-options/rainfall-
 import rangeSelector, {
   maxCustomDuration,
 } from '@/store/rainfall-daily/range-selector'
-import { NAMESPACE } from '@/store/rainfall-daily'
+import rangeSelectorHour, {
+  maxCustomDuration as maxCustomDurationHour,
+} from '@/store/rainfall-daily/range-selector-hour'
+import { NAMESPACE, SamplingTypes } from '@/store/rainfall-daily'
 
 import {
   SET_PERIOD,
@@ -88,6 +106,7 @@ import { UPDATE_RAINFALL } from '@/store/rainfall-daily/actions'
 import {
   SET_AUTO_UPDATE,
   SET_IS_VISIBLE,
+  SET_SAMPLING,
 } from '@/store/rainfall-daily/mutations'
 
 import RainfallDailyInfo from './RainfallDailyInfo'
@@ -100,6 +119,7 @@ export default {
     BCard,
     BDropdownItem,
     BFormCheckbox,
+    BFormSelect,
     BLink,
     DChart,
     DNote,
@@ -113,10 +133,12 @@ export default {
   data() {
     return {
       InfoIcon,
-      maxCustomDuration,
-      rangeSelector,
       tabIndex: 0,
       interval: null,
+      samplingOptions: [
+        { value: SamplingTypes.DAY, text: 'Daily' },
+        { value: SamplingTypes.HOUR, text: 'Hourly' },
+      ],
     }
   },
   computed: {
@@ -126,7 +148,33 @@ export default {
       data: (state) => state.data,
       stations: (state) => state.stations,
       autoUpdate: (state) => state.autoUpdate,
+      sampling: (state) => state.sampling,
     }),
+
+    samplingValue: {
+      get() {
+        return this.sampling
+      },
+      set(value) {
+        this.setSampling(value)
+        const period = this.rangeSelector[0]
+        this.setPeriod(period)
+        this.$refs['range-selector'].setSelectedPeriod(period)
+        this.update()
+      },
+    },
+
+    rangeSelector() {
+      return this.sampling === SamplingTypes.DAY
+        ? rangeSelector
+        : rangeSelectorHour
+    },
+
+    maxCustomDuration() {
+      return this.sampling === SamplingTypes.DAY
+        ? maxCustomDuration
+        : maxCustomDurationHour
+    },
 
     chartOptions() {
       return createChartOptions({ data: this.data, stations: this.stations })
@@ -168,6 +216,9 @@ export default {
       },
       setIsVisible(commit, value) {
         return commit(NAMESPACE + '/' + SET_IS_VISIBLE, value)
+      },
+      setSampling(commit, sampling) {
+        return commit(NAMESPACE + '/' + SET_SAMPLING, sampling)
       },
     }),
     ...mapActions({
