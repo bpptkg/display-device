@@ -61,6 +61,8 @@
         <RainfallDailyInfo />
       </SidepanelTab>
     </SidepanelTabs>
+
+    <RainfallStationInfoBottomPanel />
   </div>
 </template>
 
@@ -112,6 +114,7 @@ import {
 import RainfallDailyInfo from './RainfallDailyInfo'
 import { DateRangeTypes } from '@/constants/date'
 import DNote from '@/components/base/note/DNote'
+import RainfallStationInfoBottomPanel from './RainfallStationInfoBottomPanel.vue'
 
 export default {
   name: 'RainfallStationView',
@@ -129,6 +132,7 @@ export default {
     RangeSelector,
     SidepanelTab,
     SidepanelTabs,
+    RainfallStationInfoBottomPanel,
   },
   data() {
     return {
