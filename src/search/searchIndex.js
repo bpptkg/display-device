@@ -542,4 +542,9 @@ export default [
     name: 'Visual Pos Ngepos',
     path: '/visual/ngepos',
   },
+  // Rainfall Daily.
+  {
+    name: 'Rainfall Daily',
+    path: '/weather/rainfall-daily',
+  },
 ]
