@@ -77,6 +77,12 @@ export default {
           visible: true,
         },
         {
+          src: `${baseUrl}icon/launcher/veps.svg`,
+          href: 'https://veps.cendana15.com',
+          text: 'VEPS',
+          visible: true, //ME_POSITION_NAMES.includes(this.userPositionName),
+        },
+        {
           src: `${baseUrl}icon/launcher/layanan-umum.png`,
           href: '/layananumum',
           text: 'Layanan Umum',
