@@ -51,14 +51,14 @@ export default [
     name: 'Seismic Bulletin',
     path: '/seismic/bulletin',
   },
-  // GB-Insar Point.
+  // GBInsar Point.
   {
-    name: 'GB-Insar Point',
+    name: 'GBInsar Point',
     path: '/gbinsar/babadanpoint',
   },
-  // GB-Insar Area.
+  // GBInsar Area.
   {
-    name: 'GB-Insar Area',
+    name: 'GBInsar Area',
     path: '/gbinsar/babadanarea',
   },
   // Hypocenter.
@@ -488,16 +488,20 @@ export default [
   },
   // GB Insar.
   {
-    name: 'GB-Insar',
+    name: 'GBInSAR',
     path: '/gbinsar',
   },
   {
-    name: 'GB-Insar Point',
+    name: 'GBInSAR Babadan Point',
     path: '/gbinsar/babadanpoint',
   },
   {
-    name: 'GB-Insar Area',
+    name: 'GBInSAR Babadan Area',
     path: '/gbinsar/babadanarea',
+  },
+  {
+    name: 'GBInSAR Turgo Area',
+    path: '/gbinsar/turgoarea',
   },
   // Thermal Axis.
   {

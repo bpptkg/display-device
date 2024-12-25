@@ -2,13 +2,16 @@
   <div class="view">
     <Sidepanel class="main-nav p-0">
       <SidepanelScrollContainer>
-        <SidepanelMenuHeader small bold> GB-InSAR </SidepanelMenuHeader>
+        <SidepanelMenuHeader small bold> GBInSAR </SidepanelMenuHeader>
         <div class="ml-2">
           <SidepanelMenuItem key="1" round="left" to="/gbinsar/babadanarea">
             Babadan Area
           </SidepanelMenuItem>
           <SidepanelMenuItem key="2" round="left" to="/gbinsar/babadanpoint">
             Babadan Point
+          </SidepanelMenuItem>
+          <SidepanelMenuItem key="3" round="left" to="/gbinsar/turgoarea">
+            Turgo Area
           </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
@@ -20,6 +23,9 @@
       </BNavItem>
       <BNavItem to="/gbinsar/babadanpoint" active-class="active">
         Babadan Point
+      </BNavItem>
+      <BNavItem to="/gbinsar/turgoarea" active-class="active">
+        Turgo Area
       </BNavItem>
     </BNav>
 

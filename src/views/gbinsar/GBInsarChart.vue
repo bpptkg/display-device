@@ -134,8 +134,18 @@ import rangeSelectorHour, {
 import rangeSelectorMinute, {
   maxCustomDuration as maxCustomDurationMinute,
 } from '@/store/gbinsar/range-selector-minute'
-import { createBabadanAreaChartOptions } from '@/components/echarts/chart-options/gbinsar/babadanarea'
-import { createBabadanPointChartOptions } from '@/components/echarts/chart-options/gbinsar/babadanpoint'
+import {
+  createBabadanAreaChartOptions,
+  BabadanAreas,
+} from '@/components/echarts/chart-options/gbinsar/babadanarea'
+import {
+  createBabadanPointChartOptions,
+  BabadanPoints,
+} from '@/components/echarts/chart-options/gbinsar/babadanpoint'
+import {
+  createTurgoAreaChartOptions,
+  TurgoAreas,
+} from '@/components/echarts/chart-options/gbinsar/turgoarea'
 import ErrorMessage from '@/components/error-message'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { DateRangeTypes } from '@/constants/date'
@@ -268,14 +278,29 @@ export default {
           toUnixMiliSeconds(this.endTime),
           this.sampling
         )
+      } else if (this.type === 'turgoarea') {
+        return createTurgoAreaChartOptions(
+          this.data,
+          this.series,
+          this.annotations,
+          toUnixMiliSeconds(this.startTime),
+          toUnixMiliSeconds(this.endTime),
+          this.sampling
+        )
       } else {
         return {}
       }
     },
     statsInfo() {
-      return this.type === 'babadanarea'
-        ? getStatsAreaInfo(this.data)
-        : getStatsPointInfo(this.data)
+      if (this.type === 'babadanarea') {
+        return getStatsAreaInfo(BabadanAreas, this.data)
+      } else if (this.type === 'babadanpoint') {
+        return getStatsPointInfo(BabadanPoints, this.data)
+      } else if (this.type === 'turgoarea') {
+        return getStatsAreaInfo(TurgoAreas, this.data)
+      } else {
+        return []
+      }
     },
   },
   watch: {
@@ -328,10 +353,15 @@ export default {
           blob,
           `gbinsarbabadanarea-${createShortNameFromPeriod(this.period)}.csv`
         )
-      } else {
+      } else if (this.type === 'babadanpoint') {
         saveAs(
           blob,
           `gbinsarbabadanpoint-${createShortNameFromPeriod(this.period)}.csv`
+        )
+      } else if (this.type === 'turgoarea') {
+        saveAs(
+          blob,
+          `gbinsarturgoarea-${createShortNameFromPeriod(this.period)}.csv`
         )
       }
     },

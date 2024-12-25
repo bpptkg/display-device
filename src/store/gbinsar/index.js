@@ -1,8 +1,12 @@
-import moment from 'moment'
-import client from '@/utils/client'
-import { calculatePeriod } from '@/utils/datetime'
-import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
 import annotations from '@/components/event-annotation/annotations'
+import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
+import { api } from '@/services/api'
+import { calculatePeriod } from '@/utils/datetime'
+import moment from 'moment'
+import { BabadanAreas } from '../../components/echarts/chart-options/gbinsar/babadanarea'
+import { BabadanPoints } from '../../components/echarts/chart-options/gbinsar/babadanpoint'
+import { TurgoAreas } from '../../components/echarts/chart-options/gbinsar/turgoarea'
+import { baseActions, baseMutations, baseState } from '../base'
 import {
   SET_DATA,
   SET_END_TIME,
@@ -10,10 +14,7 @@ import {
   SET_LAST_UPDATED,
   SET_START_TIME,
 } from '../base/mutations'
-import { baseState, baseMutations, baseActions } from '../base'
 import rangeSelector from './range-selector-minute'
-import { Points } from '../../components/echarts/chart-options/gbinsar/babadanpoint'
-import { Areas } from '../../components/echarts/chart-options/gbinsar/babadanarea'
 
 // Mutations.
 export const SET_SAMPLING = 'SET_SAMPLING'
@@ -81,8 +82,23 @@ const actions = {
       sampling: state.sampling,
     }
 
+    let url = ''
+    switch (state.type) {
+      case 'babadanarea':
+        url = '/api/v1/gbinsar/babadanarea/'
+        break
+      case 'babadanpoint':
+        url = '/api/v1/gbinsar/babadanpoint/'
+        break
+      case 'turgoarea':
+        url = '/api/v2/gbinsar/turgo-area/'
+        break
+      default:
+        throw new Error('Invalid type')
+    }
+
     try {
-      const { data } = await client.get(`/gbinsar/${state.type}/`, { params })
+      const { data } = await api.get(url, { params })
       commit(SET_DATA, data)
       commit(SET_LAST_UPDATED, moment())
     } catch (error) {
@@ -116,7 +132,8 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    babadanarea: initModule('babadanarea', Areas, rangeSelector[0]),
-    babadanpoint: initModule('babadanpoint', Points, rangeSelector[0]),
+    babadanarea: initModule('babadanarea', BabadanAreas, rangeSelector[0]),
+    babadanpoint: initModule('babadanpoint', BabadanPoints, rangeSelector[0]),
+    turgoarea: initModule('turgoarea', TurgoAreas, rangeSelector[0]),
   },
 }

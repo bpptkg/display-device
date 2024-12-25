@@ -5,7 +5,7 @@ import { NO_DATA_NOTATION } from '@/constants/stats'
 import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
-export const Points = [
+export const BabadanPoints = [
   {
     name: 'RB1',
     field: 'rb1',
@@ -129,7 +129,7 @@ export const createYAxis = () => {
 export const baseChartOptions = {
   backgroundColor: '#fff',
   title: {
-    text: 'GBInsar Point Displacement',
+    text: 'GBInsar Babadan Point Displacement',
     textStyle: {
       fontWeight: 'bold',
       fontSize: 16,

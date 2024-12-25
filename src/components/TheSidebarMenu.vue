@@ -166,7 +166,7 @@ export default {
           ],
         },
         {
-          title: 'GB-InSAR',
+          title: 'GBInSAR',
           icon: GBInsarIcon,
           href: '/gbinsar',
           child: [
@@ -177,6 +177,10 @@ export default {
             {
               title: 'Babadan Point',
               href: '/gbinsar/babadanpoint',
+            },
+            {
+              title: 'Turgo Area',
+              href: '/gbinsar/turgoarea',
             },
           ],
         },

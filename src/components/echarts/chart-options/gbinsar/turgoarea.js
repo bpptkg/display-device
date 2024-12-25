@@ -5,50 +5,26 @@ import { NO_DATA_NOTATION } from '@/constants/stats'
 import { createCircleTemplate, mapFieldColumns } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 
-export const BabadanAreas = [
+export const TurgoAreas = [
   {
-    name: 'Kubah Lava',
-    field: 'kubahlava',
+    name: 'Lava 1992',
+    field: 'lava1992',
   },
   {
-    name: 'Area 1888',
-    field: 'area1888',
+    name: 'Kubah BD Ka',
+    field: 'kubahbd_ka',
   },
   {
-    name: '1888 Atas',
-    field: 'atas1888',
+    name: 'Kubah BD Pu',
+    field: 'kubahbd_pu',
   },
   {
-    name: '1888 Tengah',
-    field: 'tengah1888',
+    name: 'Lava 1911',
+    field: 'lava1911',
   },
   {
-    name: '1888 Bawah',
-    field: 'bawah1888',
-  },
-  {
-    name: '1998',
-    field: 'a1998',
-  },
-  {
-    name: '1956',
-    field: 'a1956',
-  },
-  {
-    name: '1992',
-    field: 'a1992',
-  },
-  {
-    name: 'Stabil',
-    field: 'stabil',
-  },
-  {
-    name: '1998 Bawah',
-    field: 'bawah1998',
-  },
-  {
-    name: 'Puncak Kubah',
-    field: 'puncak_kubah',
+    name: 'Lava 1920',
+    field: 'lava1920',
   },
 ]
 
@@ -141,7 +117,7 @@ export const createYAxis = () => {
 export const baseChartOptions = {
   backgroundColor: '#fff',
   title: {
-    text: 'GBInsar Babadan Area Displacement',
+    text: 'GBInsar Turgo Area Displacement',
     textStyle: {
       fontWeight: 'bold',
       fontSize: 16,
@@ -213,7 +189,7 @@ export const tooltipFormatter = (sampling) => {
   }
 }
 
-export const createBabadanAreaChartOptions = (
+export const createTurgoAreaChartOptions = (
   data,
   areas,
   annotations,
