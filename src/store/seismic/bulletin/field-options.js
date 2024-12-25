@@ -34,7 +34,10 @@ const fieldOptions = [
     label: 'Amplitude (mm)',
     sortable: true,
     formatter: (v) => {
-      const value = parseFloat(v.replace(/[^0-9.]/g, ''))
+      const value =
+        typeof v === 'string' && v !== null
+          ? parseFloat(v.replace(/[^0-9.]/g, ''))
+          : NaN
       if (isFinite(value)) {
         return value.toFixed(2)
       }
