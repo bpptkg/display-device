@@ -87,6 +87,17 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    stationId: 'vs:selo',
+    stationName: 'Selo',
+    stationLabel: 'Selo (Vaisala)',
+    isVaisala: true,
+    url: '/meteorology/selo/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
+    isVisible: true,
+  },
+  {
     stationId: 'vs:jurangjero',
     stationName: 'Jurang Jero',
     stationLabel: 'Jurang Jero (Vaisala)',
@@ -103,6 +114,39 @@ export const STATIONS = [
     stationLabel: 'Babadan (Vaisala)',
     isVaisala: true,
     url: '/meteorology/babadan/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
+    isVisible: true,
+  },
+  {
+    stationId: 'vs:jrakah',
+    stationName: 'Jrakah',
+    stationLabel: 'Jrakah (Vaisala)',
+    isVaisala: true,
+    url: '/meteorology/jrakah/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
+    isVisible: true,
+  },
+  {
+    stationId: 'vs:kaliurang',
+    stationName: 'Kaliurang',
+    stationLabel: 'Kaliurang (Vaisala)',
+    isVaisala: true,
+    url: '/meteorology/kaliurang/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
+    isVisible: true,
+  },
+  {
+    stationId: 'vs:ngepos',
+    stationName: 'Ngepos',
+    stationLabel: 'Ngepos (Vaisala)',
+    isVaisala: true,
+    url: '/meteorology/ngepos/rainfall/',
     params: {
       fields: 'timestamp,cumulative_rainfall,rate',
     },

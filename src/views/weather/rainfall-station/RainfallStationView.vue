@@ -260,6 +260,6 @@ export default {
 @import '@/scss/layout-monkey';
 
 .chart {
-  min-height: 650px !important;
+  min-height: 950px !important;
 }
 </style>
