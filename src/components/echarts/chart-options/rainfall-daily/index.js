@@ -64,7 +64,7 @@ export const createYAxis = (stations) => {
           },
           nameGap: 7,
           scale: false,
-          splitLine: { show: true },
+          splitLine: { show: false },
           type: 'value',
         },
       ]

@@ -1,22 +1,22 @@
-import moment from 'moment'
-import { calculatePeriod } from '@/utils/datetime'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
 import client from '@/utils/client'
+import { calculatePeriod } from '@/utils/datetime'
+import moment from 'moment'
 
+import { baseMutations, baseState } from '../base'
 import {
+  SET_CANCEL_TOKEN,
   SET_DATA,
   SET_END_TIME,
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
-  SET_CANCEL_TOKEN,
 } from '../base/mutations'
-import { baseState, baseMutations } from '../base'
 
-import { FETCH_RAINFALL, UPDATE_RAINFALL } from './actions'
-import rangeSelector from './range-selector'
 import axios from 'axios'
+import { FETCH_RAINFALL, UPDATE_RAINFALL } from './actions'
 import { SET_AUTO_UPDATE, SET_IS_VISIBLE, SET_SAMPLING } from './mutations'
+import rangeSelector from './range-selector'
 
 export const NAMESPACE = 'rainfallDaily'
 
@@ -47,6 +47,13 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    stationId: 'selo',
+    stationName: 'Selo',
+    stationLabel: 'Selo (Vaisala)',
+    isVaisala: true,
+    isVisible: true,
+  },
+  {
     stationId: 'jurangjero',
     stationName: 'Jurang Jero',
     stationLabel: 'Jurang Jero (Vaisala)',
@@ -57,6 +64,27 @@ export const STATIONS = [
     stationId: 'babadan',
     stationName: 'Babadan',
     stationLabel: 'Babadan (Vaisala)',
+    isVaisala: true,
+    isVisible: true,
+  },
+  {
+    stationId: 'jrakah',
+    stationName: 'Jrakah',
+    stationLabel: 'Jrakah (Vaisala)',
+    isVaisala: true,
+    isVisible: true,
+  },
+  {
+    stationId: 'kaliurang',
+    stationName: 'Kaliurang',
+    stationLabel: 'Kaliurang (Vaisala)',
+    isVaisala: true,
+    isVisible: true,
+  },
+  {
+    stationId: 'ngepos',
+    stationName: 'Ngepos',
+    stationLabel: 'Ngepos (Vaisala)',
     isVaisala: true,
     isVisible: true,
   },
