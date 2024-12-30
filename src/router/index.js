@@ -210,6 +210,23 @@ const routes = [
         component: () =>
           import('../views/weather/rainfall-catalog/RainfallCatalogView'),
       },
+      {
+        path: 'jrakah',
+        component: () => import('../views/weather/jrakah/WeatherJrakahView'),
+      },
+      {
+        path: 'kaliurang',
+        component: () =>
+          import('../views/weather/kaliurang/WeatherKaliurangView'),
+      },
+      {
+        path: 'ngepos',
+        component: () => import('../views/weather/ngepos/WeatherNgeposView'),
+      },
+      {
+        path: 'selo',
+        component: () => import('../views/weather/selo/WeatherSeloView'),
+      },
     ],
   },
   {

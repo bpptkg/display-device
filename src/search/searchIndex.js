@@ -412,6 +412,22 @@ export default [
     name: 'Rainfall Station',
     path: '/weather/rainfall-station',
   },
+  {
+    name: 'Weather Jrakah',
+    path: '/weather/jrakah',
+  },
+  {
+    name: 'Weather Kaliurang',
+    path: '/weather/kaliurang',
+  },
+  {
+    name: 'Weather Selo',
+    path: '/weather/selo',
+  },
+  {
+    name: 'Weather Ngepos',
+    path: '/weather/ngepos',
+  },
   // Observation.
   {
     name: 'Observation',

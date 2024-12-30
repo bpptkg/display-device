@@ -13,11 +13,23 @@
           <SidepanelMenuItem round="left" to="/weather/labuhan">
             Labuhan
           </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/selo">
+            Selo
+          </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/weather/babadan">
             Babadan
           </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/weather/jurangjero">
             Jurang Jero
+          </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/jrakah">
+            Jrakah
+          </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/kaliurang">
+            Kaliurang
+          </SidepanelMenuItem>
+          <SidepanelMenuItem round="left" to="/weather/ngepos">
+            Ngepos
           </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/weather/rainfall-station">
             Rainfall Station

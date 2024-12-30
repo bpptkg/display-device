@@ -216,12 +216,28 @@ export default {
               href: '/weather/labuhan',
             },
             {
+              title: 'Selo',
+              href: '/weather/selo',
+            },
+            {
               title: 'Babadan',
               href: '/weather/babadan',
             },
             {
               title: 'Jurang Jero',
               href: '/weather/jurangjero',
+            },
+            {
+              title: 'Jrakah',
+              href: '/weather/jrakah',
+            },
+            {
+              title: 'Kaliurang',
+              href: '/weather/kaliurang',
+            },
+            {
+              title: 'Ngepos',
+              href: '/weather/ngepos',
             },
             {
               title: 'Rainfall Station',
