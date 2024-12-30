@@ -195,6 +195,6 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    jurangjero: initModule('jurangjero', rangeSelector[0]),
+    jurangjero: initModule('jurangjero', rangeSelector[3]),
   },
 }

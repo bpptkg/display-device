@@ -1,6 +1,21 @@
 const rangeSelector = [
   {
     count: 1,
+    type: 'hour',
+    text: '1 hour',
+  },
+  {
+    count: 3,
+    type: 'hour',
+    text: '3 hours',
+  },
+  {
+    count: 6,
+    type: 'hour',
+    text: '6 hours',
+  },
+  {
+    count: 1,
     type: 'day',
     text: '1 day',
   },

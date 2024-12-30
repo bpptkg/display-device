@@ -184,6 +184,6 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    kaliurang: initModule('kaliurang', rangeSelector[0]),
+    kaliurang: initModule('kaliurang', rangeSelector[3]),
   },
 }

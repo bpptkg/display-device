@@ -132,8 +132,8 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    babadanarea: initModule('babadanarea', BabadanAreas, rangeSelector[0]),
-    babadanpoint: initModule('babadanpoint', BabadanPoints, rangeSelector[0]),
-    turgoarea: initModule('turgoarea', TurgoAreas, rangeSelector[0]),
+    babadanarea: initModule('babadanarea', BabadanAreas, rangeSelector[3]),
+    babadanpoint: initModule('babadanpoint', BabadanPoints, rangeSelector[3]),
+    turgoarea: initModule('turgoarea', TurgoAreas, rangeSelector[3]),
   },
 }
