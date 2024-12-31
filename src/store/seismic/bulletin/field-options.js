@@ -1,6 +1,5 @@
 import { isNull } from 'lodash'
 import moment from 'moment'
-import formatter from '../../../components/observation/mixins/formatter'
 
 const fieldOptions = [
   {
@@ -49,7 +48,11 @@ const fieldOptions = [
     label: 'Magnitude',
     sortable: true,
     formatter: (v) => {
-      return isFinite(v) ? v.toFixed(2) : 0
+      if (isNull(v)) {
+        return 0
+      } else {
+        return isFinite(v) ? v.toFixed(2) : 0
+      }
     },
   },
   {
