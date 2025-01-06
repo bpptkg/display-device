@@ -8,7 +8,7 @@ import {
 
 export default {
   namespaced: true,
-  state: initState({ graph: GPSGraphs.vector }),
+  state: initState({ graph: GPSGraphs.modeling }),
   getters,
   mutations,
   actions,
