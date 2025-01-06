@@ -12,10 +12,10 @@ export default [
     chartTitle: 'BPPTKG',
   },
   {
-    value: 'deles',
-    text: 'Deles1',
-    code: 'DELS',
-    chartTitle: 'Deles1',
+    value: 'kalitengahlor',
+    text: 'Kali Tengah Lor',
+    code: 'KALL',
+    chartTitle: 'Kali Tengah Lor',
   },
   {
     value: 'delessendang',

@@ -183,6 +183,14 @@ const selo = {
   actions,
 }
 
+const kalitengahlor = {
+  namespaced: true,
+  state: initState('kalitengahlor', defaultPeriod),
+  getters,
+  mutations,
+  actions,
+}
+
 export default {
   namespaced: true,
   modules: {
@@ -199,5 +207,6 @@ export default {
     pasarbubar,
     plawangan,
     selo,
+    kalitengahlor,
   },
 }

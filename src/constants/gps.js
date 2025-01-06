@@ -2,7 +2,8 @@ export const GPSStations = Object.freeze({
   p1: 'p1',
   babadan: 'babadan',
   bpptkg: 'bpptkg',
-  deles: 'deles',
+  // deles: 'deles',
+  kalitengahlor: 'kalitengahlor',
   delessendang: 'delessendang',
   grawah: 'grawah',
   jrakah: 'jrakah',
@@ -31,6 +32,7 @@ export const gpsStationCodes = {
   selo: 'SELO',
   puncak: 'PNCK',
   p1: 'P1',
+  kalitengahlor: 'KALL',
 }
 
 export const gpsLabels = {
@@ -48,6 +50,7 @@ export const gpsLabels = {
   selo: 'Selo',
   puncak: 'Puncak',
   p1: '2km Depth',
+  kalitengahlor: 'Kali Tengah Lor',
 }
 
 export const FIELDS = Object.freeze({

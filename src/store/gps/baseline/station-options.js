@@ -18,10 +18,10 @@ export default [
     chartTitle: 'GPS Baseline BPPTKG',
   },
   {
-    value: 'deles',
-    text: 'Deles1',
-    code: 'DELS',
-    chartTitle: 'GPS Baseline Deles1',
+    value: 'kalitengahlor',
+    text: 'Kali Tengah Lor',
+    code: 'KALL',
+    chartTitle: 'GPS Baseline Kali Tengah Lor',
   },
   {
     value: 'delessendang',
@@ -46,12 +46,6 @@ export default [
     text: 'Klatakan',
     code: 'KLAT',
     chartTitle: 'GPS Baseline Klatakan',
-  },
-  {
-    value: 'kendit',
-    text: 'Kendit',
-    code: 'KNDT',
-    chartTitle: 'GPS Baseline Kendit',
   },
   {
     value: 'labuhan',

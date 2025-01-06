@@ -210,6 +210,14 @@ const p1 = {
   actions,
 }
 
+const kalitengahlor = {
+  namespaced: true,
+  state: initState('kalitengahlor', defaultPeriod),
+  getters,
+  mutations,
+  actions,
+}
+
 export default {
   namespaced: true,
   modules: {
@@ -228,5 +236,6 @@ export default {
     selo,
     puncak,
     p1,
+    kalitengahlor,
   },
 }
