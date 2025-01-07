@@ -42,12 +42,6 @@ export default [
     chartTitle: 'Klatakan',
   },
   {
-    value: 'kendit',
-    text: 'Kendit',
-    code: 'KNDT',
-    chartTitle: 'Kendit',
-  },
-  {
     value: 'labuhan',
     text: 'Labuhan',
     code: 'LABH',
