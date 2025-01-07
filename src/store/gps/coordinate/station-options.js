@@ -24,6 +24,12 @@ export default [
     chartTitle: 'Deles0',
   },
   {
+    value: 'deles',
+    text: 'Deles1',
+    code: 'DELS',
+    chartTitle: 'Deles1',
+  },
+  {
     value: 'grawah',
     text: 'Grawah',
     code: 'GRWH',
@@ -40,6 +46,12 @@ export default [
     text: 'Klatakan',
     code: 'KLAT',
     chartTitle: 'Klatakan',
+  },
+  {
+    value: 'kendit',
+    text: 'Kendit',
+    code: 'KNDT',
+    chartTitle: 'Kendit',
   },
   {
     value: 'labuhan',
