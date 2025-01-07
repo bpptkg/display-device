@@ -8,7 +8,7 @@ export const GPSStations = Object.freeze({
   grawah: 'grawah',
   jrakah: 'jrakah',
   klatakan: 'klatakan',
-  kendit: 'kendit',
+  // kendit: 'kendit',
   labuhan: 'labuhan',
   pasarbubar: 'pasarbubar',
   plawangan: 'plawangan',
