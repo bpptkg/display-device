@@ -10,21 +10,30 @@
       </ErrorMessage>
     </div>
     <div v-show="!error">
-      <div class="d-flex align-items-center flex-wrap mb-3">
-        <RangeSelector
-          ref="range-selector"
-          size="sm"
-          custom-enabled
-          :selected="period"
-          :items="rangeSelector"
-          :max-custom-duration="maxCustomDuration"
-          @period-selected="onPeriodChange"
-        />
-        <EventAnnotation
-          class="ml-2"
-          :annotations="annotationOptions"
-          @change="handleUpdateAnnotations"
-        />
+      <div
+        class="d-flex align-items-center justify-content-between flex-wrap mb-3"
+      >
+        <div class="d-flex align-items-center flex-wrap">
+          <RangeSelector
+            ref="range-selector"
+            size="sm"
+            custom-enabled
+            :selected="period"
+            :items="rangeSelector"
+            :max-custom-duration="maxCustomDuration"
+            @period-selected="onPeriodChange"
+          />
+          <EventAnnotation
+            class="ml-2"
+            :annotations="annotationOptions"
+            @change="handleUpdateAnnotations"
+          />
+        </div>
+        <div class="d-flex align-items-center">
+          <MoreMenu right class="ml-2">
+            <BDropdownItem @click="downloadData"> Download Data </BDropdownItem>
+          </MoreMenu>
+        </div>
       </div>
       <DChart ref="chart" :options="chartOptions" class="chart" manual-update />
     </div>
@@ -32,7 +41,7 @@
 </template>
 
 <script>
-import { BLink } from 'bootstrap-vue'
+import { BDropdownItem, BLink } from 'bootstrap-vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 import { toUnixMiliSeconds } from '@/utils/series'
@@ -61,6 +70,9 @@ import {
   SET_ANNOTATION_OPTIONS,
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
+import MoreMenu from '@/components/more-menu/MoreMenu'
+import { saveAs } from '@/lib/file-saver'
+import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
 
 export default {
   name: 'GPSCoordinateChart',
@@ -70,6 +82,8 @@ export default {
     ErrorMessage,
     EventAnnotation,
     RangeSelector,
+    BDropdownItem,
+    MoreMenu,
   },
   mixins: [chartMixins],
   props: {
@@ -172,6 +186,17 @@ export default {
         return dispatch(this.namespace + '/' + UPDATE_ANNOTATIONS)
       },
     }),
+    async downloadData() {
+      const blob = new Blob([createCSVContent(this.data)], {
+        type: 'text/csv;charset=utf-8',
+      })
+      saveAs(
+        blob,
+        `gps-coordinate-${this.station}-${createShortNameFromPeriod(
+          this.period
+        )}.csv`
+      )
+    },
   },
 }
 </script>
