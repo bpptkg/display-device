@@ -47,6 +47,7 @@ export const HelicorderChannel = Object.freeze({
   MEPSL_HHZ_VG_00: 'MEPSL_HHZ_VG_00',
   MEPUS_EHZ_VG_00: 'MEPUS_EHZ_VG_00',
   MESEL_HHZ_VG_00: 'MESEL_HHZ_VG_00',
+  MEBAB_HHZ_VG_00: 'MEBAB_HHZ_VG_00',
 })
 
 export const initialState = {
@@ -307,5 +308,6 @@ export default {
     [HC.MEPSL_HHZ_VG_00]: initModule(HC.MEPSL_HHZ_VG_00),
     [HC.MEPUS_EHZ_VG_00]: initModule(HC.MEPUS_EHZ_VG_00),
     [HC.MESEL_HHZ_VG_00]: initModule(HC.MESEL_HHZ_VG_00),
+    [HC.MEBAB_HHZ_VG_00]: initModule(HC.MEBAB_HHZ_VG_00),
   },
 }
