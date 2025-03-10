@@ -17,10 +17,6 @@
             Version: <span class="secondary">{{ versionInfo.version }}</span>
           </div>
           <div>
-            Commit:
-            <span class="secondary">{{ versionInfo.commitHash }}</span>
-          </div>
-          <div>
             Build date:
             <span class="secondary">
               {{ versionInfo.buildDate }} ({{ buildDateDuration }})

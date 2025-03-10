@@ -70,9 +70,7 @@ export default {
     updateAvailable(event) {
       this.setRegistration(event.detail)
       this.setUpdateExists(true)
-      console.log(
-        `New version available, version ${versionInfo.version}, build ${versionInfo.commitHash}`
-      )
+      console.log(`New version available, version ${versionInfo.version}`)
     },
   },
 }
