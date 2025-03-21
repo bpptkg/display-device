@@ -93,14 +93,26 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
         data: mapFieldColumns(data, 'timestamp', [
           'countdir',
           (countdir) => {
+            const dirs = {}
+            Object.keys(countdir).forEach((k) => {
+              const keys = k.split(',').map((v) => v.trim())
+              const value = countdir[k]
+              keys.forEach((key) => {
+                if (key in dirs) {
+                  dirs[key] += value
+                } else {
+                  dirs[key] = value
+                }
+              })
+            })
             const caseInsensitiveDirectionGroup = group.map((v) =>
               v.toLowerCase()
             )
             // Sum count per direction group.
-            const keys = Object.keys(countdir || {}).filter((k) =>
+            const keys = Object.keys(dirs || {}).filter((k) =>
               caseInsensitiveDirectionGroup.includes(k.toLowerCase())
             )
-            return _.sum(keys.map((k) => countdir[k]))
+            return _.sum(keys.map((k) => dirs[k]))
           },
         ]),
         name: DIRECTION_GROUP_INDEX[index],
@@ -115,7 +127,19 @@ export const createSeries = (data, { useDirectionGroup = true } = {}) => {
       const filteredData = mapFieldColumns(data, 'timestamp', [
         'countdir',
         (countdir) => {
-          return _.get(countdir, d, 0)
+          const dirs = {}
+          Object.keys(countdir).forEach((k) => {
+            const keys = k.split(',').map((v) => v.trim())
+            const value = countdir[k]
+            keys.forEach((key) => {
+              if (key in dirs) {
+                dirs[key] += value
+              } else {
+                dirs[key] = value
+              }
+            })
+          })
+          return _.get(dirs, d, 0)
         },
       ]).filter((v) => v[1] > 0)
 
