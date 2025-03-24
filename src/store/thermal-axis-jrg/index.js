@@ -40,53 +40,103 @@ export const initialState = {
 }
 
 export const AREAS = [
+  // Max temperature.
   {
     id: 'asap',
-    name: 'Asap',
+    name: 'Asap (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'bebeng',
-    name: 'Bebeng',
+    name: 'Bebeng (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'boyong',
-    name: 'Boyong',
+    name: 'Boyong (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'krasak',
-    name: 'Krasak',
+    name: 'Krasak (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'kubah-bd',
-    name: 'Kubah BD',
+    name: 'Kubah BD (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'kubah-bd-kanan',
-    name: 'Kubah BD Kanan',
+    name: 'Kubah BD Kanan (max)',
     isVisible: true,
     fieldType: 'avg_temp',
   },
   {
     id: 'sat-1',
-    name: 'Sat 1',
+    name: 'Sat 1 (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'sat-2',
-    name: 'Sat 2',
+    name: 'Sat 2 (max)',
     isVisible: true,
     fieldType: 'max_temp',
+  },
+  // Average temperature.
+  {
+    id: 'asap',
+    name: 'Asap (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'bebeng',
+    name: 'Bebeng (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'boyong',
+    name: 'Boyong (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'krasak',
+    name: 'Krasak (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'kubah-bd',
+    name: 'Kubah BD (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'kubah-bd-kanan',
+    name: 'Kubah BD Kanan (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'sat-1',
+    name: 'Sat 1 (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'sat-2',
+    name: 'Sat 2 (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
   },
 ]
 

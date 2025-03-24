@@ -8,6 +8,7 @@ import {
   getSeriesByIndex,
 } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
+import { smartIndex, tab20ColorMap } from '../../../../utils/tab20'
 
 export const SeriesName = Object.freeze({
   TEMPERATURE: 'Max. Temp.',
@@ -32,6 +33,9 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
           type: 'line',
           symbol: 'none',
           symbolSize: 3,
+          itemStyle: {
+            color: tab20ColorMap[smartIndex(index, areas.length)],
+          },
         },
       ]
     })
@@ -107,7 +111,7 @@ export const createYAxis = () => {
 export const baseChartOptions = {
   backgroundColor: '#fff',
   title: {
-    text: 'Thermal Axis Kaliurang',
+    text: 'Thermal Axis',
     textStyle: {
       fontWeight: 'bold',
       fontSize: 16,

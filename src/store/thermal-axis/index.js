@@ -40,39 +40,65 @@ export const initialState = {
 }
 
 export const AREAS = [
+  // Max temperature.
   {
     id: 'asap',
-    name: 'Asap',
+    name: 'Asap (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'bebeng',
-    name: 'Bebeng',
+    name: 'Bebeng (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'boyong',
-    name: 'Boyong',
+    name: 'Boyong (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'krasak',
-    name: 'Krasak',
+    name: 'Krasak (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
   {
     id: 'kubah-bd',
-    name: 'Kubah BD (Max)',
+    name: 'Kubah BD (max)',
     isVisible: true,
     fieldType: 'max_temp',
   },
+  // Average temperature.
+  {
+    id: 'asap',
+    name: 'Asap (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'bebeng',
+    name: 'Bebeng (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'boyong',
+    name: 'Boyong (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
+  {
+    id: 'krasak',
+    name: 'Krasak (avg)',
+    isVisible: true,
+    fieldType: 'avg_temp',
+  },
   {
     id: 'kubah-bd',
-    name: 'Kubah BD (Avg)',
+    name: 'Kubah BD (avg)',
     isVisible: true,
     fieldType: 'avg_temp',
   },
