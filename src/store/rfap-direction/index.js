@@ -20,6 +20,7 @@ import { baseState, baseMutations, baseActions } from '../base'
 import { FETCH_DATA, UPDATE_DATA } from '../base/actions'
 
 import rangeSelector from './range-selector'
+import { normalizeDirection } from '../../utils/rfap'
 
 export const NAMESPACE = 'rfapDirection'
 
@@ -49,7 +50,7 @@ export const getters = {
    * numDirectionGroup is number of DIRECTION_GROUP.
    */
   rfapDirectionGroup(state) {
-    return state.data.map((d) => {
+    return normalizeDirection(state.data).map((d) => {
       const bin = DIRECTION_GROUP.reduce((acc, g) => {
         const caseInsensitiveDirectionGroup = g.map((v) => v.toLowerCase())
         if (caseInsensitiveDirectionGroup.includes(d.direction.toLowerCase())) {
@@ -68,16 +69,15 @@ export const getters = {
    * [[count, direction], [count, direction], ...]
    */
   rfapDirectionSorted(state) {
-    return _.orderBy(state.data, ['count'], 'asc').map((d) => [
-      d.count,
-      d.direction,
-    ])
+    return _.orderBy(normalizeDirection(state.data), ['count'], 'asc').map(
+      (d) => [d.count, d.direction]
+    )
   },
   /**
    * Same as rfapDirectionGroup but return distance instead of count.
    */
   rfapDirectionGroupDistance(state) {
-    return state.data.map((d) => {
+    return normalizeDirection(state.data).map((d) => {
       const bin = DIRECTION_GROUP.reduce((acc, g) => {
         const caseInsensitiveDirectionGroup = g.map((v) => v.toLowerCase())
         if (caseInsensitiveDirectionGroup.includes(d.direction.toLowerCase())) {

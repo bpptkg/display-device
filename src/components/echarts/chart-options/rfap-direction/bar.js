@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { saveAsImageToolbox } from '../common/toolbox'
 import { createCircleTemplate, createDividerTemplate } from '@/utils/series'
 import { numberFormatterFactory } from '@/utils/formatter-factory'
+import { normalizeDirection } from '../../../../utils/rfap'
 
 export const SupportedXAxisType = Object.freeze({
   COUNT: 'count',
@@ -11,9 +12,12 @@ export const SupportedXAxisType = Object.freeze({
 const f = numberFormatterFactory(0)
 
 export const baseChartOptions = (
-  data,
+  input,
   { axis = SupportedXAxisType.COUNT, title = {} } = {}
 ) => {
+  // Direction can be multiple values separated by comma. So, we need to split
+  // it and create a new object for each direction.
+  const data = normalizeDirection(input)
   let seriesData = []
   if (axis === SupportedXAxisType.COUNT) {
     seriesData = _.orderBy(data, ['count'], 'asc')
