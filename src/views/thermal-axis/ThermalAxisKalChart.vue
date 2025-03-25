@@ -259,7 +259,10 @@ export default {
         this.annotations,
         toUnixMiliSeconds(this.startTime),
         toUnixMiliSeconds(this.endTime),
-        this.sampling
+        this.sampling,
+        {
+          title: 'Thermal Axis Kaliurang',
+        }
       )
     },
     statsInfo() {
@@ -433,7 +436,7 @@ export default {
 @import '@/scss/layout-monkey';
 
 .chart {
-  min-height: 500px;
+  min-height: 600px;
 }
 
 .sampling-label {

@@ -9,6 +9,7 @@ import {
 } from '@/utils/series'
 import { defaultToolbox } from '../common/toolbox'
 import { smartIndex, tab20ColorMap } from '../../../../utils/tab20'
+import { createRowGrid } from '../../../../utils/echarts/grid'
 
 export const SeriesName = Object.freeze({
   TEMPERATURE: 'Max. Temp.',
@@ -36,6 +37,8 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
           itemStyle: {
             color: tab20ColorMap[smartIndex(index, areas.length)],
           },
+          xAxisIndex: area.fieldType === 'max_temp' ? 0 : 1,
+          yAxisIndex: area.fieldType === 'max_temp' ? 0 : 1,
         },
       ]
     })
@@ -47,12 +50,21 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
 export const createXAxis = (min, max) => {
   const options = [
     {
-      axisLabel: { show: true },
       gridIndex: 0,
+      axisLabel: { show: false },
       min,
       max,
       position: 'bottom',
       splitLine: { show: false },
+      type: 'time',
+    },
+    {
+      gridIndex: 1,
+      axisLabel: { show: true },
+      min,
+      max,
+      splitLine: { show: false },
+      position: 'bottom',
       type: 'time',
     },
   ]
@@ -66,21 +78,12 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: {
-        top: 60,
-        bottom: 95,
-        left: 50,
-        right: 10,
-      },
+      grid: createRowGrid(2, { top: 10, bottom: 15, left: 20, right: 5 }),
       title: {
-        top: 30,
+        top: 25,
         textStyle: {
-          fontSize: 12,
+          fontSize: 13,
         },
-      },
-      yAxis: {
-        nameLocation: 'end',
-        nameGap: 15,
       },
     },
   },
@@ -91,6 +94,21 @@ export const createYAxis = () => {
     {
       gridIndex: 0,
       name: 'Max. Temp. (\u00B0C)',
+      nameGap: 50,
+      nameLocation: 'center',
+      scale: true,
+      splitLine: { show: false },
+      type: 'value',
+      axisLabel: {
+        show: true,
+        formatter: (value) => {
+          return value.toFixed(0)
+        },
+      },
+    },
+    {
+      gridIndex: 1,
+      name: 'Avg. Temp. (\u00B0C)',
       nameGap: 50,
       nameLocation: 'center',
       scale: true,
@@ -121,12 +139,9 @@ export const baseChartOptions = {
   dataZoom: {
     type: 'slider',
     realtime: false,
-    bottom: 30,
+    bottom: 25,
   },
-  grid: {
-    top: 50,
-    bottom: 95,
-  },
+  grid: createRowGrid(2, { top: 10, bottom: 15, left: 10, right: 5 }),
   legend: {
     type: 'scroll',
     bottom: 0,
