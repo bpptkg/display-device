@@ -78,12 +78,19 @@ export const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(2, { top: 10, bottom: 15, left: 20, right: 5 }),
+      grid: createRowGrid(2, { top: 10, bottom: 17, left: 20, right: 5 }),
       title: {
         top: 25,
         textStyle: {
           fontSize: 13,
         },
+      },
+      legend: {
+        type: 'scroll',
+        bottom: 0,
+        itemWidth: 10,
+        itemHeight: 10,
+        textStyle: { fontSize: 9 },
       },
     },
   },
@@ -139,15 +146,16 @@ export const baseChartOptions = {
   dataZoom: {
     type: 'slider',
     realtime: false,
-    bottom: 25,
+    bottom: 40,
   },
-  grid: createRowGrid(2, { top: 10, bottom: 15, left: 10, right: 5 }),
+  grid: createRowGrid(2, { top: 10, bottom: 17, left: 10, right: 5 }),
   legend: {
-    type: 'scroll',
+    type: 'plain',
+    left: 'center',
     bottom: 0,
-    itemWidth: 15,
+    itemWidth: 10,
     itemHeight: 10,
-    textStyle: { fontSize: 10 },
+    textStyle: { fontSize: 9 },
   },
   toolbox: defaultToolbox,
   yAxis: createYAxis(),
