@@ -75,7 +75,7 @@ export const AREAS = [
     id: 'kubah-bd-kanan',
     name: 'Kubah BD Kanan (max)',
     isVisible: true,
-    fieldType: 'avg_temp',
+    fieldType: 'max_temp',
   },
   {
     id: 'sat-1',
