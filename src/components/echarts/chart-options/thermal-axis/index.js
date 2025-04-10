@@ -147,6 +147,7 @@ export const baseChartOptions = {
     type: 'slider',
     realtime: false,
     bottom: 40,
+    xAxisIndex: [0, 1],
   },
   grid: createRowGrid(2, { top: 10, bottom: 17, left: 10, right: 5 }),
   legend: {
