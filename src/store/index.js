@@ -26,6 +26,7 @@ import sidebarMenu from './sidebar-menu'
 import thermal from './thermal'
 import thermalAxis from './thermal-axis'
 import thermalAxisJrg from './thermal-axis-jrg'
+import thermalAxisDel from './thermal-axis-del'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import version from './version'
@@ -66,6 +67,7 @@ export default new Vuex.Store({
     thermal,
     thermalAxis,
     thermalAxisJrg,
+    thermalAxisDel,
     tiltmeter,
     user,
     version,

@@ -10,6 +10,9 @@
           <SidepanelMenuItem key="2" round="left" to="/thermal-axis/jurangjero">
             Jurang Jero
           </SidepanelMenuItem>
+          <SidepanelMenuItem key="3" round="left" to="/thermal-axis/deles">
+            Deles
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
@@ -20,6 +23,9 @@
       </BNavItem>
       <BNavItem to="/thermal-axis/jurangjero" active-class="active">
         Jurangjero
+      </BNavItem>
+      <BNavItem to="/thermal-axis/deles" active-class="active">
+        Deles
       </BNavItem>
     </BNav>
 
