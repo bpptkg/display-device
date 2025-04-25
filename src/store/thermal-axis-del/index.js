@@ -33,30 +33,11 @@ export const initialState = {
   ...baseState,
   annotationOptions: annotations,
   sampling: 'minute',
-  station: 'deles',
-  areas: [],
-  use_sky_filter: false,
   autoUpdate: true,
+  station: 'deles',
 }
 
-export const AREAS = [
-  // Max temperature.
-  {
-    id: 'kubah-tengah',
-    name: 'Kubah Tengah (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  // Average temperature.
-  {
-    id: 'kubah-tengah',
-    name: 'Kubah Tengah (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-]
-
-export const initState = (station, areas, period) => {
+export const initState = (station, period) => {
   const { startTime, endTime } = calculatePeriod(period)
   return {
     ...initialState,
@@ -64,7 +45,6 @@ export const initState = (station, areas, period) => {
     startTime,
     endTime,
     station,
-    areas,
   }
 }
 
@@ -78,18 +58,6 @@ export const mutations = {
   ...baseMutations,
   [SET_SAMPLING](state, sampling) {
     state.sampling = sampling
-  },
-  [SET_STATION](state, station) {
-    state.station = station
-  },
-  [SET_AREAS](state, areas) {
-    state.areas = areas
-  },
-  [SET_VISIBLE](state, { index, isVisible }) {
-    state.areas[index].isVisible = isVisible
-  },
-  [SET_SKY_FILTER](state, use_sky_filter) {
-    state.use_sky_filter = use_sky_filter
   },
   [SET_AUTO_UPDATE](state, autoUpdate) {
     state.autoUpdate = autoUpdate
@@ -109,22 +77,18 @@ export const actions = {
       commit(SET_ERROR, null)
     }
 
-    const requests = state.areas.map((area) => {
-      return client.get(`/thermal-axis-del/`, {
+    const data = await client
+      .get(`/thermal-axis-del/`, {
         params: {
           start: state.startTime.format(DATETIME_FORMAT),
           end: state.endTime.format(DATETIME_FORMAT),
           sampling: state.sampling,
-          area: area.id,
-          field_type: area.fieldType || 'max_temp',
+          field_types: ['max_temp', 'avg_temp'].join(','),
         },
         cancelToken: state.cancelToken.token,
       })
-    })
-
-    const data = await Promise.all(requests)
-      .then((responses) => {
-        return responses.map((response) => response.data)
+      .then((response) => {
+        return response.data
       })
       .catch((error) => {
         commit(SET_ERROR, error)
@@ -150,7 +114,7 @@ export const actions = {
 export const initModule = (station, period) => {
   return {
     namespaced: true,
-    state: initState(station, AREAS, period),
+    state: initState(station, period),
     getters,
     mutations,
     actions,

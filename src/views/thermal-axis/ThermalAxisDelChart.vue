@@ -28,11 +28,6 @@
             :annotations="annotationOptions"
             @change="handleUpdateAnnotations"
           />
-          <ThermalAxisFilter
-            class="ml-2"
-            :items="areas"
-            @change="handleFilterChange"
-          />
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
           <BFormSelect
@@ -123,7 +118,6 @@ import {
   SET_SAMPLING,
   SET_AREAS,
   SET_VISIBLE,
-  SET_SKY_FILTER,
   SET_AUTO_UPDATE,
   UPDATE_THERMAL_AXIS,
 } from '@/store/thermal-axis-del'
@@ -136,8 +130,10 @@ import rangeSelectorHour, {
 import rangeSelectorMinute, {
   maxCustomDuration as maxCustomDurationMinute,
 } from '@/store/thermal-axis-del/range-selector-minute'
-import { createThermalAxisChartOptions } from '@/components/echarts/chart-options/thermal-axis'
-import { getStatsInfo } from '@/components/echarts/chart-options/thermal-axis/utils'
+import {
+  createThermalAxisChartOptions,
+  getStatsInfo,
+} from '@/components/echarts/chart-options/thermal-axis/multiple'
 import ErrorMessage from '@/components/error-message'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { DateRangeTypes } from '@/constants/date'
@@ -160,7 +156,6 @@ export default {
     SidepanelTabs,
     StatsPanelPeriod,
     StatsPanelTable,
-    ThermalAxisFilter,
   },
   data() {
     return {
@@ -201,12 +196,6 @@ export default {
       annotations(state) {
         return state.thermalAxisDel[this.station].annotations
       },
-      areas(state) {
-        return state.thermalAxisDel[this.station].areas
-      },
-      use_sky_filter(state) {
-        return state.thermalAxisDel[this.station].use_sky_filter
-      },
       autoUpdate(state) {
         return state.thermalAxisDel[this.station].autoUpdate
       },
@@ -241,18 +230,9 @@ export default {
       }
     },
     chartOptions() {
-      const visibleIndices = this.areas
-        .map((area, index) => (area.isVisible ? index : null))
-        .filter((index) => index !== null)
-      const data = this.data.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      const areas = this.areas.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
+      const data = this.data
       return createThermalAxisChartOptions(
         data,
-        areas,
         this.annotations,
         toUnixMiliSeconds(this.startTime),
         toUnixMiliSeconds(this.endTime),
@@ -263,25 +243,7 @@ export default {
       )
     },
     statsInfo() {
-      const visibleIndices = this.areas
-        .map((area, index) => (area.isVisible ? index : null))
-        .filter((index) => index !== null)
-      const data = this.data.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      const areas = this.areas.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      return getStatsInfo(data, areas)
-    },
-    enable_sky_filter: {
-      get() {
-        return this.use_sky_filter
-      },
-      set(value) {
-        this.setSkyFilter(value)
-        this.update()
-      },
+      return getStatsInfo(this.data)
     },
     enableAutoUpdate: {
       get() {
@@ -318,14 +280,8 @@ export default {
       setAnnotationOptions(commit, options) {
         return commit(this.namespace + '/' + SET_ANNOTATION_OPTIONS, options)
       },
-      setAreas(commit, areas) {
-        return commit(this.namespace + '/' + SET_AREAS, areas)
-      },
       setVisible(commit, { index, isVisible }) {
         return commit(this.namespace + '/' + SET_VISIBLE, { index, isVisible })
-      },
-      setSkyFilter(commit, value) {
-        return commit(this.namespace + '/' + SET_SKY_FILTER, value)
       },
       setAutoUpdate(commit, value) {
         return commit(this.namespace + '/' + SET_AUTO_UPDATE, value)
@@ -396,16 +352,6 @@ export default {
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.mergeOptions(this.chartOptions)
-    },
-
-    handleFilterChange({ index, isVisible }) {
-      if (index === -1) {
-        this.areas.forEach((area) => (area.isVisible = isVisible))
-      } else {
-        this.setVisible({ index, isVisible })
-      }
-
-      this.refresh()
     },
 
     handleAutoUpdate(value) {
