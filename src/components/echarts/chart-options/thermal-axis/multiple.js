@@ -30,7 +30,7 @@ export const createSeries = (data, { annotations = [] } = {}) => {
   const options = []
   const length = data.reduce((acc, field) => acc + field.results.length, 0)
   data.forEach((field, index) => {
-    field.results.forEach((result) => {
+    field.results.forEach((result, resultIndex) => {
       options.push({
         data: mapFieldColumns(result.data, 'timestamp', 'temp'),
         name: `${result.area}`,
@@ -43,7 +43,7 @@ export const createSeries = (data, { annotations = [] } = {}) => {
         symbol: 'none',
         symbolSize: 3,
         itemStyle: {
-          color: tab20ColorMap[smartIndex(index, length)],
+          color: tab20ColorMap[smartIndex(index + resultIndex, length)],
         },
         xAxisIndex: field.field_type === 'max_temp' ? 0 : 1,
         yAxisIndex: field.field_type === 'max_temp' ? 0 : 1,
