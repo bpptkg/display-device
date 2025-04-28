@@ -136,8 +136,10 @@ import rangeSelectorHour, {
 import rangeSelectorMinute, {
   maxCustomDuration as maxCustomDurationMinute,
 } from '@/store/thermal-axis-jrg/range-selector-minute'
-import { createThermalAxisChartOptions } from '@/components/echarts/chart-options/thermal-axis'
-import { getStatsInfo } from '@/components/echarts/chart-options/thermal-axis/utils'
+import {
+  createThermalAxisChartOptions,
+  getStatsInfo,
+} from '@/components/echarts/chart-options/thermal-axis/multiple'
 import ErrorMessage from '@/components/error-message'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { DateRangeTypes } from '@/constants/date'
@@ -241,15 +243,8 @@ export default {
       }
     },
     chartOptions() {
-      const visibleIndices = this.areas
-        .map((area, index) => (area.isVisible ? index : null))
-        .filter((index) => index !== null)
-      const data = this.data.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      const areas = this.areas.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
+      const areas = this.areas.filter((area) => area.isVisible)
+      const data = this.data
       return createThermalAxisChartOptions(
         data,
         areas,
@@ -263,16 +258,7 @@ export default {
       )
     },
     statsInfo() {
-      const visibleIndices = this.areas
-        .map((area, index) => (area.isVisible ? index : null))
-        .filter((index) => index !== null)
-      const data = this.data.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      const areas = this.areas.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      return getStatsInfo(data, areas)
+      return getStatsInfo(this.data)
     },
     enable_sky_filter: {
       get() {

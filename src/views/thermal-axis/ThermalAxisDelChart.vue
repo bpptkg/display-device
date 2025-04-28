@@ -121,7 +121,6 @@ import {
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 import {
   SET_SAMPLING,
-  SET_AREAS,
   SET_VISIBLE,
   SET_AUTO_UPDATE,
   UPDATE_THERMAL_AXIS,

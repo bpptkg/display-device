@@ -47,7 +47,7 @@ export const createSeries = (data, areas, { annotations = [] } = {}) => {
           symbol: 'none',
           symbolSize: 3,
           itemStyle: {
-            color: tab20ColorMap[smartIndex(index + resultIndex, length)],
+            color: tab20ColorMap[smartIndex(resultIndex, length)],
           },
           xAxisIndex: field.field_type === 'max_temp' ? 0 : 1,
           yAxisIndex: field.field_type === 'max_temp' ? 0 : 1,

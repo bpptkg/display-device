@@ -39,107 +39,6 @@ export const initialState = {
   autoUpdate: true,
 }
 
-export const AREAS = [
-  // Max temperature.
-  {
-    id: 'asap',
-    name: 'Asap (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  {
-    id: 'bebeng',
-    name: 'Bebeng (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  {
-    id: 'boyong',
-    name: 'Boyong (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  {
-    id: 'krasak',
-    name: 'Krasak (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  {
-    id: 'kubah-bd',
-    name: 'Kubah BD (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  {
-    id: 'kubah-bd-kanan',
-    name: 'Kubah BD Kanan (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  {
-    id: 'sat-1',
-    name: 'Sat 1 (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  {
-    id: 'sat-2',
-    name: 'Sat 2 (max)',
-    isVisible: true,
-    fieldType: 'max_temp',
-  },
-  // Average temperature.
-  {
-    id: 'asap',
-    name: 'Asap (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-  {
-    id: 'bebeng',
-    name: 'Bebeng (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-  {
-    id: 'boyong',
-    name: 'Boyong (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-  {
-    id: 'krasak',
-    name: 'Krasak (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-  {
-    id: 'kubah-bd',
-    name: 'Kubah BD (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-  {
-    id: 'kubah-bd-kanan',
-    name: 'Kubah BD Kanan (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-  {
-    id: 'sat-1',
-    name: 'Sat 1 (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-  {
-    id: 'sat-2',
-    name: 'Sat 2 (avg)',
-    isVisible: true,
-    fieldType: 'avg_temp',
-  },
-]
-
 export const initState = (station, areas, period) => {
   const { startTime, endTime } = calculatePeriod(period)
   return {
@@ -193,22 +92,18 @@ export const actions = {
       commit(SET_ERROR, null)
     }
 
-    const requests = state.areas.map((area) => {
-      return client.get(`/thermal-axis-jrg/`, {
+    const data = await client
+      .get(`/thermal-axis-jrg/`, {
         params: {
           start: state.startTime.format(DATETIME_FORMAT),
           end: state.endTime.format(DATETIME_FORMAT),
           sampling: state.sampling,
-          area: area.id,
-          field_type: area.fieldType || 'max_temp',
+          field_types: ['max_temp', 'avg_temp'].join(','),
         },
         cancelToken: state.cancelToken.token,
       })
-    })
-
-    const data = await Promise.all(requests)
-      .then((responses) => {
-        return responses.map((response) => response.data)
+      .then((response) => {
+        return response.data
       })
       .catch((error) => {
         commit(SET_ERROR, error)
@@ -216,6 +111,13 @@ export const actions = {
       })
 
     commit(SET_DATA, data)
+    commit(
+      SET_AREAS,
+      data.areas.map((area) => ({
+        ...area,
+        isVisible: true,
+      }))
+    )
     commit(SET_LAST_UPDATED, moment())
   },
 
@@ -234,7 +136,7 @@ export const actions = {
 export const initModule = (station, period) => {
   return {
     namespaced: true,
-    state: initState(station, AREAS, period),
+    state: initState(station, [], period),
     getters,
     mutations,
     actions,
