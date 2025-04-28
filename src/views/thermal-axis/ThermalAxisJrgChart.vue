@@ -412,6 +412,12 @@ export default {
 
     this.handleAutoUpdate(this.autoUpdate)
   },
+
+  beforeDestroy() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  },
 }
 </script>
 
