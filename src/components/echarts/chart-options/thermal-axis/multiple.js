@@ -10,8 +10,9 @@ import { min, max, mean } from 'lodash'
 
 export const getStatsInfo = (data) => {
   const stats = []
+  const fields = data.fields || []
 
-  data.forEach((field, index) => {
+  fields.forEach((field) => {
     field.results.forEach((result) => {
       const array = result.data.map((v) => v.temp)
       stats.push({
@@ -26,28 +27,32 @@ export const getStatsInfo = (data) => {
   return stats
 }
 
-export const createSeries = (data, { annotations = [] } = {}) => {
+export const createSeries = (data, areas, { annotations = [] } = {}) => {
   const options = []
-  const length = data.reduce((acc, field) => acc + field.results.length, 0)
-  data.forEach((field, index) => {
+  const fields = data.fields || []
+  const length = fields.reduce((acc, field) => acc + field.results.length, 0)
+  const areaNames = areas.map((area) => area.name)
+  fields.forEach((field, index) => {
     field.results.forEach((result, resultIndex) => {
-      options.push({
-        data: mapFieldColumns(result.data, 'timestamp', 'temp'),
-        name: `${result.area}`,
-        markLine: {
+      if (areaNames.includes(result.area)) {
+        options.push({
+          data: mapFieldColumns(result.data, 'timestamp', 'temp'),
+          name: `${result.area}`,
+          markLine: {
+            symbol: 'none',
+            data: annotations,
+            animation: false,
+          },
+          type: 'line',
           symbol: 'none',
-          data: annotations,
-          animation: false,
-        },
-        type: 'line',
-        symbol: 'none',
-        symbolSize: 3,
-        itemStyle: {
-          color: tab20ColorMap[smartIndex(index + resultIndex, length)],
-        },
-        xAxisIndex: field.field_type === 'max_temp' ? 0 : 1,
-        yAxisIndex: field.field_type === 'max_temp' ? 0 : 1,
-      })
+          symbolSize: 3,
+          itemStyle: {
+            color: tab20ColorMap[smartIndex(index + resultIndex, length)],
+          },
+          xAxisIndex: field.field_type === 'max_temp' ? 0 : 1,
+          yAxisIndex: field.field_type === 'max_temp' ? 0 : 1,
+        })
+      }
     })
   })
 
@@ -216,6 +221,7 @@ export const tooltipFormatter = (sampling) => {
 
 export const createThermalAxisChartOptions = (
   data,
+  areas,
   annotations,
   min,
   max,
@@ -226,7 +232,7 @@ export const createThermalAxisChartOptions = (
   return {
     baseOption: {
       ...baseChartOptions,
-      series: createSeries(data, { annotations }),
+      series: createSeries(data, areas, { annotations }),
       xAxis: createXAxis(min, max),
       tooltip: {
         trigger: 'axis',

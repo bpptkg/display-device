@@ -45,6 +45,7 @@ export const initState = (station, period) => {
     startTime,
     endTime,
     station,
+    areas: [],
   }
 }
 
@@ -61,6 +62,12 @@ export const mutations = {
   },
   [SET_AUTO_UPDATE](state, autoUpdate) {
     state.autoUpdate = autoUpdate
+  },
+  [SET_AREAS](state, areas) {
+    state.areas = areas
+  },
+  [SET_VISIBLE](state, { index, isVisible }) {
+    state.areas[index].isVisible = isVisible
   },
 }
 
@@ -96,6 +103,13 @@ export const actions = {
       })
 
     commit(SET_DATA, data)
+    commit(
+      SET_AREAS,
+      data.areas.map((area) => ({
+        ...area,
+        isVisible: true,
+      }))
+    )
     commit(SET_LAST_UPDATED, moment())
   },
 

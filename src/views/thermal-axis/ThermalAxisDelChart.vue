@@ -28,6 +28,11 @@
             :annotations="annotationOptions"
             @change="handleUpdateAnnotations"
           />
+          <ThermalAxisFilter
+            class="ml-2"
+            :items="areas"
+            @change="handleFilterChange"
+          />
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
           <BFormSelect
@@ -156,6 +161,7 @@ export default {
     SidepanelTabs,
     StatsPanelPeriod,
     StatsPanelTable,
+    ThermalAxisFilter,
   },
   data() {
     return {
@@ -196,6 +202,9 @@ export default {
       annotations(state) {
         return state.thermalAxisDel[this.station].annotations
       },
+      areas(state) {
+        return state.thermalAxisDel[this.station].areas
+      },
       autoUpdate(state) {
         return state.thermalAxisDel[this.station].autoUpdate
       },
@@ -230,9 +239,11 @@ export default {
       }
     },
     chartOptions() {
+      const areas = this.areas.filter((area) => area.isVisible)
       const data = this.data
       return createThermalAxisChartOptions(
         data,
+        areas,
         this.annotations,
         toUnixMiliSeconds(this.startTime),
         toUnixMiliSeconds(this.endTime),
@@ -352,6 +363,16 @@ export default {
       const chart = this.$refs.chart.$refs.chart
       chart.clear()
       chart.mergeOptions(this.chartOptions)
+    },
+
+    handleFilterChange({ index, isVisible }) {
+      if (index === -1) {
+        this.areas.forEach((area) => (area.isVisible = isVisible))
+      } else {
+        this.setVisible({ index, isVisible })
+      }
+
+      this.refresh()
     },
 
     handleAutoUpdate(value) {
