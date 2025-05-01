@@ -30,9 +30,7 @@
     </BNav>
 
     <div class="content">
-      <keep-alive>
-        <router-view :key="$route.path"></router-view>
-      </keep-alive>
+      <router-view :key="$route.path"></router-view>
     </div>
   </div>
 </template>
