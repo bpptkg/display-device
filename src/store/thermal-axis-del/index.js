@@ -64,7 +64,22 @@ export const mutations = {
     state.autoUpdate = autoUpdate
   },
   [SET_AREAS](state, areas) {
-    state.areas = areas
+    if (!state.areas.length) {
+      state.areas = areas
+    }
+
+    const existingAreasMap = state.areas.reduce((map, area) => {
+      map[area.name] = area
+      return map
+    }, {})
+
+    state.areas = areas.map((newArea) => {
+      const existingArea = existingAreasMap[newArea.name]
+      return {
+        ...newArea,
+        isVisible: existingArea ? existingArea.isVisible : true,
+      }
+    })
   },
   [SET_VISIBLE](state, { index, isVisible }) {
     state.areas[index].isVisible = isVisible
