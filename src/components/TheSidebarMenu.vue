@@ -204,6 +204,10 @@ export default {
           icon: WeatherIcon,
           child: [
             {
+              title: 'Pasarbubar (Vaisala)',
+              href: '/weather/pasarbubar2',
+            },
+            {
               title: 'Pasarbubar',
               href: '/weather/pasarbubar',
             },

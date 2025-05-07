@@ -389,6 +389,10 @@ export default [
     path: '/weather',
   },
   {
+    name: 'Weather Pasarbubar (Vaisala)',
+    path: '/weather/pasarbubar2',
+  },
+  {
     name: 'Weather Pasarbubar',
     path: '/weather/pasarbubar',
   },

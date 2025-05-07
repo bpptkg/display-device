@@ -169,9 +169,14 @@ const routes = [
   },
   {
     path: '/weather',
-    redirect: '/weather/pasarbubar',
+    redirect: '/weather/pasarbubar2',
     component: () => import('../views/weather/WeatherView'),
     children: [
+      {
+        path: 'pasarbubar2',
+        component: () =>
+          import('../views/weather/pasarbubar2/WeatherPasarbubar2View'),
+      },
       {
         path: 'pasarbubar',
         component: () =>

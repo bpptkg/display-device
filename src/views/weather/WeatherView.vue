@@ -4,6 +4,9 @@
       <SidepanelScrollContainer>
         <SidepanelMenuHeader small bold> WEATHER </SidepanelMenuHeader>
         <div class="ml-2">
+          <SidepanelMenuItem round="left" to="/weather/pasarbubar2">
+            Pasarbubar (Vaisala)
+          </SidepanelMenuItem>
           <SidepanelMenuItem round="left" to="/weather/pasarbubar">
             Pasarbubar
           </SidepanelMenuItem>

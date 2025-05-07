@@ -1,11 +1,12 @@
 import babadan from './babadan'
-import pasarbubar from './pasarbubar'
+import jrakah from './jrakah'
 import jurangjero from './jurangjero'
+import kaliurang from './kaliurang'
 import klatakan from './klatakan'
 import labuhan from './labuhan'
-import jrakah from './jrakah'
-import kaliurang from './kaliurang'
 import ngepos from './ngepos'
+import pasarbubar from './pasarbubar'
+import pasarbubar2 from './pasarbubar2'
 import selo from './selo'
 
 export default {
@@ -20,5 +21,6 @@ export default {
     kaliurang,
     ngepos,
     selo,
+    pasarbubar2,
   },
 }
