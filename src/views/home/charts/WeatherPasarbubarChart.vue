@@ -14,7 +14,7 @@
       <template #header>
         <div class="d-flex justify-content-between">
           <h6>Weather Pasarbubar</h6>
-          <router-link to="/weather/pasarbubar">
+          <router-link to="/weather/pasarbubar2">
             <small>See more</small>
           </router-link>
         </div>
@@ -45,9 +45,9 @@ import {
   baseChartOptions,
   createSeries,
   mediaQuery,
-  createTooltip,
-} from '@/components/echarts/chart-options/weather-pasarbubar'
-import { UPDATE_METEOROLOGY } from '@/store/weather/pasarbubar/rainfall/actions'
+} from '@/components/echarts/chart-options/weather-pasarbubar2'
+import { createTooltip } from '@/components/echarts/chart-options/weather-pasarbubar'
+import { UPDATE_METEOROLOGY } from '@/store/weather/pasarbubar2/rainfall/actions'
 import DNote from '@/components/base/note/DNote'
 
 import InfoNote from './InfoNote.vue'

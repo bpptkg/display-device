@@ -3,7 +3,7 @@ import {
   getters,
   mutations,
   actions,
-} from '../../weather/pasarbubar/rainfall'
+} from '../../weather/pasarbubar2/rainfall'
 
 const period = {
   count: 6,

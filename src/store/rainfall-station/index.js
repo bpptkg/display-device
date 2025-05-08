@@ -37,11 +37,22 @@ export const STATIONS = [
     stationName: 'Pasarbubar',
     stationLabel: 'Pasarbubar (Vaisala)',
     isVaisala: true,
-    url: '/meteorology/pasarbubar/rainfall/',
+    url: '/meteorology/pasarbubar2/rainfall/',
     params: {
       fields: 'timestamp,cumulative_rainfall,rate',
     },
     isVisible: true,
+  },
+  {
+    stationId: 'vs:pasarbubar',
+    stationName: 'Pasarbubar',
+    stationLabel: 'Pasarbubar (Vaisala Old)',
+    isVaisala: true,
+    url: '/meteorology/pasarbubar/rainfall/',
+    params: {
+      fields: 'timestamp,cumulative_rainfall,rate',
+    },
+    isVisible: false,
   },
   {
     stationId: 'tb:gunungijo',
