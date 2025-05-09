@@ -33,9 +33,6 @@
             :items="areas"
             @change="handleFilterChange"
           />
-          <BFormCheckbox v-model="enable_sky_filter" class="ml-2" size="sm"
-            >Enable sky filter</BFormCheckbox
-          >
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
           <BFormSelect
@@ -92,7 +89,7 @@ import JSZip from 'jszip'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import DChart from '@/components/echarts/chart/DChart'
 import RangeSelector from '@/components/range-selector'
-import fieldOptions from '@/store/thermal-axis/field-options'
+import fieldOptions from '@/store/thermal-axis-kal/field-options'
 import {
   BCard,
   BDropdownItem,
@@ -129,18 +126,20 @@ import {
   SET_SKY_FILTER,
   SET_AUTO_UPDATE,
   UPDATE_THERMAL_AXIS,
-} from '@/store/thermal-axis'
+} from '@/store/thermal-axis-kal'
 import rangeSelectorDay, {
   maxCustomDuration as maxCustomDurationDay,
-} from '@/store/thermal-axis/range-selector-day'
+} from '@/store/thermal-axis-kal/range-selector-day'
 import rangeSelectorHour, {
   maxCustomDuration as maxCustomDurationHour,
-} from '@/store/thermal-axis/range-selector-hour'
+} from '@/store/thermal-axis-kal/range-selector-hour'
 import rangeSelectorMinute, {
   maxCustomDuration as maxCustomDurationMinute,
-} from '@/store/thermal-axis/range-selector-minute'
-import { createThermalAxisChartOptions } from '@/components/echarts/chart-options/thermal-axis'
-import { getStatsInfo } from '@/components/echarts/chart-options/thermal-axis/utils'
+} from '@/store/thermal-axis-kal/range-selector-minute'
+import {
+  createThermalAxisChartOptions,
+  getStatsInfo,
+} from '@/components/echarts/chart-options/thermal-axis/multiple'
 import ErrorMessage from '@/components/error-message'
 import { toUnixMiliSeconds } from '@/utils/series'
 import { DateRangeTypes } from '@/constants/date'
@@ -181,41 +180,41 @@ export default {
   computed: {
     ...mapState({
       data(state) {
-        return state.thermalAxis[this.station].data
+        return state.thermalAxisKal[this.station].data
       },
       error(state) {
-        return state.thermalAxis[this.station].error
+        return state.thermalAxisKal[this.station].error
       },
       startTime(state) {
-        return state.thermalAxis[this.station].startTime
+        return state.thermalAxisKal[this.station].startTime
       },
       endTime(state) {
-        return state.thermalAxis[this.station].endTime
+        return state.thermalAxisKal[this.station].endTime
       },
       period(state) {
-        return state.thermalAxis[this.station].period
+        return state.thermalAxisKal[this.station].period
       },
       sampling(state) {
-        return state.thermalAxis[this.station].sampling
+        return state.thermalAxisKal[this.station].sampling
       },
       annotationOptions(state) {
-        return state.thermalAxis[this.station].annotationOptions
+        return state.thermalAxisKal[this.station].annotationOptions
       },
       annotations(state) {
-        return state.thermalAxis[this.station].annotations
+        return state.thermalAxisKal[this.station].annotations
       },
       areas(state) {
-        return state.thermalAxis[this.station].areas
+        return state.thermalAxisKal[this.station].areas
       },
       use_sky_filter(state) {
-        return state.thermalAxis[this.station].use_sky_filter
+        return state.thermalAxisKal[this.station].use_sky_filter
       },
       autoUpdate(state) {
-        return state.thermalAxis[this.station].autoUpdate
+        return state.thermalAxisKal[this.station].autoUpdate
       },
     }),
     namespace() {
-      return `thermalAxis/${this.station}`
+      return `thermalAxisKal/${this.station}`
     },
     samplingType: {
       get: function () {
@@ -244,15 +243,8 @@ export default {
       }
     },
     chartOptions() {
-      const visibleIndices = this.areas
-        .map((area, index) => (area.isVisible ? index : null))
-        .filter((index) => index !== null)
-      const data = this.data.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      const areas = this.areas.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
+      const areas = this.areas.filter((area) => area.isVisible)
+      const data = this.data
       return createThermalAxisChartOptions(
         data,
         areas,
@@ -266,16 +258,7 @@ export default {
       )
     },
     statsInfo() {
-      const visibleIndices = this.areas
-        .map((area, index) => (area.isVisible ? index : null))
-        .filter((index) => index !== null)
-      const data = this.data.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      const areas = this.areas.filter((_, index) =>
-        visibleIndices.includes(index)
-      )
-      return getStatsInfo(data, areas)
+      return getStatsInfo(this.data)
     },
     enable_sky_filter: {
       get() {
@@ -353,7 +336,7 @@ export default {
       zip.generateAsync({ type: 'blob' }).then((content) => {
         saveAs(
           content,
-          `thermal-axis-${this.station}-${createShortNameFromPeriod(
+          `thermal-axis-kal-${this.station}-${createShortNameFromPeriod(
             this.period
           )}.zip`
         )

@@ -8,9 +8,9 @@ import gps from './gps'
 import helicorder from './helicorder'
 import home from './home'
 import lavaDome from './lava-domes'
+import pageLoader from './loader'
 import magnetic from './magnetic'
 import observation from './observation'
-import pageLoader from './loader'
 import rainfallCatalog from './rainfall-catalog'
 import rainfallDaily from './rainfall-daily'
 import rainfallStation from './rainfall-station'
@@ -25,8 +25,9 @@ import seismic from './seismic'
 import sidebarMenu from './sidebar-menu'
 import thermal from './thermal'
 import thermalAxis from './thermal-axis'
-import thermalAxisJrg from './thermal-axis-jrg'
 import thermalAxisDel from './thermal-axis-del'
+import thermalAxisJrg from './thermal-axis-jrg'
+import thermalAxisKal from './thermal-axis-kal'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import version from './version'
@@ -66,8 +67,9 @@ export default new Vuex.Store({
     sidebarMenu,
     thermal,
     thermalAxis,
-    thermalAxisJrg,
     thermalAxisDel,
+    thermalAxisJrg,
+    thermalAxisKal,
     tiltmeter,
     user,
     version,

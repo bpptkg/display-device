@@ -1,19 +1,19 @@
-import moment from 'moment'
-import axios from 'axios'
-import { calculatePeriod } from '@/utils/datetime'
+import annotations from '@/components/event-annotation/annotations'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
 import client from '@/utils/client'
-import annotations from '@/components/event-annotation/annotations'
+import { calculatePeriod } from '@/utils/datetime'
+import axios from 'axios'
+import moment from 'moment'
 
+import { baseActions, baseMutations, baseState } from '../base'
 import {
+  SET_CANCEL_TOKEN,
   SET_DATA,
   SET_END_TIME,
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
-  SET_CANCEL_TOKEN,
 } from '../base/mutations'
-import { baseState, baseMutations, baseActions } from '../base'
 import rangeSelector from './range-selector-minute'
 
 // Mutations.
@@ -33,7 +33,7 @@ export const initialState = {
   ...baseState,
   annotationOptions: annotations,
   sampling: 'minute',
-  station: 'jurangjero',
+  station: 'kaliurang',
   areas: [],
   use_sky_filter: false,
   autoUpdate: true,
@@ -108,7 +108,7 @@ export const actions = {
     }
 
     const data = await client
-      .get(`/thermal-axis-jrg/`, {
+      .get(`/thermal-axis-kal/`, {
         params: {
           start: state.startTime.format(DATETIME_FORMAT),
           end: state.endTime.format(DATETIME_FORMAT),
@@ -162,6 +162,6 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    jurangjero: initModule('jurangjero', rangeSelector[3]),
+    kaliurang: initModule('kaliurang', rangeSelector[3]),
   },
 }
