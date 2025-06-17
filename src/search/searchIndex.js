@@ -536,6 +536,10 @@ export default [
     name: 'Thermal Axis Jurang Jero',
     path: '/thermal-axis/jurangjero',
   },
+  {
+    name: 'Thermal Axis Babadan',
+    path: '/thermal-axis/babadan',
+  },
   // Rainfall Catalog.
   {
     name: 'Rainfall Catalog',

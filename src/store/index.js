@@ -28,6 +28,7 @@ import thermalAxis from './thermal-axis'
 import thermalAxisDel from './thermal-axis-del'
 import thermalAxisJrg from './thermal-axis-jrg'
 import thermalAxisKal from './thermal-axis-kal'
+import thermalAxisBbd from './thermal-axis-bbd'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import version from './version'
@@ -70,6 +71,7 @@ export default new Vuex.Store({
     thermalAxisDel,
     thermalAxisJrg,
     thermalAxisKal,
+    thermalAxisBbd,
     tiltmeter,
     user,
     version,

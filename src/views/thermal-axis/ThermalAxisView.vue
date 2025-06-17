@@ -13,6 +13,9 @@
           <SidepanelMenuItem key="3" round="left" to="/thermal-axis/deles">
             Deles
           </SidepanelMenuItem>
+          <SidepanelMenuItem key="4" round="left" to="/thermal-axis/babadan">
+            Babadan
+          </SidepanelMenuItem>
         </div>
       </SidepanelScrollContainer>
     </Sidepanel>
@@ -26,6 +29,9 @@
       </BNavItem>
       <BNavItem to="/thermal-axis/deles" active-class="active">
         Deles
+      </BNavItem>
+      <BNavItem to="/thermal-axis/babadan" active-class="active">
+        Babadan
       </BNavItem>
     </BNav>
 
