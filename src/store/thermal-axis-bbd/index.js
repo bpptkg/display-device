@@ -34,7 +34,7 @@ export const initialState = {
   annotationOptions: annotations,
   sampling: 'minute',
   autoUpdate: true,
-  station: 'deles',
+  station: 'babadan',
 }
 
 export const initState = (station, period) => {
@@ -154,6 +154,6 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    deles: initModule('deles', rangeSelector[3]),
+    babadan: initModule('babadan', rangeSelector[3]),
   },
 }
