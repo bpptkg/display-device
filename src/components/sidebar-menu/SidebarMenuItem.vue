@@ -48,7 +48,7 @@
             'vsm-menu-item',
             'submmenu-item',
             {
-              'submenu-item--active': isLinkActive(subItem),
+              'submenu-item--active': isLinkExactActive(subItem),
             },
           ]"
           @click.native="clickEvent(subItem)"

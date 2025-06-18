@@ -289,15 +289,22 @@ export default {
         {
           title: 'Thermal',
           icon: ThermalIcon,
-          href: '/thermal',
           child: [
             {
-              title: 'Thermal Station',
-              href: '/thermal/kaliurang',
+              title: 'Thermal Axis Kaliurang',
+              href: '/thermal-axis/kaliurang',
             },
             {
-              title: 'Thermal Axis',
-              href: '/thermal-axis',
+              title: 'Thermal Axis Jurang Jero',
+              href: '/thermal-axis/jurangjero',
+            },
+            {
+              title: 'Thermal Axis Deles',
+              href: '/thermal-axis/deles',
+            },
+            {
+              title: 'Thermal Axis Babadan',
+              href: '/thermal-axis/babadan',
             },
           ],
         },
