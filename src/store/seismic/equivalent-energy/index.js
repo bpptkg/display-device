@@ -19,10 +19,19 @@ import { FETCH_ENERGY, UPDATE_ENERGY } from './actions'
 import rangeSelector from './range-selector'
 
 export const NAMESPACE = 'seismic/equivalentEnergy'
+export const SET_CHANNEL = 'setChannel'
 
 export const initialState = {
   ...baseState,
   sampling: '',
+  channel: 'ml_VG_MEPSL_00_HHZ',
+  channelOptions: [
+    { text: 'VG.MEDEL.00.HHZ', value: 'ml_deles' },
+    { text: 'VG.MELAB.00.HHZ', value: 'ml_labuhan' },
+    { text: 'VG.MEPAS.00.HHZ', value: 'ml_pasarbubar' },
+    { text: 'VG.MEPUS.00.EHZ', value: 'ml_pusunglondon' },
+    { text: 'VG.MEPSL.00.HHZ', value: 'ml_VG_MEPSL_00_HHZ' },
+  ],
 }
 
 export const SamplingTypes = Object.freeze({
@@ -50,6 +59,9 @@ export const getters = {}
 
 export const mutations = {
   ...baseMutations,
+  [SET_CHANNEL](state, channel) {
+    state.channel = channel
+  },
 }
 
 export const actions = {
@@ -74,6 +86,7 @@ export const actions = {
           nolimit: true,
           sep: true,
           accumulate: state.sampling,
+          magfield: state.channel,
         },
         cancelToken: state.cancelToken.token,
       })
