@@ -13,12 +13,6 @@
           :max-custom-duration="maxCustomDuration"
           @period-selected="onPeriodChange"
         />
-        <BFormSelect
-          class="ml-2"
-          v-model="channel"
-          size="sm"
-          :options="channelOptions"
-        />
       </div>
       <div class="d-flex align-items-center">
         <MoreMenu right class="ml-2">
@@ -83,13 +77,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import {
-  BCard,
-  BDropdownItem,
-  VBTooltip,
-  BLink,
-  BFormSelect,
-} from 'bootstrap-vue'
+import { BCard, BDropdownItem, VBTooltip, BLink } from 'bootstrap-vue'
 import { saveAs } from '@/lib/file-saver'
 
 import { createCSVContent, createShortNameFromPeriod } from '@/utils/bulletin'
@@ -138,7 +126,6 @@ export default {
     BCard,
     BDropdownItem,
     BLink,
-    BFormSelect,
     DChart,
     ErrorMessage,
     MoreMenu,
@@ -188,15 +175,6 @@ export default {
 
     statsInfo() {
       return getStatsInfo(this.data)
-    },
-
-    channel: {
-      get() {
-        return this.$store.state.seismic.equivalentEnergy.channel
-      },
-      set(value) {
-        this.setChannel(value)
-      },
     },
   },
   mounted() {

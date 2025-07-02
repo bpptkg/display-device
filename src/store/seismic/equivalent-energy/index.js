@@ -23,7 +23,7 @@ export const SET_CHANNEL = 'setChannel'
 
 export const initialState = {
   ...baseState,
-  sampling: '',
+  sampling: '', // unused, but kept for compatibility
   channel: 'ml_VG_MEPSL_00_HHZ',
   channelOptions: [
     { text: 'VG.MEDEL.00.HHZ', value: 'ml_deles' },
@@ -78,15 +78,10 @@ export const actions = {
     }
 
     const data = await client
-      .get('/equivalent-energy/', {
+      .get('/equivalent-energy-rfap/', {
         params: {
-          eventdate__gte: state.startTime.format(DATETIME_FORMAT),
-          eventdate__lt: state.endTime.format(DATETIME_FORMAT),
-          eventtype__in: 'ROCKFALL,AWANPANAS',
-          nolimit: true,
-          sep: true,
-          accumulate: state.sampling,
-          magfield: state.channel,
+          start: state.startTime.format(DATETIME_FORMAT),
+          end: state.endTime.format(DATETIME_FORMAT),
         },
         cancelToken: state.cancelToken.token,
       })
