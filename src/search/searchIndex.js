@@ -575,4 +575,9 @@ export default [
     name: 'Rainfall Daily',
     path: '/weather/rainfall-daily',
   },
+  // Gravity.
+  {
+    name: 'Gravity',
+    path: '/gravity',
+  },
 ]

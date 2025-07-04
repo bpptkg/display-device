@@ -16,6 +16,7 @@ import {
   GasIcon,
   GBInsarIcon,
   GpsIcon,
+  GravityIcon,
   HomeIcon,
   InfographicIcon,
   LavaDomeIcon,
@@ -321,6 +322,11 @@ export default {
               href: '/modeling/gps',
             },
           ],
+        },
+        {
+          title: 'Gravity',
+          icon: GravityIcon,
+          href: '/gravity',
         },
         {
           title: 'Infographic',

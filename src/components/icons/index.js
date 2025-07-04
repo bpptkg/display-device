@@ -4,6 +4,7 @@ import FogIcon from './FogIcon'
 import GasIcon from './GasIcon'
 import GBInsarIcon from './GBInsarIcon'
 import GpsIcon from './GpsIcon'
+import GravityIcon from './GravityIcon'
 import HomeIcon from './HomeIcon'
 import InfographicIcon from './InfographicIcon'
 import LavaDomeIcon from './LavaDomeIcon'
@@ -31,6 +32,7 @@ export {
   GasIcon,
   GBInsarIcon,
   GpsIcon,
+  GravityIcon,
   HomeIcon,
   InfographicIcon,
   LavaDomeIcon,

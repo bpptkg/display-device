@@ -37,6 +37,7 @@ import weather from './weather'
 
 import infographic from '@/lib/infographic/store'
 import modeling from '@/lib/modeling/store'
+import gravity from './gravity'
 
 Vue.use(Vuex)
 
@@ -46,6 +47,7 @@ export default new Vuex.Store({
     gbinsar,
     geochemistry,
     gps,
+    gravity,
     helicorder,
     home,
     infographic,
@@ -68,10 +70,10 @@ export default new Vuex.Store({
     sidebarMenu,
     thermal,
     thermalAxis,
+    thermalAxisBbd,
     thermalAxisDel,
     thermalAxisJrg,
     thermalAxisKal,
-    thermalAxisBbd,
     tiltmeter,
     user,
     version,
