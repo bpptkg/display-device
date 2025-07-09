@@ -47,8 +47,8 @@ export const HelicorderChannel = Object.freeze({
   MEPSL_HHZ_VG_00: 'MEPSL_HHZ_VG_00',
   MEPUS_EHZ_VG_00: 'MEPUS_EHZ_VG_00',
   MESEL_HHZ_VG_00: 'MESEL_HHZ_VG_00',
-  MEBAB_HHZ_VG_1J: 'MEBAB_HHZ_VG_1J',
-  MEPAC_HHZ_VG_1J: 'MEPAC_HHZ_VG_1J',
+  MEBAB_HHZ_VG_00: 'MEBAB_HHZ_VG_00',
+  MEPAC_HHZ_VG_00: 'MEPAC_HHZ_VG_00',
 })
 
 export const initialState = {
@@ -268,7 +268,7 @@ export default {
         value: v,
         text: v,
       })),
-      code1: HelicorderChannel.MEPAC_HHZ_VG_1J,
+      code1: HelicorderChannel.MEPAC_HHZ_VG_00,
       code2: HelicorderChannel.MELAB_HHZ_VG_00,
       code1Visible: true,
       code2Visible: true,
@@ -309,7 +309,7 @@ export default {
     [HC.MEPSL_HHZ_VG_00]: initModule(HC.MEPSL_HHZ_VG_00),
     [HC.MEPUS_EHZ_VG_00]: initModule(HC.MEPUS_EHZ_VG_00),
     [HC.MESEL_HHZ_VG_00]: initModule(HC.MESEL_HHZ_VG_00),
-    [HC.MEBAB_HHZ_VG_1J]: initModule(HC.MEBAB_HHZ_VG_1J),
-    [HC.MEPAC_HHZ_VG_1J]: initModule(HC.MEPAC_HHZ_VG_1J),
+    [HC.MEBAB_HHZ_VG_00]: initModule(HC.MEBAB_HHZ_VG_00),
+    [HC.MEPAC_HHZ_VG_00]: initModule(HC.MEPAC_HHZ_VG_00),
   },
 }
