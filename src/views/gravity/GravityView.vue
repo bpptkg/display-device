@@ -101,6 +101,7 @@ import {
 } from '../../store/gravity'
 import { createGravityChartOptions } from '../../components/echarts/chart-options/gravity/gobs'
 import { createDcbaChartOptions } from '../../components/echarts/chart-options/gravity/dbca'
+import ErrorMessage from '../../components/error-message/ErrorMessage.vue'
 
 export default {
   name: 'GravityView',
@@ -111,6 +112,7 @@ export default {
     BFormSelect,
     BButton,
     BSpinner,
+    ErrorMessage,
   },
   data() {
     return {

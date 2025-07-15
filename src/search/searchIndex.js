@@ -580,4 +580,12 @@ export default [
     name: 'Gravity',
     path: '/gravity',
   },
+  {
+    name: 'Gravity Overview',
+    path: '/gravity/overview',
+  },
+  {
+    name: 'Gravity Obs',
+    path: '/gravity/obs',
+  },
 ]

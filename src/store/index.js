@@ -25,10 +25,10 @@ import seismic from './seismic'
 import sidebarMenu from './sidebar-menu'
 import thermal from './thermal'
 import thermalAxis from './thermal-axis'
+import thermalAxisBbd from './thermal-axis-bbd'
 import thermalAxisDel from './thermal-axis-del'
 import thermalAxisJrg from './thermal-axis-jrg'
 import thermalAxisKal from './thermal-axis-kal'
-import thermalAxisBbd from './thermal-axis-bbd'
 import tiltmeter from './tiltmeter'
 import user from './user'
 import version from './version'
@@ -38,6 +38,7 @@ import weather from './weather'
 import infographic from '@/lib/infographic/store'
 import modeling from '@/lib/modeling/store'
 import gravity from './gravity'
+import gravityOverview from './gravity-overview'
 
 Vue.use(Vuex)
 
@@ -48,6 +49,7 @@ export default new Vuex.Store({
     geochemistry,
     gps,
     gravity,
+    gravityOverview,
     helicorder,
     home,
     infographic,

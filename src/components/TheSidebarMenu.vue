@@ -327,6 +327,16 @@ export default {
           title: 'Gravity',
           icon: GravityIcon,
           href: '/gravity',
+          child: [
+            {
+              title: 'Overview',
+              href: '/gravity/overview',
+            },
+            {
+              title: 'Gravity Obs',
+              href: '/gravity/obs',
+            },
+          ],
         },
         {
           title: 'Infographic',

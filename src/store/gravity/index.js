@@ -56,6 +56,7 @@ export const mutations = {
 
 export const actions = {
   async [FETCH_GRAVITY_ITEMS]({ commit, state }) {
+    commit(SET_ERROR, null)
     const data = await client
       .get('/gravity/items/', {
         params: {
@@ -72,6 +73,7 @@ export const actions = {
     commit(SET_DATA, data)
   },
   async [FETCH_GRAVITY_PERIODS]({ commit }) {
+    commit(SET_ERROR, null)
     const periods = await client
       .get('/gravity/periods/')
       .then((response) => response.data)

@@ -1,20 +1,22 @@
-import { max, min } from 'lodash'
+import moment from 'moment'
 import { NO_DATA_NOTATION } from '../../../../constants/stats'
 import { createRowGrid } from '../../../../utils/echarts/grid'
-import { createCircleTemplate } from '../../../../utils/series'
+import {
+  createCircleTemplate,
+  toUnixMiliSeconds,
+} from '../../../../utils/series'
+import { tab20ColorMap } from '../../../../utils/tab20'
 import { defaultToolbox } from '../common/toolbox'
+import { smartIndex } from '../rfap-distdir'
 
-const createXAxis = (min, max) => {
-  const margin = 0.05 * (max - min)
+const createXAxis = () => {
   const options = [
     {
       gridIndex: 0,
       axisLabel: { show: true },
       splitLine: { show: false },
       position: 'bottom',
-      type: 'value',
-      min: min - margin,
-      max: max + margin,
+      type: 'time',
     },
   ]
 
@@ -26,6 +28,7 @@ const createYAxis = () => {
     {
       gridIndex: 0,
       nameGap: 60,
+      name: 'Gravity (mGal)',
       nameLocation: 'center',
       scale: true,
       splitLine: { show: false },
@@ -45,56 +48,28 @@ const mediaQuery = [
       maxWidth: 575.98,
     },
     option: {
-      grid: createRowGrid(1, { top: 10, bottom: 10, left: 8, right: 0 }),
+      grid: createRowGrid(1, { top: 10, bottom: 20, left: 20, right: 5 }),
     },
   },
 ]
 
-const getDcba = (data, x) => {
-  return data.dcba
-    .filter((d) =>
-      x === 'lat'
-        ? d.plot.toLowerCase() === 'lintang'
-        : d.plot.toLowerCase() === 'bujur'
-    )
-    .sort((a, b) => a[x] - b[x])
-}
-
-const getMinMax = (data, x) => {
-  const dcba = getDcba(data, x)
-  const minValue = min(dcba.map((d) => d[x]))
-  const maxValue = max(dcba.map((d) => d[x]))
-  return { minValue, maxValue }
-}
-
-const createSeries = ({ data, x }) => {
-  const dcba = getDcba(data, x)
-  return [
-    {
-      data: dcba.map((d) => [d[x], d.elev_scl, d.sta_fid, d.sta]),
-      name: 'Elevation (scaled)',
-      type: 'line',
-      symbol: 'circle',
-      symbolSize: 6,
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      itemStyle: {
-        color: '#1f77b4',
-      },
+const createSeries = ({ data }) => {
+  return data.map((benchmark, index) => ({
+    data: benchmark.ts.map((d) => [
+      toUnixMiliSeconds(d.period),
+      d.g_obs,
+      benchmark.sta_fid,
+      benchmark.sta,
+    ]),
+    name: `${benchmark.sta_fid}`,
+    type: 'line',
+    symbol: 'none',
+    symbolSize: 3,
+    itemStyle: {
+      color:
+        tab20ColorMap[smartIndex(index, data.length, tab20ColorMap.length)],
     },
-    {
-      data: dcba.map((d) => [d[x], d.dcba, d.sta_fid, d.sta]),
-      name: 'ΔABL',
-      type: 'line',
-      symbol: 'circle',
-      symbolSize: 6,
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      itemStyle: {
-        color: '#2ca02c',
-      },
-    },
-  ]
+  }))
 }
 
 export const tooltipFormatter = () => {
@@ -106,12 +81,12 @@ export const tooltipFormatter = () => {
         const { seriesName, value, color } = param
         if (index === 0) {
           template.push(`
-            ${createCircleTemplate(color)} ${value[2]} (${value[3]})<br />
-            X: ${value[0].toFixed(4)}<br />
+            ${moment(value[0]).format('YYYY-MM-DD')}<br />
           `)
         }
         template.push(`
-        ${seriesName}: ${
+        ${createCircleTemplate(color)} 
+        ${value[3]} (${seriesName}): ${
           isFinite(value[1]) ? value[1].toFixed(4) : NO_DATA_NOTATION
         }<br />
         `)
@@ -123,13 +98,12 @@ export const tooltipFormatter = () => {
   }
 }
 
-export const createDcbaChartOptions = ({ data, x }) => {
-  const { minValue, maxValue } = getMinMax(data, x)
+export const createGravityOverviewChartOptions = ({ data }) => {
   return {
     baseOption: {
       backgroundColor: '#fff',
       title: {
-        text: 'Gravity ΔABL',
+        text: 'Gravity Overview',
         textStyle: {
           fontWeight: 'bold',
           fontSize: 14,
@@ -145,12 +119,11 @@ export const createDcbaChartOptions = ({ data, x }) => {
         textStyle: { fontSize: 9 },
       },
       toolbox: defaultToolbox,
-      grid: createRowGrid(1, { top: 10, bottom: 10, left: 5, right: 0 }),
-      xAxis: createXAxis(minValue, maxValue),
+      grid: createRowGrid(1, { top: 10, bottom: 10, left: 8, right: 2 }),
+      xAxis: createXAxis(),
       yAxis: createYAxis(),
       series: createSeries({
         data,
-        x,
       }),
       tooltip: {
         trigger: 'axis',

@@ -414,7 +414,15 @@ const routes = [
   },
   {
     path: '/gravity',
+    redirect: '/gravity/obs',
+  },
+  {
+    path: '/gravity/obs',
     component: () => import('../views/gravity/GravityView'),
+  },
+  {
+    path: '/gravity/overview',
+    component: () => import('../views/gravity/GravityOverview'),
   },
   {
     path: '*',
