@@ -77,7 +77,7 @@ export const actions = {
 
     if (Array.isArray(state.eventType) && state.eventType.length) {
       const requests = state.eventType.map((event) => {
-        return client.get('/energy/', {
+        return client.get('/seismic-energy/', {
           params: {
             accumulate: state.sampling,
             start: state.startTime.format(DATETIME_FORMAT),
