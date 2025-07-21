@@ -1,27 +1,27 @@
-import moment from 'moment'
 import axios from 'axios'
+import moment from 'moment'
 
-import client from '@/utils/client'
+import { primaryAnnotations } from '@/components/event-annotation/annotations'
 import { DATETIME_FORMAT, DateRangeTypes } from '@/constants/date'
-import { calculatePeriod } from '@/utils/datetime'
 import {
-  EnergyTypes,
   EnergyEventTypes,
+  EnergyTypes,
   SamplingTypes,
 } from '@/constants/energy'
-import { primaryAnnotations } from '@/components/event-annotation/annotations'
+import client from '@/utils/client'
+import { calculatePeriod } from '@/utils/datetime'
 
+import { baseActions, baseMutations, baseState } from '../../base'
 import {
+  SET_CANCEL_TOKEN,
   SET_DATA,
   SET_END_TIME,
   SET_ERROR,
   SET_LAST_UPDATED,
   SET_START_TIME,
-  SET_CANCEL_TOKEN,
 } from '../../base/mutations'
-import { baseState, baseMutations, baseActions } from '../../base'
-import { SET_EVENT_TYPE, SET_SAMPLING } from './mutations'
 import { FETCH_ENERGY, UPDATE_ENERGY } from './actions'
+import { SET_EVENT_TYPE, SET_SAMPLING } from './mutations'
 import rangeSelector from './range-selector'
 
 export const initialState = {
@@ -77,13 +77,12 @@ export const actions = {
 
     if (Array.isArray(state.eventType) && state.eventType.length) {
       const requests = state.eventType.map((event) => {
-        return client.get('/energy/', {
+        return client.get('/seismic-energy/', {
           params: {
             accumulate: state.sampling,
-            eventdate__gte: state.startTime.format(DATETIME_FORMAT),
-            eventdate__lt: state.endTime.format(DATETIME_FORMAT),
-            eventtype__in: event,
-            nolimit: true,
+            start: state.startTime.format(DATETIME_FORMAT),
+            end: state.endTime.format(DATETIME_FORMAT),
+            eventtypes: event,
           },
           cancelToken: state.cancelToken.token,
         })
@@ -102,13 +101,12 @@ export const actions = {
       commit(SET_LAST_UPDATED, moment())
     } else {
       const data = await client
-        .get('/energy/', {
+        .get('/seismic-energy/', {
           params: {
             accumulate: state.sampling,
-            eventdate__gte: state.startTime.format(DATETIME_FORMAT),
-            eventdate__lt: state.endTime.format(DATETIME_FORMAT),
-            eventtype__in: state.eventType,
-            nolimit: true,
+            start: state.startTime.format(DATETIME_FORMAT),
+            end: state.endTime.format(DATETIME_FORMAT),
+            eventtypes: state.eventType,
           },
           cancelToken: state.cancelToken.token,
         })
