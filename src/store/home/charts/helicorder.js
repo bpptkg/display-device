@@ -13,5 +13,8 @@ export default {
     [HelicorderChannel.MEPSL_HHZ_VG_00]: initModule(
       HelicorderChannel.MEPSL_HHZ_VG_00
     ),
+    [HelicorderChannel.MEPAC_HHZ_VG_00]: initModule(
+      HelicorderChannel.MEPAC_HHZ_VG_00
+    ),
   },
 }

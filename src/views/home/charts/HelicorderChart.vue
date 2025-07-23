@@ -44,7 +44,7 @@ import {
 import { UPDATE_IMAGE } from '@/store/helicorder/actions'
 import { validateWidth, validateHeight } from '@/utils/helicorder'
 
-const NAMESPACE = `home/charts/helicorder/${HelicorderChannel.MEPSL_HHZ_VG_00}`
+const NAMESPACE = `home/charts/helicorder/${HelicorderChannel.MEPAC_HHZ_VG_00}`
 
 export default {
   name: 'HelicorderChart',
