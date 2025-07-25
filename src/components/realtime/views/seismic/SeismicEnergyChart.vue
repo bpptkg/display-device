@@ -74,7 +74,7 @@ export default {
           yAxis: createYAxis(this.type),
           series: createSeries(this.data, this.type),
           title: {
-            text: 'Seismic Energy Total',
+            text: 'Hourly Total Seismic Energy',
             left: 'center',
             align: 'right',
             textStyle: {

@@ -27,7 +27,7 @@ export const createXAxis = (min, max) => {
 export const createYAxis = ({ sampling }) => {
   return [
     {
-      name: sampling === 'day' ? 'Daily count' : 'Hourly count',
+      name: sampling === 'day' ? 'Daily Count' : 'Hourly Count',
       nameGap: 40,
       nameLocation: 'center',
       splitLine: { show: false },
@@ -37,7 +37,10 @@ export const createYAxis = ({ sampling }) => {
       axisLabel: {
         formatter: axisLabelFormatter,
       },
-      name: sampling === 'day' ? 'Daily equiv. energy' : 'Hourly equiv. energy',
+      name:
+        sampling === 'day'
+          ? 'Daily Equivalent Energy'
+          : 'Hourly Equivalent Energy',
       nameGap: 45,
       nameLocation: 'center',
       splitLine: { show: false },
@@ -47,7 +50,7 @@ export const createYAxis = ({ sampling }) => {
       axisLabel: {
         formatter: axisLabelFormatter,
       },
-      name: 'Cum. equiv. energy',
+      name: 'Cum. Equivalent Energy',
       nameGap: 45,
       nameLocation: 'center',
       offset: 65,

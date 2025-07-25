@@ -35,7 +35,7 @@ export default [
     path: '/seismic/energy',
   },
   {
-    name: 'Seismic Energy Total',
+    name: 'Total Seismic Energy',
     path: '/seismic/energy/total',
   },
   {

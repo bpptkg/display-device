@@ -59,7 +59,7 @@ export default {
           ...baseChartOptions({
             sampling: SamplingTypes.HOUR,
             title: {
-              text: 'RF & AP Energy',
+              text: 'Hourly RF & AP Energy',
               textStyle: {
                 fontSize: 14,
                 fontWeight: 'normal',

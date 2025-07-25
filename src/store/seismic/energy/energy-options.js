@@ -4,7 +4,7 @@ export default [
   {
     value: EnergyTypes.TOTAL,
     text: 'VTA+VTB+MP',
-    chartTitle: 'Seismic Energy Total',
+    chartTitle: 'Total Seismic Energy',
   },
   {
     value: EnergyTypes.VT,

@@ -37,7 +37,7 @@ export const createYAxis = (type) => {
         axisLabel: {
           formatter: axisLabelFormatter,
         },
-        name: 'Energy Total (MJ)',
+        name: 'Total Energy (MJ)',
         nameGap: 45,
         nameLocation: 'center',
         scale: false,
@@ -71,7 +71,7 @@ export const createYAxis = (type) => {
         axisLabel: {
           formatter: axisLabelFormatter,
         },
-        name: 'Cum. Energy Total (MJ)',
+        name: 'Cum. Total Energy (MJ)',
         nameGap: 42,
         nameLocation: 'center',
         offset: 130,
@@ -128,7 +128,7 @@ export const createSeries = (data, type, { annotations = [] } = {}) => {
             data: annotations,
             symbol: 'none',
           },
-          name: 'Energy Total',
+          name: 'Total Energy',
           type: 'bar',
           yAxisIndex: 0,
         },
