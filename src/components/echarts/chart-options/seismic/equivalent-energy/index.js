@@ -11,7 +11,7 @@ import { SamplingTypes } from '@/store/seismic/equivalent-energy'
 export const SeriesName = Object.freeze({
   RF_COUNT: 'RF count',
   AP_COUNT: 'AP count',
-  DAILY_EQUIV_ENERGY: 'Daily equiv. energy',
+  DAILY_EQUIV_ENERGY: 'Equiv. energy',
   CUM_EQUIV_ENERGY: 'Cum. equiv. energy',
 })
 
@@ -24,10 +24,10 @@ export const createXAxis = (min, max) => {
   }
 }
 
-export const createYAxis = () => {
+export const createYAxis = ({ sampling }) => {
   return [
     {
-      name: 'Daily count',
+      name: sampling === 'day' ? 'Daily count' : 'Hourly count',
       nameGap: 40,
       nameLocation: 'center',
       splitLine: { show: false },
@@ -37,7 +37,7 @@ export const createYAxis = () => {
       axisLabel: {
         formatter: axisLabelFormatter,
       },
-      name: 'Daily equivalent energy',
+      name: sampling === 'day' ? 'Daily equiv. energy' : 'Hourly equiv. energy',
       nameGap: 45,
       nameLocation: 'center',
       splitLine: { show: false },
@@ -47,7 +47,7 @@ export const createYAxis = () => {
       axisLabel: {
         formatter: axisLabelFormatter,
       },
-      name: 'Cum. equivalent energy',
+      name: 'Cum. equiv. energy',
       nameGap: 45,
       nameLocation: 'center',
       offset: 65,
@@ -197,6 +197,6 @@ export const baseChartOptions = ({
       },
       ...title,
     },
-    yAxis: createYAxis(),
+    yAxis: createYAxis({ sampling }),
   }
 }
