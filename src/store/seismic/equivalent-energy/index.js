@@ -23,7 +23,7 @@ export const SET_CHANNEL = 'setChannel'
 
 export const initialState = {
   ...baseState,
-  sampling: '', // unused, but kept for compatibility
+  sampling: 'day',
   channel: 'ml_VG_MEPSL_00_HHZ',
   channelOptions: [
     { text: 'VG.MEDEL.00.HHZ', value: 'ml_deles' },
@@ -82,6 +82,7 @@ export const actions = {
         params: {
           start: state.startTime.format(DATETIME_FORMAT),
           end: state.endTime.format(DATETIME_FORMAT),
+          sampling: state.sampling,
         },
         cancelToken: state.cancelToken.token,
       })

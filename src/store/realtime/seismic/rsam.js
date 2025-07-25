@@ -8,7 +8,7 @@ const period = {
 
 export default {
   namespaced: true,
-  state: initState('MEPAS_HHZ_VG_00', period),
+  state: initState('MEPAC_HHZ_VG_00', period),
   getters,
   mutations,
   actions,
