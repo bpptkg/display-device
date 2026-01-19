@@ -93,7 +93,7 @@ export default {
       this.delegateMethod('clear')
     },
     async downloadData() {
-      const blob = new Blob([createCSVContent(this.data)], {
+      const blob = new Blob([createCSVContent(this.rainfallData)], {
         type: 'text/csv;charset=utf-8',
       })
       saveAs(
