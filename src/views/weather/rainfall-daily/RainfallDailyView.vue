@@ -265,7 +265,7 @@ export default {
       this.data.forEach((array, index) => {
         zip.file(
           `${this.stations[index].stationId}.csv`,
-          createCSVContent(get(array, 'data', []))
+          createCSVContent(array)
         )
       })
 
