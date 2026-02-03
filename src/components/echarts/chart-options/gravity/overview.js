@@ -27,7 +27,7 @@ const createYAxis = () => {
   const options = [
     {
       gridIndex: 0,
-      nameGap: 60,
+      nameGap: 70,
       name: 'Gravity (mGal)',
       nameLocation: 'center',
       scale: true,
@@ -35,6 +35,7 @@ const createYAxis = () => {
       type: 'value',
       axisLabel: {
         show: true,
+        formatter: (v) => v.toFixed(2),
       },
     },
   ]
@@ -119,7 +120,7 @@ export const createGravityOverviewChartOptions = ({ data }) => {
         textStyle: { fontSize: 9 },
       },
       toolbox: defaultToolbox,
-      grid: createRowGrid(1, { top: 10, bottom: 10, left: 8, right: 2 }),
+      grid: createRowGrid(1, { top: 10, bottom: 10, left: 10, right: 2 }),
       xAxis: createXAxis(),
       yAxis: createYAxis(),
       series: createSeries({
