@@ -175,7 +175,7 @@ export default {
   namespaced: true,
   modules: {
     namespaced: true,
-    [HC.MEDEL_EHZ_VG_00]: initModule(HC.MEDEL_EHZ_VG_00),
+    [HC.MEDLS_EHZ_VG_00]: initModule(HC.MEDLS_EHZ_VG_00),
     [HC.MEDEL_HHZ_VG_00]: initModule(HC.MEDEL_HHZ_VG_00),
     [HC.MEGEM_HHZ_VG_00]: initModule(HC.MEGEM_HHZ_VG_00),
     [HC.MEGRA_HHZ_VG_00]: initModule(HC.MEGRA_HHZ_VG_00),

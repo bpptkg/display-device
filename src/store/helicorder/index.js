@@ -30,7 +30,7 @@ export const defaultPeriod = rangeSelector[0]
  * Refer to the Winston Wave Server for more information.
  */
 export const HelicorderChannel = Object.freeze({
-  MEDEL_EHZ_VG_00: 'MEDEL_EHZ_VG_00',
+  MEDLS_EHZ_VG_00: 'MEDLS_EHZ_VG_00',
   MEDEL_HHZ_VG_00: 'MEDEL_HHZ_VG_00',
   MEGEM_HHZ_VG_00: 'MEGEM_HHZ_VG_00',
   MEGRA_HHZ_VG_00: 'MEGRA_HHZ_VG_00',
@@ -292,7 +292,7 @@ export default {
   actions: {},
   modules: {
     namespaced: true,
-    [HC.MEDEL_EHZ_VG_00]: initModule(HC.MEDEL_EHZ_VG_00),
+    [HC.MEDLS_EHZ_VG_00]: initModule(HC.MEDLS_EHZ_VG_00),
     [HC.MEDEL_HHZ_VG_00]: initModule(HC.MEDEL_HHZ_VG_00),
     [HC.MEGEM_HHZ_VG_00]: initModule(HC.MEGEM_HHZ_VG_00),
     [HC.MEGRA_HHZ_VG_00]: initModule(HC.MEGRA_HHZ_VG_00),
