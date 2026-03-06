@@ -26,6 +26,7 @@ export const NAMESPACE = 'rainfallStation'
  */
 export const STATIONS = [
   {
+    id: 'tb:pasarbubar',
     stationId: 'tb:pasarbubar',
     stationName: 'Pasarbubar',
     stationLabel: 'Pasarbubar (Tipping Bucket)',
@@ -33,6 +34,7 @@ export const STATIONS = [
     isVisible: false,
   },
   {
+    id: 'vs:pasarbubar',
     stationId: 'vs:pasarbubar',
     stationName: 'Pasarbubar',
     stationLabel: 'Pasarbubar (Vaisala)',
@@ -44,6 +46,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'vs:pasarbubar-old',
     stationId: 'vs:pasarbubar',
     stationName: 'Pasarbubar',
     stationLabel: 'Pasarbubar (Vaisala Old)',
@@ -55,6 +58,7 @@ export const STATIONS = [
     isVisible: false,
   },
   {
+    id: 'tb:gunungijo',
     stationId: 'tb:gunungijo',
     stationName: 'Gunung Ijo',
     stationLabel: 'Gunung Ijo (Tipping Bucket)',
@@ -62,6 +66,7 @@ export const STATIONS = [
     isVisible: false,
   },
   {
+    id: 'tb:klatakan',
     stationId: 'tb:klatakan',
     stationName: 'Klatakan',
     stationLabel: 'Klatakan (Tipping Bucket)',
@@ -69,6 +74,7 @@ export const STATIONS = [
     isVisible: false,
   },
   {
+    id: 'vs:klatakan',
     stationId: 'vs:klatakan',
     stationName: 'Klatakan',
     stationLabel: 'Klatakan (Vaisala)',
@@ -80,6 +86,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'tb:labuhan',
     stationId: 'tb:labuhan',
     stationName: 'Labuhan',
     stationLabel: 'Labuhan (Tipping Bucket)',
@@ -87,6 +94,7 @@ export const STATIONS = [
     isVisible: false,
   },
   {
+    id: 'vs:labuhan',
     stationId: 'vs:labuhan',
     stationName: 'Labuhan',
     stationLabel: 'Labuhan (Vaisala)',
@@ -98,6 +106,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'vs:selo',
     stationId: 'vs:selo',
     stationName: 'Selo',
     stationLabel: 'Selo (Vaisala)',
@@ -109,6 +118,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'vs:jurangjero',
     stationId: 'vs:jurangjero',
     stationName: 'Jurang Jero',
     stationLabel: 'Jurang Jero (Vaisala)',
@@ -120,6 +130,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'vs:babadan',
     stationId: 'vs:babadan',
     stationName: 'Babadan',
     stationLabel: 'Babadan (Vaisala)',
@@ -131,6 +142,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'vs:jrakah',
     stationId: 'vs:jrakah',
     stationName: 'Jrakah',
     stationLabel: 'Jrakah (Vaisala)',
@@ -142,6 +154,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'vs:kaliurang',
     stationId: 'vs:kaliurang',
     stationName: 'Kaliurang',
     stationLabel: 'Kaliurang (Vaisala)',
@@ -153,6 +166,7 @@ export const STATIONS = [
     isVisible: true,
   },
   {
+    id: 'vs:ngepos',
     stationId: 'vs:ngepos',
     stationName: 'Ngepos',
     stationLabel: 'Ngepos (Vaisala)',

@@ -10,15 +10,15 @@ import { get } from 'lodash'
 import { createCircleTemplate, createDividerTemplate } from '@/utils/series'
 import moment from 'moment'
 
-const findOriginalIndex = (stations, stationId) => {
-  return stations.findIndex((v) => v.stationId === stationId)
+const findOriginalIndex = (stations, id) => {
+  return stations.findIndex((v) => v.id === id)
 }
 
 export const createSeries = (allData, stations) => {
   return stations
     .filter((station) => station.isVisible)
     .map((station, index) => {
-      const dataIndex = findOriginalIndex(stations, station.stationId) // Find original data index of visible station.
+      const dataIndex = findOriginalIndex(stations, station.id) // Find original data index of visible station.
       const res = getSeriesByIndex(allData, dataIndex, {
         defaultData: Object.create(null),
       })

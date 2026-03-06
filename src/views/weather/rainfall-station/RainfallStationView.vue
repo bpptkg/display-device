@@ -225,7 +225,7 @@ export default {
       const zip = new JSZip()
       this.data.forEach((array, index) => {
         zip.file(
-          `${this.stations[index].stationId}.csv`,
+          `${this.stations[index].stationId}_${this.stations[index].stationLabel}.csv`,
           createCSVContent(get(array, 'data', []))
         )
       })
