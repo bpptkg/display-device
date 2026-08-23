@@ -37,7 +37,7 @@ const rangeSelector = [
 ]
 
 export const maxCustomDuration = {
-  count: 5,
+  count: 10,
   type: 'years',
 }
 
