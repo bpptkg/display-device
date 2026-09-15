@@ -33,6 +33,15 @@
       />
     </BDropdownItem>
 
+    <BDropdownItem @click="downloadAutohypo">
+      Download Data (Autohypo)
+      <InfoIcon
+        v-b-tooltip.hover
+        size="sm"
+        title="Download plottable events with hypocenter autohypo mode."
+      />
+    </BDropdownItem>
+
     <BDropdownItem @click="downloadRaw">
       Download Raw Data
       <InfoIcon
@@ -66,20 +75,15 @@ export default {
     ...mapState(NAMESPACE, {
       data: (state) => state.data,
       period: (state) => state.period,
-      settings: (state) => state.settings,
     }),
     ...mapGetters(NAMESPACE, [
+      'modeEvents',
       'plottableEvents',
-      'locatableEvents',
-      'btbbEvents',
       'btbbEventsUnfiltered',
+      'autohypoEventsUnfiltered',
     ]),
     eventData() {
-      return this.settings.useBtbbHypo
-        ? this.btbbEvents
-        : this.settings.onlyLocatable
-        ? this.locatableEvents
-        : this.plottableEvents
+      return this.modeEvents
     },
   },
   methods: {
@@ -107,6 +111,16 @@ export default {
       saveAs(
         blob,
         `hypo-automatic-${createShortNameFromPeriod(this.period)}.json`
+      )
+    },
+
+    async downloadAutohypo() {
+      const blob = new Blob([JSON.stringify(this.autohypoEventsUnfiltered)], {
+        type: 'application/json;charset=utf-8',
+      })
+      saveAs(
+        blob,
+        `hypo-autohypo-${createShortNameFromPeriod(this.period)}.json`
       )
     },
 

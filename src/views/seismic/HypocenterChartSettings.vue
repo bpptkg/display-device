@@ -65,17 +65,6 @@
             Show surface wireframe
           </BFormCheckbox>
         </BFormGroup>
-
-        <BFormGroup
-          description="If checked, use hypocenter from BackTrackBB program. Plot only locatable events will have no effect."
-        >
-          <BFormCheckbox
-            v-model="currentSettings.useBtbbHypo"
-            name="Use BackTrackBB hypocenter"
-          >
-            Use BackTrackBB hypocenter
-          </BFormCheckbox>
-        </BFormGroup>
       </BCol>
 
       <BCol md="6">

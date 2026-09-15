@@ -173,7 +173,11 @@ import {
   SET_PERIOD,
   SET_START_TIME,
 } from '@/store/base/mutations'
-import { NAMESPACE, DEFAULT_RMS_RANGE } from '@/store/seismic/hypocenter'
+import {
+  NAMESPACE,
+  DEFAULT_RMS_RANGE,
+  HYPO_MODES,
+} from '@/store/seismic/hypocenter'
 import {
   SET_SETTINGS,
   USE_HYPO_MODE,
@@ -229,8 +233,9 @@ export default {
       view: VIEWS.chart,
       VIEWS,
       hypocenterModeOptions: [
-        { value: 'manual', text: 'Manual' },
-        { value: 'automatic', text: 'Automatic' },
+        { value: HYPO_MODES.manual, text: 'Manual' },
+        { value: HYPO_MODES.automatic, text: 'Automatic' },
+        { value: HYPO_MODES.autohypo, text: 'Autohypo' },
       ],
       DEFAULT_RMS_RANGE,
     }
@@ -252,25 +257,16 @@ export default {
       betaAngles: (state) => state.betaAngles,
     }),
     ...mapGetters(NAMESPACE, [
-      'plottableEvents',
-      'plottableEventsUnfiltered',
-      'locatableEvents',
-      'btbbEvents',
-      'btbbEventsUnfiltered',
+      'modeEvents',
+      'modeEventsUnfiltered',
       'rmsRange',
     ]),
     eventData() {
-      return this.settings.useBtbbHypo
-        ? this.btbbEvents
-        : this.settings.onlyLocatable
-        ? this.locatableEvents
-        : this.plottableEvents
+      return this.modeEvents
     },
     eventInfo() {
       return {
-        plottableEvents: this.settings.useBtbbHypo
-          ? this.btbbEventsUnfiltered
-          : this.plottableEventsUnfiltered,
+        plottableEvents: this.modeEventsUnfiltered,
         currentlyPlotted: this.eventData,
         startTime: this.startTime,
         endTime: this.endTime,
@@ -283,15 +279,7 @@ export default {
           alpha: parseFloat(this.alpha),
           beta: parseFloat(this.beta),
         }),
-        series: createSeries(
-          this.topo,
-          this.settings.useBtbbHypo
-            ? this.btbbEvents
-            : this.settings.onlyLocatable
-            ? this.locatableEvents
-            : this.plottableEvents,
-          this.settings
-        ),
+        series: createSeries(this.topo, this.eventData, this.settings),
       }
 
       if (this.data.length) {
@@ -308,7 +296,7 @@ export default {
     },
     hypocenterMode: {
       get: function () {
-        return this.settings.useBtbbHypo ? 'automatic' : 'manual'
+        return this.settings.hypoMode || HYPO_MODES.automatic
       },
       set: function (value) {
         this.useHypoMode(value)
@@ -446,7 +434,9 @@ export default {
       }
     },
     onSettingsChanged(settings) {
-      this.setSettings(settings)
+      const chartSettings = { ...settings }
+      delete chartSettings.hypoMode
+      this.setSettings(chartSettings)
       this.mergeOptions()
     },
     init() {

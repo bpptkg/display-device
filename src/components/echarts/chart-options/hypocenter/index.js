@@ -28,7 +28,7 @@ export const DEFAULT_SETTINGS = {
   timeColormap: 'rainbow',
   timeMax: null,
   timeMin: null,
-  useBtbbHypo: false,
+  hypoMode: 'manual',
 }
 
 /**
@@ -80,6 +80,7 @@ export const createSeries = (
           v.seiscompid, // 11
           v.btbb, // 12
           v.rmsp, // 13
+          v.autohypo, // 14
 
           // ECharts strangely show last item label in the tooltip. So, we keep
           // eventtype always in the last order.
@@ -299,7 +300,7 @@ export const baseChartOptions = ({
   theme = 'dark',
   autoRotate = false,
   autoRotateSpeed = 10,
-  useBtbbHypo = false,
+  hypoMode = 'manual',
   alpha = 20, // Vertical view angle.
   beta = 40, // Horizontal view angle.
   minAlpha = -360,
@@ -348,7 +349,7 @@ export const baseChartOptions = ({
       Elevation: ${value[2].toFixed(1)} m<br />
       `
 
-        if (useBtbbHypo) {
+        if (hypoMode === 'automatic') {
           const btbbInfo = `
       ${createDividerTemplate()}
       X: ${value[12].x.toFixed(2)}
@@ -366,6 +367,22 @@ export const baseChartOptions = ({
       }<br />
       `
           template += btbbInfo
+        } else if (hypoMode === 'autohypo') {
+          const loc = value[14] || {}
+          const fmt = (v, digits = 4) =>
+            Number.isFinite(v) ? Number(v).toFixed(digits) : '-'
+          const autohypoInfo = `
+      ${createDividerTemplate()}
+      Latitude: ${fmt(loc.lat, 6)}<br />
+      Longitude: ${fmt(loc.lon, 6)}<br />
+      Depth: ${fmt(loc.z, 3)} km<br />
+      RMS: ${fmt(loc.rmsp, 3)}<br />
+      Method: ${loc.method || '-'}<br />
+      Modified: ${
+        loc.modified ? moment(loc.modified).format(DATETIME_FORMAT) : '-'
+      }<br />
+      `
+          template += autohypoInfo
         } else {
           const locInfo = `
       ${createDividerTemplate()}
