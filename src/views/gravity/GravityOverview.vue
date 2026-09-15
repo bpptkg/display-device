@@ -23,10 +23,10 @@
             @period-selected="onPeriodChange"
             class="form-label"
           />
-          <GravityOverviewFilter
+          <EventAnnotation
             class="ml-2"
-            :items="seriesFilter"
-            @change="handleFilterChange"
+            :annotations="annotationOptions"
+            @change="handleUpdateAnnotations"
           />
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
@@ -35,7 +35,13 @@
           </MoreMenu>
         </div>
       </div>
-      <DChart :options="chartOptions" class="chart" ref="chart" manual-update />
+      <DChart
+        ref="chart"
+        :options="chartOptions"
+        :style="{ height: `${chartHeight}px` }"
+        class="chart"
+        manual-update
+      />
     </div>
   </div>
 </template>
@@ -43,36 +49,45 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { BCard, BLink, BDropdownItem } from 'bootstrap-vue'
-import DChart from '../../components/echarts/chart/DChart.vue'
+
+import chartMixins from '@/components/mixins/charts'
+import DChart from '@/components/echarts/chart/DChart'
+import ErrorMessage from '@/components/error-message'
+import EventAnnotation from '@/components/event-annotation'
+import MoreMenu from '@/components/more-menu'
+import RangeSelector from '@/components/range-selector'
+
 import {
-  FETCH_GRAVITY_TIMESERIES,
-  NAMESPACE,
+  createGravityOverviewChartOptions,
+  getGravityChartHeight,
+  getStationTimeRanges,
+} from '@/components/echarts/chart-options/gravity/overview'
+
+import { NAMESPACE, UPDATE_GRAVITY } from '@/store/gravity-overview'
+import rangeSelector, {
+  maxCustomDuration,
+} from '@/store/gravity-overview/range-selector'
+import {
   SET_PERIOD,
   SET_START_TIME,
   SET_END_TIME,
-  SET_VISIBLE,
-} from '../../store/gravity-overview'
-import { createGravityOverviewChartOptions } from '../../components/echarts/chart-options/gravity/overview'
-import ErrorMessage from '../../components/error-message/ErrorMessage.vue'
-import MoreMenu from '../../components/more-menu/MoreMenu.vue'
-import rangeSelector, {
-  maxCustomDuration,
-} from '../../store/gravity-overview/range-selector'
-import GravityOverviewFilter from './GravityOverviewFilter.vue'
-import RangeSelector from '../../components/range-selector'
+  SET_ANNOTATION_OPTIONS,
+} from '@/store/base/mutations'
+import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 
 export default {
   name: 'GravityOverview',
   components: {
-    DChart,
     BCard,
     BLink,
-    ErrorMessage,
     BDropdownItem,
+    DChart,
+    ErrorMessage,
+    EventAnnotation,
     MoreMenu,
     RangeSelector,
-    GravityOverviewFilter,
   },
+  mixins: [chartMixins],
   data() {
     return {
       maxCustomDuration,
@@ -96,25 +111,24 @@ export default {
       endTime(state) {
         return state[NAMESPACE].endTime
       },
-      series(state) {
-        return state[NAMESPACE].series
+      annotationOptions(state) {
+        return state[NAMESPACE].annotationOptions
+      },
+      annotations(state) {
+        return state[NAMESPACE].annotations
       },
     }),
-    seriesFilter() {
-      return this.data.map((sta) => {
-        let isVisible = true
-        if (sta.sta_fid in this.series) {
-          isVisible = this.series[sta.sta_fid]
-        }
-        return {
-          id: sta.sta_fid,
-          name: `${sta.sta} (${sta.sta_fid})`,
-          isVisible,
-        }
-      })
+    chartHeight() {
+      return getGravityChartHeight(this.data.length)
     },
     chartOptions() {
-      return this.getChartOptions()
+      return createGravityOverviewChartOptions({
+        data: this.data,
+        annotations: this.annotations,
+      })
+    },
+    timeRanges() {
+      return getStationTimeRanges(this.data)
     },
   },
   methods: {
@@ -128,59 +142,68 @@ export default {
       setEndTime(commit, value) {
         return commit(NAMESPACE + '/' + SET_END_TIME, value)
       },
-      setVisible(commit, data) {
-        return commit(NAMESPACE + '/' + SET_VISIBLE, data)
+      setAnnotationOptions(commit, options) {
+        return commit(NAMESPACE + '/' + SET_ANNOTATION_OPTIONS, options)
       },
     }),
     ...mapActions({
-      fetchGravityTimeSeries(dispatch) {
-        return dispatch(NAMESPACE + '/' + FETCH_GRAVITY_TIMESERIES)
+      fetchData(dispatch) {
+        return dispatch(NAMESPACE + '/' + UPDATE_GRAVITY)
+      },
+      updateAnnotations(dispatch) {
+        return dispatch(NAMESPACE + '/' + UPDATE_ANNOTATIONS)
       },
     }),
-    async update() {
-      const chart = this.$refs.chart.$refs.chart
-      chart.clear()
-      chart.showLoading()
+    handleMouseMove(event) {
+      const chart = this.$refs.chart && this.$refs.chart.$refs.chart
+      const el = this.$refs.chart && this.$refs.chart.$el
+      if (!chart || !el) return
 
-      this.fetchGravityTimeSeries().finally(() => {
-        chart.hideLoading()
-        chart.mergeOptions(this.getChartOptions())
-      })
-    },
-    onPeriodChange(period, { startTime, endTime }) {
-      this.setPeriod(period)
-      this.setStartTime(startTime)
-      this.setEndTime(endTime)
-      this.update()
-    },
-    handleFilterChange({ id, isVisible }) {
-      if (id === '') {
-        this.seriesFilter.forEach((f) => {
-          this.series[f.id] = isVisible
-        })
-      } else {
-        this.setVisible({ id, isVisible })
+      const rect = el.getBoundingClientRect()
+      const point = [event.clientX - rect.left, event.clientY - rect.top]
+
+      let matchedGrid = -1
+      for (let i = 0; i < this.data.length; i++) {
+        if (chart.containPixel({ gridIndex: i }, point)) {
+          matchedGrid = i
+          break
+        }
       }
-      this.refresh()
+
+      if (matchedGrid === -1) {
+        this.hideTooltip()
+        return
+      }
+
+      const xValue = chart.convertFromPixel(
+        { xAxisIndex: matchedGrid },
+        point[0]
+      )
+      const range = this.timeRanges[matchedGrid]
+
+      if (!range || xValue < range.min || xValue > range.max) {
+        this.hideTooltip()
+      }
     },
-    refresh() {
-      const chart = this.$refs.chart.$refs.chart
-      chart.clear()
-      chart.mergeOptions(this.getChartOptions())
-    },
-    getChartOptions() {
-      return createGravityOverviewChartOptions({
-        data: this.data.filter((sta) => {
-          if (sta.sta_fid in this.series) {
-            return this.series[sta.sta_fid]
-          }
-          return true
-        }),
-      })
+    hideTooltip() {
+      const chart = this.$refs.chart && this.$refs.chart.$refs.chart
+      if (chart) {
+        chart.dispatchAction({ type: 'hideTip' })
+      }
     },
   },
   mounted() {
     this.update()
+    const el = this.$refs.chart && this.$refs.chart.$el
+    if (el) {
+      el.addEventListener('mousemove', this.handleMouseMove)
+    }
+  },
+  beforeDestroy() {
+    const el = this.$refs.chart && this.$refs.chart.$el
+    if (el) {
+      el.removeEventListener('mousemove', this.handleMouseMove)
+    }
   },
 }
 </script>
@@ -191,8 +214,5 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 40px;
-}
-.chart {
-  min-height: 500px;
 }
 </style>

@@ -1,60 +1,68 @@
 import moment from 'moment'
 import { NO_DATA_NOTATION } from '../../../../constants/stats'
-import { createRowGrid } from '../../../../utils/echarts/grid'
+import { createSubplotGrid } from '../../../../utils/echarts/grid'
 import {
   createCircleTemplate,
   toUnixMiliSeconds,
+  makeIndex,
 } from '../../../../utils/series'
 import { tab20ColorMap } from '../../../../utils/tab20'
 import { defaultToolbox } from '../common/toolbox'
 import { smartIndex } from '../rfap-distdir'
 
-const createXAxis = () => {
-  const options = [
-    {
-      gridIndex: 0,
-      axisLabel: { show: true },
-      splitLine: { show: false },
-      position: 'bottom',
+const ROW_HEIGHT = 60
+const ROW_MARGIN = 26
+const TOP = 40
+const BOTTOM = 70
+
+export const getGravityChartHeight = (n) => {
+  if (n === 0) return 150
+  return TOP + n * ROW_HEIGHT + (n - 1) * ROW_MARGIN + BOTTOM
+}
+
+const createGrid = (n) =>
+  createSubplotGrid(n, getGravityChartHeight(n), {
+    margin: ROW_MARGIN,
+    top: TOP,
+    bottom: BOTTOM,
+    left: 90,
+    right: 40,
+  })
+
+const createXAxis = (nrows, min, max) => {
+  const indices = makeIndex(nrows)
+  return indices.map((index) => {
+    const isLast = index === nrows - 1
+    return {
+      gridIndex: index,
+      min,
+      max,
       type: 'time',
-    },
-  ]
-
-  return options
-}
-
-const createYAxis = () => {
-  const options = [
-    {
-      gridIndex: 0,
-      nameGap: 70,
-      name: 'Gravity (mGal)',
-      nameLocation: 'center',
-      scale: true,
       splitLine: { show: false },
-      type: 'value',
-      axisLabel: {
-        show: true,
-        formatter: (v) => v.toFixed(2),
-      },
-    },
-  ]
-
-  return options
+      axisLabel: { show: isLast },
+      axisTick: { show: isLast },
+    }
+  })
 }
 
-const mediaQuery = [
-  {
-    query: {
-      maxWidth: 575.98,
+const createYAxis = (data) => {
+  return data.map((benchmark, index) => ({
+    gridIndex: index,
+    type: 'value',
+    scale: true,
+    name: `${benchmark.sta_fid} (mGal)`,
+    nameLocation: 'end',
+    nameGap: 10,
+    splitLine: { show: false },
+    splitNumber: 2,
+    minInterval: 0.01,
+    axisLabel: {
+      formatter: (v) => v.toFixed(2),
     },
-    option: {
-      grid: createRowGrid(1, { top: 10, bottom: 20, left: 20, right: 5 }),
-    },
-  },
-]
+  }))
+}
 
-const createSeries = ({ data }) => {
+const createSeries = ({ data, annotations = [] }) => {
   return data.map((benchmark, index) => ({
     data: benchmark.ts.map((d) => [
       toUnixMiliSeconds(d.period),
@@ -64,14 +72,25 @@ const createSeries = ({ data }) => {
     ]),
     name: `${benchmark.sta_fid}`,
     type: 'line',
-    symbol: 'none',
-    symbolSize: 3,
+    symbol: 'circle',
+    symbolSize: 4,
+    xAxisIndex: index,
+    yAxisIndex: index,
+    markLine: {
+      symbol: 'none',
+      data: annotations,
+      animation: false,
+    },
     itemStyle: {
       color:
         tab20ColorMap[smartIndex(index, data.length, tab20ColorMap.length)],
     },
   }))
 }
+
+const createDataZoom = (n) => [
+  { type: 'slider', xAxisIndex: makeIndex(n), realtime: false },
+]
 
 export const tooltipFormatter = () => {
   return (params) => {
@@ -85,10 +104,14 @@ export const tooltipFormatter = () => {
             ${moment(value[0]).format('YYYY-MM-DD')}<br />
           `)
         }
+
+        const hasValue =
+          value[1] !== null && value[1] !== undefined && isFinite(value[1])
+
         template.push(`
         ${createCircleTemplate(color)} 
         ${value[3]} (${seriesName}): ${
-          isFinite(value[1]) ? value[1].toFixed(4) : NO_DATA_NOTATION
+          hasValue ? value[1].toFixed(4) : NO_DATA_NOTATION
         }<br />
         `)
       })
@@ -98,45 +121,63 @@ export const tooltipFormatter = () => {
     }
   }
 }
+export const getStationTimeRanges = (data) => {
+  return data.map((benchmark) => {
+    const timestamps = benchmark.ts.map((d) => toUnixMiliSeconds(d.period))
+    return {
+      min: Math.min(...timestamps),
+      max: Math.max(...timestamps),
+    }
+  })
+}
+export const createGravityOverviewChartOptions = ({
+  data,
+  annotations = [],
+}) => {
+  const n = data.length
 
-export const createGravityOverviewChartOptions = ({ data }) => {
+  if (n === 0) {
+    return {
+      baseOption: {
+        backgroundColor: '#fff',
+        title: {
+          text: 'Gravity Overview',
+          textStyle: { fontWeight: 'bold', fontSize: 14 },
+          left: 'center',
+        },
+        toolbox: defaultToolbox,
+      },
+    }
+  }
+
+  const timestamps = data.flatMap((b) =>
+    b.ts.map((d) => toUnixMiliSeconds(d.period))
+  )
+  const min = Math.min(...timestamps)
+  const max = Math.max(...timestamps)
+
   return {
     baseOption: {
       backgroundColor: '#fff',
       title: {
         text: 'Gravity Overview',
-        textStyle: {
-          fontWeight: 'bold',
-          fontSize: 14,
-        },
+        textStyle: { fontWeight: 'bold', fontSize: 14 },
         left: 'center',
-      },
-      legend: {
-        type: 'plain',
-        left: 'center',
-        bottom: 0,
-        itemWidth: 10,
-        itemHeight: 10,
-        textStyle: { fontSize: 9 },
       },
       toolbox: defaultToolbox,
-      grid: createRowGrid(1, { top: 10, bottom: 10, left: 10, right: 2 }),
-      xAxis: createXAxis(),
-      yAxis: createYAxis(),
-      series: createSeries({
-        data,
-      }),
+      grid: createGrid(n),
+      xAxis: createXAxis(n, min, max),
+      yAxis: createYAxis(data),
+      series: createSeries({ data, annotations }),
+      dataZoom: createDataZoom(n),
       tooltip: {
         trigger: 'axis',
         axisPointer: {
           type: 'cross',
-          lineStyle: {
-            type: 'dashed',
-          },
+          lineStyle: { type: 'dashed' },
         },
         formatter: tooltipFormatter(),
       },
     },
-    media: mediaQuery,
   }
 }
