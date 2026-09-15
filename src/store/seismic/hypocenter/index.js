@@ -35,6 +35,12 @@ import rangeSelector from './range-selector'
 
 export const NAMESPACE = 'seismic/hypocenter'
 
+export const HYPO_MODES = {
+  manual: 'manual',
+  automatic: 'automatic',
+  autohypo: 'autohypo',
+}
+
 // Events with the following types are not locatable.
 const excludeLocationTypes = ['other event', 'not locatable', 'not existing']
 const excludeLocationMode = ['automatic']
@@ -51,7 +57,7 @@ export const initialState = {
   settings: {
     ...DEFAULT_SETTINGS,
     onlyLocatable: true,
-    useBtbbHypo: true,
+    hypoMode: HYPO_MODES.automatic,
   },
   eventFilter: [...eventFilterOptions],
   // Setting the value to null will force DD to calculate min and max of rms
@@ -103,6 +109,25 @@ export const initState = (period, customSettings = {}) => {
 
 export const state = () => {
   return { ...initialState }
+}
+
+const hasFiniteLocation = (loc) => {
+  return (
+    loc &&
+    Number.isFinite(loc.lat) &&
+    Number.isFinite(loc.lon) &&
+    Number.isFinite(loc.z)
+  )
+}
+
+const mapAutohypoEvent = (event) => {
+  return {
+    ...event,
+    latitude: event.autohypo.lat,
+    longitude: event.autohypo.lon,
+    depth: event.autohypo.z,
+    rmsp: event.autohypo.rmsp,
+  }
 }
 
 export const filterRms = (events, rmsFilter) => {
@@ -240,12 +265,54 @@ export const getters = {
 
     return events
   },
+  /**
+   * Autohypo (NLLoc) events with RMS filter applied (if any).
+   * Magnitude is optional; onlyLocatable is ignored, same as BTBB mode.
+   */
+  autohypoEvents({ data, rmsFilter }) {
+    const events = data
+      .filter((event) => hasFiniteLocation(event.autohypo))
+      .map(mapAutohypoEvent)
+
+    return filterRms(events, rmsFilter)
+  },
+  autohypoEventsUnfiltered({ data }) {
+    return data
+      .filter((event) => hasFiniteLocation(event.autohypo))
+      .map(mapAutohypoEvent)
+  },
+  modeEvents(state, getters) {
+    const mode = state.settings.hypoMode
+    if (mode === HYPO_MODES.automatic) {
+      return getters.btbbEvents
+    }
+    if (mode === HYPO_MODES.autohypo) {
+      return getters.autohypoEvents
+    }
+    return state.settings.onlyLocatable
+      ? getters.locatableEvents
+      : getters.plottableEvents
+  },
+  modeEventsUnfiltered(state, getters) {
+    const mode = state.settings.hypoMode
+    if (mode === HYPO_MODES.automatic) {
+      return getters.btbbEventsUnfiltered
+    }
+    if (mode === HYPO_MODES.autohypo) {
+      return getters.autohypoEventsUnfiltered
+    }
+    return getters.plottableEventsUnfiltered
+  },
   rmsRange({ data, settings }) {
     let rmsp
-    if (settings.useBtbbHypo) {
+    if (settings.hypoMode === HYPO_MODES.automatic) {
       rmsp = data
         .filter((event) => event.btbb && event.btbb.rmsp)
         .map((event) => event.btbb.rmsp)
+    } else if (settings.hypoMode === HYPO_MODES.autohypo) {
+      rmsp = data
+        .filter((event) => event.autohypo && Number.isFinite(event.autohypo.rmsp))
+        .map((event) => event.autohypo.rmsp)
     } else {
       rmsp = data
         .filter((event) => event.seiscomp)
@@ -272,10 +339,13 @@ export const mutations = {
     state.onlyPlottable = value
   },
   [USE_HYPO_MODE](state, value) {
-    const useBtbbHypo = value.toLowerCase() === 'automatic'
+    const hypoMode = String(value).toLowerCase()
+    if (!Object.values(HYPO_MODES).includes(hypoMode)) {
+      return
+    }
     state.settings = {
       ...state.settings,
-      useBtbbHypo: useBtbbHypo,
+      hypoMode,
     }
   },
   [SET_RMS_FILTER](state, value) {
