@@ -311,7 +311,9 @@ export const getters = {
         .map((event) => event.btbb.rmsp)
     } else if (settings.hypoMode === HYPO_MODES.autohypo) {
       rmsp = data
-        .filter((event) => event.autohypo && Number.isFinite(event.autohypo.rmsp))
+        .filter(
+          (event) => event.autohypo && Number.isFinite(event.autohypo.rmsp)
+        )
         .map((event) => event.autohypo.rmsp)
     } else {
       rmsp = data
