@@ -158,6 +158,7 @@ const fields = [
   'cluster',
   'corr_coef',
   'btbb',
+  'arah_kubah_termal',
   'seiscomp',
 ]
 

@@ -159,4 +159,8 @@ export default {
     useField: 'btbb',
     formatter: (v) => (v ? v.z : '-'),
   },
+  arah_kubah_termal: {
+    label: 'Arah kubah termal',
+    formatter: (v) => (v ? v : '-'),
+  },
 }
