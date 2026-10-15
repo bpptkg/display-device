@@ -28,6 +28,15 @@
             :annotations="annotationOptions"
             @change="handleUpdateAnnotations"
           />
+          <BFormCheckboxGroup
+            v-model="lerengFilter"
+            :options="lerengFilterOptions"
+            buttons
+            button-variant="outline-secondary"
+            size="sm"
+            class="ml-2"
+            @change="handleLerengFilterChange"
+          />
         </div>
         <div class="d-flex align-items-center justify-content-end mt-2">
           <MoreMenu right class="ml-2">
@@ -48,8 +57,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { BCard, BLink, BDropdownItem } from 'bootstrap-vue'
-
+import { BCard, BLink, BDropdownItem, BFormCheckboxGroup } from 'bootstrap-vue'
 import chartMixins from '@/components/mixins/charts'
 import DChart from '@/components/echarts/chart/DChart'
 import ErrorMessage from '@/components/error-message'
@@ -57,11 +65,14 @@ import EventAnnotation from '@/components/event-annotation'
 import MoreMenu from '@/components/more-menu'
 import RangeSelector from '@/components/range-selector'
 
+import { stationLereng, lerengFilterOptions } from '@/constants/gravity'
 import {
   createGravityOverviewChartOptions,
   getGravityChartHeight,
-  getStationTimeRanges,
+  getGroupedStationTimeRanges,
 } from '@/components/echarts/chart-options/gravity/overview'
+
+import { gravityChartGroups } from '@/constants/gravity'
 
 import { NAMESPACE, UPDATE_GRAVITY } from '@/store/gravity-overview'
 import rangeSelector, {
@@ -75,12 +86,15 @@ import {
 } from '@/store/base/mutations'
 import { UPDATE_ANNOTATIONS } from '@/store/base/actions'
 
+const MOBILE_BREAKPOINT = 768
+
 export default {
   name: 'GravityOverview',
   components: {
     BCard,
     BLink,
     BDropdownItem,
+    BFormCheckboxGroup,
     DChart,
     ErrorMessage,
     EventAnnotation,
@@ -92,6 +106,9 @@ export default {
     return {
       maxCustomDuration,
       rangeSelector,
+      lerengFilterOptions,
+      lerengFilter: ['NS'],
+      isMobile: window.innerWidth < MOBILE_BREAKPOINT,
     }
   },
   computed: {
@@ -118,17 +135,38 @@ export default {
         return state[NAMESPACE].annotations
       },
     }),
+    filteredData() {
+      const active = this.lerengFilterOptions.find(
+        (opt) => opt.value === this.lerengFilter
+      )
+      if (!active) return this.data
+      return this.data.filter((benchmark) =>
+        active.lereng.includes(stationLereng[benchmark.sta_fid])
+      )
+    },
+    activeGroups() {
+      return this.lerengFilterOptions
+        .filter((opt) => this.lerengFilter.includes(opt.value))
+        .map((opt) => ({
+          key: opt.value,
+          title: opt.text,
+          stations: this.data.filter((b) =>
+            opt.lereng.includes(stationLereng[b.sta_fid])
+          ),
+        }))
+    },
     chartHeight() {
-      return getGravityChartHeight(this.data.length)
+      return getGravityChartHeight(this.activeGroups, this.isMobile)
     },
     chartOptions() {
       return createGravityOverviewChartOptions({
-        data: this.data,
+        groups: this.activeGroups,
         annotations: this.annotations,
+        isMobile: this.isMobile,
       })
     },
     timeRanges() {
-      return getStationTimeRanges(this.data)
+      return getGroupedStationTimeRanges(this.activeGroups)
     },
   },
   methods: {
@@ -154,6 +192,17 @@ export default {
         return dispatch(NAMESPACE + '/' + UPDATE_ANNOTATIONS)
       },
     }),
+    handleLerengFilterChange() {
+      this.updateChart({ withLoading: false })
+    },
+    handleResize() {
+      const mobile = window.innerWidth < MOBILE_BREAKPOINT
+      if (mobile === this.isMobile) return
+      this.isMobile = mobile
+      this.$nextTick(() => {
+        this.updateChart({ withLoading: false })
+      })
+    },
     handleMouseMove(event) {
       const chart = this.$refs.chart && this.$refs.chart.$refs.chart
       const el = this.$refs.chart && this.$refs.chart.$el
@@ -163,7 +212,7 @@ export default {
       const point = [event.clientX - rect.left, event.clientY - rect.top]
 
       let matchedGrid = -1
-      for (let i = 0; i < this.data.length; i++) {
+      for (let i = 0; i < this.timeRanges.length; i++) {
         if (chart.containPixel({ gridIndex: i }, point)) {
           matchedGrid = i
           break
@@ -194,12 +243,14 @@ export default {
   },
   mounted() {
     this.update()
+    window.addEventListener('resize', this.handleResize)
     const el = this.$refs.chart && this.$refs.chart.$el
     if (el) {
       el.addEventListener('mousemove', this.handleMouseMove)
     }
   },
   beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
     const el = this.$refs.chart && this.$refs.chart.$el
     if (el) {
       el.removeEventListener('mousemove', this.handleMouseMove)

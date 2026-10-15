@@ -1,0 +1,38 @@
+export const LERENG = {
+  UTARA: 'UTARA',
+  SELATAN: 'SELATAN',
+  BARAT: 'BARAT',
+  TIMUR: 'TIMUR',
+}
+
+export const stationLereng = {
+  SDMR: LERENG.TIMUR,
+  NGAL: LERENG.TIMUR,
+  TMPN: LERENG.TIMUR,
+  GBYK: LERENG.TIMUR,
+  KRNJ: LERENG.BARAT,
+  BBDN: LERENG.BARAT,
+  PINS: LERENG.BARAT,
+  KLAT: LERENG.BARAT,
+  JRAK: LERENG.UTARA,
+  PLAL: LERENG.UTARA,
+  NEWS: LERENG.UTARA,
+  SLPB: LERENG.UTARA,
+  SLPA: LERENG.UTARA,
+  GHMK: LERENG.UTARA,
+  KPGK: LERENG.SELATAN,
+  SPGK: LERENG.SELATAN,
+  KRUD: LERENG.SELATAN,
+  BDGN: LERENG.SELATAN,
+  SRMT: LERENG.SELATAN,
+  LABH: LERENG.SELATAN,
+}
+
+export const lerengFilterOptions = [
+  {
+    text: 'Utara - Selatan',
+    value: 'NS',
+    lereng: [LERENG.UTARA, LERENG.SELATAN],
+  },
+  { text: 'Barat - Timur', value: 'EW', lereng: [LERENG.BARAT, LERENG.TIMUR] },
+]
