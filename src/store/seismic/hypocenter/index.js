@@ -57,7 +57,7 @@ export const initialState = {
   settings: {
     ...DEFAULT_SETTINGS,
     onlyLocatable: true,
-    hypoMode: HYPO_MODES.automatic,
+    hypoMode: HYPO_MODES.autohypo,
   },
   eventFilter: [...eventFilterOptions],
   // Setting the value to null will force DD to calculate min and max of rms

@@ -296,7 +296,7 @@ export default {
     },
     hypocenterMode: {
       get: function () {
-        return this.settings.hypoMode || HYPO_MODES.automatic
+        return this.settings.hypoMode || HYPO_MODES.autohypo
       },
       set: function (value) {
         this.useHypoMode(value)
