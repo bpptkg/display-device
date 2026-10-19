@@ -83,7 +83,7 @@ export default [
     text: 'Selo',
     chartTitle: 'EDM Selo',
     coordChartTitle: 'EDM Coordinate Selo',
-    isVectorSupported: false,
+    isVectorSupported: true,
   },
   {
     value: EDMBenchmark.STA0,

@@ -251,7 +251,7 @@ const SAP0 = {
 const SEL0 = {
   namespaced: true,
   state: initState(EDMBenchmark.SEL0, defaultPeriod, {
-    isVectorSupported: false,
+    isVectorSupported: true,
   }),
   getters,
   mutations,
