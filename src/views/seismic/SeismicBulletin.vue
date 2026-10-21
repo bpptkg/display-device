@@ -110,6 +110,38 @@
                 }}
               </li>
             </ul>
+            <div class="autoclass-info">
+              <h6>AutoClass</h6>
+              <ul>
+                <li>
+                  <span class="font-weight-bold">Jenis</span>:
+                  {{ autoclass.jenis || '-' }}
+                </li>
+                <li>
+                  <span class="font-weight-bold">Probabilitas jenis</span>:
+                  {{ formatProbability(autoclass.prob_jenis) }}
+                </li>
+                <li>
+                  <span class="font-weight-bold">Arah model</span>:
+                  {{ autoclass.arah_model || '-' }}
+                </li>
+                <li>
+                  <span class="font-weight-bold">Probabilitas arah</span>:
+                  {{ formatProbability(autoclass.prob_arah) }}
+                </li>
+                <li>
+                  <span class="font-weight-bold">Sumber arah</span>:
+                  {{ autoclass.arah_sumber || '-' }}
+                </li>
+                <li>
+                  <span class="font-weight-bold">Saran cek tektonik</span>:
+                  {{
+                    (autoclass.cek_tektonik && autoclass.cek_tektonik.saran) ||
+                    '-'
+                  }}
+                </li>
+              </ul>
+            </div>
           </BTab>
 
           <BTab class="hypoview-container" title="Hypocenter" lazy>
@@ -342,6 +374,9 @@ export default {
         return isPlottableVolcanicEventBtbb(this.event)
       }
     },
+    autoclass() {
+      return this.event.autoclass || {}
+    },
     eventType: {
       get() {
         return this.$store.state.seismic.bulletin.eventType
@@ -423,6 +458,15 @@ export default {
     this.update()
   },
   methods: {
+    formatProbability(value) {
+      const probability = Number(value)
+      return value === null ||
+        value === undefined ||
+        value === '' ||
+        !Number.isFinite(probability)
+        ? '-'
+        : `${(probability * 100).toFixed(1)}%`
+    },
     isPlottableVolcanicEvent,
     ...mapMutations({
       setPeriod(commit, period) {
@@ -649,6 +693,10 @@ export default {
   & li {
     list-style: none;
   }
+}
+
+.autoclass-info {
+  margin-top: 1rem;
 }
 
 @media (min-width: 992px) {

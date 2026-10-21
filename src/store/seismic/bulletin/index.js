@@ -144,6 +144,7 @@ const fields = [
   'latitude',
   'depth',
   'eventtype',
+  'autoclass',
   'seiscompid',
   'validated',
   'projection',
