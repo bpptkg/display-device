@@ -29,6 +29,18 @@ const fieldOptions = [
     sortable: true,
   },
   {
+    key: 'autoclass',
+    label: 'AutoClass',
+    formatter: (value) => {
+      if (!value || !value.jenis) return '-'
+
+      const probability = Number(value.prob_jenis)
+      if (!Number.isFinite(probability)) return value.jenis
+
+      return `${value.jenis} (${(probability * 100).toFixed(1)}%)`
+    },
+  },
+  {
     key: 'amplitude',
     label: 'Amplitude (mm)',
     sortable: true,
