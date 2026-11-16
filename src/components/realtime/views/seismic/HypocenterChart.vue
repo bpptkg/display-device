@@ -70,11 +70,11 @@ export default {
       startTime: (state) => state.startTime,
       endTime: (state) => state.endTime,
     }),
-    ...mapGetters(NAMESPACE, ['autohypoEvents']),
+    ...mapGetters(NAMESPACE, ['btbbEvents']),
     chartOptions() {
       const options = {
         ...baseChartOptions(this.settings),
-        series: createSeries(this.topo, this.autohypoEvents, this.settings),
+        series: createSeries(this.topo, this.btbbEvents, this.settings),
       }
 
       if (this.data.length) {
