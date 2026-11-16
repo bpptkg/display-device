@@ -18,6 +18,7 @@ const period = {
 
 const customSettings = {
   ...DEFAULT_SETTINGS,
+  hypoMode: 'autohypo',
   autoRotate: false,
   autoRotateSpeed: 3,
   showSurfaceColormapLegend: false,
